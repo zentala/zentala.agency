@@ -1,47 +1,104 @@
 import React from "react"
-import Layout from "../components/layout"
-import KontaktBox from "../components/KontaktBox"
+import { Button, Typography, Row, Col } from 'antd';
+import { CustomButton } from '../components/AntdExtended';
+import { Link } from 'gatsby';
+
+import GlobalLayout from "../components/GlobalLayout"
+import ContactBox from "../components/ContactBox"
+
+const { Title, Paragraph } = Typography;
 
 const oNas = () => (
-  <Layout>
-    <section>
-      <h1 style={{marginBottom: 0, fontSize: '8em'}}>Jesteśmy najlepszym partnerem</h1>
-      <h2 style={{fontSize: '5em'}}>dla przedsiębiorstw pragnących wdrażać innowacje i zoptymalizować swoje operacje.</h2>
+  <GlobalLayout>
+      <section>
+        <Row gutter={64}>
+          <Col span={10}>
+            <Title level={1} style={{ marginBottom: 0, fontSize: '5em' }}>Jesteśmy najlepszym partnerem</Title>
+            <Title level={2} style={{ marginTop: '0.8em', fontSize: '2.5em' }}>dla ludzi pragnących rozwijać swoje firmy dzięki połączeniu innowacji, digitalizacji i optymalizacji procesów.</Title>
+            <Link to="#contact-box">
+              <CustomButton type="primary" size="large" customStyle="lead">Porozmawiajmy</CustomButton>
+            </Link>
+          </Col>
+          <Col span={14} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <img src="/images/debate3.png" alt="Opis obrazka" style={{ maxWidth: '100%', height: 'auto' }} />
+          </Col>
+        </Row>
+      </section>
 
-      <button>Porozmawiajmy</button>
-    </section>
-    <section>
-      <h3>Twoje przedsiębiorstwo w centrum uwagi</h3>
-      Nasza misja to nie tylko dostarczenie efektywnych rozwiązań technologicznych, ale również zrozumienie i wsparcie dla specyfiki Twojego biznesu. Naszym priorytetem jest Twoje zadowolenie i sukces.
+      <section>
+      <Row gutter={32} justify="center">
+        
+        <Col span={8} style={{ textAlign: 'center' }}>
+          <img src="path_do_twojego_obrazka1.jpg" alt="Opis obrazka 1" />
+          <Title level={3}>Twoje przedsiębiorstwo w centrum uwagi</Title>
+          <Paragraph>
+            Nasza misja to nie tylko dostarczenie efektywnych rozwiązań technologicznych, ale również zrozumienie i wsparcie dla specyfiki Twojego biznesu. Naszym priorytetem jest Twoje zadowolenie i sukces.
+          </Paragraph>
+        </Col>
 
-      <strong>Ponad 80% naszych klientów to firmy, które poleciły nas innym przedsiębiorstwom. To nasz największy sukces.</strong>
+        <Col span={8} style={{ textAlign: 'center' }}>
+          <img src="path_do_twojego_obrazka2.jpg" alt="Opis obrazka 2" />
+          <Title level={3}>Automatyzacja i Innowacje</Title>
+          <Paragraph>
+            Specjalizujemy się w dostarczaniu zaawansowanych rozwiązań, które zwiększają efektywność i redukują koszty. Nasze podejście łączy w sobie najnowsze technologie z praktycznymi zastosowaniami w biznesie.
+          </Paragraph>
+        </Col>
 
-      <h3>Automatyzacja i Innowacje</h3>
-      <p>Specjalizujemy się w dostarczaniu zaawansowanych rozwiązań, które zwiększają efektywność i redukują koszty. Nasze podejście łączy w sobie najnowsze technologie z praktycznymi zastosowaniami w biznesie.</p>
+        <Col span={8} style={{ textAlign: 'center' }}>
+          <img src="path_do_twojego_obrazka3.jpg" alt="Opis obrazka 3" />
+          <Title level={3}>Przyszłość to teraz</Title>
+          <Paragraph>
+            Żyjemy w dynamicznie zmieniającym się środowisku, w którym opóźnienie w adaptacji do nowych technologii może być kosztowne. Dlatego stawiamy na ciągły rozwój i innowacyjność, aby zawsze być krok przed konkurencją.
+          </Paragraph>
+        </Col>
 
-      <h3>Przyszłość to teraz</h3>
-      <p>Żyjemy w dynamicznie zmieniającym się środowisku, w którym opóźnienie w adaptacji do nowych technologii może być kosztowne. Dlatego stawiamy na ciągły rozwój i innowacyjność, aby zawsze być krok przed konkurencją.</p>
+      </Row>
     </section>
-    <section>
-      <h3>Nasze wartości</h3>
-      <ul>
-        <li>Skuteczność - Robimy to, co obiecujemy</li>
-        <li>Odpowiedzialność - Za nasze działania i za Twoje zadowolenie</li>
-        <li>Zaufanie - Tworzymy relacje, które są korzystne dla obu stron</li>
-        <li>Innowacyjność - Nieustannie poszukujemy nowych, lepszych rozwiązań</li>
-      </ul>
-      <button>Skontaktuj się z nami</button>
+
+    <section className="values-section">
+      <Title level={3} className="centered-text">Nasze wartości</Title>
+      <Row gutter={[16, 16]} className="values-list">
+          <Col span={6} className="value-item">
+              <img src="path_to_icon1.png" alt="Ikona wartości 1"/>
+              <p>Skuteczność - Robimy to, co obiecujemy</p>
+          </Col>
+          <Col span={6} className="value-item">
+              <img src="path_to_icon2.png" alt="Ikona wartości 2"/>
+              <p>Odpowiedzialność - Za nasze działania i za Twoje zadowolenie</p>
+          </Col>
+          <Col span={6} className="value-item">
+              <img src="path_to_icon3.png" alt="Ikona wartości 3"/>
+              <p>Zaufanie - Tworzymy relacje, które są korzystne dla obu stron</p>
+          </Col>
+          <Col span={6} className="value-item">
+              <img src="path_to_icon4.png" alt="Ikona wartości 4"/>
+              <p>Innowacyjność - Nieustannie poszukujemy nowych, lepszych rozwiązań</p>
+          </Col>
+      </Row>
+      <Row className="contact-button">
+          <Col span={24}>
+              <Button type="primary" size="large" className="centered-button">Skontaktuj się z nami</Button>
+          </Col>
+      </Row>
     </section>
-    <section>
-      <h2>Historia Agencji</h2>
-      <p>Nasza historia to ciągła ewolucja i adaptacja do zmieniającego się rynku. Zaczynaliśmy jako mały zespół freelancerów, a dzisiaj jesteśmy liderem w automatyzacji i innowacjach.</p>
-      <p>Posiadamy biuro w Warszawie, a nasi eksperci mają wieloletnie doświadczenie w różnych sektorach: rozwóju oprogramowania, IoT, robotyki, project managmentów, change menagmentu, marketungu, designu i UX, data science, zarządzania strategiczego itd. Jeteśmy zespołem o silnym trzonie technologicznym, a jednocześnie zakorzenionym w biznesie.</p>
-      <p>Nieważne, czy jesteś małą firmą, czy dużą korporacją, mamy rozwiązania dopasowane do Twoich potrzeb.</p>
-    </section>
-    <section>
-      <KontaktBox/>
-    </section>
-  </Layout>
+
+      <section>
+        <Title level={2}>Historia Agencji</Title>
+        <Paragraph>
+          Nasza historia to ciągła ewolucja i adaptacja do zmieniającego się rynku. Zaczynaliśmy jako mały zespół freelancerów, a dzisiaj jesteśmy liderem w automatyzacji i innowacjach.
+        </Paragraph>
+        <Paragraph>
+          Posiadamy biuro w Warszawie, a nasi eksperci mają wieloletnie doświadczenie w różnych sektorach: rozwóju oprogramowania, IoT, robotyki, project managmentów, change menagmentu, marketungu, designu i UX, data science, zarządzania strategiczego itd. Jesteśmy zespołem o silnym trzonie technologicznym, a jednocześnie zakorzenionym w biznesie.
+        </Paragraph>
+        <Paragraph>
+          Nieważne, czy jesteś małą firmą, czy dużą korporacją, mamy rozwiązania dopasowane do Twoich potrzeb.
+        </Paragraph>
+      </section>
+
+      <section>
+        <ContactBox />
+      </section>
+  </GlobalLayout>
 )
 
 export default oNas

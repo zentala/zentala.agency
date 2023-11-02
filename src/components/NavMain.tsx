@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "gatsby"
-import { NavMainLinks } from '../config/links';
+import { NavMainLinks } from '../config/about';
 
 
 

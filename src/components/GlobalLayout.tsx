@@ -5,14 +5,17 @@
  * See: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/
  */
 
-import * as React from "react"
+import React, { ReactNode } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 import { StyleProvider } from '@ant-design/cssinjs';
 
 import GlobalHeader from "./GlobalHeader"
-import GlobalFooter from "./GlobalFooter"
 import "./layout.sass"
+import GlobalFooterAbout from "./GlobalFooterAbout";
+import GlobalFooterLinks from "./GlobalFooterLinks";
+
+const { Header, Content, Footer } = Layout;
 
 const antdTheme = {
   // algorithm: theme.darkAlgorithm,
@@ -23,7 +26,11 @@ const antdTheme = {
   }
 };
 
-const Layout = ({ children }) => {
+interface GlobalLayoutProps {
+  children: ReactNode;
+}
+
+const GlobalLayout: React.FC<GlobalLayoutProps> = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -37,15 +44,22 @@ const Layout = ({ children }) => {
     <>
       <StyleProvider hashPriority="high">
         <ConfigProvider theme={antdTheme}>
-          <GlobalHeader />
-          {/* <div className="container"> */}
-          <main>{children}</main>
-          {/* </div> */}
-          <GlobalFooter/>
-      </ConfigProvider>
+          <Layout>
+            <GlobalHeader />
+            {/* <div className="container"> */}
+            <Content>
+              {children}
+            </Content>
+            {/* </div> */}
+            <Footer style={{ padding: 0, margin: 0 }}>
+              <GlobalFooterAbout />
+              <GlobalFooterLinks />
+            </Footer>
+          </Layout>
+        </ConfigProvider>
       </StyleProvider>
     </>
   )
 }
 
-export default Layout
+export default GlobalLayout

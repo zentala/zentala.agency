@@ -1,6 +1,6 @@
 import React from "react"
-import Layout from "../components/layout"
-import KontaktBox from "../components/KontaktBox"
+import Layout from "../components/GlobalLayout"
+import KontaktBox from "../components/ContactBox"
 
 const oNas = () => (
   <Layout>

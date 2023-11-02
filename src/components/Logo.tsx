@@ -10,19 +10,101 @@ interface LogoProps {
   width?: number | string;
   supplement?: string;
   uppercase?: boolean;
+  containerStyle?: React.CSSProperties;
+  supplementPosition?: 'top' | 'bottom' | 'right';
+  suplementStyle?: React.CSSProperties;
 }
 
-const Logo: React.FC<LogoProps> = ({ type = 'full', alt = 'Zentala Consulting', link, color = 'inherit', width, height, supplement, uppercase = false }) => {
-  width = !height ? width : 'auto';
+type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+type AlignItems = 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+type JustifyContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
+
+type FlexStyles = {
+  flexDirection: FlexDirection;
+  alignItems: AlignItems;
+  justifyContent?: JustifyContent;
+}
+
+const Logo: React.FC<LogoProps> = ({ 
+  type = 'full', 
+  alt, 
+  link, 
+  color = 'inherit', 
+  width, 
+  height, 
+  supplement, 
+  uppercase = false,
+  containerStyle,
+  supplementPosition = 'right',
+  suplementStyle
+}) => {
   
+  // width = !height ? width : 'auto';
+
+  const getContainerStyles = (position: string): FlexStyles  => {
+    switch (position) {
+      case 'top':
+        return {
+          flexDirection: 'column-reverse',
+          alignItems: 'center',
+        };
+      case 'bottom':
+        return {
+          flexDirection: 'column',
+          alignItems: 'center',
+        };
+      case 'right':
+      default:
+        return {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+        };
+    }
+  };
+
+  const styles: Record<string, React.CSSProperties> = {
+    container: {
+      display: 'flex',
+      whiteSpace: 'nowrap',
+      ...getContainerStyles(supplementPosition),
+      ...containerStyle 
+    },
+    containerSygnet: {
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      ...containerStyle 
+    },
+    svg: {
+      height: height || 'auto',
+      width: width || (height ? 'auto' : '100%'),
+    },
+    supplement: {
+      marginLeft: '1em', 
+      fontSize: '1em', 
+      textTransform: uppercase ? 'uppercase' : 'none', 
+      // paddingTop: '0.4em',
+      color,
+      ...suplementStyle
+    }
+  };
+
+  if (supplementPosition === 'right') {
+    styles.supplement.marginLeft = '1em';
+  } else {
+    // styles.supplement.marginTop = '0.4em';
+  }
+
   const LogoFullSVG = (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', whiteSpace: 'nowrap' }}>
+    <div style={styles.container}>
       <svg 
         version="1.0" xmlns="http://www.w3.org/2000/svg" 
         width="806.000000pt" height="111.000000pt" 
         viewBox="0 0 806.000000 111.000000" 
         preserveAspectRatio="xMidYMid meet"
-        style={{ height: height || 'auto', width: width || '100%' }}>
+        style={styles.svg}>
         <title>{alt}</title>
         <g transform="translate(0.000000,111.000000) scale(0.100000,-0.100000)" stroke="none" fill={color}>
           <path d="M44 1037 l-42 -72 234 -5 233 -5 -103 -145 -102 -145 -107 -5 -107 -5 -20 -33 c-11 -18 -20 -35 -20 -37 0 -3 78 -5 174 -5 l175 0 144 206 145 205 -26 60 -25 59 -256 0 -256 0 -41 -73z"/>
@@ -39,7 +121,7 @@ const Logo: React.FC<LogoProps> = ({ type = 'full', alt = 'Zentala Consulting', 
         </g>
       </svg>
       
-      <div style={{ marginLeft: '1em', fontSize: '1em', textTransform: uppercase ? 'uppercase' : 'none', paddingTop: '0.4em' }}>
+      <div style={styles.supplement}>
         {supplement}
       </div>
       
@@ -47,7 +129,7 @@ const Logo: React.FC<LogoProps> = ({ type = 'full', alt = 'Zentala Consulting', 
   );
 
   const LogoSygnetSVG = (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={styles.containerSygnet}>
       <svg 
         version="1.0" xmlns="http://www.w3.org/2000/svg" 
         width="294.000000pt" height="440.000000pt" 

@@ -1,6 +1,6 @@
 import React, { useState, CSSProperties } from 'react'
 import { Link } from "gatsby"
-import { SocialLinks } from '../config/links';
+import { SocialLinks } from '../config/about';
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 

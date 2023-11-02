@@ -1,6 +1,6 @@
 import React from "react"
 import { Col, Row, Typography } from 'antd';
-import Layout from "../../components/layout"
+import Layout from "../../components/GlobalLayout"
 
 const { Title } = Typography;
 

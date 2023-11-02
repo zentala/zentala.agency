@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "gatsby"
 import NavMain from './NavMain'
 import Logo from './Logo'
+import Section from './Section';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -28,9 +29,10 @@ const Header = () => {
   }
 
   return (
+
     <header className={headerClasses.join(" ")}>
       {/* <div className={"container"}> */}
-        <Logo link="/" height="20px" supplement="AI Automation Agency"/>
+        <Logo link="/" height="20px" supplement="Innovation Agency"/>
         <NavMain />
       {/* </div> */}
     </header>

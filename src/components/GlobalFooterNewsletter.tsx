@@ -21,6 +21,14 @@ type NewsletterFormFields = {
   approval: boolean;
 };
 
+
+// .globalNewsletter
+//     background: #f7f7f7
+//     padding: 30px auto
+//     border-top: 1px solid #eee
+
+
+
 const GlobalFooterNewsletter = ({}) => {
   const [checked, setChecked] = useState(true);
 

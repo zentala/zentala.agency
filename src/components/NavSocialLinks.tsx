@@ -1,5 +1,5 @@
 import React from 'react';
-import { SocialLinks } from '../config/links';
+import { SocialLinks } from '../config/about';
 import LinkIcon, { Size } from './LinkIcon';
 
 interface NavSocialLinksProps {

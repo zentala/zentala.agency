@@ -1,5 +1,5 @@
 import React from "react"
-import Layout from "../components/layout"
+import Layout from "../components/GlobalLayout"
 import { Link } from 'gatsby';
 import { Col, Row, Typography } from 'antd';
 const { Title, Paragraph, Text  } = Typography;
