@@ -7,6 +7,20 @@
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
+
+require("dotenv").config();
+
+const cloudinaryConfig = {
+  cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  apiKey: process.env.CLOUDINARY_API_KEY,
+  apiSecret: process.env.CLOUDINARY_API_SECRET
+};
+
+// Sprawdź, czy wszystkie wymagane klucze konfiguracji są zdefiniowane
+if (!cloudinaryConfig.cloudName || !cloudinaryConfig.apiKey || !cloudinaryConfig.apiSecret) {
+  console.warn('Warning: Cloudinary configuration keys are missing. Image functionalities will be limited.');
+}
+
 module.exports = {
   siteMetadata: {
     title: `Zentala Innovation Agency`,
@@ -40,6 +54,26 @@ module.exports = {
         display: `standalone`,
         icon: `src/images/favicon-sygnet.png`, // This path is relative to the root of the site.
         crossOrigin: `use-credentials`, // `use-credentials` or `anonymous`
+      },
+    },
+    {
+      resolve: `gatsby-source-cloudinary`,
+      options: {
+        cloudName: cloudinaryConfig.cloudName,
+        apiKey: cloudinaryConfig.apiKey,
+        apiSecret: cloudinaryConfig.apiSecret,
+        resourceType: `image`,
+        type: `upload`
+      },
+    },
+    {
+      resolve: `gatsby-source-cloudinary`,
+      options: {
+        cloudName: cloudinaryConfig.cloudName,
+        apiKey: cloudinaryConfig.apiKey,
+        apiSecret: cloudinaryConfig.apiSecret,
+        resourceType: `video`,
+        type: `upload`
       },
     },
   ],
