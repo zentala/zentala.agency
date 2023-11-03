@@ -243,22 +243,6 @@ pre tt:after
   padding: 10px
   margin: 0 5px
 
-header.globalHeader
-  margin: 0 auto
-  padding: var(--space-4) var(--size-gutter)
-  display: flex
-  align-items: center
-  justify-content: space-between
-  border-bottom: 1px solid #eee
-  position: sticky
-  top: 0
-  background-color: #f7f7f7
-  z-index: 10000
-  transition: padding 0.2s ease-in-out
-
-  &.scrolled
-    padding: 15px var(--size-gutter)
-
 
 
 
@@ -271,9 +255,11 @@ header.globalHeader
   &::after
     content: ""
     display: block
-    width: 16px
-    height: 16px
-    background-color: lightgray
+    // width: 16px
+    // height: 16px
+    width: 24px
+    height: 24px
+    background-color: rgba(0,0,0,0.05)
     border-radius: 50%
     position: absolute
     top: 50%

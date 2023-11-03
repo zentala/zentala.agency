@@ -8,13 +8,15 @@ interface SectionProps {
   background?: string;
   maxWidth?: Breakpoint;
   padding?: 'thin' | 'normal' | 'large';
+  className?: string;
 }
 
 const Section: React.FC<SectionProps> = ({
   children,
   background = '#ffffff', // global default section background
-  maxWidth = 'lg', // global default section breakpoint
+  maxWidth = 'xl', // global default section breakpoint
   padding = 'normal',
+  className = ''
 }) => {
   const screens = useBreakpoint();
   const maxWidthInPx = breakpoints[maxWidth];
@@ -37,6 +39,7 @@ const Section: React.FC<SectionProps> = ({
     <Row
       style={{ background, padding: `${verticalPadding} ${horizontalPadding}` }}
       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+      className={className}
     >
       <Col span={24} style={{ maxWidth: maxWidthInPx, margin: '0 auto' }}>
         {children}

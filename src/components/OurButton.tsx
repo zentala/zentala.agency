@@ -2,12 +2,12 @@ import React from 'react';
 import { Button } from 'antd';
 import './AntdExtended.sass';
 
-interface CustomButtonProps {
-  customStyle?: 'myTheme';
+interface OurButtonProps {
+  customStyle?: 'lead';
   [key: string]: any;
 }
 
-export const CustomButton: React.FC<CustomButtonProps> = ({ customStyle, ...props }) => {
+export const OurButton: React.FC<OurButtonProps> = ({ customStyle, ...props }) => {
   let className = '';
 
   if (customStyle === 'lead') {

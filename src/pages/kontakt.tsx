@@ -1,10 +1,11 @@
 import React from "react"
 import Layout from "../components/GlobalLayout"
 import KontaktBox from "../components/ContactBox"
+import Section from "../components/Section"
 
 const oNas = () => (
   <Layout>
-    <section>
+    <Section>
       <div>
         <h2>Porozmawiajmy o Twoim biznesie</h2>
         [form: imię i naziwsko, adres email, numer telefonu, twoja wiadomosc, dodaj załacznik, checkboax + zgodam, wyślij]
@@ -26,8 +27,8 @@ const oNas = () => (
           </div>
         </div>
       </div>
-    </section>
-    <section>
+    </Section>
+    <Section>
       <div>
         <h2>Wpadnij pogadać</h2>
         [mapa]
@@ -46,7 +47,7 @@ const oNas = () => (
         SWIFT XXXXXXX 
         </p>
       </div>
-    </section>
+    </Section>
     {/* TODO wyłączyć NL tutaj */}
   </Layout>
 )

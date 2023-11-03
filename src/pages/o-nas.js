@@ -1,6 +1,7 @@
 import React from "react"
 import { Button, Typography, Row, Col } from 'antd';
-import { CustomButton } from '../components/AntdExtended';
+import { OurButton } from '../components/OurButton';
+import Section from '../components/Section';
 import { Link } from 'gatsby';
 
 import GlobalLayout from "../components/GlobalLayout"
@@ -10,22 +11,22 @@ const { Title, Paragraph } = Typography;
 
 const oNas = () => (
   <GlobalLayout>
-      <section>
+      <Section>
         <Row gutter={64}>
-          <Col span={10}>
-            <Title level={1} style={{ marginBottom: 0, fontSize: '5em' }}>Jesteśmy najlepszym partnerem</Title>
-            <Title level={2} style={{ marginTop: '0.8em', fontSize: '2.5em' }}>dla ludzi pragnących rozwijać swoje firmy dzięki połączeniu innowacji, digitalizacji i optymalizacji procesów.</Title>
+          <Col span={12}>
+            <Title level={1} style={{ marginBottom: 0, fontSize: '4.4em' }}>Jesteśmy najlepszym partnerem</Title>
+            <Title level={2} style={{ marginTop: '0.8em', fontSize: '2.2em' }}>dla ludzi pragnących rozwijać swoje firmy dzięki połączeniu innowacji, digitalizacji i optymalizacji procesów.</Title>
             <Link to="#contact-box">
-              <CustomButton type="primary" size="large" customStyle="lead">Porozmawiajmy</CustomButton>
+              <OurButton type="primary" size="large" customStyle="lead">Porozmawiajmy</OurButton>
             </Link>
           </Col>
-          <Col span={14} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Col span={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img src="/images/debate3.png" alt="Opis obrazka" style={{ maxWidth: '100%', height: 'auto' }} />
           </Col>
         </Row>
-      </section>
+      </Section>
 
-      <section>
+      <Section>
       <Row gutter={32} justify="center">
         
         <Col span={8} style={{ textAlign: 'center' }}>
@@ -53,9 +54,9 @@ const oNas = () => (
         </Col>
 
       </Row>
-    </section>
+    </Section>
 
-    <section className="values-section">
+    <Section className="values-section">
       <Title level={3} className="centered-text">Nasze wartości</Title>
       <Row gutter={[16, 16]} className="values-list">
           <Col span={6} className="value-item">
@@ -80,9 +81,9 @@ const oNas = () => (
               <Button type="primary" size="large" className="centered-button">Skontaktuj się z nami</Button>
           </Col>
       </Row>
-    </section>
+    </Section>
 
-      <section>
+      <Section>
         <Title level={2}>Historia Agencji</Title>
         <Paragraph>
           Nasza historia to ciągła ewolucja i adaptacja do zmieniającego się rynku. Zaczynaliśmy jako mały zespół freelancerów, a dzisiaj jesteśmy liderem w automatyzacji i innowacjach.
@@ -93,11 +94,11 @@ const oNas = () => (
         <Paragraph>
           Nieważne, czy jesteś małą firmą, czy dużą korporacją, mamy rozwiązania dopasowane do Twoich potrzeb.
         </Paragraph>
-      </section>
+      </Section>
 
-      <section>
+      <Section>
         <ContactBox />
-      </section>
+      </Section>
   </GlobalLayout>
 )
 
