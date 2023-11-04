@@ -8,6 +8,16 @@
 import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
+interface SiteMetadata {
+  title: string;
+}
+
+interface SiteMetadataQuery {
+  site: {
+    siteMetadata: SiteMetadata;
+  };
+}
+
 function Seo({ description, title, children }) {
   const { site } = useStaticQuery(
     graphql`
