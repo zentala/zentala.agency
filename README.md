@@ -1,99 +1,155 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.com">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby's default starter
-</h1>
+# Zentala Agency
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+Welcome to the "Zentala Agency" project repository - my digital showcase for innovation prototyping services. This site serves as a hub for those looking to transform their ideas into tangible, market-ready prototypes.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.com/docs/gatsby-starters/)._
 
-## 🚀 Quick start
+## Project Overview
 
-1.  **Create a Gatsby site.**
+The "Zentala Agency" website features (most of them will be coming soon):
+- A home page with an introduction to the agency's services, and a CTA to subscribe to the newsletter or book a discovery session call
+- Detailed service offering pages
+- An e-commerce section for educational products
+- A knowledge base
+- A blog section
+- A portfolio of past works
+- An 'About Us' page
+- A contact page
 
-    Use the Gatsby CLI ([install instructions](https://www.gatsbyjs.com/docs/tutorial/getting-started/part-0/#gatsby-cli)) to create a new site, specifying the default starter.
 
-    ```shell
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
+## Development Environment
 
-1.  **Start developing.**
+This project is configured for development with Visual Studio Code (VS Code) and includes a devcontainer setup for a consistent development environment.
 
-    Navigate into your new site’s directory and start it up.
+### Visual Studio Code
 
-    ```shell
-    cd my-default-starter/
-    gatsby develop
-    ```
+The repository includes recommended extensions and settings for VS Code to enhance the development experience. Open the project in VS Code and you'll be prompted to install the recommended extensions.
 
-1.  **Open the source code and start editing!**
+### Devcontainer with WSL
 
-    Your site is now running at `http://localhost:8000`!
+For developers using Windows, the project is ready to be used with WSL. The devcontainer configuration automatically sets up the development environment within a Docker container. To start working with it, ensure you have the `Remote - Containers` extension installed in VS Code, then simply open the command palette and select `Remote-Containers: Reopen in Container`.
 
-    Note: You'll also see a second link: `http://localhost:8000/___graphql`. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby Tutorial](https://www.gatsbyjs.com/docs/tutorial/getting-started/part-4/#use-graphiql-to-explore-the-data-layer-and-write-graphql-queries).
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+## Getting Started
 
-## 🚀 Quick start (Netlify)
+To get the site running locally:
 
-Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
+1. Clone the repository.
+```bash
+git clone https://github.com/zentala/zentala-agency.git
+```
 
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
+2. Install dependencies.
+```bash
+cd zentala-agency
+nvm use
+npm install
+```
 
-## 🧐 What's inside?
+3. Start the development server.
+```bash
+npm start
+```
 
-A quick look at the top-level files and directories you'll see in a typical Gatsby project.
+This will start the Gatsby development server at http://localhost:8888.
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package.json
-    └── README.md
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+## Custom Domain Setup
 
-1.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+To access the project using the `zentala.local` domain, you need to set up Avahi and Nginx on your Linux system or WSL on Windows.
 
-1.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
 
-1.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+### Install Avahi and Nginx
 
-1.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/) for more detail).
+First, update your package list and install Avahi and Nginx using apt-get:
 
-1.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+```bash
+sudo apt-get update
+sudo apt-get install avahi-daemon avahi-discover avahi-utils libnss-mdns mdns-scan nginx
+```
 
-1.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+### Configure Nginx
 
-1.  **`LICENSE`**: This Gatsby starter is licensed under the 0BSD license. This means that you can see this file as a placeholder and replace it with your own license.
+Next, set up Nginx to proxy requests to your Gatsby development server. Here's a basic configuration for your site:
 
-1.  **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+```nginx
+server {
+    listen 80;
+    server_name zentala.local;
 
-1.  **`README.md`**: A text file containing useful reference information about your project.
+    location / {
+        proxy_pass http://127.0.0.1:8888;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
 
-## 🎓 Learning Gatsby
+Save this configuration to `/etc/nginx/sites-available/zentala.local` and create a symbolic link to it in the `sites-enabled` directory:
 
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.com/). Here are some places to start:
+```bash
+sudo ln -s /etc/nginx/sites-available/zentala.local /etc/nginx/sites-enabled/
+```
 
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.com/docs/tutorial/getting-started/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
+Then, test the configuration and restart Nginx:
 
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.com/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
 
-## 💫 Deploy
 
-[Build, Deploy, and Host On Netlify](https://netlify.com)
+### Edit your Hosts File
 
-The fastest way to combine your favorite tools and APIs to build the fastest sites, stores, and apps for the web. And also the best place to build, deploy, and host your Gatsby sites.
+Add the custom domain to your `hosts` file:
 
-<!-- AUTO-GENERATED-CONTENT:END -->
+```bash
+echo "127.0.0.1 zentala.local" | sudo tee -a /etc/hosts
+```
+
+
+### Additional Configuration for Windows with WSL
+
+If you're using Windows with the Windows Subsystem for Linux (WSL), you'll need to update the Windows `hosts` file as well to ensure the `zentala.local` domain resolves correctly.
+
+1. Open the Windows hosts file located at `C:\Windows\System32\drivers\etc\hosts` in a text editor with administrative privileges.
+
+2. Add the following line to the file:
+
+```lua
+127.0.0.1 zentala.local
+```
+
+3. Save the file and close the editor.
+
+With this additional step, the `zentala.local`` domain should now work seamlessly in Windows environment.
+
+
+### Start Avahi Service
+
+Lastly, start the Avahi service to broadcast the new domain on your local network:
+
+```bash
+sudo systemctl start avahi-daemon
+```
+
+With this setup, your Gatsby site will be available at [http://zentala.local](http://zentala.local) through your browser.
+
+
+## Deployment
+The site is set up to be deployed on GitHub Pages. 
+
+
+## Scripts
+* `npm run start` — Starts the development server on http://localhost:8888
+* `npm run develop` — Starts the development server with the custom `http://zentala.local/` domain. Requires the Avahi and Nginx configuration as noted above.
+* `npm run format` — Formats code using Prettier
+* `npm run build` — Builds the site for production
+* `npm run serve` — Serves the production build of the site for testing
+
+
+## Versioning
+For transparency into our release cycle and in striving to maintain backward compatibility, "Zentala Agency" is maintained under the [Semantic Versioning guidelines](https://semver.org/). Sometimes we screw up, but we'll adhere to those rules whenever possible.
+
+
+## Acknowledgments
+A tip of the hat to the numerous open-source projects that make a project like this possible. Specific credits to Gatsby, React, TypeScript, and Ant Design.

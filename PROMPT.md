@@ -4,9 +4,9 @@ I am developing this website with ChatGPT, so I collected here some prompts to r
 ## Project tech stack and principles
 In every new chat about coding:
 ``` prompt
-I am making website with Gatsby, antdesign, React, TypeScript, JSS.
-Prefer antd-way of doing stuff - the way proffesional React dev with experience in Antd would make it.
-Rozmawiajmy po polsku, ale komentarze do kodu i nazwy komponetów, class, plikow itd po angielsku.
+I am making website in VSCode DevContainer with Gatsby, antdesign, React, TypeScript, JSS. I use Semantic Versioning guidelines for CHANGELOG.md Prefer antd-way of doing stuff - the way proffesional React dev with experience in Antd would make it. 
+
+Rozmawiajmy po polsku, ale kiedy piszesz kod to komentarze do niego i nazwy komponetów, class, plikow itd pisz po angielsku - w kodzie używasz ZAWSZE, również do komentowania, angielskiego, a po za nim polskiego. Dotyczy to również plików markdown i innej dokumenacji. 
 ```
 
 
@@ -40,12 +40,6 @@ Nexa bold
 
 ### Ideas
 * Tagline: Educate. Innovate. Transform.
-* Divisions: 
-  * Education & Consulting
-  * Creative & Marketing
-  * Software Developement
-  * IoT & Robotics 
-  * AI & RPA Automation
   
 ### Font icons to consider
 https://ionic.io/ionicons
