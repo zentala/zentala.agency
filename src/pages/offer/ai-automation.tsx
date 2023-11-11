@@ -1,8 +1,9 @@
 import React from "react"
 import { Col, Row, Space } from 'antd'
 
-import Layout from "../components/GlobalLayout"
-import LinkIcon from "../components/LinkIcon"
+import Layout from "../../components/GlobalLayout"
+import LinkIcon from "../../components/LinkIcon"
+import Seo from "../../components/seo"
 
 const AutomationPage = () => (
   <Layout>
@@ -78,5 +79,7 @@ const AutomationPage = () => (
 
   </Layout>
 )
+
+export const Head = () => <Seo title="AI Automation" />
 
 export default AutomationPage

@@ -1,0 +1,75 @@
+{
+  "menu": {
+    "home": {
+      "path": "/",
+      "title": "Home"
+    },
+    "portfolio": {
+      "path": "/portfolio",
+      "title": "Portfolio"
+    },
+    "offer": {
+      "path": "/offer",
+      "title": "Offer"
+    },
+    "about": {
+      "path": "/about",
+      "title": "About"
+    },
+    "contact": {
+      "path": "/contact",
+      "title": "Contact"
+    },
+    "blog": {
+      "path": "/blog",
+      "title": "Blog"
+    },
+    "base": {
+      "path": "/base",
+      "title": "Inspirations"
+    }
+  },
+  "seo": {
+    "fullName": "Zentala Innovation Agency",
+    "suffix": " Innovation Agency"
+  },
+  "home": {
+    "mission": {
+      "header": "OUR MISSION IS",
+      "lead": "Integrate compex technical systems into practical business solituons that generate revenue, optymize, stramline and automate and our clients processes"
+    },
+    "how": {
+      "header": "HOW WE DO IT?",
+      "lead": "We combine wide (industry) knowdlege in order to rapidly prototype new inpactful working (?) and busines applications and digitalize analog processes"
+    },
+    "detailed": {
+      "header": "WE ARE DOING IT TOUGH",
+      "lead": "Meet 6 pillars of rapid prototyping inpactfull innovations:"
+    }
+  },
+  "offer": {
+    "title": "Here you got some ideas of what we could do for you"
+  },
+  "portfolio": {
+    "title": "Portfolio"
+  },
+  "base": {
+    "title": "Repositorium of innovations worth to implement"
+  },
+  "blog": {
+    "title": "Blog of Zentala AI Automation Agency"
+  },
+  "about": {
+    "title": "We are the best partner",
+    "subtitle": "for people looking to grow their businesses through a combination of innovation, digitalization, and process optimization.",
+    "cta": "Let's talk"
+  },
+  "contact": {
+    "title": "Let's talk about your business"
+  },
+  "footer": {
+    "spec": "Innovation Agency specializes in implementing comprehensive applications and solutions in the field of software, websites, marketing, artificial intelligence, automation, robotics, and the Internet of Things (IoT). Our agency delivers advanced technologies that effectively enhance the operational value and market competitiveness of your business.",
+    "offer": "We offer a broad range of services focused on the early stage implementation of future technologies. Our main areas of activity include: education and consulting in the field of new technologies, executive analysis and business analytics of innovative projects, documentation creation, building prototypes (Proof of Concept), and assembling IT teams to continue development and maintenance of projects.",
+    "privacy": "Privacy Policy"
+  }
+}

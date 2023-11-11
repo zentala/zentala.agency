@@ -46,3 +46,10 @@ https://ionic.io/ionicons
 https://feathericons.com/
 https://themify.me/themify-icons
 
+### Emojis
+uzywam font https://fonts.google.com/noto/specimen/Noto+Color+Emoji
+z ikonami UTF8, które mozna przegadac tutaj: 
+https://fonts.google.com/noto/specimen/Noto+Color+Emoji/glyphs?preview
+
+### Tłuymaczenia
+https://github.com/wiziple/gatsby-plugin-intl

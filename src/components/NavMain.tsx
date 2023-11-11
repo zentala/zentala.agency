@@ -1,36 +1,34 @@
-import React from 'react'
-import { Link } from "gatsby"
+import React from 'react';
 import { NavMainLinks } from '../config/about';
+import { useIntl, Link } from "gatsby-plugin-intl";
 
+const NavMain: React.FC = () => {
+  const intl = useIntl();
 
+  const getLinkProps = (id: string): { to: string, title: string } => {
+    const pathId = `menu.${id}.path`;
+    const titleId = `menu.${id}.title`;
+    return {
+      to: intl.formatMessage({ id: pathId }),
+      title: intl.formatMessage({ id: titleId }),
+    };
+  };
 
-const NavMain = () => (
-  <nav>
-    <ol className="inline-list">
-      {NavMainLinks.map((link, index) => (
-        <ol key={index}>
-          <Link to={link.url}>{link.text}</Link>
-          {/* {samplePageLinks.map((link, i) => (
-            <React.Fragment key={link.url}>
-              <Link to={link.url}>{link.text}</Link>
-              {i !== samplePageLinks.length - 1 && <> · </>}
-            </React.Fragment>
-          ))} */}
-          {/* {link.sublinks && (
-            <ol>
-              {link.sublinks.map((sublink, index) => (
-                <li key={index}>
-                  <Link to={sublink.url}>{sublink.label}</Link>
-                </li>
-              ))}
-            </ol>
-          )} */}
-        </ol>
-      ))}
-    </ol>
-  </nav>
-)
+  return (
+    <nav className="inline-list">
+      <ol>
+        {NavMainLinks.map((id, index) => {
+          const { to, title } = getLinkProps(id);
 
+          return (
+            <li key={index}>
+              <Link to={to}>{title}</Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+};
 
-
-export default NavMain
+export default NavMain;

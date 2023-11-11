@@ -7,8 +7,8 @@ const useStyles = createUseStyles({
   container: {
     position: 'relative',
     width: '100%',
-    // height: '100vh', // Aby zajmowało całą wysokość widoku
     overflow: 'hidden',
+    backgroundImage: `linear-gradient(to right bottom, #111, #222)`,
     
   },
   video: {
@@ -22,15 +22,14 @@ const useStyles = createUseStyles({
     objectFit: 'cover'
   },
   logoContainer: {
-    maxWidth: 1200, // Maksymalna szerokość
-    margin: '0 auto', // Wyśrodkowanie
+    maxWidth: 1200,
+    margin: '0 auto',
     position: 'relative',
     width: '100%',
     height: '40vw',
     paddingTop: '5vw',
     paddingBottom: '5vw',
     '& > div': {
-      // backgroundColor: 'red',
       position: 'absolute',
       top: 0,
       left: 0,

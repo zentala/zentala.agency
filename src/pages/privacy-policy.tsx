@@ -4,7 +4,9 @@ import { Link } from 'gatsby';
 import { Col, Row, Typography } from 'antd';
 const { Title, Paragraph, Text  } = Typography;
 
-const PolitykaPrywatnosci: React.FC = () => {
+import Seo from "../components/seo"
+
+const PrivacyPolicy: React.FC = () => {
   return (
   <Layout>
     <section>
@@ -69,4 +71,6 @@ const PolitykaPrywatnosci: React.FC = () => {
   )
 }
 
-export default PolitykaPrywatnosci
+export const Head = () => <Seo title="Privacy Policy" />
+
+export default PrivacyPolicy

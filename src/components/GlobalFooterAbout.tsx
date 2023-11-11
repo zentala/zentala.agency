@@ -1,9 +1,9 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Col, Row } from 'antd';
+import { injectIntl } from "gatsby-plugin-intl"
 
-import { breakpoints } from '../config/antd'; // Importujesz breakpoints
-import { footerSpecjalization, footerOffer } from '../config/about';
+import { breakpoints } from '../config/antd';
 import NavSocialLinks from './NavSocialLinks';
 import Logo from './Logo';
 import Section from './Section';
@@ -39,7 +39,7 @@ const useStyles = createUseStyles({
   // Możesz dodać dodatkowe style tutaj
 });
 
-const GlobalFooterAbout = ({}) => {
+const GlobalFooterAbout = ({ intl }) => {
   const classes = useStyles();
 
   return (
@@ -52,15 +52,15 @@ const GlobalFooterAbout = ({}) => {
           <NavSocialLinks size="lg"/>
         </Col>
         <Col lg={{ span: 8, offset: 1 }} md={24} className={`${classes.smallText} ${classes.column}`}>
-          {footerSpecjalization}
+          {intl.formatMessage({ id: "footer.spec" })}          
         </Col>
         <Col lg={1} md={0} sm={0} xs={0} className={classes.dashedLineColumn} />
         <Col lg={8} className={classes.smallText}>
-          {footerOffer}
+          {intl.formatMessage({ id: "footer.offer" })}
         </Col>
       </Row>
     </Section>
   )
 }
 
-export default GlobalFooterAbout;
+export default injectIntl(GlobalFooterAbout);

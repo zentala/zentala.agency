@@ -33,25 +33,8 @@ export const CompanyInfo: Record<string, CompanyProp> = {
 
 
 /* Main navbar links */
-
-interface NavLink {
-  url: string;
-  text: string;
-  badge?: boolean;
-  desc?: string;
-}
-
-export const NavMainLinks: NavLink[] = [
-  { text: "Oferta", url: "/", badge: false },
-  { text: "AI Automation", url: "/automation", badge: false },
-  { text: "Portfolio", url: "/portfolio", badge: false },
-  { text: "Baza wiedzy", url: "/baza-wiedzy" },
-  { text: "Blog", url: "/blog", badge: false, desc: "A simple example of linking to another page within a Gatsby site" },
-  // { text: "Inspirations catalog", url: "/inspirations" },
-  { text: "O nas", url: "/o-nas" },
-  { text: "Kontakt", url: "/kontakt" }
-]
-
+export const NavMainLinks = ['offer', 'portfolio', 'base', 'blog', 'about', 'contact']
+// INFO: edit or remove by key from translation file in the group "menu"
 
 
 
@@ -71,10 +54,3 @@ export const SocialLinks: Record<string, SocialLink> = {
   github: { alt: "GitHub", icon: () => <GithubFilled />, url: "https://github.com/zentala", hoverColor: '#0e76a8' },
   mail: { alt: "E-mail", icon: () => <MailFilled />, url: "mailto:zentala@gmail.com", hoverColor: '#0e76a8' }
 };
-
-
-
-
-/* Footer texts */
-export const footerSpecjalization = "Agencja Innowacji specjalizuje się w wdrażaniu kompleksowych aplikacji i rozwiązań z zakresu oprogramowania, stron internetowych, marketingu, sztucznej inteligencji, automatyzacji, robotyzacji oraz Internetu Rzeczy (IoT). Nasza agencja dostarcza zaawansowane technologie, które efektywnie podnoszą wartość operacyjną i konkurencyjność Twojej firmy na rynku.";
-export const footerOffer = "Oferujemy szeroki zakres usług skoncentrowanych wczesnym stadium implementacji technologi przyszłości. Nasze główne obszary działania to: edukacja i konsulting w zakresie nowych technologii, analiza wykonawcza i analityka biznesowa innowacyjnych projektów, tworzenie dokumentacji, budowa prototypów (Proof of Concept) i budowa zespołów IT kontynuujacych rozwój i utrzymanie projektów.";

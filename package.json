@@ -16,6 +16,7 @@
     "gatsby": "^5.12.4",
     "gatsby-image": "^3.11.0",
     "gatsby-plugin-image": "^3.12.0",
+    "gatsby-plugin-intl": "^5.10.0",
     "gatsby-plugin-manifest": "^5.12.0",
     "gatsby-plugin-sass": "^6.12.2",
     "gatsby-plugin-sharp": "^5.12.0",
@@ -44,18 +45,19 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop -H zentala.local -p 8888",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
+    "dev": "gatsby develop -H zentala.local -p 8888",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md,css}'",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "extract": "npx lingui extract",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/zentala/zentala.agecy"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/zentala/zentala.agecy/issues"
   }
 }

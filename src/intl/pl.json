@@ -1,0 +1,75 @@
+{
+  "menu": {
+    "home": {
+      "path": "/",
+      "title": "Główna"
+    },
+    "portfolio": {
+      "path": "/portfolio",
+      "title": "Portfolio"
+    },
+    "offer": {
+      "path": "/offer",
+      "title": "Oferta"
+    },
+    "about": {
+      "path": "/about",
+      "title": "O Agencji"
+    },
+    "contact": {
+      "path": "/contact",
+      "title": "Kontakt"
+    },
+    "blog": {
+      "path": "/blog",
+      "title": "Blog"
+    },
+    "base": {
+      "path": "/base",
+      "title": "Inspiracje"
+    }
+  },
+  "seo": {
+    "fullName": "Zentala Innovation Agency",
+    "suffix": " Innovation Agency"
+  },
+  "home": {
+    "mission": {
+      "header": "NASZA MISJA TO",
+      "lead": "Integrować skomplikowane systemy techniczne w praktyczne rozwiązania biznesowe, generować przychody, optymalizować, usprawniać i automatyzować procesy naszych klientów."
+    },
+    "how": {
+      "header": "JAK TO ROBIMY?",
+      "lead": "Łączymy szeroką wiedzę branżową, aby szybko prototypować nowe wpływowe rozwiązania i aplikacje biznesowe oraz cyfryzować analogowe procesy."
+    },
+    "detailed": {
+      "header": "ROBIMY TO MOCNO",
+      "lead": "Poznaj 6 filarów szybkiego prototypowania wpływowych innowacji:"
+    }
+  },
+  "offer": {
+    "title": "Kilka pomysłów co możemy dla Ciebie zrobić"
+  },
+  "portfolio": {
+    "title": "Portfolio"
+  },
+  "base": {
+    "title": "Baza rozwiązań wartych wdrożenia"
+  },
+  "blog": {
+    "title": "Blog Agancji Innowacji Żentały"
+  },
+  "about": {
+    "title": "Jesteśmy najlepszym partnerem",
+    "subtitle": "dla ludzi pragnących rozwijać swoje firmy dzięki połączeniu innowacji, digitalizacji i optymalizacji procesów.",
+    "cta": "Porozmawiajmy"
+  },
+  "contact": {
+    "title": "Porozmawiajmy o Twoim biznesie"
+  },
+  "footer": {
+    "spec": "Agencja Innowacji specjalizuje się w wdrażaniu kompleksowych aplikacji i rozwiązań z zakresu oprogramowania, stron internetowych, marketingu, sztucznej inteligencji, automatyzacji, robotyzacji oraz Internetu Rzeczy (IoT). Nasza agencja dostarcza zaawansowane technologie, które efektywnie podnoszą wartość operacyjną i konkurencyjność Twojej firmy na rynku.",
+    "offer": "Oferujemy szeroki zakres usług skoncentrowanych wczesnym stadium implementacji technologi przyszłości. Nasze główne obszary działania to: edukacja i konsulting w zakresie nowych technologii, analiza wykonawcza i analityka biznesowa innowacyjnych projektów, tworzenie dokumentacji, budowa prototypów (Proof of Concept) i budowa zespołów IT kontynuujacych rozwój i utrzymanie projektów.",
+    "privacy": "Polityka Prywatności"
+  }
+}

@@ -1,6 +1,13 @@
 @import url('~antd/dist/reset.css')
 @import url('https://fonts.cdnfonts.com/css/nexa-bold')
 
+@font-face
+  font-family: 'Noto Color Emoji'
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/noto-color-emoji@latest/emoji-400-normal.woff') format('woff')
+
+.emoji-icon
+  font-family: 'Noto Color Emoji'
+
 
 :root
   --border-radius: 4px
@@ -230,18 +237,22 @@ pre tt:after
   padding: var(--size-gutter)
 
 .inline-list
-  display: flex
-  justify-content: space-between
-  margin: 0
   ol
+    display: flex
+    justify-content: space-between
     margin: 0
-    padding: 0
-    list-style-type: none
+    li
+      margin: 0
+      padding: 0
+      list-style-type: none
+      a
+        text-decoration: none
+        padding: 10px
+        margin: 0 5px
+        color: #333
+        &:hover
+          color: #777
 
-.inline-list ol a
-  text-decoration: none
-  padding: 10px
-  margin: 0 5px
 
 
 

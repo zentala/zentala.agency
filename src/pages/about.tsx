@@ -6,18 +6,20 @@ import { Link } from 'gatsby';
 
 import GlobalLayout from "../components/GlobalLayout"
 import ContactBox from "../components/ContactBox"
+import Seo from "../components/seo";
+import { FormattedMessage } from "gatsby-plugin-intl";
 
 const { Title, Paragraph } = Typography;
 
-const oNas = () => (
+const About: React.FC = () => (
   <GlobalLayout>
       <Section>
         <Row gutter={64}>
           <Col span={12}>
-            <Title level={1} style={{ marginBottom: 0, fontSize: '4.4em' }}>Jesteśmy najlepszym partnerem</Title>
-            <Title level={2} style={{ marginTop: '0.8em', fontSize: '2.2em' }}>dla ludzi pragnących rozwijać swoje firmy dzięki połączeniu innowacji, digitalizacji i optymalizacji procesów.</Title>
+            <Title level={1} style={{ marginBottom: 0, fontSize: '4.4em' }}><FormattedMessage id="about.title" /></Title>
+            <Title level={2} style={{ marginTop: '0.8em', fontSize: '2.2em' }}><FormattedMessage id="about.subtitle" /></Title>
             <Link to="#contact-box">
-              <OurButton type="primary" size="large" customStyle="lead">Porozmawiajmy</OurButton>
+              <OurButton type="primary" size="large" customStyle="lead"><FormattedMessage id="about.cta" /></OurButton>
             </Link>
           </Col>
           <Col span={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -102,4 +104,6 @@ const oNas = () => (
   </GlobalLayout>
 )
 
-export default oNas
+export const Head = () => <Seo title="About" />
+
+export default About

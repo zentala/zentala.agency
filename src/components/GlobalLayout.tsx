@@ -35,22 +35,22 @@ interface GlobalLayoutProps {
 const GlobalLayout: React.FC<GlobalLayoutProps> = ({ children }) => {
   return (
     <>
-      <CloudinaryProvider>
-        <StyleProvider hashPriority="high">
-          <ConfigProvider theme={antdTheme}>
-            <Layout>
-              <GlobalHeader />
-              <Content>
-                {children}
-              </Content>
-              <Footer style={{ padding: 0, margin: 0 }}>
-                <GlobalFooterAbout />
-                <GlobalFooterLinks />
-              </Footer>
-            </Layout>
-          </ConfigProvider>
-        </StyleProvider>
-      </CloudinaryProvider>
+        <CloudinaryProvider>
+          <StyleProvider hashPriority="high">
+            <ConfigProvider theme={antdTheme}>
+              <Layout>
+                <GlobalHeader />
+                <Content>
+                  {children}
+                </Content>
+                <Footer style={{ padding: 0, margin: 0 }}>
+                  <GlobalFooterAbout />
+                  <GlobalFooterLinks />
+                </Footer>
+              </Layout>
+            </ConfigProvider>
+          </StyleProvider>
+        </CloudinaryProvider>
     </>
   )
 }

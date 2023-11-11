@@ -4,6 +4,8 @@ import { createUseStyles } from 'react-jss';
 import Layout from "../../components/GlobalLayout"
 import Section from "../../components/Section"
 import OurImage from '../../components/OurImage';
+import Seo from "../../components/seo";
+import { FormattedMessage } from "gatsby-plugin-intl";
 
 const { Title } = Typography;
 
@@ -42,7 +44,7 @@ const BlogPage: React.FC = () => {
   return (
     <Layout>
       <Section>
-        <Title align="center">Blog of Zentala AI Automation Agency</Title>
+        <Title align="center"><FormattedMessage id="blog.title" /></Title>
         <Row justify="space-around" align="middle" gutter={[64, 36]}>
           {columnsContent.map((column) => (
             <Col key={column.key} span={8} className={`${classes.column} ${column.className ?? classes[column.className]}`}>
@@ -70,5 +72,7 @@ const BlogPage: React.FC = () => {
     </Layout>
   );
 };
+
+export const Head = () => <Seo title="Blog" />
 
 export default BlogPage

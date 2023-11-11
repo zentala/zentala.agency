@@ -1,8 +1,8 @@
 import React from "react"
 import { Col, Row, Space } from 'antd'
 
-import Layout from "../components/GlobalLayout"
-import LinkIcon from "../components/LinkIcon"
+import Layout from "../../components/GlobalLayout"
+import LinkIcon from "../../components/LinkIcon"
 
 const BlogPage = () => (
   <Layout>

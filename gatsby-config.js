@@ -76,5 +76,14 @@ module.exports = {
         type: `upload`
       },
     },
+    {
+      resolve: `gatsby-plugin-intl`,
+      options: {
+        path: `${__dirname}/src/intl`,
+        languages: [`en`, `pl`],
+        defaultLanguage: `en`,
+        redirect: true,
+      }
+    }
   ],
 }
