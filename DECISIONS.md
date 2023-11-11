@@ -30,5 +30,5 @@ Architectural Decision Records (ADRs) are documents that record key architectura
 1. **Status**: Accepted
 2. **Context**: The need to explore modern media management solutions and to evaluate their functionality, cost, and convenience. The specific interest was in features like image resizing and optimization.
 3. **Decision**: Decided to use Cloudinary for media storage and created a context for delivering media, to test this kind of solution and to explore its functionalities.
-4. **Consequences**: This decision allows for easy management and optimization of media, but it involves reliance on an external service and its pricing model. 
+4. **Consequences**: This decision allows for easy management and optimization of media, but it involves reliance on an external service and its pricing model.
 5. **Alternatives**: The alternatives were using another similar service or managing media on our own VPS. However, this would require additional maintenance, potential configuration, and possibly a self-hosted platform for managing and publishing images, which seemed more complex at this time.

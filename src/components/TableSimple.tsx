@@ -1,9 +1,9 @@
-import React from 'react';
-import './TableSimple.sass';
+import React from 'react'
+import './TableSimple.sass'
 
 interface TableSimpleProps {
-  dataSource: Array<{ [key: string]: React.ReactNode }>;
-  columns: Array<{ dataIndex: string; key: string; }>;
+  dataSource: Array<{ [key: string]: React.ReactNode }>
+  columns: Array<{ dataIndex: string; key: string }>
 }
 
 const TableSimple: React.FC<TableSimpleProps> = ({ dataSource, columns }) => {
@@ -19,7 +19,7 @@ const TableSimple: React.FC<TableSimpleProps> = ({ dataSource, columns }) => {
         ))}
       </tbody>
     </table>
-  );
+  )
 }
 
-export default TableSimple;
+export default TableSimple

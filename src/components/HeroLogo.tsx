@@ -1,7 +1,7 @@
-import React from "react";
-import { createUseStyles } from 'react-jss';
+import React from 'react'
+import { createUseStyles } from 'react-jss'
 
-import Logo from "./Logo";
+import Logo from './Logo'
 
 const useStyles = createUseStyles({
   container: {
@@ -9,7 +9,6 @@ const useStyles = createUseStyles({
     width: '100%',
     overflow: 'hidden',
     backgroundImage: `linear-gradient(to right bottom, #111, #222)`,
-    
   },
   video: {
     position: 'absolute',
@@ -19,7 +18,7 @@ const useStyles = createUseStyles({
     bottom: 0,
     width: '100%',
     height: '100%',
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
   logoContainer: {
     maxWidth: 1200,
@@ -39,12 +38,12 @@ const useStyles = createUseStyles({
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
-    }
+    },
   },
-});
+})
 
 const HeroLogo: React.FC = () => {
-  const styles = useStyles();
+  const styles = useStyles()
 
   const logoStyle: Record<string, React.CSSProperties> = {
     sygnet: {
@@ -64,18 +63,18 @@ const HeroLogo: React.FC = () => {
       <video autoPlay muted loop className={styles.video} src="/images/heroSmoke.mp4"></video>
       <div className={styles.logoContainer}>
         <Logo type="sygnet" containerStyle={logoStyle.sygnet} color="white" />
-        <Logo 
-          type="full" 
-          containerStyle={logoStyle.full} 
-          color="white" 
-          supplement="Innovation Agency" 
+        <Logo
+          type="full"
+          containerStyle={logoStyle.full}
+          color="white"
+          supplement="Innovation Agency"
           supplementPosition="bottom"
           uppercase
-          suplementStyle={{ fontSize: '3vw', marginTop: '1vw', letterSpacing: '1.5vw', marginLeft: 0 }} 
+          suplementStyle={{ fontSize: '3vw', marginTop: '1vw', letterSpacing: '1.5vw', marginLeft: 0 }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeroLogo;
+export default HeroLogo

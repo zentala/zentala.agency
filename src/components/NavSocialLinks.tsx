@@ -1,13 +1,13 @@
-import React from 'react';
-import { SocialLinks } from '../config/about';
-import LinkIcon, { Size } from './LinkIcon';
+import React from 'react'
+import { SocialLinks } from '../config/about'
+import LinkIcon, { Size } from './LinkIcon'
 
 interface NavSocialLinksProps {
-  size?: Size;
+  size?: Size
 }
 
-const NavSocialLinks: React.FC<NavSocialLinksProps> = ({ size = "md" }) => {
-  const socialKeys = Object.keys(SocialLinks);
+const NavSocialLinks: React.FC<NavSocialLinksProps> = ({ size = 'md' }) => {
+  const socialKeys = Object.keys(SocialLinks)
 
   return (
     <div>
@@ -15,7 +15,7 @@ const NavSocialLinks: React.FC<NavSocialLinksProps> = ({ size = "md" }) => {
         <LinkIcon key={index} name={key} size={size} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default NavSocialLinks;
+export default NavSocialLinks

@@ -30,11 +30,9 @@ Violations of these prohibitions will be pursued legally to the fullest extent p
 
 By accessing this repository, you acknowledge that you have read, understood, and agree to comply with the terms and conditions stated herein. Any breach of these terms will result in legal action and potential financial penalties.
 
-
 ### Contributions
 
 Contributions to the project in the form of feedback and suggestions are welcome. However, the merging of pull requests will be at the discretion of the project maintainers, ensuring that no external contributions infringe upon the copyrighted elements.
-
 
 ## Contact Information
 

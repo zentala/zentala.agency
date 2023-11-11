@@ -1,22 +1,20 @@
 {
   "version": "2.0.0",
   "tasks": [
-      {
-          "label": "Check Environment and Run Dev Server",
-          "type": "shell",
-          "command": "${workspaceFolder}/.vscode/task_check_environment.sh",
-          "args": [
-            "${workspaceFolder}"
-          ],
-          "presentation": {
-              "reveal": "always",
-              "panel": "dedicated"
-          },
-          "group": {
-              "kind": "build",
-              "isDefault": true
-          },
-          "runOptions": { "runOn": "folderOpen" }
-      }
+    {
+      "label": "Check Environment and Run Dev Server",
+      "type": "shell",
+      "command": "${workspaceFolder}/.vscode/task_check_environment.sh",
+      "args": ["${workspaceFolder}"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": { "runOn": "folderOpen" }
+    }
   ]
 }

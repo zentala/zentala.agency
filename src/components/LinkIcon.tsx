@@ -1,50 +1,51 @@
 import React, { useState, CSSProperties } from 'react'
-import { Link } from "gatsby"
-import { SocialLinks } from '../config/about';
+import { Link } from 'gatsby'
+import { SocialLinks } from '../config/about'
 
-export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 const sizeMap: Record<Size, string> = {
   xs: '12px',
   sm: '16px',
   md: '24px',
   lg: '32px',
-  xl: '48px'
-};
+  xl: '48px',
+}
 
 type LinkIconProps = {
-  name: string;
-  size?: Size;
-};
+  name: string
+  size?: Size
+}
 
 const LinkIcon: React.FC<LinkIconProps> = ({ name, size = 'md' }) => {
-  const [color, setColor] = useState('#333');
+  const [color, setColor] = useState('#333')
 
-  const socialLink = SocialLinks[name];
-  
+  const socialLink = SocialLinks[name]
+
   if (!socialLink) {
-    return null;
+    return null
   }
-  
+
   const style: CSSProperties = {
     fontSize: sizeMap[size],
     marginRight: '8px',
     color: color,
-    transition: 'color 0.3s ease'
-  };
+    transition: 'color 0.3s ease',
+  }
 
   return (
-    <Link 
-      to={socialLink.url} 
-      target="_blank" 
-      rel="noopener noreferrer" 
+    <Link
+      to={socialLink.url}
+      target="_blank"
+      rel="noopener noreferrer"
       title={socialLink.alt}
       style={{ cursor: 'pointer' }}
       onMouseOver={() => setColor('#555')}
-      onMouseOut={() => setColor('#333')}>
+      onMouseOut={() => setColor('#333')}
+    >
       <span style={style}>{socialLink.icon()}</span>
     </Link>
-  );
-};
+  )
+}
 
 export default LinkIcon

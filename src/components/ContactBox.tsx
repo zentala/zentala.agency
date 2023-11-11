@@ -1,14 +1,23 @@
-import React from "react";
-import { Card, Form, Input, Button, Checkbox, Row, Col, Space  } from "antd";
-import { UserOutlined, MailOutlined, PhoneOutlined, UploadOutlined, ArrowRightOutlined, EnvironmentOutlined, BankOutlined, MoneyCollectOutlined, GlobalOutlined } from '@ant-design/icons';
-import { Link } from 'gatsby';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import './ContactBox.sass';
-import TableSimple from "./TableSimple";
+import React from 'react'
+import { Card, Form, Input, Button, Checkbox, Row, Col, Space } from 'antd'
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  UploadOutlined,
+  ArrowRightOutlined,
+  EnvironmentOutlined,
+  BankOutlined,
+  MoneyCollectOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons'
+import { Link } from 'gatsby'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import './ContactBox.sass'
+import TableSimple from './TableSimple'
 
-import { CompanyInfo } from '../config/about' 
-
+import { CompanyInfo } from '../config/about'
 
 // const dataSource = [
 //   {
@@ -43,37 +52,36 @@ import { CompanyInfo } from '../config/about'
 //   }
 // ];
 
-
 // Konwersja obiektów z konfiguracji na format używany przez dataSource
 const dataSource = Object.values(CompanyInfo).map(info => ({
   key: info.key,
   icon: info.icon,
-  data: generateDataElement(info.data, info.icon)
-}));
+  data: generateDataElement(info.data, info.icon),
+}))
 
 function generateDataElement(data: string, icon: JSX.Element) {
   if (icon.type === PhoneOutlined) {
-    return <Link to={`tel:${data}`}>{data}</Link>;
+    return <Link to={`tel:${data}`}>{data}</Link>
   } else if (icon.type === MailOutlined) {
-    return <Link to={`mailto:${data}`}>{data}</Link>;
+    return <Link to={`mailto:${data}`}>{data}</Link>
   }
-  return data;
+  return data
 }
 
 const columns = [
   {
     dataIndex: 'icon',
-    key: 'icon'
+    key: 'icon',
   },
   {
     dataIndex: 'data',
-    key: 'data'
-  }
-];
+    key: 'data',
+  },
+]
 
 const ContactBox = () => {
   return (
-    <Card className="kontakt_box" style={{padding: 64}} id="contact-box">
+    <Card className="kontakt_box" style={{ padding: 64 }} id="contact-box">
       <Row gutter={160}>
         <Col lg={15} className="border-right">
           <h2>Skontaktujmy się</h2>
@@ -84,7 +92,7 @@ const ContactBox = () => {
               rules={[
                 {
                   required: true,
-                  message: "Proszę wpisać swoje imię i nazwisko!",
+                  message: 'Proszę wpisać swoje imię i nazwisko!',
                 },
               ]}
             >
@@ -92,88 +100,90 @@ const ContactBox = () => {
             </Form.Item>
 
             <Input.Group>
-                <Row gutter={16}>
-                    <Col md={24} lg={12}>
-                        <Form.Item
-                            label="E-mail"
-                            name="email"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Proszę wpisać swój adres e-mail!",
-                                },
-                            ]}
-                        >
-                            <Input prefix={<MailOutlined />} placeholder="E-mail" size="large" />
-                        </Form.Item>
-                    </Col>
-                    <Col md={24} lg={12}>
-                        <Form.Item
-                            label="Numer telefonu"
-                            name="phone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Proszę wpisać swój numer telefonu!",
-                                },
-                            ]}
-                        >
-                            <PhoneInput
-                                country={'pl'}
-                                placeholder="Numer telefonu"
-                                containerClass="phone-input-container"
-                                inputStyle={{ maxWidth: '100%', width: '100%' }}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
+              <Row gutter={16}>
+                <Col md={24} lg={12}>
+                  <Form.Item
+                    label="E-mail"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Proszę wpisać swój adres e-mail!',
+                      },
+                    ]}
+                  >
+                    <Input prefix={<MailOutlined />} placeholder="E-mail" size="large" />
+                  </Form.Item>
+                </Col>
+                <Col md={24} lg={12}>
+                  <Form.Item
+                    label="Numer telefonu"
+                    name="phone"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Proszę wpisać swój numer telefonu!',
+                      },
+                    ]}
+                  >
+                    <PhoneInput
+                      country={'pl'}
+                      placeholder="Numer telefonu"
+                      containerClass="phone-input-container"
+                      inputStyle={{ maxWidth: '100%', width: '100%' }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
             </Input.Group>
 
             <Form.Item label="Dodaj załącznik">
-                <Button icon={<UploadOutlined />} size="large">Wybierz plik</Button>
+              <Button icon={<UploadOutlined />} size="large">
+                Wybierz plik
+              </Button>
             </Form.Item>
             <Form.Item label="Twoja wiadomość" required>
-                <Input.TextArea rows={5} size="large" />
+              <Input.TextArea rows={5} size="large" />
             </Form.Item>
 
             <Form.Item
               name="privacyPolicy"
               valuePropName="checked"
               rules={[
-                  {
-                      required: true,
-                      message: "Proszę zaakceptować politykę prywatności.",
-                  },
+                {
+                  required: true,
+                  message: 'Proszę zaakceptować politykę prywatności.',
+                },
               ]}
               style={{ display: 'flex', flexDirection: 'column-reverse' }}
             >
               <Checkbox>
-                  Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to="/polityka-prywatnosci">Polityką Prywatności</Link>. 
-                  Wyrażam również zgodę na korzystanie z technologii takich jak cookies i na przetwarzanie moich danych osobowych przez Żentała Consulting w celach marketingowych. <span style={{color: 'red'}}></span>
+                Zgadzam się na przetwarzanie moich danych osobowych zgodnie z{' '}
+                <Link to="/polityka-prywatnosci">Polityką Prywatności</Link>. Wyrażam również zgodę na korzystanie z
+                technologii takich jak cookies i na przetwarzanie moich danych osobowych przez Żentała Consulting w
+                celach marketingowych. <span style={{ color: 'red' }}></span>
               </Checkbox>
             </Form.Item>
-            
 
-            <Form.Item style={{marginBottom: 0}}>
+            <Form.Item style={{ marginBottom: 0 }}>
               <Button type="primary" htmlType="submit" size="large" icon={<ArrowRightOutlined />}>
                 Wyślij
               </Button>
             </Form.Item>
           </Form>
         </Col>
-        
+
         <Col lg={9}>
           <div className="info-section">
             <img src="/images/warsaw-palace-of-culture.svg" />
-                <h3>🏙️ 🧜Warszawa, 🇵🇱, 🇪🇺</h3>
-                <hr className="ant-divider-horizontal" />
-                <TableSimple dataSource={dataSource} columns={columns} />
-            </div>
+            <h3>🏙️ 🧜Warszawa, 🇵🇱, 🇪🇺</h3>
+            <hr className="ant-divider-horizontal" />
+            <TableSimple dataSource={dataSource} columns={columns} />
+          </div>
         </Col>
       </Row>
     </Card>
-  );
-};
+  )
+}
 
-export default ContactBox;
-
+export default ContactBox

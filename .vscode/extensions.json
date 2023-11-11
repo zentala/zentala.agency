@@ -1,6 +1,3 @@
 {
-    "recommendations": [
-        "syler.sass-indented",
-        "sasa.vscode-sass-format"
-    ]
+  "recommendations": ["syler.sass-indented", "sasa.vscode-sass-format"]
 }

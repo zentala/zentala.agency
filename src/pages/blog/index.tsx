@@ -1,23 +1,23 @@
-import React from "react"
-import { Col, Row, Typography } from 'antd';
-import { createUseStyles } from 'react-jss';
-import Layout from "../../components/GlobalLayout"
-import Section from "../../components/Section"
-import OurImage from '../../components/OurImage';
-import Seo from "../../components/seo";
-import { FormattedMessage, useIntl } from "gatsby-plugin-intl";
+import React from 'react'
+import { Col, Row, Typography } from 'antd'
+import { createUseStyles } from 'react-jss'
+import Layout from '../../components/GlobalLayout'
+import Section from '../../components/Section'
+import OurImage from '../../components/OurImage'
+import Seo from '../../components/seo'
+import { FormattedMessage, useIntl } from 'gatsby-plugin-intl'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const useStyles = createUseStyles<string>({
   column: {
     textAlign: 'center',
     '& img': {
       width: '70%',
-      height: 'auto'
+      height: 'auto',
     },
-  }
-});
+  },
+})
 
 const columnsContent = [
   {
@@ -37,21 +37,27 @@ const columnsContent = [
     key: 'column3',
     titleId: 'blog.hero.feat3.title',
     altId: 'blog.hero.feat3.alt',
-    imageId: ''
-  }
-];
+    imageId: '',
+  },
+]
 
 const BlogPage: React.FC = () => {
-  const classes = useStyles();
-  const intl = useIntl();
+  const classes = useStyles()
+  const intl = useIntl()
 
   return (
     <Layout>
       <Section>
-        <Title align="center"><FormattedMessage id="blog.title" /></Title>
+        <Title align="center">
+          <FormattedMessage id="blog.title" />
+        </Title>
         <Row justify="space-around" align="middle" gutter={[64, 36]}>
-          {columnsContent.map((column) => (
-            <Col key={column.key} span={8} className={`${classes.column} ${column.className ?? classes[column.className]}`}>
+          {columnsContent.map(column => (
+            <Col
+              key={column.key}
+              span={8}
+              className={`${classes.column} ${column.className ?? classes[column.className]}`}
+            >
               <OurImage
                 src={undefined}
                 alt={intl.formatMessage({ id: column.altId })}
@@ -60,10 +66,12 @@ const BlogPage: React.FC = () => {
                 style={{
                   paddingBottom: '70%',
                   display: 'block',
-                  margin: '0 auto'
+                  margin: '0 auto',
                 }}
               />
-              <Title level={4}><FormattedMessage id={column.titleId} /></Title>
+              <Title level={4}>
+                <FormattedMessage id={column.titleId} />
+              </Title>
             </Col>
           ))}
         </Row>
@@ -74,8 +82,8 @@ const BlogPage: React.FC = () => {
         {/* <BlogPostsGrid/> */}
       </Section>
     </Layout>
-  );
-};
+  )
+}
 
 export const Head = () => <Seo title="Blog" />
 

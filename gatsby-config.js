@@ -8,17 +8,17 @@
  * @type {import('gatsby').GatsbyConfig}
  */
 
-require("dotenv").config();
+require('dotenv').config()
 
 const cloudinaryConfig = {
   cloudName: process.env.CLOUDINARY_CLOUD_NAME,
   apiKey: process.env.CLOUDINARY_API_KEY,
-  apiSecret: process.env.CLOUDINARY_API_SECRET
-};
+  apiSecret: process.env.CLOUDINARY_API_SECRET,
+}
 
 // Sprawdź, czy wszystkie wymagane klucze konfiguracji są zdefiniowane
 if (!cloudinaryConfig.cloudName || !cloudinaryConfig.apiKey || !cloudinaryConfig.apiSecret) {
-  console.warn('Warning: Cloudinary configuration keys are missing. Image functionalities will be limited.');
+  console.warn('Warning: Cloudinary configuration keys are missing. Image functionalities will be limited.')
 }
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
         apiKey: cloudinaryConfig.apiKey,
         apiSecret: cloudinaryConfig.apiSecret,
         resourceType: `image`,
-        type: `upload`
+        type: `upload`,
       },
     },
     {
@@ -73,7 +73,7 @@ module.exports = {
         apiKey: cloudinaryConfig.apiKey,
         apiSecret: cloudinaryConfig.apiSecret,
         resourceType: `video`,
-        type: `upload`
+        type: `upload`,
       },
     },
     {
@@ -83,7 +83,7 @@ module.exports = {
         languages: [`en`, `pl`],
         defaultLanguage: `en`,
         redirect: true,
-      }
-    }
+      },
+    },
   ],
 }

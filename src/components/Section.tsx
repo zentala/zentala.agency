@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react';
-import { Row, Col, Grid } from 'antd';
-import { Breakpoint, breakpoints } from '../config/antd';
-const { useBreakpoint } = Grid;
+import React, { ReactNode } from 'react'
+import { Row, Col, Grid } from 'antd'
+import { Breakpoint, breakpoints } from '../config/antd'
+const { useBreakpoint } = Grid
 
 interface SectionProps {
-  children: ReactNode;
-  background?: string;
-  maxWidth?: Breakpoint;
-  padding?: 'thin' | 'normal' | 'big' | 'large';
-  className?: string;
+  children: ReactNode
+  background?: string
+  maxWidth?: Breakpoint
+  padding?: 'thin' | 'normal' | 'big' | 'large'
+  className?: string
 }
 
 const Section: React.FC<SectionProps> = ({
@@ -16,24 +16,17 @@ const Section: React.FC<SectionProps> = ({
   background = '#ffffff', // global default section background
   maxWidth = 'xl', // global default section breakpoint
   padding = 'normal',
-  className = ''
+  className = '',
 }) => {
-  const screens = useBreakpoint();
-  const maxWidthInPx = breakpoints[maxWidth];
-  const paddingMultipliers = { thin: 0.5, normal: 1, big: 2,  large: 3 };
+  const screens = useBreakpoint()
+  const maxWidthInPx = breakpoints[maxWidth]
+  const paddingMultipliers = { thin: 0.5, normal: 1, big: 2, large: 3 }
 
-  
-  const baseVerticalPadding = screens.xl
-    ? '40px'
-    : screens.lg
-    ? '30px'
-    : screens.md
-    ? '20px'
-    : '20px';
+  const baseVerticalPadding = screens.xl ? '40px' : screens.lg ? '30px' : screens.md ? '20px' : '20px'
 
-  const verticalPadding = `${parseFloat(baseVerticalPadding) * paddingMultipliers[padding]}px`;
+  const verticalPadding = `${parseFloat(baseVerticalPadding) * paddingMultipliers[padding]}px`
 
-  const horizontalPadding = screens.xs ? '10px' : '20px';
+  const horizontalPadding = screens.xs ? '10px' : '20px'
 
   return (
     <Row
@@ -45,7 +38,7 @@ const Section: React.FC<SectionProps> = ({
         {children}
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default Section;
+export default Section

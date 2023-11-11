@@ -1,6 +1,6 @@
-import React from 'react';
-import { Image, Spin } from 'antd';
-import { createUseStyles } from 'react-jss';
+import React from 'react'
+import { Image, Spin } from 'antd'
+import { createUseStyles } from 'react-jss'
 
 // Definiowanie stylów JSS dla placeholdera i spinnera
 const useStyles = createUseStyles({
@@ -19,19 +19,19 @@ const useStyles = createUseStyles({
     width: '100%', // Pełna szerokość kontenera
     height: '100%', // Pełna wysokość kontenera
   },
-});
+})
 
 interface OurImageProps {
-  src?: string;
-  alt?: string;
-  width?: string | number;
-  height?: string | number;
-  style?: React.CSSProperties;
-  fallback?: string;
+  src?: string
+  alt?: string
+  width?: string | number
+  height?: string | number
+  style?: React.CSSProperties
+  fallback?: string
 }
 
 const OurImage: React.FC<OurImageProps> = ({ src, alt, width, height, style, fallback = 'placeholder_image.jpg' }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Image
@@ -47,7 +47,7 @@ const OurImage: React.FC<OurImageProps> = ({ src, alt, width, height, style, fal
       }
       fallback={fallback}
     />
-  );
-};
+  )
+}
 
-export default OurImage;
+export default OurImage

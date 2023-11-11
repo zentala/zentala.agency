@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
+import React, { useEffect, useState } from 'react'
+import { createUseStyles } from 'react-jss'
 import NavMain from './NavMain'
 import Logo from './Logo'
-import Section from './Section';
-import LanguageSwitcher from './LanguageSwitcher';
+import Section from './Section'
+import LanguageSwitcher from './LanguageSwitcher'
 
 const useStyles = createUseStyles({
   globalHeader: {
@@ -28,18 +28,19 @@ const useStyles = createUseStyles({
     justifyContent: 'space-between', // logo po lewej, menu po prawej
     alignItems: 'center',
   },
-});
+})
 
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const classes = useStyles();
-  
+  const [scrolled, setScrolled] = useState(false)
+  const classes = useStyles()
+
   const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 200 ) { // możesz dostosować ten offset
-      setScrolled(true);
+    const offset = window.scrollY
+    if (offset > 200) {
+      // możesz dostosować ten offset
+      setScrolled(true)
     } else {
-      setScrolled(false);
+      setScrolled(false)
     }
   }
 
@@ -50,15 +51,15 @@ const Header = () => {
     }
   }, [])
 
-  let headerClasses = classes.globalHeader;
+  let headerClasses = classes.globalHeader
   if (scrolled) {
-    headerClasses += ` ${classes.scrolled}`;
+    headerClasses += ` ${classes.scrolled}`
   }
 
   return (
     <Section className={headerClasses} padding="thin">
       <div className={classes.headerContent}>
-        <Logo link="/" height="20px" supplement="Innovation Agency"/>
+        <Logo link="/" height="20px" supplement="Innovation Agency" />
         <NavMain />
         <LanguageSwitcher />
       </div>

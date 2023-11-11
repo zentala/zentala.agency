@@ -5,17 +5,17 @@
  * See: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/
  */
 
-import * as React from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import * as React from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
 
 interface SiteMetadata {
-  title: string;
+  title: string
 }
 
 interface SiteMetadataQuery {
   site: {
-    siteMetadata: SiteMetadata;
-  };
+    siteMetadata: SiteMetadata
+  }
 }
 
 function Seo({ description, title, children }) {

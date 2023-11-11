@@ -1,11 +1,11 @@
-import React from "react"
-import { Typography } from 'antd';
-import Layout from "../../components/GlobalLayout"
-import Section from "../../components/Section"
-import Seo from "../../components/seo";
-import Hero from "../../components/Hero";
+import React from 'react'
+import { Typography } from 'antd'
+import Layout from '../../components/GlobalLayout'
+import Section from '../../components/Section'
+import Seo from '../../components/seo'
+import Hero from '../../components/Hero'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const OfferPage: React.FC = () => {
   return (
@@ -19,8 +19,8 @@ const OfferPage: React.FC = () => {
         />
       </Section>
     </Layout>
-  );
-};
+  )
+}
 
 export const Head = () => <Seo title="Offer" />
 

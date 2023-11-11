@@ -1,31 +1,31 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-	"name": "Node.js",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				// "syler.sass-indented",
-				// "sasa.vscode-sass-format",
+  "name": "Node.js",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // "syler.sass-indented",
+        // "sasa.vscode-sass-format",
         "dbaeumer.vscode-eslint", //  dla lintingu kodu JavaScript/TypeScript.
         "esbenp.prettier-vscode", // dla formatowania kodu
         "ms-vscode.vscode-typescript-tslint-plugin", // dla lintingu TypeScript
         "stylelint.vscode-stylelint" // dla lintingu CSS/SASS
-			]
-		}
-	},
+      ]
+    }
+  }
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "./.vscode/task_check_environment.sh"
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "./.vscode/task_check_environment.sh"
 
-	// Configure tool-specific properties.
-	// "customizations": {},
+  // Configure tool-specific properties.
+  // "customizations": {},
 }

@@ -1,19 +1,19 @@
-import React, { ReactNode } from 'react';
-import { createUseStyles } from 'react-jss';
-import { useIntl } from 'gatsby-plugin-intl';
+import React, { ReactNode } from 'react'
+import { createUseStyles } from 'react-jss'
+import { useIntl } from 'gatsby-plugin-intl'
 
 interface HeroProps {
-  containerStyle?: React.CSSProperties;
-  titleId: string;
-  subtitleId?: string;
-  leadId?: string;
-  footerComponent?: ReactNode;
+  containerStyle?: React.CSSProperties
+  titleId: string
+  subtitleId?: string
+  leadId?: string
+  footerComponent?: ReactNode
 }
 
 const useStyles = createUseStyles({
   hero: {
     textAlign: 'center',
-    padding: '50px 0'
+    padding: '50px 0',
   },
   title: {
     marginBottom: '0px',
@@ -29,13 +29,13 @@ const useStyles = createUseStyles({
   },
   footer: {
     marginTop: '40px',
-  }
-});
+  },
+})
 
 const Hero: React.FC<HeroProps> = ({ containerStyle, titleId, subtitleId, leadId, footerComponent }) => {
-  const classes = useStyles();
-  const intl = useIntl();
-  
+  const classes = useStyles()
+  const intl = useIntl()
+
   return (
     <div className={classes.hero} style={containerStyle}>
       {titleId && (
@@ -47,11 +47,9 @@ const Hero: React.FC<HeroProps> = ({ containerStyle, titleId, subtitleId, leadId
       {leadId && (
         <p className={classes.paragraph} dangerouslySetInnerHTML={{ __html: intl.formatMessage({ id: leadId }) }} />
       )}
-      {footerComponent && (
-      <div className={classes.footer}>{footerComponent}</div>
-      )}
+      {footerComponent && <div className={classes.footer}>{footerComponent}</div>}
     </div>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero
