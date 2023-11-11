@@ -36,6 +36,8 @@
     "@types/react": "^18.2.31",
     "antd": "^5.10.3",
     "gatsby-plugin-typescript": "^5.12.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "prettier": "^2.8.8",
     "typescript": "^5.2.2"
   },
@@ -59,5 +61,16 @@
   },
   "bugs": {
     "url": "https://github.com/zentala/zentala.agecy/issues"
-  }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  }  
 }
