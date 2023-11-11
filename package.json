@@ -22,6 +22,7 @@
     "gatsby-plugin-sharp": "^5.12.0",
     "gatsby-source-cloudinary": "^0.6.0",
     "gatsby-source-filesystem": "^5.12.0",
+    "gatsby-source-sanity": "^7.9.1",
     "gatsby-transformer-sharp": "^5.12.0",
     "jss": "^10.10.0",
     "react": "^18.2.0",
@@ -34,11 +35,15 @@
     "@types/antd": "^1.0.0",
     "@types/node": "^20.8.8",
     "@types/react": "^18.2.31",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "antd": "^5.10.3",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "gatsby-plugin-typescript": "^5.12.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "keywords": [
@@ -64,7 +69,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+      "echo 'eslint --fix'",
       "prettier --write",
       "git add"
     ],
@@ -72,5 +77,5 @@
       "prettier --write",
       "git add"
     ]
-  }  
+  }
 }

@@ -10,13 +10,12 @@ const { Title } = Typography
 const OfferPage: React.FC = () => {
   return (
     <Layout>
+      <Hero containerStyle={{ backgroundColor: '#eee' }} titleId="offer.title" subtitleId="offer.subtitle" />
       <Section>
-        <Hero
-          containerStyle={{ backgroundColor: '#eee' }}
-          titleId="offer.title"
-          subtitleId="offer.subtitle"
-          footerComponent={<div>test</div>}
-        />
+        <p>
+          Grid with example solutions we can offer to our clients. Last element is suggesting request for custom
+          solutions.
+        </p>
       </Section>
     </Layout>
   )

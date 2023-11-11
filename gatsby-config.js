@@ -85,5 +85,13 @@ module.exports = {
         redirect: true,
       },
     },
+    {
+      resolve: `gatsby-source-sanity`,
+      options: {
+        projectId: `df8b5v5u`,
+        dataset: `production`,
+        watchMode: true, // drafts visible
+      },
+    },
   ],
 }

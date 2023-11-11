@@ -21,3 +21,9 @@ Here we collect enhancement ideas for the code; they're not critical for the pro
 ### Configuration
 
 - Translate paths, e.g., `/pl/contact` to `/pl/kontakt`.
+
+### Migrate to Sanity
+
+https://www.youtube.com/watch?v=Rk70FSgTJeQ
+
+- `.eslintrc` > `lint-staged` > `*.{js,jsx,ts,tsx}` > `"echo 'eslint --fix'"` is off because it dont work
