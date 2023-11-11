@@ -7,7 +7,7 @@ interface SectionProps {
   children: ReactNode;
   background?: string;
   maxWidth?: Breakpoint;
-  padding?: 'thin' | 'normal' | 'large';
+  padding?: 'thin' | 'normal' | 'big' | 'large';
   className?: string;
 }
 
@@ -20,7 +20,7 @@ const Section: React.FC<SectionProps> = ({
 }) => {
   const screens = useBreakpoint();
   const maxWidthInPx = breakpoints[maxWidth];
-  const paddingMultipliers = { thin: 0.5, normal: 1, large: 2 };
+  const paddingMultipliers = { thin: 0.5, normal: 1, big: 2,  large: 3 };
 
   
   const baseVerticalPadding = screens.xl

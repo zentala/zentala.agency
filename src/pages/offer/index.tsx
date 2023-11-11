@@ -3,7 +3,7 @@ import { Typography } from 'antd';
 import Layout from "../../components/GlobalLayout"
 import Section from "../../components/Section"
 import Seo from "../../components/seo";
-import { FormattedMessage } from "gatsby-plugin-intl";
+import Hero from "../../components/Hero";
 
 const { Title } = Typography;
 
@@ -11,7 +11,12 @@ const OfferPage: React.FC = () => {
   return (
     <Layout>
       <Section>
-        <Title align="center"><FormattedMessage id="offer.title" /></Title>
+        <Hero
+          containerStyle={{ backgroundColor: '#eee' }}
+          titleId="offer.title"
+          subtitleId="offer.subtitle"
+          footerComponent={<div>test</div>}
+        />
       </Section>
     </Layout>
   );

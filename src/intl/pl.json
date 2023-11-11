@@ -22,7 +22,12 @@
     },
     "blog": {
       "path": "/blog",
-      "title": "Blog"
+      "title": "Blog",
+      "hero": [
+        "Praktyczna wiedza o technologii dla praktyków marketingu i biznesu",
+        "Najważniejsze trendy i predykcje dotyczące technologii i jej wpływu na sposób prowadzenia biznesu",
+        "Zebrana i ustrukturyzowana wiedza do pobrania za darmo"
+      ]
     },
     "base": {
       "path": "/base",
@@ -35,29 +40,48 @@
   },
   "home": {
     "mission": {
-      "header": "NASZA MISJA TO",
+      "header": "Nasza misja to",
       "lead": "Integrować skomplikowane systemy techniczne w praktyczne rozwiązania biznesowe, generować przychody, optymalizować, usprawniać i automatyzować procesy naszych klientów."
     },
     "how": {
-      "header": "JAK TO ROBIMY?",
+      "header": "Jak to robimy?",
       "lead": "Łączymy szeroką wiedzę branżową, aby szybko prototypować nowe wpływowe rozwiązania i aplikacje biznesowe oraz cyfryzować analogowe procesy."
     },
     "detailed": {
-      "header": "ROBIMY TO MOCNO",
+      "header": "Robimy to na poważnie",
       "lead": "Poznaj 6 filarów szybkiego prototypowania wpływowych innowacji:"
     }
   },
   "offer": {
-    "title": "Kilka pomysłów co możemy dla Ciebie zrobić"
+    "title": "Rozwiązania dla biznesu",
+    "subtitle": "Kilka pomysłów co możemy dla Ciebie zrobić",
+    "lead": ""
   },
   "portfolio": {
-    "title": "Portfolio"
+    "title": "Portfolio",
+    "subtitle": "Odkryj Naszą Twórczość",
+    "lead": "Każdy projekt to <strong>historia sukcesu</strong> napisana innowacją.<br />Zobacz nasze <strong>imponujące realizacje</strong> i przekonaj się, że możemy uczynić wielkie rzeczy także dla Ciebie.<br />Twój kontekst biznesowy + Nasza ekspertyza = <strong>Rewolucja w branży</strong>."
   },
   "base": {
-    "title": "Baza rozwiązań wartych wdrożenia"
+    "title": "Inspiracje",
+    "subtitle": "Baza rozwiązań wartych wdrożenia"
   },
   "blog": {
-    "title": "Blog Agancji Innowacji Żentały"
+    "title": "Blog Agancji Innowacji Żentały",
+    "hero": {
+      "feat1": {
+        "title": "Praktyczna wiedza o technologii dla profesjonalistów z dziedziny marketingu i biznesu",
+        "alt": ""
+      },
+      "feat2": {
+        "title": "Odkryj najważniejsze trendy i prognozy dotyczące technologii oraz jej wpływu na praktyki biznesowe",
+        "alt": ""
+      },
+      "feat3": {
+        "title": "Dostęp do starannie wyselekcjonowanej i ustrukturyzowanej kompilacji wiedzy, dostępnej do bezpłatnego pobrania",
+        "alt": ""
+      }    
+    }
   },
   "about": {
     "title": "Jesteśmy najlepszym partnerem",

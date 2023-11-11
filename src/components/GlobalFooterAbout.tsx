@@ -18,11 +18,10 @@ const useStyles = createUseStyles({
       transform: 'translateX(-50%)',
       top: 0,
       bottom: 0,
-      borderLeft: '1px dashed #ccc',
+      borderLeft: '1px dashed #ddd',
     },
   },
   smallText: {
-    textAlign: 'justify', 
     fontSize: '0.85em',
     color: '#888',
   },
@@ -35,8 +34,7 @@ const useStyles = createUseStyles({
     [`@media (min-width: ${breakpoints.lg})`]: {
       marginBottom: 0,
     },
-  },
-  // Możesz dodać dodatkowe style tutaj
+  }
 });
 
 const GlobalFooterAbout = ({ intl }) => {
@@ -51,11 +49,11 @@ const GlobalFooterAbout = ({ intl }) => {
           </div>
           <NavSocialLinks size="lg"/>
         </Col>
-        <Col lg={{ span: 8, offset: 1 }} md={24} className={`${classes.smallText} ${classes.column}`}>
+        <Col lg={{ span: 7, offset: 1 }} md={24} className={`${classes.smallText} ${classes.column}`}>
           {intl.formatMessage({ id: "footer.spec" })}          
         </Col>
-        <Col lg={1} md={0} sm={0} xs={0} className={classes.dashedLineColumn} />
-        <Col lg={8} className={classes.smallText}>
+        <Col lg={3} md={0} sm={0} xs={0} className={classes.dashedLineColumn} />
+        <Col lg={7} className={classes.smallText}>
           {intl.formatMessage({ id: "footer.offer" })}
         </Col>
       </Row>

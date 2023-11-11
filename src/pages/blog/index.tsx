@@ -5,7 +5,7 @@ import Layout from "../../components/GlobalLayout"
 import Section from "../../components/Section"
 import OurImage from '../../components/OurImage';
 import Seo from "../../components/seo";
-import { FormattedMessage } from "gatsby-plugin-intl";
+import { FormattedMessage, useIntl } from "gatsby-plugin-intl";
 
 const { Title } = Typography;
 
@@ -22,24 +22,28 @@ const useStyles = createUseStyles<string>({
 const columnsContent = [
   {
     key: 'column1',
-    title: 'Praktyczna wiedza o technologii dla praktyków biznesu i marketingu',
-    imageAlt: 'Opis obrazka 1',
+    titleId: 'blog.hero.feat1.title',
+    altId: 'blog.hero.feat2.alt',
+    imageId: '',
   },
   {
     key: 'column2',
-    title: 'Najważniejsze trendy i predykcje dotyczące technologii i jej wpływu na sposób prowadzenia biznesu',
-    imageAlt: 'Opis obrazka 2',
+    titleId: 'blog.hero.feat2.title',
+    altId: 'blog.hero.feat2.alt',
+    imageId: '',
     className: 'col-with-dots',
   },
   {
     key: 'column3',
-    title: 'Zebrana i ustrukturyzowana wiedza do pobrania za darmo',
-    imageAlt: 'Opis obrazka 3',
+    titleId: 'blog.hero.feat3.title',
+    altId: 'blog.hero.feat3.alt',
+    imageId: ''
   }
 ];
 
 const BlogPage: React.FC = () => {
   const classes = useStyles();
+  const intl = useIntl();
 
   return (
     <Layout>
@@ -50,7 +54,7 @@ const BlogPage: React.FC = () => {
             <Col key={column.key} span={8} className={`${classes.column} ${column.className ?? classes[column.className]}`}>
               <OurImage
                 src={undefined}
-                alt={column.imageAlt}
+                alt={intl.formatMessage({ id: column.altId })}
                 width="70%"
                 // height="0"
                 style={{
@@ -59,7 +63,7 @@ const BlogPage: React.FC = () => {
                   margin: '0 auto'
                 }}
               />
-              <Title level={4}>{column.title}</Title>
+              <Title level={4}><FormattedMessage id={column.titleId} /></Title>
             </Col>
           ))}
         </Row>

@@ -48,16 +48,35 @@
     }
   },
   "offer": {
-    "title": "Here you got some ideas of what we could do for you"
+    "title": "Solutions for business",
+    "subtitle": "Here you got some ideas of what we could do for you",
+    "lead": ""
   },
   "portfolio": {
-    "title": "Portfolio"
+    "title": "Portfolio",
+    "subtitle": "Discover Our Creativity",
+    "lead": "Every project is a <strong>story of success</strong> written with innovation.<br />See our <strong>impressive accomplishments</strong> and be convinced that we can do great things for you too.<br />Your business context + Our expertise = <strong>Revolution in the industry</strong>."    
   },
   "base": {
-    "title": "Repositorium of innovations worth to implement"
+    "title": "Inspirations",
+    "subtitle": "Repositorium of innovations worth to implement"
   },
   "blog": {
-    "title": "Blog of Zentala AI Automation Agency"
+    "title": "Blog of Zentala AI Automation Agency",
+    "hero": {
+      "feat1": {
+        "title": "Practical Technology Insights for Marketing and Business Professionals",
+        "alt": ""
+      },
+      "feat2": {
+        "title": "Discover the key trends and predictions about technology and its impact on business practices",
+        "alt": ""
+      },
+      "feat3": {
+        "title": "Access a curated and structured compilation of knowledge, available for free download",
+        "alt": ""
+      }
+    }
   },
   "about": {
     "title": "We are the best partner",

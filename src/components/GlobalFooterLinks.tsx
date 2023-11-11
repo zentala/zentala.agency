@@ -6,30 +6,29 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   container: {
-    background: 'blue',
-    a: {
-      color: '#555',
+    color: '#777',
+    '& a': {
+      color: '#888',
       '&:hover': {
-        color: '#333'
+        color: '#999'
       }
     }
   }
 })
 
 const DotSeparator: React.FC = () => {
-  return <span style={{ margin: '0 10px' }}>&middot;</span>;
+  return <span style={{ margin: '0 12px' }}>&middot;</span>;
 };
 
 const GlobalFooterLinks: React.FC = ({}) => {
   const classes = useStyles();
 
   return (
-    <Section background="#ccc" padding='thin' className={classes.container}>
+    <Section background="#ddd" padding='thin' className={classes.container}>
       <div style={{ fontSize: `var(--font-sm)` }}> 
         © {new Date().getFullYear()} {` `} <Link to="/"><FormattedMessage id="seo.fullName" /></Link> 
         <DotSeparator />
         <Link to="/privacy-policy"><FormattedMessage id="footer.privacy" /></Link> 
-        {/* {` `} &middot; {` `} */}
       </div>
     </Section>
   )

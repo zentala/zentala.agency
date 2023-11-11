@@ -39,8 +39,7 @@ color scheme: Deep Chestnut Brown, Dark Plum Purple, Lustrous Golden Tan, Rich M
 Nexa bold
 
 ### Ideas
-* Tagline: Educate. Innovate. Transform.
-  
+ 
 ### Font icons to consider
 https://ionic.io/ionicons
 https://feathericons.com/
