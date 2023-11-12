@@ -53,9 +53,63 @@
     }
   },
   "offer": {
-    "title": "Rozwiązania dla biznesu",
+    "title": "Oferta dla biznesu",
     "subtitle": "Kilka pomysłów co możemy dla Ciebie zrobić",
-    "lead": ""
+    "lead": "",
+    "services": {
+      "innovation": {
+        "title": "Strategiczne Doradztwo Innowacyjne",
+        "desc": "Pomożemy Ci zidentyfikować możliwości wykorzystania najnowszych technologii, aby zwiększyć wzrost i efektywność Twojego biznesu."
+      },
+      "specs": {
+        "title": "Koncepcja Prototypu i Opracowanie Specyfikacji",
+        "desc": "Przekształcamy Twoje pomysły w dokładnie opracowane koncepcje projektów, tworząc szczegółowe specyfikacje techniczne i biznesowe, które stanowią fundament do dalszego rozwoju i implementacji."
+      },
+      "ux": {
+        "title": "Design & UX",
+        "desc": "Projekt interfejsu uzytkownika zapewniajacego wysoki poziom doswiadczenia uzytkowika"
+      },
+      "webapps": {
+        "title": "Aplikacje Internetowe",
+        "desc": "Apliakcje intenetowe i mikroserwisy realizujące dowolne funkcje od podstaw w JavaScript, ponieważ jest to najuniversalniejszy język, pozwalający stworzyć też aplikacje mobilne i desktopowe."
+      },
+      "native": {
+        "title": "Aplikacje Mobile i TV",
+        "desc": "React Native pozwala sprawnie pisać proste aplikacje na Android, Android TV, iOS, tvOS. Dzięki zastosowaniu JS i Reacta oszczędzamy czas dzieląc codebase z innymi częsciami ekosystemu (strona WWW, aplikacja desktop, etc)."
+      },
+      "desktop": {
+        "title": "Aplikacje Desktop",
+        "desc": "Electron.js pozwala sprawnie napisać multiplatformową (Linux, Windows, MacOS) aplikację współdzielącą codebase z innymi częściami ekosystemu napisanymi w JS."
+      },
+      "cli": {
+        "title": "Aplikacje konsolwe",
+        "desc": "Kiedy trzeba, a czasem jest to przydatne, np. jako wewnętrzne narzędzie, piszemy skrypt i aplikacje konsolowe, głównie w Bash i Node.js (co sprawia że dzielimy codebase). "
+      },
+      "cloud": {
+        "title": "Rozwiązania chmurowe",
+        "desc": "Zamiast konfigurować złożone serwery, które później trzeba administrować, stawiamy infrastrukturę w chmurze, co znacząco redukuje nakład niezbędnych prac utrzymaniowych."
+      },
+      "db": {
+        "title": "Modelowanie baz danych",
+        "desc": "Poniewaz biznes obraca się wokoł danych, czasami zajmujemy sie doborem wlasniej bazy danych oraz zaporjetowaniem modeli jej struktury tak aby byla czytelna ale i szybka i efektywna. "
+      },
+      "iot": {
+        "title": "Internet Rzeczy (IoT)",
+        "desc": "Nie projektujemy płytek PCB, ale znamy tysiące gotowych do użytku komponentów, które wiemy jak oprogramować i sprawnie łączymy je ze sobą w funkcjonalne prototypy."
+      },
+      "prototyping": {
+        "title": "Rapid Prototyping",
+        "desc": "Nie dostarczymi Ci produkcyjnej obudowy Twojego urządzenia, ale zaprototypujemy ją dzięki technologii modelowania, frezowania i druku 3D, cięcia i grawerowania 2D."
+      },
+      "robotics": {
+        "title": "Robotyka",
+        "desc": "Nie rozwiązujemy milenijnych problemów robotyki, ale składamy działające prototypy z topowych istniejąych na rynku rozwiązań softwareowych i hardwarowych. "
+      },
+      "ml": {
+        "title": "Machine Learning / AI",
+        "desc": "Nie tworzymy nowych, ale implementujem gotowe. Tysiące różnorodnych gotowych modeli ML zwiększająych efektywność operacji w binzesie jest na wyciągniecie Twojej ręki."
+      }
+    }
   },
   "portfolio": {
     "title": "Portfolio",

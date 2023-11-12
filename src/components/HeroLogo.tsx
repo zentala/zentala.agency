@@ -8,7 +8,7 @@ const useStyles = createUseStyles({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    backgroundImage: `linear-gradient(to right bottom, #111, #222)`,
+    backgroundImage: 'linear-gradient(to right bottom, #111, #222)',
   },
   video: {
     position: 'absolute',
@@ -70,7 +70,14 @@ const HeroLogo: React.FC = () => {
           supplement="Innovation Agency"
           supplementPosition="bottom"
           uppercase
-          suplementStyle={{ fontSize: '3vw', marginTop: '1vw', letterSpacing: '1.5vw', marginLeft: 0 }}
+          suplementStyle={{
+            fontSize: '2.6vw',
+            marginTop: '1vw',
+            letterSpacing: '1.5vw',
+            marginLeft: 0,
+            marginRight: '-1.5vw',
+            fontWeight: 600,
+          }}
         />
       </div>
     </div>

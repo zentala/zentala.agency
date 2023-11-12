@@ -48,9 +48,59 @@
     }
   },
   "offer": {
-    "title": "Solutions for business",
+    "title": "Offer for business",
     "subtitle": "Here you got some ideas of what we could do for you",
-    "lead": ""
+    "lead": "",
+    "services": {
+      "innovation": {
+        "title": "Innovations Consulting",
+        "desc": "We will help you to recognise potential of applying cutting edge technologies in areas of possible biggest revenue."
+      },
+      "specs": {
+        "title": "Prototype Conceptualization and Specification",
+        "desc": "We transform your ideas into precisely developed project concepts, creating detailed technical and business specifications that lay the groundwork for further development and implementation."
+      },
+      "ux": {
+        "title": "Design & UX",
+        "desc": "Projekt interfejsu uzytkownika zapewniajacego wysoki poziom doswiadczenia uzytkowika"
+      },
+      "webapps": {
+        "title": "Aplikacje Internetowe",
+        "desc": "Apliakcje intenetowe realizujące dowolne funkcje od podstaw w TypeScript"
+      },
+      "native": {
+        "title": "Aplikacje Mobile",
+        "desc": "Szybkie prototypy multiplatformowych aplikacji mobilnych w React Native"
+      },
+      "desktop": {
+        "title": "Aplikacje Desktop",
+        "desc": "Electron.js pozwala sprawnie napisać w JavaScript multiplatformową (Linux, Windows, MacOS)"
+      },
+      "cli": {
+        "title": "Aplikacje konsolwe",
+        "desc": "Kiedy trzeba, a czasem jest to przydatne, np. jako wewnętrzne narzędzie, piszemy skrypt i aplikacje konsolowe, głównie w Bash i Node.js (co sprawia że dzielimy codebase). "
+      },
+      "cloud": {
+        "title": "Rozwiązania chmurowe",
+        "desc": "Stawiamy złożoną infrastrukturę w środowisku które oferuje minimalny nakład prac utrzymaniowych"
+      },
+      "db": {
+        "title": "Modelowanie baz danych",
+        "desc": "Poniewaz biznes obraca się wokoł danych, czasami zajmujemy sie doborem wlasniej bazy danych oraz zaporjetowaniem modeli jej struktury tak aby byla czytelna ale i szybka i efektywna. "
+      },
+      "iot": {
+        "title": "Internet of Things",
+        "desc": "We don't build solutions from scratch, but we know thousands of components and efficiently assemble prototypes from them."
+      },
+      "robotics": {
+        "title": "Robotics",
+        "desc": "We will select or construct a robot prototype using ready-made components available on the market. We'll then program it to suit your specific applications."
+      },
+      "ml": {
+        "title": "Machine Learning / AI",
+        "desc": "Istnieją tysiące modeli AI których implementacja jest banalnie prosta. Każdy z nich pomaga zwiększyć efektywność procesów poprzez ich automatyzacje. Trzeba przedewswszyskime je znać - ich mozliwosci i ogranicznenia. "
+      }
+    }
   },
   "portfolio": {
     "title": "Portfolio",
