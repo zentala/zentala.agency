@@ -47,7 +47,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "gatsby build",
-    "dev": "gatsby develop -H zentala.local -p 8888",
+    "dev": "gatsby develop --host zentala.local -p 8888",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md,css}'",
     "start": "gatsby develop",
     "serve": "gatsby serve",

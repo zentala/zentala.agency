@@ -48,8 +48,49 @@
       "lead": "Łączymy szeroką wiedzę branżową, aby szybko prototypować nowe wpływowe rozwiązania i aplikacje biznesowe oraz cyfryzować analogowe procesy."
     },
     "detailed": {
-      "header": "Robimy to na poważnie",
-      "lead": "Poznaj 6 filarów szybkiego prototypowania wpływowych innowacji:"
+      "header": "Bierzemy to na poważnie",
+      "lead": "Poznaj 6 filarów szybkiego prototypowania wpływowych innowacji:",
+      "service": {
+        "software": {
+          "title": "Software Development",
+          "desc": "<p>I are chosen JavaScript (TypeScript) as our primary stack because it lets us to build webpages (react), microservices (node), mobile & desktop applications (electron.js) with the same language and easily sahre code between them what speeds up development</p><p>I masterd Python for Machine Learning and Data Science solutions.</p><p>Advanced Linux, DevOps, and Cloud skillset let us to deploy, monitor, maintain and scale your applications very fast.</p>"
+        },
+        "hardware": {
+          "title": "Hardware: IoT & Robotics",
+          "desc": "<p>There is no real impact in real world withut hardware. Hardwer is what transfrom world of digital data and algorithms into reality</p><p>We have wide experitse and eperience in IoT and Robotics, in particular in ready-to-integrate compontnes, that let you enter into  Third Industrial Revolution. We are constatly scanning market for new <podzespoly>, so we could advde you the best how to automate your work.</p><p>We senorize venues to collect data and respond for real time events. We build various robots so they could take over hard tasks from us. We automate and streamline business process around us just becauewe we know what and how to connect.</p><p>Your adventure with IoT is easier to start than you think, and more impactful then u can image. Just tell us about your bussiness and we will propose how we can improve it integrating avaliable components.</p>"
+        },
+        "automation": { "title": "RPA & AI Automation", "desc": "" },
+        "consulting": { "title": "Education & Consulting", "desc": "" },
+        "ux": { "User Experience": "", "desc": "" },
+        "marketing": { "title": "Marketing Strategy", "desc": "" }
+      }
+    },
+    "why": {
+      "header": "WHY TO INNOVATE",
+      "lead": "Change is alsways the cost. It costs time, money, attention, It requires to change habbists when impemented. Its extremaly disruptive.",
+      "p1": "But we belive that innovation is also the way to freedom - freedom from boring tasks, freedom from powerty, freedom for next generations so they could live their lives instread of working for our retirment, freedom to develop yourself and choose the way you want to live. Soon it will provde free education for eveyone, then it will take care of seniors, so we could free younger generation, it will provdide basic health care and one day it wlll provide passive income for eveyrone ending up with poverty.",
+      "p2": "For us innovation is how we make world better place for us and future generations. And disruption it generates is a cost of buidling this better place we all want to live it.",
+      "p3": "Therefore we build all our innovations with having in mind the vision of this better place and values that we must to stand with to make it happend:",
+      "p4": "egalitarism, equality, inclusivity, respect, dignity,  health and well-being, ecology, sustainability, symbiosis, convervation and preservation, responsibility",
+      "p5": "We innovate in order to make our word a better place for all of us.",
+      "p6": "How about you would join us on this journey?"
+    },
+    "start": {
+      "header": "HOW TO START",
+      "lead": "Great journey always starts with first step. What will be yours?",
+      "discovery": {
+        "title": "Reserve Slot for Businesss Needs Discover Session",
+        "desc": "<p>If you manage business that may need improvements or finetinig or just looking for inspiration and want to have casual talk aboit wheat awaesome we can build for you: sign up for 30 min discovery session.</p><p>I will collect needed info about your business, needs, challenges and aspirations and come back with proposals of tailor-made solutions.</p>",
+        "cta": "Sign up for Business Needs Discovery Session"
+      },
+      "newsletter": {
+        "title": "Sign up for Newsletter & Innovation Mastermind Group Waitlist",
+        "desc": "<p>Program for business owners, directors, bords memebers, investors and proffesional innovators. Updates about practical innvations ready to implement in business from areas of IoT, Machine Learning, Robotics, and others. Huge amout of inspisation and stucturized know-how of what and how you canimplement. Innovation overview.</p><p>We will also put attention to providing you inspiations about business models, financing, building teams capable of innovate, chanage management, builing and evalutating prototypes, testing market and marketing.</p><p>Mastermind is intendet to be a great frist step for you to preare concept of radical innovation for implementing in your busness. From expolorig possiblities to grow and expand, thogh scheking up solution up to builing up team around and staring talks about how to finance it.</p>",
+        "placeholder": "Your primary e-mail address...",
+        "cta": "Sign up now!",
+        "checkbox": "Sign up for newslleter so you will be informed about all new free content published!",
+        "security": "Your data are safe with us. Read more in our privacy policy."
+      }
     }
   },
   "offer": {
@@ -81,7 +122,7 @@
         "title": "Aplikacje Desktop",
         "desc": "Electron.js pozwala sprawnie napisać multiplatformową (Linux, Windows, MacOS) aplikację współdzielącą codebase z innymi częściami ekosystemu napisanymi w JS."
       },
-      "cli": {
+      "console": {
         "title": "Aplikacje konsolwe",
         "desc": "Kiedy trzeba, a czasem jest to przydatne, np. jako wewnętrzne narzędzie, piszemy skrypt i aplikacje konsolowe, głównie w Bash i Node.js (co sprawia że dzielimy codebase). "
       },
@@ -89,7 +130,7 @@
         "title": "Rozwiązania chmurowe",
         "desc": "Zamiast konfigurować złożone serwery, które później trzeba administrować, stawiamy infrastrukturę w chmurze, co znacząco redukuje nakład niezbędnych prac utrzymaniowych."
       },
-      "db": {
+      "databases": {
         "title": "Modelowanie baz danych",
         "desc": "Poniewaz biznes obraca się wokoł danych, czasami zajmujemy sie doborem wlasniej bazy danych oraz zaporjetowaniem modeli jej struktury tak aby byla czytelna ale i szybka i efektywna. "
       },

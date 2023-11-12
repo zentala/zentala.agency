@@ -3,7 +3,6 @@ import { createUseStyles } from 'react-jss'
 import NavMain from './NavMain'
 import Logo from './Logo'
 import Section from './Section'
-import LanguageSwitcher from './LanguageSwitcher'
 
 const useStyles = createUseStyles({
   globalHeader: {
@@ -61,7 +60,6 @@ const Header = () => {
       <div className={classes.headerContent}>
         <Logo link="/" height="20px" supplement="Innovation Agency" />
         <NavMain />
-        <LanguageSwitcher />
       </div>
     </Section>
   )

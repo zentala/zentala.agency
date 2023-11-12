@@ -1,9 +1,7 @@
 import React from 'react'
-import { Typography } from 'antd'
 import {
   UserSwitchOutlined,
   ClusterOutlined,
-  FormatPainterOutlined,
   LinkOutlined,
   RobotOutlined,
   RocketOutlined,
@@ -23,8 +21,12 @@ import Hero from '../../components/Hero'
 import { createUseStyles } from 'react-jss'
 import OfferItem from '../../components/OfferItem'
 
-const { Title } = Typography
-
+/*
+ * TODO Potrzebuję otagować część rzeczy
+ * - electron (mobile), react native (desktp), strony internetowe, apliakcje internetowe, mikroserwisy, panele administratora, nazrzędzia wenętrzne, - JavaScript pozwala robic to wszystko na jednym codebase JavaScriptu dzieki czemu mozna wspoldzielic miedzy nimi wspolny kod (co oszczedza czas programowania) oraz jeden developer moze wprowadzac zmiany ze wszystkich czesciach ekosystemu. prawdopodobnie to dlatego jest to jeden z najpoupularniszych jezykow wsrod programistow,a dzeki temu bedzie Ci latwo znalexc kogos do wprowadzania zmian i dalszego rozwoju.
+ * - iot, robtyka, machine leadning - nie tworzymy tutaj rzeczy od podstaw i nie podsuwamy do przodu rozwoju tych branz prowadzac badania rnd. w zamian za to dzialamy jako system integrator = znamy spekutrm dostepnych na rynkuy gotowych do implementacji komponentow i ich mozliwosci, dzieki czemu kestesmy w stanie doradzic i zaimplemntowac ich intrgracje. skladamy jak z klockow LEGO elementy zewnetrznych dostawcow. a jest co  skladac, do wiekszosci tychpowych zastosowan sa dostepne gotowe i latwe do zintegrowania komponenty.
+ *
+ */
 const servicesData = [
   {
     titleId: 'offer.services.innovation.title',
@@ -64,7 +66,7 @@ const servicesData = [
     backgroundColor: 'lightsteelblue',
   },
   {
-    titleId: 'offer.services.cli.title',
+    titleId: 'offer.services.console.title',
     descriptionId: 'offer.services.cli.desc',
     Icon: CodeOutlined,
     backgroundColor: 'lightsteelblue',
@@ -77,8 +79,8 @@ const servicesData = [
     backgroundColor: 'lightslategray',
   },
   {
-    titleId: 'offer.services.db.title',
-    descriptionId: 'offer.services.db.desc',
+    titleId: 'offer.services.databases.title',
+    descriptionId: 'offer.services.databases.desc',
     Icon: DatabaseOutlined,
     backgroundColor: 'lightslategray',
   },
@@ -128,7 +130,7 @@ const OfferPage: React.FC = () => {
 
   return (
     <Layout>
-      <Hero containerStyle={{ backgroundColor: '#eee' }} titleId="offer.title" subtitleId="offer.subtitle" />
+      <Hero containerStyle={{ backgroundColor: 'lightgrey' }} titleId="offer.title" subtitleId="offer.subtitle" />
       <Section>
         <div className={classes.grid}>
           {servicesData.map((service, index) => (

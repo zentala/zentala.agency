@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useIntl } from 'gatsby-plugin-intl'
 import { createUseStyles } from 'react-jss'
 import Section from './Section'
+import { Col, Row, Typography } from 'antd'
 
 interface SectionChapterProps {
   background?: string
   titleId: string
   leadTextId: string
-  tableContent?: Array<{ headerId: string; paragraphsId: string[] }>
+  tableContent?: Array<{ headerId: string; descId: string }>
+  children?: ReactNode
 }
 
 const useStyles = createUseStyles({
@@ -18,7 +20,7 @@ const useStyles = createUseStyles({
   tableParagraph: {},
 })
 
-const SectionChapter: React.FC<SectionChapterProps> = ({ background, titleId, leadTextId, tableContent }) => {
+const SectionChapter: React.FC<SectionChapterProps> = ({ background, titleId, leadTextId, tableContent, children }) => {
   const intl = useIntl()
   const classes = useStyles()
 
@@ -26,21 +28,16 @@ const SectionChapter: React.FC<SectionChapterProps> = ({ background, titleId, le
     <Section background={background} padding="large">
       <h5 className={classes.title}>{intl.formatMessage({ id: titleId })}</h5>
       <p className={classes.leadText}>{intl.formatMessage({ id: leadTextId })}</p>
-      <table className={classes.table}>
+      <Row gutter={[16, 16]}>
         {tableContent &&
           tableContent.map((content, index) => (
-            <tr key={index}>
-              <th className={classes.tableHeader}>{intl.formatMessage({ id: content.headerId })}</th>
-              <td>
-                {content.paragraphsId.map((paragraphId, pIndex) => (
-                  <p key={pIndex} className={classes.tableParagraph}>
-                    {intl.formatMessage({ id: paragraphId })}
-                  </p>
-                ))}
-              </td>
-            </tr>
+            <Col key={index} xs={24} sm={12} md={8}>
+              <Typography.Title level={4}>{intl.formatMessage({ id: content.headerId })}</Typography.Title>
+              <div dangerouslySetInnerHTML={{ __html: intl.formatMessage({ id: content.descId }) }} />
+            </Col>
           ))}
-      </table>
+      </Row>
+      {children}
     </Section>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useIntl, changeLocale } from 'gatsby-plugin-intl'
 import { Menu, Dropdown } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import { createUseStyles } from 'react-jss'
 import EmojiIcon from './EmojiIcon'
 
@@ -10,16 +10,25 @@ const useStyles = createUseStyles({
     background: '#eee',
     borderRadius: 4,
     border: '1px solid #ccc',
-    color: '#555',
+    color: '#888',
     '&:hover': {
-      background: '#ddd',
+      background: '#fff',
       color: '#333',
       cursor: 'pointer',
     },
   },
+  languageList: {
+    borderRadius: 4,
+    border: '1px solid #ccc',
+    scale: 0.7,
+  },
 })
 
-const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  direction?: 'top' | 'bottom'
+}
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ direction = 'bottom' }) => {
   const intl = useIntl()
   const currentLocale = intl.locale
   const classes = useStyles()
@@ -30,7 +39,7 @@ const LanguageSwitcher = () => {
   }
 
   const menu = (
-    <Menu>
+    <Menu className={classes.languageList}>
       {Object.keys(languageMap).map(
         lang =>
           lang !== currentLocale && (
@@ -42,10 +51,13 @@ const LanguageSwitcher = () => {
     </Menu>
   )
 
+  const dropdownPlacement = direction === 'top' ? 'topCenter' : 'bottomCenter'
+  const ArrowIcon = direction === 'top' ? UpOutlined : DownOutlined
+
   return (
-    <Dropdown overlay={menu} className={classes.languageSwitcher}>
+    <Dropdown overlay={menu} placement={dropdownPlacement} className={classes.languageSwitcher}>
       <button>
-        <EmojiIcon emoji={languageMap[currentLocale]} label={currentLocale} /> <DownOutlined />
+        <EmojiIcon emoji={languageMap[currentLocale]} label={currentLocale} /> <ArrowIcon />
       </button>
     </Dropdown>
   )
