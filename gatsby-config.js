@@ -18,13 +18,13 @@ const cloudinaryConfig = {
 
 // Sprawdź, czy wszystkie wymagane klucze konfiguracji są zdefiniowane
 if (!cloudinaryConfig.cloudName || !cloudinaryConfig.apiKey || !cloudinaryConfig.apiSecret) {
-  console.warn('Warning: Cloudinary configuration keys are missing. Image functionalities will be limited.')
+  throw new Error('Cloudinary configuration keys are missing.')
 }
 
 module.exports = {
   siteMetadata: {
     title: `Zentala Innovation Agency`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    description: `Digital showcase for innovation prototyping services. Hub for those looking to shape and transform ideas into prototypes.`,
     author: `@zentala`,
     siteUrl: `https://zentala.agency/`,
   },

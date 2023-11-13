@@ -63,14 +63,15 @@
     "url": "https://github.com/zentala/zentala.agecy/issues"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "*.{js}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{json,md,css}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }  
 }
