@@ -45,7 +45,7 @@ export const CloudinaryProvider: React.FC<CloudinaryProviderProps> = ({ children
   `)
 
   const value = {
-    images: cloudinaryData.allCloudinaryMedia.edges.map(edge => edge.node),
+    images: cloudinaryData.allCloudinaryMedia.edges.map(edge => edge.node)
   }
 
   return <CloudinaryImageContext.Provider value={value}>{children}</CloudinaryImageContext.Provider>

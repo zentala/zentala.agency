@@ -1,3 +1,9 @@
 {
-  "recommendations": ["syler.sass-indented", "sasa.vscode-sass-format"]
+  "recommendations": [
+    "syler.sass-indented",
+    "sasa.vscode-sass-format",
+    "unifiedjs.vscode-mdx",
+    "xyc.vscode-mdx-preview",
+    "awxxxxxx.vscode-mdx-checker"
+  ]
 }

@@ -8,6 +8,10 @@
       "path": "/portfolio",
       "title": "Portfolio"
     },
+    "projects": {
+      "title": "Projects",
+      "path": "/projects"
+    },
     "offer": {
       "path": "/offer",
       "title": "Offer"
@@ -36,34 +40,45 @@
   "home": {
     "mission": {
       "header": "OUR MISSION IS",
-      "lead": "Integrate compex technical systems into practical business solituons that generate revenue, optymize, stramline and automate and our clients processes"
+      "lead": "Integrate complex technical systems into practical business solutions that generate revenue, optimize, streamline, and automate our clients' processes."
     },
     "how": {
       "header": "HOW WE DO IT?",
-      "lead": "We combine wide (industry) knowdlege in order to rapidly prototype new inpactful working (?) and busines applications and digitalize analog processes"
+      "lead": "We combine extensive industry knowledge to rapidly prototype new impactful solutions and business applications, as well as to digitize analog processes."
     },
+    "service_software_title": "Software Development",
+    "service_software_desc": "<p>We have chosen JavaScript (TypeScript) as our primary technology stack because it allows us to build web pages (React), microservices (Node), mobile and desktop applications (Electron.js) with the same language, as well as easily share code between them, accelerating development.</p><p>I have mastered Python for machine learning and data science solutions.</p><p>Advanced skills in Linux, DevOps, and cloud technologies allow us to quickly deploy, monitor, maintain, and scale applications.</p>",
+    "service_hardware_title": "Hardware: IoT and Robotics",
+    "service_hardware_desc": "<p>Without hardware, there is no real impact in the real world. Hardware transforms the world of digital data and algorithms into reality.</p><p>We have extensive knowledge and experience in the field of IoT and robotics, especially in ready-to-integrate components that enable entry into the Third Industrial Revolution. We continuously monitor the market for new components to best advise on how to automate work.</p><p>We sensorize locations to collect data and respond to events in real time. We build various robots to take over difficult tasks from us. We automate and improve business processes around us, because we know what and how to connect.</p><p>Starting with IoT is easier than you think, and has a greater impact than you can imagine. Tell us about your business, and we will propose how we can improve it by integrating available components.</p>",
+    "service_automation_title": "RPA and AI Automation",
+    "service_automation_desc": "<p>We are not machine learning engineers, but software engineers using machine learning algorithms created by others. We do not develop new AI algorithms, but we are experts in implementing already available algorithms into real applications and business processes.</p><p>There are thousands of them, with amazing capabilities. Ready to integrate with your business cases.</p><p>We have extensive knowledge about what is possible and the limitations of the currently available AI on the market, so we can advise on what part of your work and how exactly can be automated.</p><p>We will build a PoC for you, and then integrate these algorithms with the software we develop.</p><p>Additionally, we use robotic process automation to perform complex manual UX actions in your existing business systems, so you can forget about filling out forms in those boring CRM applications.</p>",
+    "service_consulting_title": "Education and Consulting",
+    "service_consulting_desc": "<p>You can only use technologies you know about. But in the modern dynamic technology landscape, it is not possible to be up to date with all the possibilities that new technologies create for your business.</p><p>We track these innovations for you. We move at the edge of innovation and from this perspective we create notes, courses, and trainings.</p><p>With our broad awareness of innovations, we are the best partner to advise companies on how they can modernize and innovate their processes.</p><p>Every innovation starts with a seed of an idea, and here we deliver the best, freshly grown seeds. Join our Masters of Innovation Group or sign up for a Discovery Session so we can talk about your business and provide you with ideas for innovative solutions ready to be implemented in your business.</p>",
+    "service_ux_title": "User Experience",
+    "service_ux_desc": "<p>Good software must be easy, intuitive, and simple to use. When you deal with good software, you don't think about how to use it, you just do! It's transparent, invisible, self-explanatory, and speaks in a sign language that your brain interprets automatically.</p><p>This is the main guiding thought that directs us in everything we build!</p><p>At the end of the day, our software must serve people and help them. There is no such thing as good software without good User Experience. UX is like a crown for a king. There is no king without a crown.</p><p>We are proud of our UX skills, supported by extensive knowledge of human psychology, allowing us to create software that meets our highest expectations in terms of UX.</p><p>With every line of code we write, we have in mind the end user it is meant to serve. And that makes our solutions so... invisible :)</p><p>Because what counts is improving your processes, not learning how to use our software.</p>",
+    "service_marketing_title": "Marketing Strategy",
+    "service_marketing_desc": "<p>When we talk about information technologies, we cannot overlook the aspect of communication. IT has rapidly transformed the way we communicate in all aspects of our lives: education, work, government interactions, shopping, and social life.</p><p>Ultimately, every system we create is built for people and connects with them through communication interfaces - words, speech, symbols, music, art, concepts... these are the communication interfaces for people.</p><p>It's easy to forget this when our IT systems are getting bigger and the human becomes a smaller part of our business processes.</p><p>That's why we must constantly remind ourselves of this. We must remember and focus on how we communicate the digital transformation processes we undertake, how we convey knowledge within the company or between developers who will never meet, but will work on the same project for decades.</p><p>Communication is the key to smooth interaction between people and technology. There is no breakthrough innovation without this aspect, otherwise, no one would want to use it.</p>",
     "detailed": {
       "header": "WE ARE DOING IT TOUGH",
-      "lead": "Meet 6 pillars of rapid prototyping inpactfull innovations:",
-      "service": {
-        "software": {
-          "title": "Software Development",
-          "desc": "<p>I are chosen JavaScript (TypeScript) as our primary stack because it lets us to build webpages (react), microservices (node), mobile & desktop applications (electron.js) with the same language and easily sahre code between them what speeds up development</p><p>I masterd Python for Machine Learning and Data Science solutions.</p><p>Advanced Linux, DevOps, and Cloud skillset let us to deploy, monitor, maintain and scale your applications very fast.</p>"
-        },
-        "hardware": {
-          "title": "Hardware: IoT & Robotics",
-          "desc": "<p>There is no real impact in real world withut hardware. Hardwer is what transfrom world of digital data and algorithms into reality</p><p>We have wide experitse and eperience in IoT and Robotics, in particular in ready-to-integrate compontnes, that let you enter into  Third Industrial Revolution. We are constatly scanning market for new <podzespoly>, so we could advde you the best how to automate your work.</p><p>We senorize venues to collect data and respond for real time events. We build various robots so they could take over hard tasks from us. We automate and streamline business process around us just becauewe we know what and how to connect.</p><p>Your adventure with IoT is easier to start than you think, and more impactful then u can image. Just tell us about your bussiness and we will propose how we can improve it integrating avaliable components.</p>"
-        },
-        "automation": { "title": "RPA & AI Automation", "desc": "" },
-        "consulting": { "title": "Education & Consulting", "desc": "" },
-        "ux": { "User Experience": "", "desc": "" },
-        "marketing": { "title": "Marketing Strategy", "desc": "" }
-      }
+      "lead": "Discover the 6 pillars of rapid prototyping for impactful innovations:",
+      "service_software_title": "Software Development",
+      "service_software_desc": "<p>We have chosen JavaScript (TypeScript) as our primary stack because it allows us to build webpages (React), microservices (Node), mobile & desktop applications (Electron.js) with the same language, and easily share code between them, which speeds up development.</p><p>I have mastered Python for Machine Learning and Data Science solutions.</p><p>Advanced Linux, DevOps, and Cloud skillset allow us to deploy, monitor, maintain, and scale your applications very fast.</p>",
+      "service_hardware_title": "Hardware: IoT & Robotics",
+      "service_hardware_desc": "<p>There is no real impact in the real world without hardware. Hardware is what transforms the world of digital data and algorithms into reality.</p><p>We have a wide expertise and experience in IoT and Robotics, particularly in ready-to-integrate components, that let you enter into the Third Industrial Revolution. We are constantly scanning the market for new components, so we can advise you best on how to automate your work.</p><p>We sensorize venues to collect data and respond to real-time events. We build various robots so they can take over hard tasks from us. We automate and streamline business processes around us just because we know what and how to connect.</p><p>Your adventure with IoT is easier to start than you think, and more impactful than you can imagine. Just tell us about your business, and we will propose how we can improve it by integrating available components.</p>",
+      "service_automation_title": "RPA & AI Automation",
+      "service_automation_desc": "<p>We are not machine learning engineers, but we are software engineers who use machine learning algorithms built by others. We don't develop new AI algorithms, but we are experts in implementing already available ones into real business applications and processes.</p><p>And there are thousands of them, with amazing possibilities. Ready to integrate into your business cases.</p><p>We have a wide knowledge of what is possible and what are the limitations of currently available AI on the market, so we can advise you on what part of your job and how exactly can be automated.</p><p>We will build for you a PoC, and then will integrate these algorithms with the software we develop.</p><p>Additionally, we use robotic process automation in order to perform complex manual UX actions on your current business systems, so you can forget about filling out forms in those boring CRM apps.</p>",
+      "service_consulting_title": "Education & Consulting",
+      "service_consulting_desc": "<p>You can use only technologies that you are aware of. But in the modern dynamic technological landscape, it's not possible to catch up-to-date with all possibilities that new technologies create for your business.</p><p>We are catching up with all those innovations for you. We are moving with the edge of innovations and from this perspective, we are making notes, courses, and trainings.</p><p>Thanks to our extensive innovation awareness, we are the best partner to advise businesses on how they can modernize and innovate their processes.</p><p>Every innovation starts with the seed of an idea, and we are here providing the best, new-grown seeds. Join our Innovation Mastermind Group or sign up for a Discovery Session, so we could talk about your business and provide you ideas of ready to implement in your business innovative solutions.</p>",
+      "service_ux_title": "User Experience",
+      "service_ux_desc": "<p>Good software must be easy, intuitive, and straightforward to use. When you deal with good software, you don't think of how to use it, you are just doing it! It's transparent, invisible, self-descriptive, and speaks the language of signs that your brain interprets automatically.</p><p>This is the keynote that guides us through everything we build!</p><p>At the end of the day, our software must serve and help people. There is no such thing as good software without good User Experience. UX is like a crown for the king. There is no king without a crown.</p><p>We are proud of our UX skills, supported with great understanding of human psychology, thanks to which we are able to make software that meets our highest UX expectations.</p><p>With every line of code we write, we have in mind the end user whom it will serve. And this makes our solutions so... invisible :)</p><p>Because what matters is streamlining your processes, not learning how to use our software.</p>",
+      "service_marketing_title": "Marketing Strategy",
+      "service_marketing_desc": "<p>When we talk about information technologies, we cannot overlook the aspect of communication. IT rapidly transformed the way we communicate in every aspect of our lives: education, work, dealing with government administration, shopping, and our social lives.</p><p>At the end, every system we create is built for humans and connects with them through interfaces of communication - words, speech, symbols, music, art, concepts... these are the interfaces of communication for humans.</p><p>It's easy to forget this while our IT systems are bigger and bigger and the human is a smaller and smaller part of our business processes.</p><p>This is exactly why we need to constantly remind ourselves about it. We need to remember and focus on how we communicate the digital transformation processes we undertake, how we transfer knowledge inside a company or between developers who will never meet but will work on the same project decades apart.</p><p>Communication is key for smooth interaction between humans and technology. There is no breakthrough innovation without this aspect because otherwise, no one would want to use it.</p>"
     },
     "why": {
       "header": "WHY TO INNOVATE",
       "lead": "Change is alsways the cost. It costs time, money, attention, It requires to change habbists when impemented. Its extremaly disruptive.",
-      "p1": "But we belive that innovation is also the way to freedom - freedom from boring tasks, freedom from powerty, freedom for next generations so they could live their lives instread of working for our retirment, freedom to develop yourself and choose the way you want to live. Soon it will provde free education for eveyone, then it will take care of seniors, so we could free younger generation, it will provdide basic health care and one day it wlll provide passive income for eveyrone ending up with poverty.",
+      "p1": "But we belive that innovation is also the way to freedom - freedom from boring tasks, freedom from powerty, freedom for next generations so they could live their lives instread of working for our retirment, freedom to develop yourself and choose the way you want to live. ",
+      "p11": "Soon it will provde free education for eveyone, then it will take care of seniors, so we could free younger generation, it will provdide basic health care and one day it wlll provide passive income for eveyrone ending up with poverty.",
       "p2": "For us innovation is how we make world better place for us and future generations. And disruption it generates is a cost of buidling this better place we all want to live it.",
       "p3": "Therefore we build all our innovations with having in mind the vision of this better place and values that we must to stand with to make it happend:",
       "p4": "egalitarism, equality, inclusivity, respect, dignity,  health and well-being, ecology, sustainability, symbiosis, convervation and preservation, responsibility",
@@ -89,58 +104,70 @@
     }
   },
   "offer": {
-    "title": "Offer for business",
-    "subtitle": "Here you got some ideas of what we could do for you",
+    "title": "Business Offer",
+    "subtitle": "A few ideas of what we can do for you",
     "lead": "",
-    "services": {
-      "innovation": {
-        "title": "Innovations Consulting",
-        "desc": "We will help you to recognise potential of applying cutting edge technologies in areas of possible biggest revenue."
-      },
-      "specs": {
-        "title": "Prototype Conceptualization and Specification",
-        "desc": "We transform your ideas into precisely developed project concepts, creating detailed technical and business specifications that lay the groundwork for further development and implementation."
-      },
-      "ux": {
-        "title": "Design & UX",
-        "desc": "Projekt interfejsu uzytkownika zapewniajacego wysoki poziom doswiadczenia uzytkowika"
-      },
-      "webapps": {
-        "title": "Aplikacje Internetowe",
-        "desc": "Apliakcje intenetowe realizujące dowolne funkcje od podstaw w TypeScript"
-      },
-      "native": {
-        "title": "Aplikacje Mobile",
-        "desc": "Szybkie prototypy multiplatformowych aplikacji mobilnych w React Native"
-      },
-      "desktop": {
-        "title": "Aplikacje Desktop",
-        "desc": "Electron.js pozwala sprawnie napisać w JavaScript multiplatformową (Linux, Windows, MacOS)"
-      },
-      "console": {
-        "title": "Aplikacje konsolwe",
-        "desc": "Kiedy trzeba, a czasem jest to przydatne, np. jako wewnętrzne narzędzie, piszemy skrypt i aplikacje konsolowe, głównie w Bash i Node.js (co sprawia że dzielimy codebase). "
-      },
-      "cloud": {
-        "title": "Rozwiązania chmurowe",
-        "desc": "Stawiamy złożoną infrastrukturę w środowisku które oferuje minimalny nakład prac utrzymaniowych"
-      },
-      "databases": {
-        "title": "Modelowanie baz danych",
-        "desc": "Poniewaz biznes obraca się wokoł danych, czasami zajmujemy sie doborem wlasniej bazy danych oraz zaporjetowaniem modeli jej struktury tak aby byla czytelna ale i szybka i efektywna. "
-      },
-      "iot": {
-        "title": "Internet of Things",
-        "desc": "We don't build solutions from scratch, but we know thousands of components and efficiently assemble prototypes from them."
-      },
-      "robotics": {
-        "title": "Robotics",
-        "desc": "We will select or construct a robot prototype using ready-made components available on the market. We'll then program it to suit your specific applications."
-      },
-      "ml": {
-        "title": "Machine Learning / AI",
-        "desc": "Istnieją tysiące modeli AI których implementacja jest banalnie prosta. Każdy z nich pomaga zwiększyć efektywność procesów poprzez ich automatyzacje. Trzeba przedewswszyskime je znać - ich mozliwosci i ogranicznenia. "
-      }
+    "innovation_title": "Strategic Innovation Consulting",
+    "innovation_desc": "We will help you identify opportunities to use the latest technologies to increase the growth and efficiency of your business.",
+    "specs_title": "Prototype Concept and Specification Development",
+    "specs_desc": "We transform your ideas into precisely developed project concepts, creating detailed technical and business specifications that form the foundation for further development and implementation.",
+    "ux_title": "Design & UX",
+    "ux_desc": "User interface design ensuring a high level of user experience",
+    "webapps_title": "Web Applications",
+    "webapps_desc": "Web applications and microservices implementing any functions from scratch in JavaScript, because it is the most universal language, allowing also to create mobile and desktop applications.",
+    "shops_title": "Advanced E-commerce Stores",
+    "shops_desc": "Creating advanced WooCommerce online stores, providing smooth shopping experiences with intuitive functionalities, tailored to the client's needs and business requirements.",
+    "native_title": "Mobile and TV Applications",
+    "native_desc": "React Native allows us to efficiently write simple applications for Android, Android TV, iOS, tvOS. Using JS and React, we save time by sharing the codebase with other parts of the ecosystem (website, desktop application, etc).",
+    "desktop_title": "Desktop Applications",
+    "desktop_desc": "Electron.js allows us to efficiently write a multiplatform (Linux, Windows, MacOS) application sharing the codebase with other parts of the ecosystem written in JS.",
+    "console_title": "Console Applications",
+    "console_desc": "When necessary, and sometimes it is useful, such as an internal tool, we write script and console applications, mainly in Bash and Node.js (which means we share the codebase).",
+    "cloud_title": "Cloud Solutions",
+    "cloud_desc": "Instead of configuring complex servers that later need to be administered, we set up infrastructure in the cloud, significantly reducing the amount of necessary maintenance work.",
+    "devops_title": "DevOps & Data Pipelines",
+    "devops_desc": "We build and configure CI/CD pipelines that automate the processes of building, testing, deploying applications and data transformatons.",
+    "databases_title": "Database Modeling",
+    "databases_desc": "Because business revolves around data, sometimes we engage in selecting the right database and designing its structure models so that it is readable but also fast and efficient.",
+    "iot_title": "Internet of Things (IoT)",
+    "iot_desc": "We do not design PCB boards, but we know thousands of ready-to-use components, which we know how to program and efficiently connect them into functional prototypes.",
+    "prototyping_title": "Rapid Prototyping",
+    "prototyping_desc": "We won't deliver you the production casing of your device, but we will prototype it using modeling, milling, and 3D printing technology, 2D cutting, and engraving.",
+    "robotics_title": "Robotics",
+    "robotics_desc": "We don't solve millennium robotics problems, but we assemble working prototypes from the top existing market software and hardware solutions.",
+    "ml_title": "Machine Learning / AI",
+    "ml_desc": "We don't create new ones, but we implement ready ones. Thousands of diverse ready-made ML models increasing the efficiency of operations in business are at your fingertips."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lead": "We care about the security of your data and your privacy.",
+    "subtitle": "Date of last update: <strong>October 27, 2023</strong>",
+    "intro": {
+      "header": "Introduction"
+    },
+    "data": {
+      "title": "Data Collection"
+    },
+    "usage": {
+      "title": "Data Usage"
+    },
+    "sharing": {
+      "title": "Sharing Data with Third Parties"
+    },
+    "security": {
+      "title": "Security"
+    },
+    "cookies": {
+      "title": "Cookies"
+    },
+    "userRights": {
+      "title": "User Rights"
+    },
+    "changes": {
+      "title": "Changes to the Privacy Policy"
+    },
+    "contact": {
+      "title": "Contact"
     }
   },
   "portfolio": {
@@ -175,7 +202,43 @@
     "cta": "Let's talk"
   },
   "contact": {
-    "title": "Let's talk about your business"
+    "old_title": "Let's talk about your business",
+    "title": "Contact",
+    "leadText": "We have time for you. Contact us.",
+    "cta": "Let's Talk",
+    "intro": "Use the form next to it or contact Paweł directly, who will answer all your questions.",
+    "fname_label": "First Name",
+    "fname_placeholder": "Enter your first name",
+    "sname_label": "Last Name",
+    "sname_placeholder": "Enter your last name",
+    "email_label": "Email",
+    "email_placeholder": "Enter your email",
+    "phone_label": "Telefon",
+    "phone_placeholder": "Enter your phone number",
+    "msg_label": "Message",
+    "msg_placeholder": "Enter your message",
+    "attach_label": "Attachment",
+    "attach_placeholder": "Click to upload a file",
+    "btn_send": "Send Message",
+    "company_data": "Company info",
+    "company_info_address": "Mailing address",
+    "company_info_full_name": "<strong>Paweł Żentała Consulting</strong>",
+    "company_info_address_street": "ul. Słowackiego 58",
+    "company_info_address_city": "21-300 Radzyń Podlaski",
+    "company_info_address_country": "Poland, European Union",
+    "company_legal_data": "Company data",
+    "company_legal_address_street": "ul. Słowackiego 58",
+    "company_legal_address_city": "21-300 Radzyń Podlaski",
+    "company_legal_data_vat_ue": "<strong>VAT UE:</strong> PL5381827962",
+    "company_legal_data_regon": "<strong>Regon:</strong> 387156914",
+    "company_account": "Bank details",
+    "company_account_iban": "<strong>Account (IBAN):</strong> PL 72 1020 3206 0000 8502 0154 6951",
+    "company_account_bank": "<strong>Bank:</strong> PKO Bank Polski S.A.",
+    "company_account_bic_swift": "<strong>BIC (SWIFT):</strong> BPKOPLPW",
+    "opening_hours_title": "Opening Hours",
+    "opening_hours_description": "We are a <em>'remote first'</em> company, available to clients in Europe and America from 3:00 PM - 5:00 PM CET and 9:00 AM - 11:00 AM ET.",
+    "map_title": "We are active worldwide",
+    "map_lead_text": "You can meet us in business centers around the world"
   },
   "footer": {
     "spec": "Innovation Agency specializes in implementing comprehensive applications and solutions in the field of software, websites, marketing, artificial intelligence, automation, robotics, and the Internet of Things (IoT). Our agency delivers advanced technologies that effectively enhance the operational value and market competitiveness of your business.",

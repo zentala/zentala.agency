@@ -53,11 +53,11 @@ const PortfolioView = () => {
         '3D Printing',
         'CNC Milling',
         'AUTODESK Fusion 360',
-        'React.js',
+        'React.js'
       ],
       image: 'https://example.com/image.jpg',
       detailsLink: '/details-page',
-      demoLink: '/live-demo',
+      demoLink: '/live-demo'
     },
     {
       title: 'Smart Height Adjustable Desk',
@@ -66,7 +66,7 @@ const PortfolioView = () => {
       categories: ['Hardware', 'Apps'],
       technologies: ['IoT', 'Embedded Systems', '3D modeling', 'CNC milling', 'Raspberry Pi'],
       image: 'https://desk.zentala.io/images/20230628_033806.jpg',
-      demoLink: 'https://desk.zentala.io/',
+      demoLink: 'https://desk.zentala.io/'
     },
     {
       title: 'Remote Work Status Indicator',
@@ -75,7 +75,7 @@ const PortfolioView = () => {
       categories: ['Hardware', 'Apps'],
       technologies: ['IoT', 'Embedded Systems', '3D modeling', 'CNC milling', 'ESP32'],
       image: '',
-      demoLink: '',
+      demoLink: ''
     },
     {
       title: 'Real Time Indoor Location Systems',
@@ -84,7 +84,7 @@ const PortfolioView = () => {
       categories: ['Hardware', 'Apps'],
       technologies: ['IoT', 'BLE', 'UWB', 'RTLS', 'Node.js', 'Cloud', 'Linux', 'Embedded Systems'],
       image:
-        'https://media.licdn.com/dms/image/C4D2DAQFth4V_7GoUDw/profile-treasury-image-shrink_800_800/0/1607385644787?e=1699412400&v=beta&t=ibKHzVGTl6Xqbv0w6fX5lrPGbxVTdrcgBDxcif-b3x8',
+        'https://media.licdn.com/dms/image/C4D2DAQFth4V_7GoUDw/profile-treasury-image-shrink_800_800/0/1607385644787?e=1699412400&v=beta&t=ibKHzVGTl6Xqbv0w6fX5lrPGbxVTdrcgBDxcif-b3x8'
     },
     {
       title: 'Home Connect - Smart Home Appliances Control Backend',
@@ -101,9 +101,9 @@ const PortfolioView = () => {
         'Kafka',
         'MongoDB',
         'PostgresSQL',
-        'Docker',
+        'Docker'
       ],
-      demoLink: 'https://www.home-connect.com/',
+      demoLink: 'https://www.home-connect.com/'
     },
     {
       title: 'Game Player Nick Finder',
@@ -111,7 +111,7 @@ const PortfolioView = () => {
         'Reconnect with Old Gaming Buddies! Are you missing those unforgettable gaming sessions with your old buddies? Look no further! Our platform is here to help you revive the good old days by reuniting you with your gaming companions. Whether you used to conquer virtual realms together or embark on epic adventures, we bring back the camaraderie and thrill of gaming.',
       categories: ['Websites', 'Apps'],
       demoLink: 'https://gpnf.zentala.io/',
-      technologies: ['React', 'Python', 'Django', 'Redis'],
+      technologies: ['React', 'Python', 'Django', 'Redis']
     },
     {
       title: 'Health Coaching',
@@ -121,7 +121,7 @@ const PortfolioView = () => {
       demoLink: '',
       image:
         'https://media.licdn.com/dms/image/D4D2DAQHvqdJBvFeTJg/profile-treasury-image-shrink_1920_1920/0/1698348553957?e=1699416000&v=beta&t=cnelby0IJYkxypbd8ozcfEDQ0SUxOclj32BqaA9oY70',
-      technologies: ['WordPress'],
+      technologies: ['WordPress']
     },
     {
       title: 'Events Calendar',
@@ -130,14 +130,14 @@ const PortfolioView = () => {
       demoLink: '',
       image:
         'https://media.licdn.com/dms/image/D4D2DAQFckFI-WS9y0Q/profile-treasury-image-shrink_800_800/0/1692935629000?e=1699416000&v=beta&t=fCravADLlN6jZpH88gkMoyVlVrQkc5vRgzZHzh3gTjU',
-      technologies: ['WordPress', 'React'],
+      technologies: ['WordPress', 'React']
     },
     {
       title: 'Marc Jacobs Fragrances',
       demoLink: 'https://www.marcjacobsfragrances.com/',
       description: 'Detail oriented UX / UI project.',
       technologies: ['React', 'BEM', 'SCSS', 'HTML5', 'Drupal'],
-      categories: ['Websites'],
+      categories: ['Websites']
     },
     {
       title: 'Hitachi Poland',
@@ -145,23 +145,24 @@ const PortfolioView = () => {
       description: 'I coded most of it.',
       image: 'https://mir-s3-cdn-cf.behance.net/projects/404/65d80148517239.Y3JvcCw0MDUsMzE3LDAsMA.png',
       technologies: ['WordPress', 'JavaScript', 'MySQL', 'PHP', 'jQuery'],
-      categories: ['Websites'],
+      categories: ['Websites']
     },
     {
       title: "Squeeze Page 'Pułapki Rozwoju'",
       demoLink: 'https://www.behance.net/gallery/48517239/Hitachi-Poland',
-      description: `Designed squeeze page for PDF report on survey results from 150 business leaders. Report: "Development Traps" - explores growth opportunities and threats for Polish firms. Crafted webpage, cover in Photoshop, coded, deployed on server. Set up email autoresponder for PDF delivery post email confirmation, converting leads to newsletter sign-ups for the report - hence, "squeeze page".`,
+      description:
+        'Designed squeeze page for PDF report on survey results from 150 business leaders. Report: "Development Traps" - explores growth opportunities and threats for Polish firms. Crafted webpage, cover in Photoshop, coded, deployed on server. Set up email autoresponder for PDF delivery post email confirmation, converting leads to newsletter sign-ups for the report - hence, "squeeze page".',
       image:
         'https://media.licdn.com/dms/image/D4D2DAQFb9Yt3geSE7w/profile-treasury-image-shrink_800_800/0/1692936221851?e=1699416000&v=beta&t=D-x833OdnbZbCSqncB3EeSKyz3wkYuyG0pfT8Yle4w4',
       technologies: ['WordPress'],
-      categories: ['Websites', 'Design', 'Marketing'],
+      categories: ['Websites', 'Design', 'Marketing']
     },
     {
       title: '35k+ members FB Community: Online Marketing Strategies',
       categories: ['Marketing'],
       demoLink: 'https://www.facebook.com/groups/strategie.marketingu/',
-      technologies: [],
-    },
+      technologies: []
+    }
   ]
 
   // Filtruj projekty na podstawie wybranej kategorii

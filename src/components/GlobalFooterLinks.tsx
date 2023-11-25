@@ -11,10 +11,10 @@ const useStyles = createUseStyles({
     '& a': {
       color: '#888',
       '&:hover': {
-        color: '#999',
-      },
-    },
-  },
+        color: '#999'
+      }
+    }
+  }
 })
 
 const DotSeparator: React.FC = () => {

@@ -17,7 +17,7 @@ const PortfolioItem = ({ item }) => {
           <Button href={item.demoLink} type="default">
             Live Demo
           </Button>
-        ),
+        )
       ]}
     >
       <Card.Meta title={item.title} description={item.description} />

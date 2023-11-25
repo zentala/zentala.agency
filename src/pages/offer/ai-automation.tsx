@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row, Space } from 'antd'
 
 import Layout from '../../components/GlobalLayout'
-import LinkIcon from '../../components/LinkIcon'
+import IconLink from '../../components/IconLink'
 import Seo from '../../components/seo'
 
 const AutomationPage = () => (
@@ -106,8 +106,8 @@ const AutomationPage = () => (
           <strong>Zoptymalizuj. Automatyzuj. Rozwijaj się.</strong>
         </p>
         <Space>
-          <LinkIcon name="linkedin" size="lg" />
-          <LinkIcon name="mail" size="lg" />
+          <IconLink name="linkedin" size="lg" />
+          <IconLink name="mail" size="lg" />
         </Space>
       </div>
     </section>

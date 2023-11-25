@@ -17,7 +17,7 @@ import GlobalFooterLinks from './GlobalFooterLinks'
 
 import './layout.sass'
 
-const { Header, Content, Footer } = Layout
+const { Content, Footer } = Layout
 
 const antdTheme = {
   // algorithm: theme.darkAlgorithm,
@@ -25,14 +25,17 @@ const antdTheme = {
     // colorPrimary: '#00b96b',
     // borderRadius: 2,
     // colorBgContainer: '#f6ffed',
-  },
+  }
 }
 
 interface GlobalLayoutProps {
   children: ReactNode
+  background?: string
 }
 
-const GlobalLayout: React.FC<GlobalLayoutProps> = ({ children }) => {
+const GlobalLayout: React.FC<GlobalLayoutProps> = ({ children, background }) => {
+  const contentStyle = background ? { background: background } : {}
+
   return (
     <>
       <CloudinaryProvider>
@@ -40,7 +43,7 @@ const GlobalLayout: React.FC<GlobalLayoutProps> = ({ children }) => {
           <ConfigProvider theme={antdTheme}>
             <Layout>
               <GlobalHeader />
-              <Content>{children}</Content>
+              <Content style={contentStyle}>{children}</Content>
               <Footer style={{ padding: 0, margin: 0 }}>
                 <GlobalFooterAbout />
                 <GlobalFooterLinks />

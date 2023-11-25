@@ -5,10 +5,10 @@ interface EmojiIconProps {
   label?: string
 }
 
-const EmojiIcon: React.FC<EmojiIconProps> = ({ emoji = '✖️', label = '' }) => (
+const IconEmoji: React.FC<EmojiIconProps> = ({ emoji = '✖️', label = '' }) => (
   <span role="img" className="emoji-icon" aria-label={label} aria-hidden={!label}>
     {emoji}
   </span>
 )
 
-export default EmojiIcon
+export default IconEmoji

@@ -1,16 +1,6 @@
 import React from 'react'
-import { Card, Form, Input, Button, Checkbox, Row, Col, Space } from 'antd'
-import {
-  UserOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  UploadOutlined,
-  ArrowRightOutlined,
-  EnvironmentOutlined,
-  BankOutlined,
-  MoneyCollectOutlined,
-  GlobalOutlined,
-} from '@ant-design/icons'
+import { Card, Form, Input, Button, Checkbox, Row, Col } from 'antd'
+import { UserOutlined, MailOutlined, PhoneOutlined, UploadOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import { Link } from 'gatsby'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -56,7 +46,7 @@ import { CompanyInfo } from '../config/about'
 const dataSource = Object.values(CompanyInfo).map(info => ({
   key: info.key,
   icon: info.icon,
-  data: generateDataElement(info.data, info.icon),
+  data: generateDataElement(info.data, info.icon)
 }))
 
 function generateDataElement(data: string, icon: JSX.Element) {
@@ -71,12 +61,12 @@ function generateDataElement(data: string, icon: JSX.Element) {
 const columns = [
   {
     dataIndex: 'icon',
-    key: 'icon',
+    key: 'icon'
   },
   {
     dataIndex: 'data',
-    key: 'data',
-  },
+    key: 'data'
+  }
 ]
 
 const ContactBox = () => {
@@ -92,8 +82,8 @@ const ContactBox = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Proszę wpisać swoje imię i nazwisko!',
-                },
+                  message: 'Proszę wpisać swoje imię i nazwisko!'
+                }
               ]}
             >
               <Input prefix={<UserOutlined />} placeholder="Imię i nazwisko" size="large" />
@@ -108,8 +98,8 @@ const ContactBox = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'Proszę wpisać swój adres e-mail!',
-                      },
+                        message: 'Proszę wpisać swój adres e-mail!'
+                      }
                     ]}
                   >
                     <Input prefix={<MailOutlined />} placeholder="E-mail" size="large" />
@@ -122,8 +112,8 @@ const ContactBox = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'Proszę wpisać swój numer telefonu!',
-                      },
+                        message: 'Proszę wpisać swój numer telefonu!'
+                      }
                     ]}
                   >
                     <PhoneInput
@@ -152,8 +142,8 @@ const ContactBox = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Proszę zaakceptować politykę prywatności.',
-                },
+                  message: 'Proszę zaakceptować politykę prywatności.'
+                }
               ]}
               style={{ display: 'flex', flexDirection: 'column-reverse' }}
             >

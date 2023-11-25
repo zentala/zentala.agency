@@ -1,0 +1,7 @@
+{
+  "selectby.regexes": {
+    "goToChar": {
+      "forward": "(.{13652})"
+    }
+  }
+}

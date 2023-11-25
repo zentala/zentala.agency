@@ -18,23 +18,23 @@ const useStyles = createUseStyles({
       transform: 'translateX(-50%)',
       top: 0,
       bottom: 0,
-      borderLeft: '1px dashed #ddd',
-    },
+      borderLeft: '1px dashed #ddd'
+    }
   },
   smallText: {
     fontSize: '0.85em',
-    color: '#888',
+    color: '#888'
   },
   column: {
     // Zdefiniuj breakpoint dla medium (md) i zmień marginBottom
     [`@media (max-width: ${breakpoints.md})`]: {
-      marginBottom: '1em',
+      marginBottom: '1em'
     },
     // Dla large (lg) nie ma dodatkowego margin-bottom
     [`@media (min-width: ${breakpoints.lg})`]: {
-      marginBottom: 0,
-    },
-  },
+      marginBottom: 0
+    }
+  }
 })
 
 const GlobalFooterAbout = ({ intl }) => {
@@ -44,7 +44,7 @@ const GlobalFooterAbout = ({ intl }) => {
     <Section background="#eee">
       <Row gutter={{ md: 24, lg: 0 }}>
         <Col lg={6} className={classes.column}>
-          <div style={{ marginBottom: `1em` }}>
+          <div style={{ marginBottom: '1em' }}>
             <Logo height={30} />
           </div>
           <NavSocialLinks size="lg" />

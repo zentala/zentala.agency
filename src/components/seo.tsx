@@ -1,3 +1,5 @@
+/* WIP TODO improve seo tags and get basic website info from config */
+
 /**
  * SEO component that queries for data with
  * Gatsby's useStaticQuery React hook
@@ -8,8 +10,16 @@
 import * as React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 
+interface SeoProps {
+  description?: string
+  title: string
+  children?: React.ReactNode
+}
+
 interface SiteMetadata {
   title: string
+  description: string
+  author: string
 }
 
 interface SiteMetadataQuery {
@@ -18,23 +28,22 @@ interface SiteMetadataQuery {
   }
 }
 
-function Seo({ description, title, children }) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
+function Seo({ description, title, children }: SeoProps) {
+  const { site } = useStaticQuery<SiteMetadataQuery>(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+          description
+          author
         }
       }
-    `
-  )
+    }
+  `)
 
-  const metaDescription = description || site.siteMetadata.description
+  const metaDescription = description || site.siteMetadata?.description
   const defaultTitle = site.siteMetadata?.title
+  const author = site.siteMetadata?.author || 'Paweł Żentała' // TODO get from config
 
   return (
     <>
@@ -44,7 +53,7 @@ function Seo({ description, title, children }) {
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:creator" content={site.siteMetadata?.author || ``} />
+      <meta name="twitter:creator" content={author} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
       {children}

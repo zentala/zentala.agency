@@ -1,4 +1,4 @@
-# TODO ideas
+# 💡 TODO ideas
 
 Here we collect enhancement ideas for the code; they're not critical for the prototype and can be time-consuming, so we're currently focusing on cost-effective solutions and make trade-offs to deliver quickly.
 
@@ -21,3 +21,15 @@ Here we collect enhancement ideas for the code; they're not critical for the pro
 ### Configuration
 
 - Translate paths, e.g., `/pl/contact` to `/pl/kontakt`.
+
+# Google fonts plugin test
+
+https://medium.com/@joshuacrass/material-icon-font-with-gatsby-af620c46c041
+
+# mplemtnf font icons
+
+https://fonts.google.com/icons?icon.style=Rounded&icon.set=Material+Symbols&noto.region=PL&preview.text=%C4%85%C4%87%C5%BC%C5%BA%60
+https://github.com/marella/material-icons#readme
+https://github.com/marella/material-symbols/tree/main/material-symbols#readme
+https://developers.google.com/fonts/docs/material_symbols?hl=pl
+https://marella.me/material-symbols/demo/

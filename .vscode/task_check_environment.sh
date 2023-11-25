@@ -11,7 +11,7 @@ fi
 # Start development server depening of local configuration
 echo "starting development server..."
 if [ -f /etc/nginx/sites-available/zentala.local ]; then
-    echo "Using configuration for zentala.local domain."
+    echo "Using configuration for zentala.local domain."se
     npm run dev
 else
     npm run start

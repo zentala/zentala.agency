@@ -1,8 +1,18 @@
+/*
+  WIP therefore temporarily ignoring the following ESLint errors
+  TODO: 
+   - Connect external newsletter
+   - Handle displaying validation messages
+   - Post-regstration redirections, etc.
+*/
+
+/* eslint-disable */
+
 import React, { useState } from 'react'
 import { Link } from 'gatsby'
 
 import { Col, Row, Typography, Space, Button, Input, Form, Checkbox } from 'antd'
-import { CheckOutlined, GlobalOutlined, MailOutlined } from '@ant-design/icons'
+import { CheckOutlined, MailOutlined } from '@ant-design/icons'
 import { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox'
 
 const { Title } = Typography

@@ -1,0 +1,15 @@
+/* Wyłącz border po kliknięciu kraju */
+.rsm-geography[aria-pressed='true'] {
+  stroke: none !important;
+}
+
+/* Kolor tła kraju (szary) */
+.rsm-geography {
+  fill: #ccc !important;
+}
+
+/* Kolor granic kraju (biały) */
+.rsm-lines {
+  stroke: #fff !important;
+  stroke-width: 0.5 !important;
+}

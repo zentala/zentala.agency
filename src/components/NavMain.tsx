@@ -10,7 +10,7 @@ const NavMain: React.FC = () => {
     const titleId = `menu.${id}.title`
     return {
       to: intl.formatMessage({ id: pathId }),
-      title: intl.formatMessage({ id: titleId }),
+      title: intl.formatMessage({ id: titleId })
     }
   }
 

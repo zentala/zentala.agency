@@ -9,7 +9,7 @@ const sizeMap: Record<Size, string> = {
   sm: '16px',
   md: '24px',
   lg: '32px',
-  xl: '48px',
+  xl: '48px'
 }
 
 type LinkIconProps = {
@@ -17,7 +17,7 @@ type LinkIconProps = {
   size?: Size
 }
 
-const LinkIcon: React.FC<LinkIconProps> = ({ name, size = 'md' }) => {
+const IconLink: React.FC<LinkIconProps> = ({ name, size = 'md' }) => {
   const [color, setColor] = useState('#333')
 
   const socialLink = SocialLinks[name]
@@ -30,7 +30,7 @@ const LinkIcon: React.FC<LinkIconProps> = ({ name, size = 'md' }) => {
     fontSize: sizeMap[size],
     marginRight: '8px',
     color: color,
-    transition: 'color 0.3s ease',
+    transition: 'color 0.3s ease'
   }
 
   return (
@@ -48,4 +48,4 @@ const LinkIcon: React.FC<LinkIconProps> = ({ name, size = 'md' }) => {
   )
 }
 
-export default LinkIcon
+export default IconLink

@@ -1,5 +1,4 @@
 import { useIntl } from 'gatsby-plugin-intl'
-import { relative } from 'path'
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 
@@ -18,7 +17,7 @@ const useStyles = createUseStyles({
     backgroundColor: (props: OfferItemProps) => props.backgroundColor || 'transparent',
     borderRadius: '0.5em',
     padding: '4em',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   icon: {
     // float: 'right',
@@ -26,7 +25,7 @@ const useStyles = createUseStyles({
     position: 'absolute',
     top: '-0.15em',
     right: '-0.15em',
-    color: 'rgba(0,0,0,0.1)',
+    color: 'rgba(0,0,0,0.1)'
   },
   number: {
     position: 'absolute',
@@ -34,16 +33,16 @@ const useStyles = createUseStyles({
     left: '0.3em',
     fontSize: '7em',
     fontWeight: 'bold',
-    color: 'rgba(0,0,0,0.2)',
+    color: 'rgba(0,0,0,0.2)'
   },
   header: {
     marginTop: '0.5em',
-    fontSize: '2em',
+    fontSize: '2em'
   },
   lead: {
     fontSize: '1.4em',
-    zIndex: 5,
-  },
+    zIndex: 5
+  }
 })
 
 const OfferItem: React.FC<OfferItemProps> = props => {

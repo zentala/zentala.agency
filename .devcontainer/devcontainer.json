@@ -7,12 +7,13 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        // "syler.sass-indented",
-        // "sasa.vscode-sass-format",
-        "dbaeumer.vscode-eslint", //  dla lintingu kodu JavaScript/TypeScript.
-        "esbenp.prettier-vscode", // dla formatowania kodu
-        "ms-vscode.vscode-typescript-tslint-plugin", // dla lintingu TypeScript
-        "stylelint.vscode-stylelint" // dla lintingu CSS/SASS
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-tslint-plugin",
+        "stylelint.vscode-stylelint",
+        "unifiedjs.vscode-mdx",
+        "xyc.vscode-mdx-preview",
+        "awxxxxxx.vscode-mdx-checker"
       ]
     }
   }

@@ -36,7 +36,7 @@ const Logo: React.FC<LogoProps> = ({
   uppercase = false,
   containerStyle,
   supplementPosition = 'right',
-  suplementStyle,
+  suplementStyle
 }) => {
   // width = !height ? width : 'auto';
 
@@ -45,19 +45,19 @@ const Logo: React.FC<LogoProps> = ({
       case 'top':
         return {
           flexDirection: 'column-reverse',
-          alignItems: 'center',
+          alignItems: 'center'
         }
       case 'bottom':
         return {
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'center'
         }
       case 'right':
       default:
         return {
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'flex-start',
+          justifyContent: 'flex-start'
         }
     }
   }
@@ -67,18 +67,18 @@ const Logo: React.FC<LogoProps> = ({
       display: 'flex',
       whiteSpace: 'nowrap',
       ...getContainerStyles(supplementPosition),
-      ...containerStyle,
+      ...containerStyle
     },
     containerSygnet: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      ...containerStyle,
+      ...containerStyle
     },
     svg: {
       height: height || 'auto',
-      width: width || (height ? 'auto' : '100%'),
+      width: width || (height ? 'auto' : '100%')
     },
     supplement: {
       marginLeft: '1em',
@@ -86,8 +86,8 @@ const Logo: React.FC<LogoProps> = ({
       textTransform: uppercase ? 'uppercase' : 'none',
       // paddingTop: '0.4em',
       color,
-      ...suplementStyle,
-    },
+      ...suplementStyle
+    }
   }
 
   if (supplementPosition === 'right') {

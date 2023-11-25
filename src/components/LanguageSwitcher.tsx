@@ -3,7 +3,7 @@ import { useIntl, changeLocale } from 'gatsby-plugin-intl'
 import { Menu, Dropdown } from 'antd'
 import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import { createUseStyles } from 'react-jss'
-import EmojiIcon from './EmojiIcon'
+import IconEmoji from './IconEmoji'
 
 const useStyles = createUseStyles({
   languageSwitcher: {
@@ -14,14 +14,14 @@ const useStyles = createUseStyles({
     '&:hover': {
       background: '#fff',
       color: '#333',
-      cursor: 'pointer',
-    },
+      cursor: 'pointer'
+    }
   },
   languageList: {
     borderRadius: 4,
     border: '1px solid #ccc',
-    scale: 0.7,
-  },
+    scale: 0.7
+  }
 })
 
 interface LanguageSwitcherProps {
@@ -35,7 +35,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ direction = 'bottom
 
   const languageMap: { [key: string]: string } = {
     en: '🇬🇧',
-    pl: '🇵🇱',
+    pl: '🇵🇱'
   }
 
   const menu = (
@@ -44,7 +44,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ direction = 'bottom
         lang =>
           lang !== currentLocale && (
             <Menu.Item key={lang} onClick={() => changeLocale(lang)}>
-              <EmojiIcon emoji={languageMap[lang]} label={lang} /> {lang.toUpperCase()}
+              <IconEmoji emoji={languageMap[lang]} label={lang} /> {lang.toUpperCase()}
             </Menu.Item>
           )
       )}
@@ -57,7 +57,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ direction = 'bottom
   return (
     <Dropdown overlay={menu} placement={dropdownPlacement} className={classes.languageSwitcher}>
       <button>
-        <EmojiIcon emoji={languageMap[currentLocale]} label={currentLocale} /> <ArrowIcon />
+        <IconEmoji emoji={languageMap[currentLocale]} label={currentLocale} /> <ArrowIcon />
       </button>
     </Dropdown>
   )

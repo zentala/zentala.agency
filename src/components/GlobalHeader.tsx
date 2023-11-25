@@ -18,15 +18,15 @@ const useStyles = createUseStyles({
     zIndex: 1000,
     transition: 'padding 0.2s ease-in-out',
     '&.scrolled': {
-      padding: [15, 15],
-    },
+      padding: [15, 15]
+    }
   },
   headerContent: {
     width: '100%', // zajmuje całą szerokość
     display: 'flex', // ustawienie flex
     justifyContent: 'space-between', // logo po lewej, menu po prawej
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 })
 
 const Header = () => {

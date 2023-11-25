@@ -12,6 +12,8 @@ import {
   BgColorsOutlined,
   CodeOutlined,
   DatabaseOutlined,
+  FunnelPlotOutlined,
+  ShopOutlined
 } from '@ant-design/icons'
 
 import Layout from '../../components/GlobalLayout'
@@ -29,88 +31,107 @@ import OfferItem from '../../components/OfferItem'
  */
 const servicesData = [
   {
-    titleId: 'offer.services.innovation.title',
-    descriptionId: 'offer.services.innovation.desc',
+    titleId: 'offer.innovation_title',
+    descriptionId: 'offer.innovation_desc',
     Icon: UserSwitchOutlined,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'lightblue'
   },
   {
-    titleId: 'offer.services.specs.title',
-    descriptionId: 'offer.services.specs.desc',
+    titleId: 'offer.specs_title',
+    descriptionId: 'offer.specs_desc',
     Icon: ClusterOutlined,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'lightblue'
   },
   {
-    titleId: 'offer.services.ux.title',
-    descriptionId: 'offer.services.ux.desc',
-    // Icon: FormatPainterOutlined,
+    titleId: 'offer.ux_title',
+    descriptionId: 'offer.ux_desc',
     Icon: BgColorsOutlined,
-    backgroundColor: 'lightskyblue',
+    backgroundColor: 'lightskyblue'
   },
+  // webdesign <HighlightOutlined />
+  // strony internetowe
+  // landing i squeeze page
   {
-    titleId: 'offer.services.webapps.title',
-    descriptionId: 'offer.services.webapps.desc',
+    titleId: 'offer.webapps_title',
+    descriptionId: 'offer.webapps_desc',
     Icon: LinkOutlined,
-    backgroundColor: 'lightsteelblue',
+    backgroundColor: 'lightsteelblue'
   },
   {
-    titleId: 'offer.services.native.title',
-    descriptionId: 'offer.services.native.desc',
+    titleId: 'offer.shops_title',
+    descriptionId: 'offer.shops_desc',
+    Icon: ShopOutlined, // <ShoppingCartOutlined />
+    backgroundColor: 'lightsteelblue'
+  },
+  // LMS
+  // analityka
+  // intenralonalizacje - wielojezykowosc <TranslationOutlined />
+  // panele administracyjne <ControlOutlined />  <DashboardOutlined />
+  {
+    titleId: 'offer.native_title',
+    descriptionId: 'offer.native_desc',
     Icon: MobileOutlined,
-    backgroundColor: 'lightsteelblue',
+    backgroundColor: 'lightsteelblue'
   },
   {
-    titleId: 'offer.services.desktop.title',
-    descriptionId: 'offer.services.desktop.desc',
+    titleId: 'offer.desktop_title',
+    descriptionId: 'offer.desktop_desc',
     Icon: LaptopOutlined,
-    backgroundColor: 'lightsteelblue',
+    backgroundColor: 'lightsteelblue'
   },
   {
-    titleId: 'offer.services.console.title',
-    descriptionId: 'offer.services.cli.desc',
+    titleId: 'offer.console_title',
+    descriptionId: 'offer.console_desc',
     Icon: CodeOutlined,
-    backgroundColor: 'lightsteelblue',
+    backgroundColor: 'lightsteelblue'
   },
   {
-    titleId: 'offer.services.cloud.title',
-    descriptionId: 'offer.services.cloud.desc',
-    // iconSrc: 'icon1.png',
+    titleId: 'offer.cloud_title',
+    descriptionId: 'offer.cloud_desc',
     Icon: CloudOutlined,
-    backgroundColor: 'lightslategray',
+    backgroundColor: 'lightslategray'
   },
   {
-    titleId: 'offer.services.databases.title',
-    descriptionId: 'offer.services.databases.desc',
+    titleId: 'offer.devops_title',
+    descriptionId: 'offer.devops_desc',
+    Icon: FunnelPlotOutlined,
+    backgroundColor: 'lightslategray'
+  },
+  {
+    titleId: 'offer.databases_title',
+    descriptionId: 'offer.databases_desc',
     Icon: DatabaseOutlined,
-    backgroundColor: 'lightslategray',
+    backgroundColor: 'lightslategray'
   },
   {
-    titleId: 'offer.services.iot.title',
-    descriptionId: 'offer.services.iot.desc',
+    titleId: 'offer.iot_title',
+    descriptionId: 'offer.iot_desc',
     Icon: DeploymentUnitOutlined,
-    backgroundColor: 'lightsalmon',
+    backgroundColor: 'lightgrey'
   },
   {
-    titleId: 'offer.services.robotics.title',
-    descriptionId: 'offer.services.robotics.desc',
+    titleId: 'offer.robotics_title',
+    descriptionId: 'offer.robotics_desc',
     Icon: RobotOutlined,
-    backgroundColor: 'lightsalmon',
+    backgroundColor: 'lightgrey'
   },
   {
-    titleId: 'offer.services.ml.title',
-    descriptionId: 'offer.services.ml.desc',
+    titleId: 'offer.ml_title',
+    descriptionId: 'offer.ml_desc',
     Icon: RocketOutlined,
-    backgroundColor: 'lightgreen',
-  },
+    backgroundColor: 'lightgrey'
+  }
+  // chatboty <CommentOutlined />
+  // image processing <CameraOutlined />
+  // boty - social media, komunikatory
+  // emergecy <BugOutlined />
+  // systemy raingowe i remokendacji <StarOutlined />
 ]
 
-// dodamy
-// sklpey internetowe
-// wprdpress stroony, sklepy, LMS
-// social media - nie bedzziemy Ci ich prowadzic ale wyznaczymy kierunek
-// landing i squeezepage - stworzoymy strony wyciskajace i sprzedajace dla Twojego produkty
-// lejek sprzedazowy
-//
+// "prototyping_title": "Rapid Prototyping",
+// "prototyping_desc": "Nie dostarczymi Ci produkcyjnej obudowy Twojego urządzenia, ale zaprototypujemy ją dzięki technologii modelowania, frezowania i druku 3D, cięcia i grawerowania 2D.",
+
+// CHATBOTUY
 
 // <ShoppingCartOutlined />
 // <ShopOutlined />
@@ -119,9 +140,9 @@ const useStyles = createUseStyles({
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(33%, 1fr))',
-    gap: '16px',
+    gap: '16px'
     // Tutaj możesz dodać więcej stylów dla siatki
-  },
+  }
   // Tutaj możesz dodać więcej stylów
 })
 
@@ -146,6 +167,9 @@ const OfferPage: React.FC = () => {
           ))}
         </div>
       </Section>
+      {/* <Section>
+        cta
+      </Section> */}
     </Layout>
   )
 }

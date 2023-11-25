@@ -8,7 +8,7 @@ const useStyles = createUseStyles({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    backgroundImage: 'linear-gradient(to right bottom, #111, #222)',
+    backgroundImage: 'linear-gradient(to right bottom, #111, #222)'
   },
   video: {
     position: 'absolute',
@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
     bottom: 0,
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
+    objectFit: 'cover'
   },
   logoContainer: {
     maxWidth: 1200,
@@ -37,9 +37,9 @@ const useStyles = createUseStyles({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'column',
-    },
-  },
+      flexDirection: 'column'
+    }
+  }
 })
 
 const HeroLogo: React.FC = () => {
@@ -49,13 +49,13 @@ const HeroLogo: React.FC = () => {
     sygnet: {
       opacity: 0.3,
       zIndex: 2,
-      width: '20%',
+      width: '20%'
     },
     full: {
       opacity: 1,
       zIndex: 3,
-      width: '80%',
-    },
+      width: '80%'
+    }
   }
 
   return (
@@ -76,7 +76,7 @@ const HeroLogo: React.FC = () => {
             letterSpacing: '1.5vw',
             marginLeft: 0,
             marginRight: '-1.5vw',
-            fontWeight: 600,
+            fontWeight: 600
           }}
         />
       </div>

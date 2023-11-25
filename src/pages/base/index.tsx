@@ -1,12 +1,9 @@
 import React from 'react'
-import { Typography } from 'antd'
 import Layout from '../../components/GlobalLayout'
 import Section from '../../components/Section'
 import Seo from '../../components/seo'
-import { FormattedMessage } from 'gatsby-plugin-intl'
+// import { FormattedMessage } from "gatsby-plugin-intl"
 import Hero from '../../components/Hero'
-
-const { Title } = Typography
 
 const BasePage: React.FC = () => {
   return (

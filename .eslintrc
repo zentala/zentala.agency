@@ -5,10 +5,11 @@
     "sourceType": "module"
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "unused-imports"],
   "rules": {
     "semi": ["error", "never"],
-    "quotes": ["error", "single"],
-    "prettier/prettier": "error"
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "prettier/prettier": "error",
+    "unused-imports/no-unused-imports": "error"
   }
 }

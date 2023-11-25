@@ -32,34 +32,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Detect package manager
         id: detect-package-manager
         run: |
-          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            exit 0
+          if [ -f "/home/runner/work/zentala.agency/zentala.agency/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_ENV
+            echo "command=install" >> $GITHUB_ENV
+          elif [ -f "/home/runner/work/zentala.agency/zentala.agency/package.json" ]; then
+            echo "manager=npm" >> $GITHUB_ENV
+            echo "command=install" >> $GITHUB_ENV
           else
             echo "Unable to determine package manager"
             exit 1
           fi
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: 20
           cache: ${{ steps.detect-package-manager.outputs.manager }}
+      - name: Echo package manager and command
+        run: |
+          echo "Manager: ${manager}"
+          echo "Command: ${command}"
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
         with:
-          # Automatically inject pathPrefix in your Gatsby configuration file.
-          #
-          # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: gatsby
       - name: Restore cache
         uses: actions/cache@v3
@@ -71,18 +70,58 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gatsby-build-
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        # run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: npm install --force
       - name: Build with Gatsby
         env:
           PREFIX_PATHS: 'true'
-          CLOUDINARY_API_KEY: '${{ vars.CLOUDINARY_API_KEY }}'
+          CLOUDINARY_API_KEY: '${{ secrets.CLOUDINARY_API_KEY }}'
           CLOUDINARY_API_SECRET: '${{ secrets.CLOUDINARY_API_SECRET }}'
-          CLOUDINARY_CLOUD_NAME: '${{ vars.CLOUDINARY_CLOUD_NAME }}'
-        run: ${{ steps.detect-package-manager.outputs.manager }} run build
+          CLOUDINARY_CLOUD_NAME: '${{ secrets.CLOUDINARY_CLOUD_NAME }}'
+          SANITY_PROJECT_ID: '${{ secrets.SANITY_PROJECT_ID }}'
+          SANITY_DATASET: '${{ secrets.SANITY_DATASET }}'
+          SANITY_TOKEN: '${{ secrets.SANITY_TOKEN }}'
+          STRAPI_TOKEN: '${{ secrets.STRAPI_TOKEN }}'
+          GATSBY_EMAILJS_SERVICE_ID: '${{ secrets.GATSBY_EMAILJS_SERVICE_ID }}'
+          GATSBY_EMAILJS_TEMPLATE_ID: '${{ secrets.GATSBY_EMAILJS_TEMPLATE_ID }}'
+          GATSBY_EMAILJS_PUBLIC_KEY: '${{ secrets.GATSBY_EMAILJS_PUBLIC_KEY }}'
+        run: |
+          if [ "${manager}" = "yarn" ]; then
+            yarn build
+          elif [ "${manager}" = "npm" ]; then
+            # npm run build
+            npx gatsby build
+          else
+            echo "Unknown package manager"
+            exit 1
+          fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: ./public
+  # TODO add Telegram notifications
+  # notification:
+  #   environment:
+  #     name: github-pages
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Sprawdź sekrety
+  #     run: |
+  #       if [ -z "${{ secrets.TELEGRAM_TOKEN }}" ] || [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+  #         echo "Sekrety nie są ustawione"
+  #         exit 1
+  #       else
+  #         echo "Sekrety są ustawione"
+  #       fi
+  #   - name: Send Telegram Notification
+  #     uses: appleboy/telegram-action@master
+  #     with:
+  #       to: ${{ secrets.TELEGRAM_CHAT_ID }}
+  #       token: ${{ secrets.TELEGRAM_TOKEN }}
+  #       message: |
+  #         Deployment ${{ github.ref }}
+  #         Action: ${{ github.event_name }}
+  #         Status: ${{ job.status }}
 
   # Deployment job
   deploy:

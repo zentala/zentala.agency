@@ -7,7 +7,7 @@ const useStyles = createUseStyles({
   spinnerContainer: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   placeholder: {
     backgroundColor: '#f0f0f0',
@@ -17,8 +17,8 @@ const useStyles = createUseStyles({
     fontSize: '24px',
     color: '#ccc',
     width: '100%', // Pełna szerokość kontenera
-    height: '100%', // Pełna wysokość kontenera
-  },
+    height: '100%' // Pełna wysokość kontenera
+  }
 })
 
 interface OurImageProps {

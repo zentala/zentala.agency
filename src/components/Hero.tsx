@@ -13,23 +13,25 @@ interface HeroProps {
 const useStyles = createUseStyles({
   hero: {
     textAlign: 'center',
-    padding: '50px 0',
+    padding: '50px 0'
   },
   title: {
     marginBottom: '0px',
     fontSize: '92px',
+    color: '#444'
   },
   subtitle: {
     marginBottom: '40px',
     marginTop: 0,
     fontSize: '32px',
+    color: '#555'
   },
   paragraph: {
-    fontSize: '24px',
+    fontSize: '24px'
   },
   footer: {
-    marginTop: '40px',
-  },
+    marginTop: '40px'
+  }
 })
 
 const Hero: React.FC<HeroProps> = ({ containerStyle, titleId, subtitleId, leadId, footerComponent }) => {
