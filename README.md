@@ -19,7 +19,7 @@ The "Zentala Agency" website features (most of them will be coming soon):
 - An 'About Us' page
 - A contact page
 
-## Code quality status
+## 📊 Code quality status
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency)
@@ -28,7 +28,7 @@ The "Zentala Agency" website features (most of them will be coming soon):
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=zentala_zentala.agency&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=zentala_zentala.agency)
 
-## Technical Stack Overview
+## 📚 Technical Stack Overview
 
 | Category    | Technology  |
 | :---------- | :---------- |
