@@ -1,11 +1,10 @@
 import React, { FC } from 'react'
-import { Row, Col, Card } from 'antd'
+import { Row, Col } from 'antd'
 import Section from '../components/Section'
 import Seo from '../components/seo'
 import GlobalLayout from '../components/GlobalLayout'
-import { Link, FormattedMessage, useIntl } from 'gatsby-plugin-intl'
-import WorldMap from '../components/WorldMap'
-import SectionChapter from '../components/SectionChapter'
+import { Link, useIntl } from 'gatsby-plugin-intl'
+// import WorldMap from '../components/WorldMap'
 import Hero from '../components/Hero'
 import CtaContactForm from '../components/CtaContactForm'
 
@@ -64,7 +63,7 @@ const ContactPage: FC = () => {
           </Col>
         </Row>
       </Section>
-      <Section background="#eee">
+      {/* <Section background="#f8f8f8" >
         <div style={{ padding: '20px 0 40px 0' }}>
           <h2 style={{ marginTop: 0 }}>
             <FormattedMessage id="contact.company_data" />
@@ -193,12 +192,12 @@ const ContactPage: FC = () => {
             </Row>
           </div>
         </div>
-      </Section>
-      <SectionChapter titleId="contact.map_title" leadTextId="contact.map_lead_text" customStyles={{ marginBottom: 0 }}>
+      </Section> */}
+      {/* <SectionChapter titleId="contact.map_title" leadTextId="contact.map_lead_text" customStyles={{ marginBottom: 0 }}>
         <div>
           <WorldMap />
         </div>
-      </SectionChapter>
+      </SectionChapter> */}
     </GlobalLayout>
   )
 }

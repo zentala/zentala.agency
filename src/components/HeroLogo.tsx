@@ -71,7 +71,7 @@ const HeroLogo: React.FC = () => {
           supplementPosition="bottom"
           uppercase
           suplementStyle={{
-            fontSize: '2.6vw',
+            fontSize: 'calc(100%*4)',
             marginTop: '1vw',
             letterSpacing: '1.5vw',
             marginLeft: 0,

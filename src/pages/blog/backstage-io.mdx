@@ -1,0 +1,291 @@
+---
+title: "Pięć Kluczowych Cech Sukcesu w Implementacji Backstage"
+date: 2023-07-28
+author: "Taras Mankovski, CXO, Frontside"
+tags: ["Backstage", "Developer Experience", "Platform Engineering", "Cloud-Native", "Open Source", "Software Development"]
+slug: piec-kluczowych-cech-sukcesu-w-implementacji-backstage
+lang: pl
+source: "[Backstage Community Blog](https://backstage.io/blog/2023/07/28/frontside-adopter-post)"
+tldr: "Podsumowanie pięciu kluczowych cech, które charakteryzują organizacje odnoszące sukces w implementacji i adopcji Backstage, w tym podejście skoncentrowane na produkcie, powiązanie z szerszą strategią platformy, priorytet dla doświadczenia programistów, współpraca z innymi zespołami platformowymi i angażowanie się w społeczność Backstage."
+type: "summary"
+---
+
+## Streszczenie
+
+W artykule przedstawiono **pięć kluczowych cech**, które są wspólne dla organizacji odnoszących sukces w implementacji i adopcji **Backstage**:
+
+1. **Podejście skoncentrowane na produkcie**: Sukcesywni adopterzy Backstage traktują budowę portalu dla programistów jak tworzenie produktu, biorąc pod uwagę potrzeby i problemy użytkowników.
+2. **Powiązanie z szerszą strategią platformy**: Backstage jest częścią szerszej strategii platformowej, z buy-in od kierownictwa na najwyższym szczeblu.
+3. **Priorytet dla doświadczenia programistów**: Zespoły dedykowane doświadczeniom programistów są kluczowe w prowadzeniu adopcji Backstage i dostosowywaniu jej do potrzeb firmy.
+4. **Współpraca z innymi zespołami platformowymi**: Efektywna adopcja Backstage wymaga współpracy z innymi zespołami odpowiedzialnymi za różne aspekty platformy.
+5. **Angażowanie się w społeczność Backstage**: Uczestnictwo w społeczności Backstage pozwala na wymianę doświadczeń i najlepszych praktyk, co jest kluczowe dla sukcesu.
+
+Te elementy są niezbędne dla skutecznego wdrożenia i wykorzystania Backstage w organizacjach, umożliwiając lepsze doświadczenie dla programistów i efektywniejsze zarządzanie procesami deweloperskimi.
+
+
+
+---
+title: "Adopter Spotlight: Jak Stash uprościł monitorowanie, właścicielstwo i rzeczywiste zdrowie aplikacji dzięki mikrousługom"
+date: 2023-07-08
+author: "Taylor Webber, Staff Engineer, Stash"
+tags: ["Monitoring", "Mikrousługi", "Zdrowie Aplikacji", "Portal Deweloperski", "Backstage", "Rozwój Oprogramowania"]
+slug: adopter-spotlight-jak-stash-uproscil-monitorowanie
+lang: pl
+source: "[Backstage Community Blog](https://backstage.io/blog/2023/07/08/stash.com)"
+type: "summary"
+---
+
+## Rozumienie złożonych systemów w Stash z Backstage
+W Stash naszą misją jest dawanie ludziom pewności siebie w inwestowaniu na lepsze życie. Nasza aplikacja upraszcza inwestowanie dla klasy średniej, która może być mniej doświadczona w tradycyjnych inwestycjach i planowaniu emerytalnym.
+
+### Widoczność właścicielstwa
+Elevate działa jako scentralizowane centrum do rejestrowania usług, dokumentowania informacji o właścicielstwie i ustanawiania jasnej odpowiedzialności. Zapewnia holistyczny widok na rozproszone systemy i używane przez nie wspólne moduły oraz biblioteki, ułatwiając śledzenie właścicielstwa.
+
+#### Łatwe przyjęcie i użytkowanie katalogu
+Wtyczki open source Backstage zapewniają podstawy dla naszej wewnętrznej funkcjonalności katalogu usług.
+
+### Połączenie z ekspertami
+Elevate wykorzystuje integrację CODEOWNERS do ustalenia ekspertyzy konkretnych baz kodów w ramach usług i zapewnienia odpowiedzialności i jasności w zespołach programistycznych.
+
+## Integracja z produktami SaaS
+Backstage oferuje katalog integracji z wieloma popularnymi produktami SaaS. W Elevate zintegrowaliśmy wtyczki do monitorowania infrastruktury i doświadczenia użytkownika, wizualizacji zastoju procesów i wąskich gardeł, a także uzyskiwania wglądu w dane.
+
+### Widoczne, spójne monitorowanie
+W Stash zbieramy metryki wydajności, wykorzystanie zasobów i proaktywne alerty za pomocą DataDog i Sentry; te narzędzia mogą również monitorować i śledzić błędy API oraz problemy zorientowane na klienta.
+
+### Centralne zarządzanie incydentami
+PagerDuty jest standardem Stash do działań on-call i paging, podczas gdy FireHydrant został niedawno przyjęty jako część bardziej kompleksowego procesu zarządzania incydentami.
+
+## Wgląd w koszty infrastruktury we wszystkich systemach
+Wtyczka AWS Cost Insights pozwala Elevate monitorować metryki związane z kosztami i zapewniać efektywne alokowanie zasobów i budżetowanie.
+
+## Zdrowie usług, zespołów i organizacji
+Jak wspomniano powyżej, zbieranie metryk DORA zapewnia ważny wgląd w zdrowie aplikacji i zespołów, ale dopóki nie zbudowaliśmy Elevate, nie mieliśmy w Stash centrum do agregacji i prezentacji tych danych w łatwo przyswajalnej formie.
+
+
+---
+title: "Witamy: Backstage Deploy CLI (Alpha)"
+date: 2023-05-06
+author: "Djamaile Rahamat, Spotify"
+tags: ["Backstage", "CLI", "Deploy", "AWS", "Amazon Lightsail", "Kubernetes"]
+slug: witamy-backstage-deploy-cli-alpha
+lang: pl
+source: "[Backstage Community Blog](https://backstage.io/blog/2023/05/06/backstage-deploy-alpha)"
+type: "summary"
+---
+
+## Dlaczego Backstage Deploy
+Słyszeliśmy od adopterów Backstage, że zanim osiągną szeroką adopcję w swoich organizacjach, testują Backstage jako proof of concept (POC). Aby stworzyć POC, zespoły tworzą instancję, konfigurują katalog i zmieniają UI, aby pasował do marki firmy. Ostatnim krokiem przed wewnętrznym zaprezentowaniem POC jest jego wdrożenie z lokalnej maszyny do chmury.
+
+## Rozpocznij pracę z Deploy CLI
+Deploy CLI wykorzystuje [Pulumi](https://www.pulumi.com/docs/), narzędzie do zarządzania infrastrukturą jako kodem, które pomaga w tworzeniu zasobów w chmurze. Przed rozpoczęciem upewnij się, że masz zainstalowane [Pulumi CLI](https://www.pulumi.com/docs/cli/) oraz [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) na swoim lokalnym komputerze.
+
+Aby wdrożyć POC, możesz użyć następującego polecenia:
+
+``` bash
+$ npx backstage-deploy aws --create-dockerfile
+```
+
+Po uruchomieniu tego polecenia zostanie utworzony Dockerfile w katalogu głównym, a Pulumi rozpocznie tworzenie zasobów w AWS. Pulumi stworzy wtedy wdrożenie oparte na kontenerach w Amazon Lightsail.
+
+Po zakończeniu pracy z POC, łatwo usuniesz zasoby AWS, które utworzyłeś, aby oszczędzić koszty w AWS. Możesz to zrobić za pomocą następującego polecenia:
+
+``` bash
+$ npx backstage-deploy aws --destroy
+```
+
+## Co dalej
+Jak wspomniano wcześniej, wypuściliśmy Backstage Deploy CLI tylko z implementacją AWS. W najbliższych miesiącach jesteśmy podekscytowani, aby zebrać informacje zwrotne od naszych użytkowników, aby zrozumieć, jak działa implementacja AWS. Na podstawie tych doświadczeń planujemy iterować nad Deploy CLI i zbudować implementacje dla innych dostawców chmury. Oczywiście, wszelkie wkłady są zawsze mile widziane!
+
+## Przydatne linki:
+- [Backstage Deploy](https://github.com/backstage/backstage-deploy)
+- [Dokumentacja](https://backstage.io/docs/deployment/backstage-deploy/aws-lightsail)
+- [Dokumentacja Pulumi](https://www.pulumi.com/docs/)
+- Kanał [#deployment](https://discord.com/channels/687207715902193673/995973463208644678) na Discord
+
+
+---
+title: "Przegląd Publicznych Wtyczek Backstage"
+date: [Data Aktualizacji]
+author: [Twoje Imię]
+tags: ["Backstage", "Wtyczki", "Open Source", "CI/CD", "Monitoring", "Bezpieczeństwo"]
+slug: przeglad-publicznych-wtyczek-backstage
+lang: pl
+source: "[Backstage Community Blog](https://backstage.io/plugins)"
+type: "note"
+---
+
+## Katalog Wtyczek Backstage
+
+Wtyczki open source, które można dodać do wdrożenia Backstage. Dowiedz się, jak zbudować [wtyczkę](https://backstage.io/docs/plugins).
+
+### Kategorie Wtyczek
+- Agile Planning
+- App Delivery
+- Artifacts
+- Authentication/Authorization
+- Automation
+- Chaos Engineering
+- CI/CD
+- Cloud-native ssh
+- Configuration Management
+- Core Feature
+- Debugging
+- Deployment
+- Development
+- Discovery
+- Feature Flags
+- GitOps
+- Humor
+- Image
+- Infrastructure
+- Istio
+- Kubernetes
+- Linting
+- Metadata
+- Metrics
+- Monitoring
+- Orchestration
+- Productivity
+- Quality
+- Reporting
+- Scaffolder
+- Search
+- Security
+- Services
+- Source Control Mgmt
+- Tools
+- Utility
+
+### Cechy Podstawowe
+- **Backstage Software Catalog** (Spotify): Zarządzaj wszystkimi swoimi usługami i komponentami oprogramowania w jednym miejscu.
+- **Backstage Software Templates** (Spotify): Twórz nowe komponenty oprogramowania w kilku krokach.
+- **Backstage TechDocs** (Spotify): Rozwiązanie dokumentacji technicznej, pisz dokumenty obok swojego kodu.
+- **Backstage Kubernetes** (Spotify): Monitoruj wszystkie wdrożenia swoich usług, nawet w wielu klastrach.
+- **Backstage Search** (Spotify): Kompozytowa i elastyczna platforma wyszukiwania dostosowana do potrzeb organizacji.
+
+### Wybrane Wtyczki
+- **APIs with 3scale** (Red Hat): Synchronizuj zawartość 3scale z katalogiem Backstage.
+- **Architecture Decision Records** (Phil Kuang): Przeglądaj ADR projektu.
+- **Airbrake** (Simply Business): Dostęp do monitorowania błędów Airbrake.
+- **Allure Reports** (Deepak Bhardwaj): Wyświetlaj raporty Allure dla twoich komponentów.
+- **Analytics Module: Google Analytics** (Spotify): Śledź użytkowanie Backstage za pomocą Google Analytics.
+- **Announcements** (K-Phoen): Twórz i udostępniaj ogłoszenia w Backstage.
+- **API Docs** (SDA SE): Odkrywaj i wyświetlaj jednostki API jako rozszerzenie wtyczki katalogu.
+- **API Linter** (Zalando): Narzędzie zapewniające jakość API.
+- **API SDK Generator** (Konfig): Generuj SDK dla swojego REST API, aby przyspieszyć integrację.
+- **API Spectral Linter** (dweber019): Narzędzie do sprawdzania zgodności specyfikacji API.
+- **Apollo Explorer** (unredundant): Integruj Apollo Explorer do przeglądania punktów końcowych GraphQL.
+- **Argo CD** (roadie.io): Wyświetlaj status Argo CD dla projektów.
+- **Artifacts Plugin for JFrog Artifactory** (StageCentral): Połącz komponenty z artefaktami w JFrog Artifactory.
+- **AWS App Developer Tools** (Amazon Web Services): Twórz i zarządzaj aplikacjami AWS w Backstage.
+
+### Znaczenie dla Backstage
+Publiczne wtyczki Backstage oferują szeroki zakres funkcji, od CI/CD, monitoringu, bezpieczeństwa, po zarządzanie infrastrukturą i automatyzację. Umożliwiają integrację z popularnymi narzędziami i usługami, zwiększając efektywność i wydajność zespołów programistycznych.
+
+---
+
+
+---
+title: "Inżynieria Platformy Kolejnego Poziomu: Eksploracja Backstage.io"
+date: 2023-07-18
+author: "Florin Manaila, ING Hubs Romania"
+tags: ["Backstage.io", "Inżynieria Oprogramowania", "Developer Portal", "Spotify", "Microservices", "CNCF"]
+slug: inzynieria-platformy-kolejnego-poziomu-eksploracja-backstage-io
+lang: pl
+source: "[ING Hubs Romania](https://medium.com/ing-tech-romania/next-level-platform-engineering-exploring-backstage-io-c3797d6a7904)"
+type: "summary"
+---
+
+## Eksploracja Backstage.io
+
+### Kluczowe Funkcje i Społeczność
+Backstage.io, stworzone przez Spotify, to platforma służąca do budowy wewnętrznych portali dla programistów, mająca na celu optymalizację produktywności. Artykuł Florina Manaila z ING Hubs Romania bada kluczowe funkcje Backstage i aktywną społeczność wokół niego.
+
+### Wyzwania Architektury Mikroserwisów
+Adopcja architektury mikroserwisów nieuchronnie prowadzi do proliferacji narzędzi zarządzania rosnącą skalą i złożonością systemów oprogramowania. Wewnętrzne portale dla programistów, takie jak Backstage, umożliwiają inżynierom szybki dostęp do wszystkich narzędzi i usług w ich ekosystemie.
+
+### Cechy Rdzenne Backstage
+- **Katalog Oprogramowania**: Uniwersalny model do zrozumienia i ilustrowania różnych komponentów oprogramowania oraz połączeń między nimi.
+- **Szablony Oprogramowania**: Mechanizm definiowania wspólnych interakcji z jednym lub wieloma systemami.
+- **TechDocs**: Trzymanie dokumentacji blisko przeglądu komponentu oprogramowania.
+- **Moduł Kubernetes**: Skierowany bardziej ku specyfice ekosystemu.
+
+### Wtyczki i Ekosystem
+Backstage zostało zbudowane z myślą o rozszerzalności, tworząc ekosystem wtyczek, który pozwala na eksponowanie praktycznie każdego rodzaju infrastruktury lub narzędzia deweloperskiego jako wtyczki w Backstage.
+
+### Rodzaje Wtyczek
+1. **Standalone Plugins**: Komponenty front-endowe bez wywołań API.
+2. **Service-Backed Plugins**: Wykorzystują wywołania API do usług hostowanych przez organizację.
+3. **Third-Party-Backed Plugins**: Łączą się z usługą dostępną publicznie w Internecie.
+
+### Społeczność i Przyszłość
+Jako projekt typu open-source, Backstage jest jednym z 38 projektów inkubowanych w Cloud Native Computing Foundation (CNCF). Wielu znanych adopterów, takich jak Zalando, American Airlines, Netflix, Ikea, wykorzystało Backstage do konsolidacji narzędzi i usług w pojedynczy portal dla programistów.
+
+### Podsumowanie
+Backstage koncentruje się na poprawie solidności usług backendowych i bezpieczeństwa, zapewniając mocne fundamenty i atrakcyjność dla szerszego rynku firm programistycznych.
+
+---
+
+
+
+
+
+
+---
+title: "Przegląd Architektury Backstage: Platforma Deweloperska i Ekosystem Wtyczek"
+date: 2023-12-02
+author: "Autor Anonimowy"
+tags: ["Backstage", "Architektura", "UI", "Wtyczki", "Docker", "Bazy Danych", "Cache"]
+slug: przeglad-architektury-backstage
+lang: pl
+source: "[Backstage Arch Overview](https://backstage.io/docs/overview/architecture-overview/)"
+type: "overview"
+---
+
+# Przegląd Architektury Backstage
+
+## Terminologia
+Backstage składa się z trzech części:
+- **Core**: Podstawowa funkcjonalność tworzona przez głównych deweloperów projektu open source.
+- **App**: Instancja aplikacji Backstage, wdrażana i modyfikowana przez zespoły deweloperskie.
+- **Plugins**: Dodatkowa funkcjonalność, specyficzna dla danej firmy lub udostępniana jako open source.
+
+## Ogólny Przegląd
+Architektura Backstage może obejmować różne wtyczki, takie jak Tech Radar, Lighthouse czy CircleCI, oraz katalog oprogramowania.
+
+![Architektura typowej aplikacji Backstage](https://backstage.io/assets/images/backstage-typical-architecture-c38b04130f70f294725a9f646df94d3a.png)
+
+### Interfejs Użytkownika
+UI to cienka warstwa klienta skupiona wokół zestawu wtyczek. Zapewnia podstawowe komponenty UI i biblioteki do zarządzania konfiguracją.
+
+### Wtyczki i Backend Wtyczek
+Każda wtyczka to aplikacja po stronie klienta, która montuje się w UI. Wtyczki są pisane w TypeScript lub JavaScript.
+
+#### Instalowanie Wtyczek
+Wtyczki są instalowane jako komponenty React w aplikacji Backstage.
+
+#### Architektura Wtyczek
+Wtyczki mogą przyjmować trzy formy: samodzielne, wspierane przez usługi lub wspierane przez stronę trzecią.
+
+### Architektura Pakietów
+Backstage opiera się na pakietach NPM zarówno dla dystrybucji bibliotek, jak i struktury kodu w projektach.
+
+### Bazy Danych
+Zarówno `lighthouse-audit-service`, jak i `catalog-backend` wymagają bazy danych do działania.
+
+### Cache
+Backend Backstage i wbudowane wtyczki mogą wykorzystywać magazyny pamięci podręcznej w celu poprawy wydajności lub niezawodności.
+
+### Konteneryzacja
+Przykładowa architektura Backstage może być Dockerizowana do trzech oddzielnych obrazów Docker.
+
+## Szczegóły Techniczne
+- **Bazy Danych**: Używa biblioteki Knex, wspiera SQLite i PostgreSQL.
+- **Cache**: Obsługiwane przez Keyv, możliwe opcje to pamięć, memcache lub Redis.
+- **Konteneryzacja**: Możliwe trzy oddzielne obrazy Docker dla frontendu, backendu i usługi audytu Lighthouse.
+
+## Podsumowanie
+Backstage jest wszechstronną platformą umożliwiającą tworzenie spersonalizowanych wewnętrznych portali dla deweloperów, z bogatym ekosystemem wtyczek i silnym wsparciem dla zarządzania zależnościami i pakietami.
+
+---
