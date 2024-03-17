@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
 
       <SectionChapter background="#eee" titleId="home.how.header" leadTextId="home.how.lead" maxWidth="lg" />
 
-      <SectionChapter
+      {/* <SectionChapter
         titleId="home.detailed.header"
         leadTextId="home.detailed.lead"
         maxWidth="xxl"
@@ -49,9 +49,9 @@ const HomePage: React.FC = () => {
           { headerId: 'home.service_ux_title', descId: 'home.service_ux_desc' },
           { headerId: 'home.service_marketing_title', descId: 'home.service_marketing_desc' }
         ]}
-      />
+      /> */}
 
-      <SectionChapter background="#eee" titleId="home.why.header" leadTextId="home.why.lead" maxWidth="lg">
+      {/* <SectionChapter background="#eee" titleId="home.why.header" leadTextId="home.why.lead" maxWidth="lg">
         <>
           <p className="midLead" style={{ textAlign: 'center' }}>
             {intl.formatMessage({ id: 'home.why.p1' })}
@@ -71,7 +71,7 @@ const HomePage: React.FC = () => {
           </p>
           <h2 style={{ textAlign: 'center' }}>{intl.formatMessage({ id: 'home.why.p6' })}</h2>
         </>
-      </SectionChapter>
+      </SectionChapter> */}
       <SectionChapter background="#fff" titleId="home.start.header" leadTextId="home.start.lead">
         <Row gutter={36}>
           <Col xs={24} sm={8}>

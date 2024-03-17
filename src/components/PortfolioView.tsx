@@ -171,7 +171,7 @@ const PortfolioView = () => {
     : allItems
 
   return (
-    <div>
+    <div style={{ paddingBottom: '4em' }}>
       <PortfolioCategorySelector onCategoryChange={setSelectedCategory} />
       {filteredItems.map((item, index) => (
         <PortfolioItem key={index} item={item} />

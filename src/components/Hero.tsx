@@ -18,13 +18,15 @@ const useStyles = createUseStyles({
   title: {
     marginBottom: '0px',
     fontSize: '92px',
-    color: '#444'
+    color: '#444',
+    fontWeight: 100,
   },
   subtitle: {
     marginBottom: '40px',
     marginTop: 0,
     fontSize: '32px',
-    color: '#555'
+    color: '#555',
+    fontWeight: 400,
   },
   paragraph: {
     fontSize: '24px'

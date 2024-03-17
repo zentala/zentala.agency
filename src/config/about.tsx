@@ -34,7 +34,7 @@ export const CompanyInfo: Record<string, CompanyProp> = {
 }
 
 /* Main navbar links */
-export const NavMainLinks = ['home', 'offer', 'contact'] //  'blog', 'projects', 'contact', 'portfolio', 'base', , 'about',
+export const NavMainLinks = ['home', 'offer', 'portfolio', 'blog', 'contact'] //  'blog', 'projects', 'contact', 'portfolio', 'base', , 'about',
 // INFO: edit or remove by key from translation file in the group "menu"
 
 /* Social links */

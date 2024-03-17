@@ -11,7 +11,7 @@ const PortfolioItem = ({ item }) => {
       }
       actions={[
         <Button href={item.detailsLink} type="primary">
-          Szczegóły
+          Details
         </Button>,
         item.demoLink && (
           <Button href={item.demoLink} type="default">
@@ -25,10 +25,10 @@ const PortfolioItem = ({ item }) => {
         {item.categories.map(category => (
           <Tag key={category} color="blue">
             {category}
-          </Tag>
+          </Tag>o
         ))}
       </div>
-      <div style={{ marginTop: '10px' }}>
+      <div style={{ marginTop: '10px', lineHeight: '2.2em'  }}>
         {item.technologies.map(tech => (
           <Tag key={tech}>{tech}</Tag>
         ))}
