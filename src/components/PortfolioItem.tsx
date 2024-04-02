@@ -25,7 +25,7 @@ const PortfolioItem = ({ item }) => {
         {item.categories.map(category => (
           <Tag key={category} color="blue">
             {category}
-          </Tag>o
+          </Tag>
         ))}
       </div>
       <div style={{ marginTop: '10px', lineHeight: '2.2em'  }}>
