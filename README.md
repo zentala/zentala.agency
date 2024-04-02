@@ -1,8 +1,7 @@
 # Zentala Agency [![stability-stable](https://img.shields.io/badge/stability-stable-green.svg)](https://github.com/emersion/stability-badges#stable)
 
-My digital showcase for innovation prototyping services. This site serves as a hub for those looking to transform their ideas into tangible, market-ready prototypes.
-
-![Static Badge](https://img.shields.io/badge/visit-ZentalaAgency-purple?logo=curl&link=http%3A%2F%2Fzentala.agency%2F) &nbsp; ![Static Badge](https://img.shields.io/badge/follow-LinkedIn-blue?logo=linkedin&link=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2F101014868%2Fadmin%2Ffeed%2Fposts%2F) &nbsp;
+Digital showcase for innovation prototyping services. <br/>
+Hub for those looking to transform their ideas into tangible, market-ready prototypes.
 
 ## 🌍Project Overview
 
