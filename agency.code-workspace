@@ -1,0 +1,18 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "files.exclude": {
+            "**/.git": true,
+            "**/.DS_Store": true
+        }
+    },
+    "extensions": {
+        "recommendations": []
+    }
+}
