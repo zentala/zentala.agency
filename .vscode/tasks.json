@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "problemMatcher": [],
+    },
+    {
+      "label": "Run Dev Server",
+      "type": "shell",
+      "command": "npm run dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "dependsOn": ["Install Dependencies"],
+    },
+    {
+      "label": "Open Browser",
+      "type": "shell",
+      "command": "open http://127.0.0.1:4321/",
+      "problemMatcher": [],
+      "dependsOn": ["Run Dev Server"],
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+  ]
+}
