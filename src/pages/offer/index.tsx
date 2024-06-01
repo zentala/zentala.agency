@@ -120,6 +120,12 @@ const servicesData = [
     descriptionId: 'offer.ml_desc',
     Icon: RocketOutlined,
     backgroundColor: 'lightgrey'
+  },
+  {
+    titleId: 'offer.idp_title',
+    descriptionId: 'offer.idp_desc',
+    Icon: RocketOutlined,
+    backgroundColor: 'lightgrey'
   }
   // chatboty <CommentOutlined />
   // image processing <CameraOutlined />

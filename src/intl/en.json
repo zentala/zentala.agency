@@ -136,7 +136,9 @@
     "robotics_title": "Robotics",
     "robotics_desc": "We don't solve millennium robotics problems, but we assemble working prototypes from the top existing market software and hardware solutions.",
     "ml_title": "Machine Learning / AI",
-    "ml_desc": "We don't create new ones, but we implement ready ones. Thousands of diverse ready-made ML models increasing the efficiency of operations in business are at your fingertips."
+    "ml_desc": "We don't create new ones, but we implement ready ones. Thousands of diverse ready-made ML models increasing the efficiency of operations in business are at your fingertips.",
+    "idp_title": "Developer Portal",
+    "idp_desc": ""
   },
   "privacy": {
     "title": "Privacy Policy",

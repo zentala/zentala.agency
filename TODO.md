@@ -33,3 +33,12 @@ https://github.com/marella/material-icons#readme
 https://github.com/marella/material-symbols/tree/main/material-symbols#readme
 https://developers.google.com/fonts/docs/material_symbols?hl=pl
 https://marella.me/material-symbols/demo/
+
+##  trusted me
+* ubudu - french Real Time Location System startup 
+* hypermedia - internatioal marketing agency
+* beamly - british marketing agency
+* DSB - dutch railways
+* BSH - bosh siemenes home appliances
+* ZF - car components manufactures
+* Cheil - global marketing agency made by samsung
