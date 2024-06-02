@@ -1,0 +1,96 @@
+---
+import Logo from '../components/Logo.astro'
+const footerLogoProps = {
+  link: '/',
+  color: '#FFFFFF',
+  type: 'full',
+  height: '60px',
+  width: '80%',
+}
+---
+
+<footer class="bg-gray-600 text-gray-400">
+  <div class="container mx-auto py-8 px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 text-sm">
+      <div class="mb-6 lg:mb-0">
+        <Logo {...footerLogoProps} />
+        <div class="flex text-3xl space-x-4 text-gray-400">
+          <a
+            href="https://www.linkedin.com/in/zentala/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-gray-100"
+            ><i class="fa-brands fa-linkedin"></i></a
+          >
+          <a
+            href="https://www.facebook.com/zentala/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-gray-100"
+            ><i class="fa-brands fa-facebook"></i></a
+          >
+          <a
+            href="https://www.instagram.com/pzentala/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-gray-100"
+            ><i class="fa-brands fa-instagram"></i></a
+          >
+          <a
+            href="https://github.com/zentala"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-gray-100"
+            ><i class="fa-brands fa-github"></i></a
+          >
+          <a
+            href="mailto:zentala@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-gray-100"
+            ><i class="fa-regular fa-envelope"></i></a
+          >
+        </div>
+      </div>
+      <div class="mb-6 lg:mb-0"></div>
+      <div class="mb-6 lg:mb-0">
+        Żentała Innovation Agency specializes in implementing comprehensive
+        applications and solutions in software, web development, marketing,
+        artificial intelligence, automation, robotics, and the Internet of
+        Things (IoT). I deliver advanced technologies that effectively enhance
+        the operational value and competitiveness of your company in the market.
+      </div>
+      <div>
+        I actively engage in developing customized solutions, starting from
+        understanding client challenges to prototyping and implementing tailored
+        solutions. This process includes a thorough needs analysis and bespoke
+        solution design, ensuring that each prototype precisely meets the
+        specific requirements of the project.
+      </div>
+      <div>
+        My services include a broad spectrum focused on the early stages of
+        future technology deployment. Key activities involve education and
+        consulting on new technologies, prototype building (Proof of Concept),
+        and forming IT teams for ongoing development and maintenance.
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center bg-gray-800 py-4">
+    <div class="container mx-auto px-4 flex justify-between">
+      <div class="text-gray-600 text-sm">
+        © 2024 <a href="/" class="hover:underline text-gray-500"
+          >Żentała Innovation Agency</a
+        >
+        <span class="mx-2">·</span>
+        <a href="/privacy-policy/" class="hover:underline text-gray-500"
+          >Polityka Prywatności</a
+        >
+      </div>
+      <div>
+        <!-- <button class="text-gray-300 hover:text-gray-100">
+          🇵🇱 <span class="sr-only">Switch language</span>
+        </button> -->
+      </div>
+    </div>
+  </div>
+</footer>

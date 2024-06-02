@@ -1,0 +1,40 @@
+---
+import Logo from '../components/Logo.astro'
+const headerLogoProps = {
+  link: '/',
+  color: '#111',
+  type: 'full',
+  height: '40px',
+  width: '200px',
+  alt: 'Żentała',
+}
+---
+
+<header class="bg-white shadow-md">
+  <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="/">
+        <Logo {...headerLogoProps} />
+        <span class="text-xl ml-4 text-gray-800">Innovation Agency</span>
+      </a>
+    </div>
+    <nav class="flex space-x-6 text-lg">
+      <a href="/" class="text-gray-700 hover:text-gray-900">Home</a>
+      <a href="/mission" class="text-gray-700 hover:text-gray-900">Mission</a>
+      <a href="/about" class="text-gray-700 hover:text-gray-900">About</a>
+      <a href="/offer" class="text-gray-700 hover:text-gray-900">Offer</a>
+      <a href="/portfolio" class="text-gray-700 hover:text-gray-900"
+        >Portfolio</a
+      >
+      <a href="/blog" class="text-gray-700 hover:text-gray-900">Blog</a>
+      <a href="/contact" class="text-gray-700 hover:text-gray-900">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    /* background: #13151a;
+        background-size: 224px; */
+  }
+</style>
