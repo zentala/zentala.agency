@@ -1,12 +1,21 @@
 ---
+import { getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
-import { getEntryBySlug } from 'astro:content'
 
-const { postSlug } = Astro.urlParams
-const post = await getEntryBySlug('blog', postSlug)
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+  return posts.map((post) => ({
+    params: { postSlug: post.slug },
+  }))
+}
+
+const { postSlug } = Astro.params
+const posts: CollectionEntry<'blog'>[] = await getCollection('blog')
+const post = posts.find((p) => p.slug === postSlug)
 
 if (!post) {
-  throw new Error(`Post with slug "${postSlug}" not found`)
+  throw new Error(`Post not found for slug: ${postSlug}`)
 }
 ---
 
@@ -16,7 +25,7 @@ if (!post) {
       <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
       <p class="text-gray-500 text-sm mb-8">{post.data.date}</p>
       <article class="prose lg:prose-xl">
-        {post.content}
+        {post.body}
       </article>
     </div>
   </main>
