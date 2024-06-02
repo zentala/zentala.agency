@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import PortfolioItem from '../components/PortfolioItem.astro'
-import { Picture } from 'astro:assets'
 
 const heroProps = {
   title: 'Portfolio',
@@ -59,7 +58,11 @@ const elements = [
         :)
       </div> -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {elements.map((element) => <PortfolioItem {...element} />)}
+        {
+          elements.map((element) => (
+            <PortfolioItem key="portfolio-{index}" {...element} />
+          ))
+        }
       </div>
     </div>
   </main>

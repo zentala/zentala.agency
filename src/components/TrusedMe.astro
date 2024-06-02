@@ -47,7 +47,7 @@ const clients = [
   <ul>
     {
       clients.map((client) => (
-        <li key={client.name}>
+        <li data-key={client.name}>
           <img src={client.logo} alt={client.name} class="client-logo" />
           <span class="tooltip">{client.desc}</span>
         </li>

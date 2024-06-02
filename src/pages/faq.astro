@@ -84,7 +84,7 @@ const faqData = [
       <div class="lg:w-8/12 w-full mx-auto">
         {
           faqData.map((faq, index) => (
-            <div key={index}>
+            <div data-key={index}>
               <hr class="w-full lg:mt-10 md:mt-12 md:mb-8 my-8" />
               <div class="w-full md:px-6">
                 <div
@@ -137,15 +137,15 @@ const faqData = [
     let main = elements[i]
 
     main.addEventListener('click', function () {
-      let element = main.parentElement.parentElement
+      let element = main.parentElement?.parentElement
       let indicators = main.querySelectorAll('img')
-      let child = element.querySelector('#menu')
-      let h = element.querySelector('#mainHeading>div>p')
+      let child = element?.querySelector('#menu')
+      let h = element?.querySelector('#mainHeading>div>p')
 
-      h.classList.toggle('font-semibold')
-      child.classList.toggle('hidden')
+      h?.classList.toggle('font-semibold')
+      child?.classList.toggle('hidden')
       // console.log(indicators[0]);
-      indicators[0].classList.toggle('rotate-180')
+      indicators[0]?.classList.toggle('rotate-180')
     })
   }
 </script>

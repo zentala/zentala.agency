@@ -2,14 +2,15 @@
 export interface Props {
   title: string
   subtitle: string
-  image: string
-  link: string
+  image?: string
+  link?: string
+  key: string
 }
 
-const { title, subtitle, image, link } = Astro.props
+const { title, subtitle, image, link, key } = Astro.props
 ---
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden">
+<div class="bg-white rounded-lg shadow-md overflow-hidden" data-key={key}>
   <img src={image} alt={title} class="w-full h-48 object-cover" />
   <div class="p-4">
     <h2 class="text-2xl font-bold">{title}</h2>

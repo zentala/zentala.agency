@@ -1,13 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
+// import Hero from '../components/Hero.astro'
 import PostCard from '../components/PostCard.astro'
 import { getCollection } from 'astro:content'
 
-const heroProps = {
-  title: 'Blog',
-  subtitle: '...',
-}
+// const heroProps = {
+//   title: 'Blog',
+//   subtitle: '...',
+// }
 const posts = await getCollection('blog')
 ---
 
