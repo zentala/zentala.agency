@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { getEntryBySlug } from 'astro:content'
+
+const { postSlug } = Astro.urlParams
+const post = await getEntryBySlug('blog', postSlug)
+
+if (!post) {
+  throw new Error(`Post with slug "${postSlug}" not found`)
+}
+---
+
+<Layout title={post.data.title}>
+  <main class="bg-slate-200">
+    <div class="container mx-auto pt-8 pb-16 px-4">
+      <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
+      <p class="text-gray-500 text-sm mb-8">{post.data.date}</p>
+      <article class="prose lg:prose-xl">
+        {post.content}
+      </article>
+    </div>
+  </main>
+</Layout>
