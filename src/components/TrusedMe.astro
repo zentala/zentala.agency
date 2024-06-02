@@ -1,0 +1,107 @@
+---
+const clients = [
+  {
+    name: 'Ubudu',
+    desc: 'French RTLS startup. Developed RTLS admin panel and deployed systems across Asia.',
+    logo: '/logos/ubudu.png',
+  },
+  {
+    name: 'Hypermedia',
+    desc: 'International marketing agency. Engaged in modern web development with React.',
+    logo: '/logos/hypermedia.png',
+  },
+  {
+    name: 'Beamly',
+    desc: 'British marketing agency. Developed website for Marc Jacobs fragrances.',
+    logo: '/logos/beamly.png',
+  },
+  {
+    name: 'GreenParrot',
+    desc: 'Warsaw marketing agency. Specialized in WordPress web development.',
+    logo: '/logos/greenparrot.png',
+  },
+  {
+    name: 'DSB',
+    desc: 'Dutch national railways. Built Backstage Developer Portal from scratch.',
+    logo: '/logos/dsb.png',
+  },
+  {
+    name: 'BSH',
+    desc: 'Bosch Siemens home appliances. Developed software for home appliances.',
+    logo: '/logos/bsh.png',
+  },
+  {
+    name: 'ZF',
+    desc: 'Car components manufacturer. Developed web panel for flashing software on car platforms.',
+    logo: '/logos/zf.png',
+  },
+  {
+    name: 'Cheil',
+    desc: 'Global marketing agency by Samsung. Developed merch robot and NFC-table for brand stores.',
+    logo: '/logos/cheil.png',
+  },
+]
+---
+
+<aside class="trusted-me-container">
+  <ul>
+    {
+      clients.map((client) => (
+        <li key={client.name}>
+          <img src={client.logo} alt={client.name} class="client-logo" />
+          <span class="tooltip">{client.desc}</span>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  .trusted-me-container {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ul {
+      display: flex;
+      gap: 20px;
+      li {
+        position: relative;
+        .client-logo {
+          width: 100px;
+          height: auto;
+          transition: transform 0.3s ease;
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+        .tooltip {
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: rgba(0, 0, 0, 0.7);
+          color: white;
+          padding: 10px;
+          border-radius: 5px;
+          display: none;
+          text-align: center;
+          &:before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            border-width: 5px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+          }
+        }
+        &:hover .tooltip {
+          display: block;
+        }
+      }
+    }
+  }
+</style>

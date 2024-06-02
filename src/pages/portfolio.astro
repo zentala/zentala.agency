@@ -1,19 +1,65 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import PortfolioItem from '../components/PortfolioItem.astro'
+import { Picture } from 'astro:assets'
 
 const heroProps = {
   title: 'Portfolio',
   subtitle: 'Best examples of my works',
 }
+
+const elements = [
+  {
+    title: 'Real Time Location Systems',
+    subtitle:
+      'RTLS is form of indoor GPS. It uses IoT wireless technologies to track people, vehicle or assets in real time. You probably had contact with RTLS system in McDonalds - when you take tent so they could bring order to your table. I developed software and deopyed this kind of systems on-site for busnesses all over the world. This give me a chance to learn about hardware, architectures, location algorithms and busines practices regarding impelemntation.',
+    image: '/images/portfolio/rtls.jpg',
+    link: '/portfolio/rtls',
+  },
+  {
+    title: 'Smart Home',
+    subtitle:
+      'Smart home is a concept of technology that allows you to control your home appliances remotely. I developed a custom smart home system for my own apartament in Warsaw. It was a great opportunity to learn about IoT Smart Home architectures, standards, technologies, software, hardware. Additionaly I designed and installed on my own electrical grid in the flat (it required modernisation). This experience gives me conprehensive understaning of smart living solutions.',
+    image: '/images/portfolio/smart-home.jpg',
+    link: '/portfolio/smart-home',
+  },
+  {
+    title: 'Backstage Developer Portals',
+    subtitle:
+      'I developer few dev portrtals for my clients. I was leading processes of evangelising, facilitation, development and support others devs in Backstage development.',
+    image: '/images/portfolio/backstage.jpg',
+    link: '/portfolio/backstage',
+  },
+  {
+    title: 'Open Smart Desk',
+    subtitle:
+      "An innovative, sensor-equipped desk that adjusts its height based on the user's time spent in front of the computer. It can suggest breaks or raise itself autonomously to encourage standing work.",
+    image: '/images/portfolio/open-smart-desk.jpg',
+    link: '/portfolio/open-smart-desk',
+  },
+  {
+    title: 'Merch Robot',
+    subtitle:
+      'Developed a functional prototype of a socially-aware humanoid robot tailored for events and retail applications, enhancing its situational awareness through bespoke IoT integrations.',
+  },
+
+  // wififorum
+  // futures studies
+  // strategie marketingu
+  // wifi live
+]
 ---
 
 <Layout title="Portfolio">
   <Hero {...heroProps} />
   <main class="bg-slate-200">
     <div class="container mx-auto pt-8 pb-16 px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+      <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         :)
+      </div> -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        {elements.map((element) => <PortfolioItem {...element} />)}
       </div>
     </div>
   </main>

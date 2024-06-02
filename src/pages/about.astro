@@ -12,9 +12,76 @@ const heroProps = {
   <Hero {...heroProps} />
   <main class="bg-slate-200">
     <div class="container mx-auto pt-8 pb-16 px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+      <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         :)
-      </div>
+      </div> -->
+      --- ---
+
+      <section id="about-me" class="my-8">
+        <div class="flex items-center space-x-4">
+          <img
+            src="link_to_profile_photo.jpg"
+            alt="Paweł Żentała"
+            class="w-32 h-32 rounded-full"
+          />
+          <div>
+            <h2 class="text-3xl font-bold">Paweł Żentała</h2>
+            <p class="mt-2">
+              Developer, Therapist, Manager with skills in TypeScript, React,
+              Redux, DB, architecture, and more.
+            </p>
+            <div class="mt-4 flex space-x-2">
+              <a
+                href="https://www.linkedin.com/in/zentala/"
+                class="text-blue-500 hover:underline"
+              >
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M4.98 3.5c0 1.378-1.112 2.5-2.48 2.5S0 4.878 0 3.5 1.112 1 2.5 1s2.48 1.122 2.48 2.5zM.47 8h4.946v12H.47V8zM8.558 8H13.5v1.837c.64-.97 1.872-1.973 3.853-1.973C20.785 7.864 22 9.222 22 12.215V20h-4.95v-6.883c0-1.737-.04-3.975-2.424-3.975-2.42 0-2.794 1.888-2.794 3.842V20H8.558V8z"
+                  ></path>
+                </svg>
+              </a>
+              <a
+                href="https://github.com/zentala"
+                class="text-gray-800 hover:underline"
+              >
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 .5C5.373.5 0 5.872 0 12.5c0 5.298 3.438 9.8 8.207 11.388.6.112.793-.26.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.386-1.333-1.756-1.333-1.756-1.089-.744.083-.729.083-.729 1.205.085 1.838 1.238 1.838 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.775.418-1.306.76-1.606-2.665-.303-5.467-1.335-5.467-5.935 0-1.31.468-2.382 1.235-3.22-.123-.303-.536-1.523.118-3.176 0 0 1.007-.322 3.3 1.23a11.51 11.51 0 013.003-.403 11.51 11.51 0 013.003.403c2.293-1.552 3.3-1.23 3.3-1.23.655 1.653.242 2.873.118 3.176.768.838 1.235 1.91 1.235 3.22 0 4.61-2.804 5.63-5.476 5.927.43.371.812 1.103.812 2.222v3.293c0 .32.192.693.8.577C20.567 22.3 24 17.798 24 12.5 24 5.872 18.627.5 12 .5z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="my-8">
+        <h2 class="text-3xl font-bold mb-4">Umiejętności</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-xl font-semibold">TypeScript</h3>
+            <p>Zaawansowane umiejętności w TypeScript</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-xl font-semibold">React</h3>
+            <p>Doświadczenie w budowaniu interfejsów użytkownika z React</p>
+          </div>
+          <!-- Dodaj więcej umiejętności w podobnym formacie -->
+        </div>
+      </section>
+      <section id="experience" class="my-8">
+        <h2 class="text-3xl font-bold mb-4">Doświadczenie</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content bg-white p-4 rounded shadow">
+              <h3 class="text-xl font-semibold">Stanowisko</h3>
+              <p>Opis doświadczenia i osiągnięć.</p>
+            </div>
+          </div>
+          <!-- Dodaj więcej doświadczeń w podobnym formacie -->
+        </div>
+      </section>
     </div>
   </main>
 </Layout>
