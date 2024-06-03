@@ -5,12 +5,13 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "plugins": ["prettier-plugin-astro"],
+  "plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
   "overrides": [
     {
       "files": "*.scss",
       "options": {
-        "parser": "scss"
+        "parser": "scss",
+        "singleQuote": false
       }
     },
     {
@@ -54,6 +55,14 @@
       "options": {
         "parser": "babel"
       }
+    },
+    {
+      "files": "*.yml",
+      "options": {
+        "parser": "yaml",
+        "singleQuote": false
+      }
     }
-  ]
+  ],
+  "prettier.requireConfig": true
 }

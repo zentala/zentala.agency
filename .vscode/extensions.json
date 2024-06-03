@@ -3,8 +3,11 @@
     "astro-build.astro-vscode",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "ms-vscode.vscode-typescript-tslint-plugin",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "rvest.vs-code-prettier-eslint",
+    "ghmcadams.lintlens",
+    "github.vscode-github-actions",
+    "usernamehw.errorlens"
   ],
   "unwantedRecommendations": []
 }

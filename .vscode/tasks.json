@@ -5,7 +5,7 @@
       "label": "Install Dependencies",
       "type": "shell",
       "command": "npm install",
-      "problemMatcher": [],
+      "problemMatcher": []
     },
     {
       "label": "Run Dev Server",
@@ -13,7 +13,7 @@
       "command": "npm run dev",
       "isBackground": true,
       "problemMatcher": [],
-      "dependsOn": ["Install Dependencies"],
+      "dependsOn": ["Install Dependencies"]
     },
     {
       "label": "Open Browser",
@@ -24,6 +24,6 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
-    },
+    }
   ]
 }
