@@ -42,110 +42,40 @@ const faqData = [
   <Hero {...heroProps} />
   <main class="bg-slate-200">
     <div class="lg:container lg:mx-auto lg:py-16 md:py-12 md:px-6 py-12 px-4">
-      <h1
-        class="text-center lg:text-4xl text-3xl lg:leading-9 leading-7 text-black font-semibold"
-      >
-        FAQ's
-      </h1>
 
-      <div
-        class="lg:mt-12 bg-gray-100 md:mt-10 mt-8 lg:py-7 lg:px-6 md:p-6 py-6 px-4 lg:w-8/12 w-full mx-auto"
-      >
+      <div class="lg:mt-12 bg-gray-100 md:mt-10 mt-8 lg:py-7 lg:px-6 md:p-6 py-6 px-4 lg:w-8/12 w-full mx-auto">
         <div class="flex justify-between md:flex-row flex-col">
           <div class="md:mb-0 mb-8 md:text-left text-center">
             <h2 class="font-medium text-xl leading-5 text-black lg:mb-2 mb-4">
               Questions
             </h2>
-            <p
-              class="font-normal text-sm leading-5 text-gray-600 md:w-8/12 md:ml-0 w-11/12 mx-auto"
-            >
-              If you don’t find your answer, Please contact us or Leave a
-              Message, we’ll be more than happy to assist you.
+            <p class="font-normal text-sm leading-5 text-gray-600 md:w-8/12 md:ml-0 w-11/12 mx-auto">
+              If you don’t find your answer, Please contact us or Leave a Message, we’ll be more than happy to assist you.
             </p>
           </div>
 
-          <div class="flex justify-center items-center">
-            <div
-              class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 flex bg-white md:justify-center justify-between items-center px-4 py-3 w-full"
-            >
-              <input
-                class="focus:outline-none bg-white"
-                type="text"
-                placeholder="Search"
-              />
-              <img
-                src="https://tuk-cdn.s3.amazonaws.com/can-uploader/faq-8-svg1.svg"
-                alt="search"
-              />
-            </div>
-          </div>
+          <label class="input input-bordered flex items-center gap-2">
+            <input type="text" class="grow" placeholder="Search" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+          </label>
         </div>
       </div>
+ 
       <div class="lg:w-8/12 w-full mx-auto">
-        {
-          faqData.map((faq, index) => (
-            <div data-key={index}>
-              <hr class="w-full lg:mt-10 md:mt-12 md:mb-8 my-8" />
-              <div class="w-full md:px-6">
-                <div
-                  id="mainHeading"
-                  class="flex justify-between items-center w-full"
-                >
-                  <div class="cursor-pointer" data-menu>
-                    <p class="flex justify-center items-center font-medium text-base leading-6 md:leading-4 text-black">
-                      <span class="lg:mr-6 mr-4 lg:text-2xl md:text-xl text-lg leading-6 md:leading-5 lg:leading-4 font-semibold text-black">
-                        Q{index + 1}.
-                      </span>
-                      {faq.question}
-                    </p>
-                  </div>
-                  <button
-                    aria-label="toggler"
-                    class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800"
-                    data-menu
-                  >
-                    <img
-                      class="transform hidden"
-                      src="https://tuk-cdn.s3.amazonaws.com/can-uploader/faq-8-svg2.svg"
-                      alt="toggler"
-                    />
-                    <img
-                      class="transform hidden"
-                      src="https://tuk-cdn.s3.amazonaws.com/can-uploader/faq-8-svg2dark.svg"
-                      alt="toggler"
-                    />
-                  </button>
-                </div>
-                <div id="menu" class="hidden mt-6 w-full">
-                  <p class="text-base leading-6 text-gray-600 font-normal">
-                    {faq.answer}
-                  </p>
-                </div>
+        {faqData.map((faq, index) => (
+          <div data-key={index}>
+            <div class="collapse collapse-arrow bg-base-200 my-4">
+              <input type="radio" name="faq-accordion" />
+              <div class="collapse-title text-xl font-medium">
+                Q{index + 1}. {faq.question}
+              </div>
+              <div class="collapse-content">
+                <p>{faq.answer}</p>
               </div>
             </div>
-          ))
-        }
-        <hr class="w-full lg:mt-10 my-8" />
+          </div>
+        ))}
       </div>
     </div>
   </main>
 </Layout>
-
-<script>
-  let elements = document.querySelectorAll('[data-menu]')
-  for (let i = 0; i < elements.length; i++) {
-    let main = elements[i]
-
-    main.addEventListener('click', function () {
-      let element = main.parentElement?.parentElement
-      let indicators = main.querySelectorAll('img')
-      let child = element?.querySelector('#menu')
-      let h = element?.querySelector('#mainHeading>div>p')
-
-      h?.classList.toggle('font-semibold')
-      child?.classList.toggle('hidden')
-      // console.log(indicators[0]);
-      indicators[0]?.classList.toggle('rotate-180')
-    })
-  }
-</script>
