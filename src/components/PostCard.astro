@@ -24,50 +24,44 @@ const {
 } = Astro.props
 ---
 
-<article class="flex max-w-sm flex-col items-start justify-between">
-  <img
-    src={imageUrl}
-    alt=""
-    class="rounded-md mb-6 border-gray-600 shadow-md"
-  />
-  <div class="flex items-center gap-x-4 text-xs">
-    <time datetime={date} class="text-gray-500">{date}</time>
-    <a
-      href="#"
-      class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-      >{category}</a
-    >
-  </div>
-  <div class="group relative">
-    <h3
-      class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600"
-    >
-      <a href={link}>
-        <span class="absolute inset-0"></span>
-        {title}
-      </a>
-    </h3>
-    <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-      {excerpt}
-    </p>
-  </div>
-  <div class="relative mt-8 flex items-center gap-x-4">
+<article class="flex flex-col items-start border border-gray-800 p-16 -m-px">
+  <div class="flex items-center gap-x-2 text-gray-700">
     <img
       src={authorAvatar}
       alt={authorName}
-      class="h-12 w-12 rounded-full bg-gray-50"
+      class="h-5 w-5 rounded-full bg-gray-50"
     />
     <div class="text-sm leading-6">
       <p class="">
-        <span class="font-semibold text-gray-900">
+        <span class="font text-gray-400">
           <a href="/about/me">
             <span class="absolute inset-0"></span>
             {authorName}
           </a>
         </span>
         <br />
-        <span class="text-gray-600">{authorRole}</span>
       </p>
     </div>
+    ·
+    <time datetime={date} class="text-gray-700">{date}</time>
+    ·
+    <a
+      href="#"
+      class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
+    >
+      {category}</a
+    >
+  </div>
+
+  <div class="group relative">
+    <h3 class="mt-3 text-3xl font-light text-white">
+      <a href={link}>
+        <span class="absolute inset-0"></span>
+        {title}
+      </a>
+    </h3>
+    <p class="mt-5 line-clamp-3 text-lg leading-6 text-gray-300">
+      {excerpt}
+    </p>
   </div>
 </article>

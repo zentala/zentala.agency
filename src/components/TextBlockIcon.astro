@@ -1,0 +1,12 @@
+---
+const { title, description, icon } = Astro.props
+---
+
+<div class="relative text-center pt-24">
+  <span
+    class="text-8xl absolute top-0 left-1/2 transform -translate-x-1/2 opacity-50"
+    >{icon}</span
+  >
+  <h3 class="text-4xl font-light relative">{title}</h3>
+  <p class="text-2xl mt-6 font-light relative">{description}</p>
+</div>

@@ -12,7 +12,9 @@ List of usefull links and technologies to use.
 -  https://docs.astro.build/en/guides/integrations-guide/sitemap/
 -  https://github.com/jonasmerlin/astro-seo#readme
 -  https://astro-i18next.yassinedoghri.com/
+-  https://github.com/astro-community
 -  
+
 ## Tailwind
 - [Tailwind CSS Framework](https://tailwindcss.com/)
 - [Daisy UI Tailwind Plugin](https://daisyui.com/) - semantic classes

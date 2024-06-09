@@ -152,9 +152,9 @@ const offers = [
 
 <Layout title="Offer">
   <Hero {...heroProps} />
-  <main class="bg-slate-200">
-    <div class="container mx-auto pt-8 pb-16 px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+  <main class="bg-black border-y border-gray-800">
+    <div class="container mx-auto p-0 max-w-8xl border-x border-gray-800">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {offers.map((offer) => <OfferCard {...offer} />)}
       </div>
     </div>

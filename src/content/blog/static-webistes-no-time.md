@@ -6,7 +6,7 @@ imageUrl: 'https://example.com/ssr-static-site-generators.jpg'
 excerpt: 'Exploring the benefits of SSR and static site generators for efficient content creation.'
 authorName: 'Paweł Żentała'
 authorAvatar: 'https://avatars.githubusercontent.com/u/7286123?v=4'
-authorRole: 'Innovation Activist'
+authorRole: 'Founder & CEO @ ZIA'
 ---
 
 # Static Site Generators Stack Ideal for Busy Developers
