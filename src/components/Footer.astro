@@ -9,51 +9,53 @@ const footerLogoProps = {
 }
 ---
 
-<footer class="bg-gray-600 text-gray-400">
-  <div class="container mx-auto py-8 px-4">
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 text-sm">
-      <div class="mb-6 lg:mb-0">
+<footer class="bg-black text-white">
+  <div class="container mx-auto py-8 px-16 border-gray-800 border-x max-w-8xl">
+    <div class="mb-6 lg:mb-0 flex justify-between items-center">
+      <div>
         <Logo {...footerLogoProps} />
-        <div class="flex text-3xl space-x-4 text-gray-400">
-          <a
-            href="https://www.linkedin.com/in/zentala/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-gray-100"
-            ><i class="fa-brands fa-linkedin"></i></a
-          >
-          <a
-            href="https://www.facebook.com/zentala/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-gray-100"
-            ><i class="fa-brands fa-facebook"></i></a
-          >
-          <a
-            href="https://www.instagram.com/pzentala/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-gray-100"
-            ><i class="fa-brands fa-instagram"></i></a
-          >
-          <a
-            href="https://github.com/zentala"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-gray-100"
-            ><i class="fa-brands fa-github"></i></a
-          >
-          <a
-            href="mailto:zentala@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-gray-100"
-            ><i class="fa-regular fa-envelope"></i></a
-          >
-        </div>
       </div>
-      <div class="mb-6 lg:mb-0"></div>
-      <div class="mb-6 lg:mb-0">
+      <div class="flex justify-end text-3xl space-x-4 text-gray-400">
+        <a
+          href="https://www.linkedin.com/in/zentala/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300 hover:text-gray-100"
+          ><i class="fa-brands fa-linkedin"></i></a
+        >
+        <a
+          href="https://www.facebook.com/zentala/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300 hover:text-gray-100"
+          ><i class="fa-brands fa-facebook"></i></a
+        >
+        <a
+          href="https://www.instagram.com/pzentala/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300 hover:text-gray-100"
+          ><i class="fa-brands fa-instagram"></i></a
+        >
+        <a
+          href="https://github.com/zentala"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300 hover:text-gray-100"
+          ><i class="fa-brands fa-github"></i></a
+        >
+        <a
+          href="mailto:zentala@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300 hover:text-gray-100"
+          ><i class="fa-regular fa-envelope"></i></a
+        >
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 text-sm">
+      <!-- <div class="mb-6 lg:mb-0">
         Żentała Innovation Agency specializes in implementing comprehensive
         applications and solutions in software, web development, marketing,
         artificial intelligence, automation, robotics, and the Internet of
@@ -72,17 +74,66 @@ const footerLogoProps = {
         future technology deployment. Key activities involve education and
         consulting on new technologies, prototype building (Proof of Concept),
         and forming IT teams for ongoing development and maintenance.
+      </div>-->
+    </div>
+  </div>
+  <div class="flex items-center border-y border-gray-800">
+    <div
+      class="container mx-auto p-16 flex justify-between max-w-8xl border-x border-gray-800"
+    >
+      <div class="grid grid-cols-12 gap-4 w-full">
+        <div class="col-span-5">
+          <h2 class="uppercase font-bold mb-2">About</h2>
+          <p>
+            Żentała Innovation Agency specializes in R&D projects and innovative
+            solutions in software, Developer Experience, IoT, automation, and
+            robotics. We deliver advanced technologies through customized
+            solutions, from needs analysis to Proof of Concept, enhancing your
+            company's competitiveness.
+          </p>
+          <p class="mt-2">
+            More:
+            <a href="#">Mission</a>, <a href="#">About</a>, <a href="#">Offer</a
+            >
+          </p>
+        </div>
+        <div class="col-span-2"></div>
+        <div class="col-span-3">
+          <h2 class="uppercase font-bold mb-2">Offer</h2>
+          <ul>
+            <li>Backstage Consulting</li>
+            <li>IoT Solution Design</li>
+            <li>Web Rapid Prototyping</li>
+            <li>Real Time Location Systems</li>
+            <li>Innovation Consulting</li>
+          </ul>
+        </div>
+        <div class="col-span-2">
+          <h2 class="uppercase font-bold mb-2">Blogs</h2>
+          <ul>
+            <li><a href="https://ideas.zentala.io">Startup Ideas</a></li>
+            <li><a href="https://ihome.zentala.io">Intelligent Home</a></li>
+            <li><a href="https://wifi.zentala.io">WiFi 802.11 Tech</a></li>
+            <li><a href="https://dev.zentala.io">Clever Developer</a></li>
+            <li><a href="https://devexp.zentala.io">DevExp</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <div class="flex items-center bg-gray-800 py-4">
-    <div class="container mx-auto px-4 flex justify-between">
-      <div class="text-gray-600 text-sm">
-        © 2024 <a href="/" class="hover:underline text-gray-500"
+
+  <div class="flex items-center">
+    <div
+      class="container mx-auto p-16 py-12 flex justify-between max-w-8xl border-x border-gray-800"
+    >
+      <div class="text-neutral-400 text-sm">
+        © 2024 <a href="/" class="hover:text-neutral-200 text-neutral-300"
           >Żentała Innovation Agency</a
         >
         <span class="mx-2">·</span>
-        <a href="/privacy-policy/" class="hover:underline text-gray-500"
+        <a
+          href="/privacy-policy/"
+          class="hover:text-neutral-200 text-neutral-300"
           >Polityka Prywatności</a
         >
       </div>

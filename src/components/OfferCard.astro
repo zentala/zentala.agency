@@ -2,13 +2,16 @@
 const { number, title, description, icon } = Astro.props
 ---
 
-<div class="relative overflow-hidden shadow-sm p-12 bg-white rounded-md">
-  <div class="flex justify-end">
-    <span class="icon text-9xl opacity-20 absolute right-4 top-4">{icon}</span>
+<a href="" class="block bg-black border border-gray-800 -m-px">
+  <div class="block relative overflow-hidden p-16">
+    <div class="flex justify-end">
+      <span class="icon text-9xl opacity-30 absolute right-4 top-4">{icon}</span
+      >
+    </div>
+    <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold"
+      >{number}</span
+    >
+    <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
+    <p class="lead text-gray-400 text-xl">{description}</p>
   </div>
-  <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold"
-    >{number}</span
-  >
-  <h3 class="header text-3xl mt-2 mb-4">{title}</h3>
-  <p class="lead text-gray-700 text-xl">{description}</p>
-</div>
+</a>

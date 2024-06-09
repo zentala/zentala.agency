@@ -3,22 +3,28 @@ import Layout from '../layouts/Layout.astro'
 ---
 
 <Layout title="Home">
-  <section class="hero bg-black flex justify-center items-center py-32 px-32">
-    <div class="container mx-auto">
-      <img src="./logo.ext.svg" class="mx-auto max-w-screen-lg" />
+  <section class="hero bg-black flex justify-center items-center">
+    <div class="container mx-auto max-w-8xl border-x border-gray-800 p-24">
+      <img src="./logo.ext.svg" class="mx-auto max-w-6xl" />
     </div>
   </section>
   <section></section>
-  <section class="text-center py-24">
-    <h1 class="text-sm font-bold">OUR MISSION IS</h1>
-    <p>
-      Integrate complex technical systems into practical business solutions that
-      generate revenue, optimize, streamline, and automate our clients'
-      processes.
-    </p>
-
-    <button class="btn mt-4">Read more</button>
+  <section class="hero bg-black border-y border-gray-800 text-white">
+    <div class="container mx-auto max-w-8xl border-gray-800 border-x p-16">
+      <div class="hero-content text-center">
+        <div class="max-w-lg">
+          <!-- <h1 class="text-5xl font-bold">OUR MISSION IS</h1>
+          <p class="py-6">
+            Integrate complex technical systems into practical business
+            solutions that generate revenue, optimize, streamline, and automate
+            our clients' processes.
+          </p>
+          <button class="btn btn-primary">Read more</button>
+        </div> -->
+        </div>
+      </div>
+    </div>
   </section>
-</Layout>
 
-<style></style>
+  <style></style>
+</Layout>

@@ -10,17 +10,14 @@ export interface Props {
 const { title, subtitle, image, link, key } = Astro.props
 ---
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden" data-key={key}>
-  <img src={image} alt={title} class="w-full h-48 object-cover" />
-  <div class="p-4">
-    <h2 class="text-2xl font-bold">{title}</h2>
-    <p class="mt-2 text-gray-600">{subtitle}</p>
-    {
-      link && (
-        <a href={link} class="mt-4 inline-block text-blue-500 hover:underline">
-          Read more
-        </a>
-      )
-    }
+<a
+  href={link ?? '#'}
+  class="block bg-black border border-gray-800 -m-px"
+  data-key={key}
+>
+  <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
+  <div class="p-16">
+    <h2 class="text-2xl text-white font-light">{title}</h2>
+    <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
   </div>
-</div>
+</a>

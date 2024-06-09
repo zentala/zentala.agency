@@ -38,9 +38,28 @@ const elements = [
     link: '/portfolio/open-smart-desk',
   },
   {
-    title: 'Merch Robot',
+    title: 'NFC Table',
+    subtitle: 'Detects presence of object on the table',
+  },
+  {
+    title: 'Game Player Nick Finder',
     subtitle:
-      'Developed a functional prototype of a socially-aware humanoid robot tailored for events and retail applications, enhancing its situational awareness through bespoke IoT integrations.',
+      'Python Django powerded web app helping to connect with old RPG gamming buddies via nicks. Just register yourself and let others find you by nick.',
+  },
+  {
+    title: 'Scrum My Life',
+    subtitle:
+      'Vue + Nuxt app for managing your life. It implements such time managment metodologies like scrum, eisenhower matrix, circle of life and more to help you organize you pivate life. ',
+  },
+  {
+    title: 'MoveUp',
+    subtitle:
+      'Open Smart Desk comanion app that laverages data form sensors in order to encourage you to move up. It can suggest breaks or raise itself autonomously to encourage standing work.',
+  },
+  {
+    title: 'WFH Signalizator',
+    subtitle:
+      'IoT device for working in home proffesionalss. Helps to inform other householders about your state of remote involvment - if you are on the call with camera, if spekaing, are you busy or not. ',
   },
 
   // wififorum
@@ -52,15 +71,12 @@ const elements = [
 
 <Layout title="Portfolio">
   <Hero {...heroProps} />
-  <main class="bg-slate-200">
-    <div class="container mx-auto pt-8 pb-16 px-4">
-      <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        :)
-      </div> -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+  <main class="bg-black border-y border-gray-800">
+    <div class="container mx-auto p-0 max-w-8xl border-x border-gray-800">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {
-          elements.map((element) => (
-            <PortfolioItem key="portfolio-{index}" {...element} />
+          elements.map((element, index) => (
+            <PortfolioItem key={`portfolio-${index}`} {...element} />
           ))
         }
       </div>
