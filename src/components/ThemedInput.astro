@@ -1,0 +1,30 @@
+---
+const { type = 'text', id = 'name', placeholder = 'Empty' } = Astro.props
+---
+
+<style>
+  .float-label-input {
+    /* margin: 32px 0; */
+  }
+
+  .float-label-input:focus-within label,
+  .float-label-input input:not(:placeholder-shown) + label {
+    transform: translateY(-1.5rem) scale(0.75);
+    /* background-color: white; */
+  }
+</style>
+
+<div class="relative float-label-input -m-px border border-gray-800">
+  <input
+    type={type}
+    id={id}
+    placeholder=" "
+    class="block w-full bg-black text-lg focus:outline-none focus:shadow-outline p-8 block focus:z-100 border m-px border-black focus:bg-gray-900 appearance-none leading-normal focus:border-blue-400"
+  />
+  <label
+    for={id}
+    class="absolute top-8 left-6 text-gray-400 pointer-events-none transition text-lg duration-200 ease-in-out x-2 text-grey-darker"
+  >
+    {placeholder}
+  </label>
+</div>

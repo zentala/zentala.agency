@@ -2,7 +2,7 @@
   "name": "",
   "type": "module",
   "version": "0.0.1",
-  "licence": "UNLICENSED",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

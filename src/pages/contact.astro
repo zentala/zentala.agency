@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import ThemedInput from '../components/ThemedInput.astro'
+import ThemedTextarea from '../components/ThemedTextarea.astro'
 
 const heroProps = {
   title: 'Contact',
@@ -11,12 +13,12 @@ const heroProps = {
 <Layout title="Portfolio">
   <Hero {...heroProps} />
   <main class="border-y border-gray-800 bg-black text-white">
-    <div class="container mx-auto pt-16 pb-16 px-4 border-x border-gray-800">
+    <div class="container mx-auto border-x border-gray-800">
       <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"> -->
       <!-- <section class="p-12"> -->
       <div class="flex justify-between">
-        <div class="w-1/3 p-16 pr-0">
-          <h2 class="text-4xl font-bold mb-4">Let's Talk</h2>
+        <div class="w-1/3 p-16">
+          <h2 class="text-4xl font-normal mb-4">Let's Talk</h2>
           <p class="mb-6 text-xl pr-16">
             Fell free to contact me. <br />I am always ready to help you.
           </p>
@@ -35,79 +37,39 @@ const heroProps = {
             </div>
           </div>
         </div>
-        <div class="w-2/3">
-          <div class="p-16 py-8">
-            <form class="grid grid-cols-2 gap-12 gap-y-6">
-              <label class="form-control w-full">
-                <div class="label">
-                  <span class="label-text">First name</span>
-                </div>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder=""
-                  class="input input-bordered w-full"
-                />
-              </label>
+        <div class="w-2/3 p-0 border-l border-gray-800">
+          <form class="grid grid-cols-2 m-px">
+            <ThemedInput type="text" id="fName" placeholder="First Name" />
+            <ThemedInput type="text" id="lName" placeholder="Last Name" />
+            <ThemedInput type="email" id="email" placeholder="Email" />
+            <ThemedInput type="tel" id="phone" placeholder="Phone" />
 
-              <label class="form-control w-full">
+            <div class="col-span-2">
+              <ThemedTextarea id="msg" placeholder="Your message" />
+              <!-- <label class="form-control">
                 <div class="label">
-                  <span class="label-text">Last Name</span>
+                  <span class="label-text">Message</span>
                 </div>
-                <input
-                  type="text"
-                  id="lastName"
-                  id="firstName"
-                  placeholder=""
-                  class="input input-bordered w-full"
-                />
-              </label>
-
-              <label class="form-control w-full">
-                <div class="label">
-                  <span class="label-text">Email</span>
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder=""
-                  class="input input-bordered w-full"
-                />
-              </label>
-
-              <label class="form-control w-full">
-                <div class="label">
-                  <span class="label-text">Email</span>
-                </div>
-                <input
-                  type="tel"
-                  id="phone"
-                  placeholder=""
-                  class="input input-bordered w-full"
-                />
-              </label>
-
-              <div class="col-span-2">
-                <label class="form-control">
-                  <div class="label">
-                    <span class="label-text">Message</span>
-                  </div>
-                  <textarea
-                    class="textarea textarea-bordered h-24"
-                    placeholder="Your message"></textarea>
-                </label>
-              </div>
-              <div class="col-span-2">
-                <input
-                  type="file"
-                  class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-                />
-              </div>
-              <div class="col-span-2 text-right">
-                <button type="submit" class="btn"> Send Message </button>
-              </div>
-            </form>
-          </div>
+                <textarea
+                  class="textarea textarea-bordered h-24"
+                  placeholder="Your message"></textarea>
+              </label> -->
+            </div>
+            <div class="col-span-2">
+              <!-- <input
+                type="file"
+                class="file-input file-input-bordered file-input-sm w-full max-w-xs"
+              /> -->
+            </div>
+            <div class="col-span-2 text-right">
+              <button
+                type="submit"
+                class="z-10 radius-0 border border-gray-800 p-8 px-16 text-lg -m-px font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white"
+              >
+                Send Message
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
