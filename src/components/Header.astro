@@ -12,7 +12,7 @@ const headerLogoProps = {
 const links = [
   { href: '/', text: 'Home' },
   // { href: '/mission', text: 'Mission' },
-  { href: '/about', text: 'About' },
+  // { href: '/about', text: 'About' },
   { href: '/offer', text: 'Offer' },
   // { href: '/faq', text: 'FAQ' },
   { href: '/portfolio', text: 'Portfolio' },
@@ -58,6 +58,7 @@ const links = [
 <script>
   window.addEventListener('scroll', function () {
     const header = document.querySelector('#header .container')
+    if (!header) return
     if (window.scrollY > 50) {
       header.classList.add('py-4')
       header.classList.remove('py-6')
