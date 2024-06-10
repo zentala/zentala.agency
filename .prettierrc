@@ -64,5 +64,6 @@
       }
     }
   ],
-  "prettier.requireConfig": true
+  "prettier.requireConfig": true,
+  "printWidth": 120
 }
