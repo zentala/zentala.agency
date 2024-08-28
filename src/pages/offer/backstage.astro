@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import OfferCard from '../../components/OfferCard.astro'
+
+const heroProps = {
+  title: 'Backstage Development Services',
+  subtitle: 'Elevate Your Developer Experience & Accelerate Innovation',
+}
+
+const offers = [
+  {
+    number: '01',
+    title: 'Backstage Implementation Strategy',
+    description:
+      "Leverage my deep knowledge of the Backstage ecosystem to create a tailored roadmap for your Developer Portal. I'll guide you through integrating existing plugins for quick wins, connecting your current managment, webdev, DevOps, and CI/CD tools. This approach delivers immediate value to developers and stakeholders, kickstarting your Backstage journey with proven, ready-to-use solutions that seamlessly fit into your existing development workflow.",
+    icon: '🚀',
+  },
+  {
+    number: '02',
+    title: 'Tailored UI/UX for Developer Portals',
+    description:
+      'Enhance your Backstage experience with custom UI/UX design. I create personalized home page designs and implement custom theming to match your branding. When designing new plugins, I focus on delivering an exceptional UX for developers, architects, and other stakeholders. My designs seamlessly integrate your existing workflows and tools, ensuring high adoption rates and improved productivity.',
+    icon: '🎨',
+  },
+  {
+    number: '03',
+    title: 'Advanced Backstage Architecture Design',
+    description:
+      "Benefit from my expertise in Backstage's core architecture. I specialize in designing custom entity processors to populate your Software Catalog with data from external sources like APIs or CMDBs. My experience includes developing custom auth providers and architecting complex plugins from scratch. This ensures your Backstage instance is tailored to your unique infrastructure and security needs.",
+    icon: '🏗️',
+  },
+  {
+    number: '04',
+    title: 'Custom Entity Processors & Catalog Integration',
+    description:
+      "Streamline your Software Catalog population with custom entity processors. I can create integrations with your existing APIs to automatically import component data, eliminating the need for manual catalog-info.yaml files. This approach allows you to quickly populate your catalog with data from custom sources (not just repos) while maintaining a single source of truth. Whether it's adding Kong API gateway services or CMDB data, I ensure your Backstage instance reflects your actual infrastructure.",
+    icon: '⚙️',
+  },
+  {
+    number: '05',
+    title: 'Bespoke Backstage Plugin Development',
+    description:
+      'Fill the gaps in your Backstage ecosystem with custom plugins. I develop tailored solutions that integrate seamlessly with your existing tools, including CI/CD pipelines and DevOps practices. From specialized analytics dashboards showing real-time build statuses to unique DevSecOps integrations, I ensure your Backstage instance provides all the features your team needs for maximum efficiency and standardization across your entire development lifecycle.',
+    icon: '🔌',
+  },
+  {
+    number: '06',
+    title: 'Documentation Excellence & TechDocs Mastery',
+    description:
+      'Elevate your documentation strategy with my comprehensive approach to TechDocs. I not only configure and optimize TechDocs for your Backstage instance but also educate your development teams on best practices in technical writing. Learn what to document and how to structure it for maximum clarity. I also set up custom documentation sources, integrating existing knowledge bases like Confluence, making all your documentation searchable and accessible within Backstage. This holistic approach ensures your teams create, maintain, and easily access high-quality, up-to-date documentation, significantly improving knowledge sharing and reducing onboarding time.',
+    icon: '📚',
+  },
+  {
+    number: '07',
+    title: 'Backstage Education & Evangelism',
+    description:
+      "Empower your development teams with in-depth Backstage knowledge. As a Backstage evangelist, I provide comprehensive education on Backstage's core concepts, benefits, and potential. Through interactive workshops and hands-on sessions, I teach developers how to create powerful plugins, effectively populate the Software Catalog, and leverage Backstage's features to their full potential. My approach goes beyond mere technical training – I inspire teams to innovate within the Backstage ecosystem, fostering a culture of collaboration and efficiency. By the end of our sessions, your teams will not only understand Backstage but will be enthusiastic about its capabilities, ensuring higher adoption rates and maximizing your return on investment.",
+    icon: '🎓',
+  },
+]
+---
+
+<Layout title="Backstage Development Services">
+  <Hero {...heroProps} />
+  <main class="bg-black border-y border-gray-800">
+    <div class="container mx-auto p-0 max-w-8xl border-x border-gray-800">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {offers.map((offer) => <OfferCard {...offer} />)}
+      </div>
+    </div>
+  </main>
+</Layout>
