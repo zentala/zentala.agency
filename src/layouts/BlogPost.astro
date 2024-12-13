@@ -1,0 +1,19 @@
+---
+// Istniejący kod...
+const { frontmatter } = Astro.props;
+const bannerEnd = frontmatter.bannerEnd;
+---
+
+<LayoutBase>
+  <!-- Istniejący kod z treścią wpisu... -->
+  
+  {bannerEnd && (
+    <Fragment>
+      {/* Dynamiczne importowanie bannera na podstawie sluga */}
+      {(() => {
+        const Banner = await import(`../banners/${bannerEnd}.astro`);
+        return <Banner.default />;
+      })()}
+    </Fragment>
+  )}
+</LayoutBase> 

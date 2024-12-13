@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import PostCard from '../../components/PostCard.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+  const categories = [...new Set(posts.map((post) => post.data.category))]
+
+  return categories.map((category) => ({
+    params: { category },
+    props: {
+      posts: posts.filter((post) => post.data.category === category),
+    },
+  }))
+}
+
+const { category } = Astro.params
+const { posts } = Astro.props
+---
+
+<Layout title={`Category: ${category}`}>
+  <main class="container mx-auto p-16 max-w-8xl border-x border-gray-800">
+    <h1 class="text-4xl font-light mb-8 text-white">
+      Posts in category: {category}
+    </h1>
+    <div class="grid gap-8">
+      {posts.map((post) => <PostCard {...post.data} />)}
+    </div>
+  </main>
+</Layout>
