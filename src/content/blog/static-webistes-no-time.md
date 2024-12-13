@@ -4,9 +4,7 @@ date: '2023-06-01'
 category: 'Development'
 imageUrl: 'https://example.com/ssr-static-site-generators.jpg'
 excerpt: 'Exploring the benefits of SSR and static site generators for efficient content creation.'
-authorName: 'Paweł Żentała'
-authorAvatar: 'https://avatars.githubusercontent.com/u/7286123?v=4'
-authorRole: 'Founder & CEO @ ZIA'
+authorVersion: 'zentala-solution-architect'
 ---
 
 # Static Site Generators Stack Ideal for Busy Developers
