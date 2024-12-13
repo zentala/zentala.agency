@@ -1,8 +1,100 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 // Twoje niestandardowe style
 body {
-  @apply bg-gray-100 text-gray-900;
+  @apply bg-black text-gray-900;
+}
+
+@layer base {
+  .prose {
+    --tw-prose-body: theme('colors.white');
+    --tw-prose-headings: theme('colors.white');
+    --tw-prose-lead: theme('colors.gray.300');
+    --tw-prose-links: theme('colors.blue.400');
+    --tw-prose-bold: theme('colors.white');
+    --tw-prose-counters: theme('colors.gray.400');
+    --tw-prose-bullets: theme('colors.gray.400');
+    --tw-prose-hr: theme('colors.gray.700');
+    --tw-prose-quotes: theme('colors.gray.300');
+    --tw-prose-quote-borders: theme('colors.gray.700');
+    --tw-prose-captions: theme('colors.gray.400');
+    --tw-prose-code: theme('colors.white');
+    --tw-prose-pre-code: theme('colors.gray.200');
+    --tw-prose-pre-bg: theme('colors.gray.800');
+    --tw-prose-th-borders: theme('colors.gray.700');
+    --tw-prose-td-borders: theme('colors.gray.700');
+
+    // Dodatkowe style dla elementów markdown
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-light mt-8 mb-4;
+    }
+
+    h1 {
+      @apply text-4xl;
+    }
+
+    h2 {
+      @apply text-3xl;
+    }
+
+    h3 {
+      @apply text-2xl;
+    }
+
+    p {
+      @apply mb-4 text-lg leading-relaxed;
+    }
+
+    a {
+      @apply text-blue-400 hover:text-blue-300 underline;
+    }
+
+    ul,
+    ol {
+      @apply my-4 ml-4;
+    }
+
+    li {
+      @apply mb-2;
+    }
+
+    blockquote {
+      @apply pl-4 border-l-4 border-gray-700 italic my-4;
+    }
+
+    hr {
+      @apply my-8;
+    }
+
+    pre {
+      @apply p-4 rounded-lg my-4;
+    }
+
+    code {
+      @apply px-1 py-0.5 rounded bg-gray-800 text-sm;
+    }
+
+    img {
+      @apply rounded-lg my-4;
+    }
+
+    table {
+      @apply w-full my-4;
+
+      th {
+        @apply bg-gray-800 p-2 text-left;
+      }
+
+      td {
+        @apply p-2 border-t border-gray-700;
+      }
+    }
+  }
 }

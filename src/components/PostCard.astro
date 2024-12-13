@@ -1,13 +1,13 @@
 ---
+import { getCollection } from 'astro:content'
+
 export interface PostProps {
   title: string
   date: string
   category: string
-  imageUrl: string
-  excerpt: string
-  authorName: string
-  authorAvatar: string
-  authorRole: string
+  imageUrl?: string
+  excerpt?: string
+  authorVersion?: string
   link: string
 }
 
@@ -15,28 +15,33 @@ const {
   title,
   date,
   category,
-  // imageUrl,
   excerpt,
-  authorName,
-  authorAvatar,
-  // authorRole,
+  authorVersion = 'zentala-devex-consultant',
   link,
 } = Astro.props
+
+// Pobieramy dane autora
+const authors = await getCollection('authors')
+const authorData = authors[0].data
+const author = authorData.find((a) => a.slug === authorVersion)
+
+if (!author) {
+  throw new Error(`Author not found for version: ${authorVersion}`)
+}
 ---
 
 <article class="flex flex-col items-start border border-gray-800 p-16 -m-px">
   <div class="flex items-center gap-x-2 text-gray-700">
     <img
-      src={authorAvatar}
-      alt={authorName}
+      src={author.avatar}
+      alt={author.name}
       class="h-5 w-5 rounded-full bg-gray-50"
     />
     <div class="text-sm leading-6">
       <p class="">
         <span class="font text-gray-400">
-          <a href="/about/me">
-            <span class="absolute inset-0"></span>
-            {authorName}
+          <a href={author.profileUrl}>
+            {author.name}
           </a>
         </span>
         <br />
@@ -46,7 +51,7 @@ const {
     <time datetime={date} class="text-gray-700">{date}</time>
     ·
     <a
-      href="#"
+      href={`/category/${category}`}
       class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
     >
       {category}</a
@@ -60,8 +65,12 @@ const {
         {title}
       </a>
     </h3>
-    <p class="mt-5 line-clamp-3 text-lg leading-6 text-gray-300">
-      {excerpt}
-    </p>
+    {
+      excerpt && (
+        <p class="mt-5 line-clamp-3 text-lg leading-6 text-gray-300">
+          {excerpt}
+        </p>
+      )
+    }
   </div>
 </article>

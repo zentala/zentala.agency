@@ -1,7 +1,8 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
+import TagList from '../../components/TagList.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
@@ -11,21 +12,86 @@ export async function getStaticPaths() {
 }
 
 const { postSlug } = Astro.params
-const posts: CollectionEntry<'blog'>[] = await getCollection('blog')
+const posts = await getCollection('blog')
 const post = posts.find((p) => p.slug === postSlug)
 
 if (!post) {
   throw new Error(`Post not found for slug: ${postSlug}`)
 }
+
+const authors = await getCollection('authors')
+const authorData = authors[0].data
+const author = authorData.find((a) => a.slug === post.data.authorVersion)
+
+if (!author) {
+  console.log(
+    'Available authors:',
+    authorData.map((a) => a.slug),
+  )
+  throw new Error(`Author not found for version: ${post.data.authorVersion}`)
+}
+
+const { Content } = await post.render()
 ---
 
 <Layout title={post.data.title}>
-  <main class="bg-slate-200">
+  <main class="container mx-auto p-16 max-w-8xl border-x border-gray-800">
     <div class="container mx-auto pt-8 pb-16 px-4">
-      <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
-      <p class="text-gray-500 text-sm mb-8">{post.data.date}</p>
-      <article class="prose lg:prose-xl">
-        {post.body}
+      <h1 class="text-4xl font-light mb-8 text-white">{post.data.title}</h1>
+
+      <div class="flex items-center gap-x-4 mb-8 text-sm">
+        <div class="flex items-center gap-x-2">
+          <img
+            src={author.avatar}
+            alt={author.name}
+            class="h-8 w-8 rounded-full bg-gray-50"
+          />
+          <div class="text-gray-400">
+            <a href={author.profileUrl} class="hover:text-gray-300">
+              {author.name}
+            </a>
+            {author.role && <p class="text-gray-600 text-xs">{author.role}</p>}
+          </div>
+        </div>
+        <span class="text-gray-600">·</span>
+        {
+          post.data.category && (
+            <>
+              <a
+                href={`/category/${post.data.category}`}
+                class="text-gray-500 hover:text-gray-300"
+              >
+                {post.data.category}
+              </a>
+              <span class="text-gray-600">·</span>
+            </>
+          )
+        }
+        <time datetime={post.data.date} class="text-gray-500">
+          {
+            new Date(post.data.date).toLocaleDateString('pl-PL', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          }
+        </time>
+        {
+          post.data.readingTime && (
+            <>
+              <span class="text-gray-600">·</span>
+              <span class="text-gray-500">
+                {post.data.readingTime} mins reading
+              </span>
+            </>
+          )
+        }
+      </div>
+
+      {post.data.tags && <TagList tags={post.data.tags} className="mb-8" />}
+
+      <article class="prose lg:prose-xl text-white">
+        <Content />
       </article>
     </div>
   </main>
