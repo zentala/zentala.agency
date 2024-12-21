@@ -1,5 +1,5 @@
 ---
-title: 'Developer Portals: Building the Bridge to AI-Powered Development Teams'
+title: 'Developer Portals are the missing link enabling AI-Powered LLM Agents to autonomously develop software in organizations'
 date: '2024-12-13'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/developer-portals-ai-bridge.jpg'
@@ -7,9 +7,18 @@ excerpt: 'Explore how developer portals are evolving beyond documentation hubs i
 authorVersion: 'zentala-devex-consultant'
 ---
 
-https://chatgpt.com/c/6741fe4b-3d28-8011-904a-6191f63cdab2
+tutaj trzebva zaczac calkiem inaczej:
 
-Developer Portals as a Gateway to Empowering Autonomous LLM Agents in Organizations
+- ze mowi sie na YT ze 2025 bedzie rokiem agentow ai, mowi tak wielu ludzi AI od Sama Altmana zaczynaajac
+- wszystkie duze firmy beda wdrazaly agnetow ai do wszyskiego
+- github juz wdrozyl copilota do githuba aby tam pisal kod
+- cursor ide juz jest bardzo zaawansowany w pisaniu i debugowaniu kodu za pomoca ai - dam linki jak to wyglada
+- angeci ai moga znaczaco przyspieszyc rozwianie oprogramowania w ogranizajach jesli tylko beda w stanie poruszac sie po zloznsosci infastukruey i mikro serwisow
+-
+- ze na yt w rozwazaniach o tym jak ai mialoby zabrac prace programistom mowi sie o agentach llm ktore musilby poruszac sie po drabinie wiedzy korpoacji, ktora pocki co jest na ogol bardzo ludzna i nieskodyfikowana
+- natomiast gdyby miec ja uyporzadkowana - np w taki sposbo jak porzadkuje ja sotware catalog w backstage - to takie agenty moglby wiedziec dosc duyzo o organizacji aby byc w stanie samodzielnie rozwizac problemy i zadania, przynajmnej te prostsze lub powtarzalne
+
+i tutaj przychodzui
 
 In the evolving landscape of software development, the tools we use today are shaping the work of tomorrow. Developer portals are not just repositories of knowledge or simple interfaces for developers; they are gateways to enabling autonomous LLM (Large Language Model) agents to efficiently solve problems within organizations by providing them with the needed context. The structured knowledge that developer portals provide offers a unique opportunity to transform how we think about onboarding, problem-solving, and automation.
 

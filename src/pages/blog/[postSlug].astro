@@ -15,6 +15,12 @@ const { postSlug } = Astro.params
 const posts = await getCollection('blog')
 const post = posts.find((p) => p.slug === postSlug)
 
+// console.log('Post data:', {
+//   slug: postSlug,
+//   bannerEnd: post?.data?.bannerEnd,
+//   fullPostData: post?.data,
+// })
+
 if (!post) {
   throw new Error(`Post not found for slug: ${postSlug}`)
 }
@@ -37,7 +43,7 @@ const { Content } = await post.render()
 <Layout title={post.data.title}>
   <main class="container mx-auto p-16 max-w-8xl border-x border-gray-800">
     <div class="container mx-auto pt-8 pb-16 px-4">
-      <h1 class="text-4xl font-light mb-8 text-white">{post.data.title}</h1>
+      <h1 class="text-6xl font-light mb-8 text-white">{post.data.title}</h1>
 
       <div class="flex items-center gap-x-4 mb-8 text-sm">
         <div class="flex items-center gap-x-2">
@@ -90,9 +96,29 @@ const { Content } = await post.render()
 
       {post.data.tags && <TagList tags={post.data.tags} className="mb-8" />}
 
-      <article class="prose lg:prose-xl text-white">
+      <article
+        class="prose text-white [&>p]:text-2xl [&>h2]:text-4xl [&>h3]:text-3xl [&>ul]:text-2xl [&>ol]:text-2xl [&>blockquote]:text-2xl"
+      >
         <Content />
       </article>
+
+      {
+        post.data.bannerEnd && (
+          <Fragment>
+            {(async () => {
+              try {
+                const Banner = await import(
+                  `../../banners/${post.data.bannerEnd}.astro`
+                )
+                return <Banner.default />
+              } catch (error) {
+                console.error('Błąd ładowania bannera:', error)
+                return null
+              }
+            })()}
+          </Fragment>
+        )
+      }
     </div>
   </main>
 </Layout>
