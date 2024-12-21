@@ -21,6 +21,12 @@ const links = [
 ]
 ---
 
+<style lang="scss">
+  .tracking-wide {
+    letter-spacing: 0.26rem;
+  }
+</style>
+
 <div class="h-20 bg-black"></div>
 
 <header
@@ -31,15 +37,22 @@ const links = [
     class="container mx-auto px-16 py-6 flex justify-between items-center max-w-8xl border-gray-800 border-x"
   >
     <div class="flex items-center">
-      <a href="/">
-        <Logo {...headerLogoProps} />
-        <span class="text-xl ml-4 text-white">Innovation Agency</span>
+      <Logo {...headerLogoProps} />
+      <a href="/" class="flex items-center cursor-pointer">
+        <span
+          class="text-lg ml-[40px] text-white tracking-wide font-medium uppercase"
+        >
+          Innovation Agency
+        </span>
       </a>
     </div>
-    <nav class="flex space-x-6 text-lg">
+    <nav class="flex space-x-10 text-base">
       {
         links.map((link) => (
-          <a href={link.href} class="text-white hover:text-gray-400">
+          <a
+            href={link.href}
+            class="text-white hover:text-gray-400 uppercase tracking-wide"
+          >
             {link.text}
           </a>
         ))

@@ -27,6 +27,7 @@ const blogCollection = defineCollection({
     excerpt: z.string().optional(),
     readingTime: z.number().optional(),
     tags: z.array(z.string()).optional(),
+    bannerEnd: z.string().optional(),
   }),
 })
 
