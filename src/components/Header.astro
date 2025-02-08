@@ -25,6 +25,29 @@ const links = [
   .tracking-wide {
     letter-spacing: 0.26rem;
   }
+
+  @media (max-width: 1200px) {
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .text-lg {
+      font-size: 0.82rem;
+      margin-left: 0;
+      margin-bottom: -4px;
+      padding-bottom: 0;
+      position: relative;
+      top: -4px;
+      opacity: 0.5;
+    }
+
+    nav {
+      align-self: flex-end;
+      margin-bottom: 7px;
+    }
+  }
 </style>
 
 <div class="h-20 bg-black"></div>
@@ -36,7 +59,7 @@ const links = [
   <div
     class="container mx-auto px-16 py-6 flex justify-between items-center max-w-8xl border-gray-800 border-x"
   >
-    <div class="flex items-center">
+    <div class="logo-container flex items-center">
       <Logo {...headerLogoProps} />
       <a href="/" class="flex items-center cursor-pointer">
         <span
@@ -51,7 +74,7 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="text-white hover:text-gray-400 uppercase tracking-wide"
+            class="text-white hover:text-gray-400 uppercase tracking-wide font-medium"
           >
             {link.text}
           </a>
