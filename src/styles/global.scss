@@ -98,3 +98,99 @@ body {
     }
   }
 }
+
+.custom-markdown {
+  h1 {
+    @apply text-5xl font-light mt-10 mb-8;
+  }
+
+  h2 {
+    @apply text-4xl font-light mt-28 mb-7;
+  }
+
+  h3 {
+    @apply text-3xl font-light mt-20 mb-6;
+  }
+
+  h4 {
+    @apply text-2xl font-normal mt-12 mb-5;
+  }
+
+  h5 {
+    @apply text-xl font-normal mt-8 mb-4;
+  }
+
+  h6 {
+    @apply text-lg font-normal mt-6 mb-3;
+  }
+
+  // Domyślny kolor tekstu
+  p,
+  li,
+  blockquote,
+  pre,
+  code,
+  table {
+    @apply text-gray-400; // Ustawienie koloru tekstu na szary
+  }
+
+  // Style dla listy numerowanej i wypunktowanej
+  ul {
+    @apply my-6 ml-10 list-disc; // Użycie istniejącej klasy list-disc
+  }
+
+  ol {
+    @apply my-6 ml-10; // Zwiększenie odstępu
+  }
+
+  li {
+    @apply mb-2; // Margines dolny dla elementów listy
+  }
+
+  // Style dla cytatów
+  blockquote {
+    @apply pl-6 border-l-4 border-gray-700 italic my-6; // Stylizowane cytaty
+  }
+
+  // Style dla poziomej linii
+  hr {
+    @apply my-8 border-gray-700; // Stylizowana linia pozioma
+  }
+
+  // Style dla kodu
+  pre {
+    @apply p-4 rounded-lg my-6 bg-gray-800 text-white; // Stylizowane bloki kodu
+  }
+
+  code {
+    @apply px-1 py-0.5 rounded bg-gray-800 text-sm; // Stylizowany tekst kodu
+  }
+
+  // Style dla obrazów
+  img {
+    @apply rounded-lg my-6; // Stylizowane obrazy
+  }
+
+  // Style dla tabel
+  table {
+    @apply w-full my-6;
+
+    th {
+      @apply bg-gray-800 p-2 text-left;
+    }
+
+    td {
+      @apply p-2 border-t border-gray-700;
+    }
+  }
+
+  // Zmniejszenie grubości czcionki dla pogrubionego tekstu
+  strong,
+  b {
+    @apply font-normal text-white; // Ustawienie na białą czcionkę regularną
+  }
+
+  p {
+    @apply text-gray-400 leading-relaxed; // Zwiększenie wysokości linii
+  }
+}

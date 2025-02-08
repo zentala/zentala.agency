@@ -1,5 +1,5 @@
 ---
-title: 'Continuous Onboarding: Why Traditional Knowledge Transfer Is Failing Modern Software Development'
+title: 'Why Traditional Knowledge Transfer Is Failing Modern Software Development And How To Improve It With Continuous Onboarding'
 date: '2024-12-13'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/continuous-onboarding.jpg'

@@ -30,7 +30,25 @@ if (!author) {
 }
 ---
 
-<article class="flex flex-col items-start border border-gray-800 p-16 -m-px">
+<style lang="scss">
+  .post-card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .post-card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+</style>
+
+<article
+  class="flex flex-col items-start border border-gray-800 p-16 -m-px post-card"
+>
   <div class="flex items-center gap-x-2 text-gray-700">
     <img
       src={author.avatar}
