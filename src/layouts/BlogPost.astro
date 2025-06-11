@@ -1,16 +1,16 @@
 ---
 import Layout from './Layout.astro'
-
+import { getCollection } from 'astro:content'
 const { frontmatter } = Astro.props
+let Banner = null
 const bannerEnd = frontmatter.bannerEnd
 
-let Banner = null
 if (bannerEnd) {
   Banner = (await import(`../banners/${bannerEnd}.astro`)).default
 }
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={frontmatter.title} description={frontmatter.excerpt}>
   <slot />
 
   {bannerEnd && Banner && <Banner />}
