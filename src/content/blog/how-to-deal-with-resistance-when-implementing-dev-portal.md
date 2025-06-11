@@ -8,11 +8,12 @@ authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 ---
 
-Implementing a new developer portal is not just a technical challenge; it's also a cultural one.
 
 ## How to Deal with Resistance When Implementing Developer Portals?
 
 Implementing a Developer Portal (DevPortal) in an organization, like any other knowledge management tool, can be met with resistance from the team. This is because these tools change the way people work and force the codification of previously informal knowledge shared between employees. Instead of imposing ready-made solutions, it can be more effective to inspire teams with the possibilities that a DevPortal offers and involve them in the design and implementation process. Resistance doesn't stem solely from a lack of understanding but also from fear of change. In this situation, it's helpful to take on the role of an advisor rather than just a tool provider.
+
+> Implementing a new developer portal is not just a technical challenge; it's also a cultural one.
 
 I would like to share some lessons learned from my experience implementing Developer Portals as well as localization systems. I have noticed that the same principles work across different contexts, helping to effectively reduce resistance and engage people in the change. Analogous to implementing localization systems, where knowledge about resources is centralized, introducing a DevPortal may raise concerns about what the system might reveal about individuals rather than processes. It is crucial to configure the system to speak about business processes, not individual users.
 
