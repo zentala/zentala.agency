@@ -18,7 +18,6 @@ const posts = (await getCollection('blog')).filter(
             date={post.data.date}
             category={post.data.category}
             excerpt={post.data.excerpt}
-            authorVersion={post.data.authorVersion}
             link={`/blog/${post.slug}`}
           />
         ))
