@@ -4,7 +4,7 @@ date: '2024-12-13'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/developer-portals-ai-bridge.jpg'
 excerpt: 'Explore how developer portals are evolving beyond documentation hubs into essential infrastructure for enabling AI agents in software development. Learn why structuring developer knowledge today paves the way for seamless collaboration between human developers and autonomous systems tomorrow, and how this transformation is reshaping our approach to knowledge transfer in technical organizations.'
-authorVersion: 'zentala-devex-consultant'
+authorRole: 'DevEx Consultant'
 published: false
 ---
 

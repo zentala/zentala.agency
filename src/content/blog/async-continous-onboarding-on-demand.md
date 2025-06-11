@@ -4,9 +4,11 @@ date: '2024-12-13'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/continuous-onboarding.jpg'
 excerpt: 'As software development accelerates and becomes more complex, traditional approaches to knowledge transfer and onboarding are breaking down. Learn why organizations need to shift towards continuous onboarding and how to implement it effectively with dedicated technical writing roles and systematic documentation processes.'
-authorVersion: 'zentala-devex-consultant'
+authorRole: 'DevEx Consultant'
 published: false
 ---
+
+In today's fast-paced technological landscape, the traditional model of developer onboarding—often a one-time, synchronous event—is becoming increasingly obsolete.
 
 ### The Reality of Modern Software Development
 
@@ -154,9 +156,9 @@ na podstawiwe tego bedziemny pisali arta ale na poczatek moze
 postaraj je sobie infograficznie uprzakodwac najpierw i ja ew cos dodam, jakas lista , naglowkie, etc
 
 Topic: Knowledge Transfer
-“We can't solve problems by using the same kind of thinking we used when we created them.” – Albert Einstein  
-“If you can't measure it, you can't manage it.” – Peter Drucker  
-“If you can't measure it, you can't manage it.” – Peter Drucker  
+"We can't solve problems by using the same kind of thinking we used when we created them." – Albert Einstein  
+"If you can't measure it, you can't manage it." – Peter Drucker  
+"If you can't measure it, you can't manage it." – Peter Drucker  
 How to Solve Knowledge Transfer Issues in your company  
 1
 3
@@ -235,7 +237,7 @@ time & effeciency
 employee emotional costs, eg. frustration, motivation  
 long time to find answer about internal architecture & systems  
 it takes time to even find who knows  
-“If you can't measure it, you can't manage it.” – Peter Drucker  
+"If you can't measure it, you can't manage it." – Peter Drucker  
 requesting help, hard to find someone who knows specific topic and have time  
 reduce time developers spent on searching internal knowdlege  
 Developers are not teachers nor instructional writers  
