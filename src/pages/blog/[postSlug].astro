@@ -32,18 +32,16 @@ const { Content } = await post.render()
 <Layout title={post.data.title}>
   <main class="container mx-auto p-16 max-w-8xl border-x border-gray-800">
     <div class="container mx-auto pt-8 pb-16 px-4">
-      <div class="flex items-center gap-x-4 mb-8 text-sm">
-        <div class="mt-8 flex items-center">
-          <img
-            class="h-12 w-12 rounded-full"
-            src={author.avatar}
-            alt={`Avatar of ${author.name}`}
-          />
-          <div class="ml-4">
-            <p class="text-lg font-semibold text-white">{author.name}</p>
-            <p class="text-sm text-gray-400">{authorRole}</p>
-          </div>
-        </div>
+      <div class="flex items-center gap-x-4 mb-8 pt-8 text-lg">
+        <img
+          class="h-10 w-10 rounded-full"
+          src={author.avatar}
+          alt={`Avatar of ${author.name}`}
+        />
+        <span class="text-white">
+          <span class="font-semibold">{author.name}</span>
+          <span class="text-gray-400 ml-2">{authorRole}</span>
+        </span>
         <span class="text-gray-600">·</span>
         {
           post.data.category && (
@@ -69,11 +67,11 @@ const { Content } = await post.render()
         </time>
       </div>
 
-      <h1 class="text-6xl font-light mb-6 text-white">{post.data.title}</h1>
+      <h1 class="text-6xl font-light mb-8 text-white">{post.data.title}</h1>
 
       {
         post.data.excerpt && (
-          <p class="text-2xl text-gray-300 leading-relaxed mb-12 font-light">
+          <p class="text-3xl text-gray-300 leading-relaxed mb-12 font-light">
             {post.data.excerpt}
           </p>
         )
