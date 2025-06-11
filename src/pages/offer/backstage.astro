@@ -1,0 +1,206 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+
+const heroProps = {
+  title: 'Backstage Developer Portal Services',
+  subtitle:
+    'Professional Backstage implementation, plugins development, and DevEx consulting',
+}
+
+const services = [
+  {
+    name: 'Custom Processors',
+    icon: '⚙️',
+    price: 'from €299',
+    description:
+      'Custom data processors and integrations for your Backstage catalog to index non-standard resources and systems',
+    features: [
+      'Entity discovery automation',
+      'Custom resource cataloging',
+      'API integrations',
+      'Legacy system connectors',
+    ],
+  },
+  {
+    name: 'Theme Customization',
+    icon: '🎨',
+    price: 'from €799',
+    description:
+      'Custom branding, UI customization, and AI-powered design solutions aligned with your brand identity',
+    features: [
+      'Brand-aligned visual design',
+      'Custom CSS themes',
+      'Component customization',
+      'Dark/light mode support',
+    ],
+  },
+  {
+    name: 'Plugin Development',
+    icon: '🔧',
+    price: 'from €1299',
+    description:
+      'Bespoke plugin creation and full-stack development services tailored to your specific needs',
+    features: [
+      'Frontend React components',
+      'Backend Node.js services',
+      'Database integrations',
+      'Third-party API connections',
+    ],
+  },
+  {
+    name: 'Strategic Consulting',
+    icon: '💡',
+    price: 'from €2500/day',
+    description:
+      'Strategic guidance, implementation support, and expert consultation for your Developer Portal journey',
+    features: [
+      'DevEx strategy planning',
+      'Architecture consulting',
+      'Team training & workshops',
+      'Implementation roadmaps',
+    ],
+  },
+]
+
+const expertiseAreas = [
+  'Full-stack Backstage plugin development',
+  'Custom entity processors for cataloging non-standard resources',
+  'Brand-aligned theme customization and UI development',
+  'AI chatbots with MCP & RAG integration',
+  'Infrastructure integration and automation',
+  'Developer team education and mentoring',
+  'Strategic management consultancy for DevEx transformation',
+]
+---
+
+<Layout
+  title="Backstage Developer Portal Services - Żentała Agency"
+  description="Professional Backstage implementation services including custom plugins, processors, theming, and strategic consulting for Internal Developer Portals."
+>
+  <Hero {...heroProps} />
+
+  <!-- Introduction Section -->
+  <section class="bg-black border-b border-gray-800">
+    <div class="container mx-auto px-6 py-16 max-w-6xl">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-white mb-6">
+          Enterprise-Grade Backstage Solutions
+        </h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Transform your development workflow with professionally implemented
+          Internal Developer Portals. I specialize in building Backstage IDPs
+          that streamline developer experience and boost productivity.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="bg-black border-b border-gray-800">
+    <div class="container mx-auto px-6 py-16 max-w-8xl">
+      <h2 class="text-4xl font-bold text-white text-center mb-12">
+        Our Services
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {
+          services.map((service) => (
+            <div class="bg-gray-900 border border-gray-800 rounded-lg p-8 hover:border-gray-700 transition-colors">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center">
+                  <span class="text-4xl mr-4">{service.icon}</span>
+                  <div>
+                    <h3 class="text-2xl font-semibold text-white">
+                      {service.name}
+                    </h3>
+                    <span class="text-blue-400 font-medium">
+                      {service.price}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-gray-400 mb-6">{service.description}</p>
+              <ul class="space-y-2">
+                {service.features.map((feature) => (
+                  <li class="flex items-center text-gray-300">
+                    <span class="text-green-400 mr-2">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise Section -->
+  <section class="bg-black border-b border-gray-800">
+    <div class="container mx-auto px-6 py-16 max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-4xl font-bold text-white mb-6">
+            My Backstage Expertise
+          </h2>
+          <p class="text-xl text-gray-400 mb-8">
+            With extensive experience in building Backstage IDPs for enterprise
+            clients, I deliver comprehensive solutions that enhance developer
+            productivity and streamline operations.
+          </p>
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-white mb-4">
+              Recent Highlights
+            </h3>
+            <p class="text-gray-400">
+              Developed AI chatbots with MCP & RAG integration, created custom
+              homepage components, and collaborated with stakeholders on
+              infrastructure integration for major enterprise clients.
+            </p>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-2xl font-semibold text-white mb-6">What I Deliver</h3>
+          <ul class="space-y-4">
+            {
+              expertiseAreas.map((area) => (
+                <li class="flex items-start">
+                  <span class="text-blue-400 mr-3 mt-1">▶</span>
+                  <span class="text-gray-300">{area}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-black">
+    <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
+      <h2 class="text-4xl font-bold text-white mb-6">
+        Ready to Transform Your Developer Experience?
+      </h2>
+      <p class="text-xl text-gray-400 mb-8">
+        Let's discuss how Backstage can revolutionize your development workflow
+        and boost team productivity.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/contact"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+        >
+          Start Your Project
+        </a>
+        <a
+          href="/portfolio"
+          class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg border border-gray-700 transition-colors"
+        >
+          View Portfolio
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
