@@ -9,19 +9,21 @@ const posts = (await getCollection('blog')).filter(
 ---
 
 <Layout title="Blog">
-  <main class="container mx-auto">
-    <div class="grid grid-cols-1">
-      {
-        posts.map((post) => (
-          <PostCard
-            title={post.data.title}
-            date={post.data.date}
-            category={post.data.category}
-            excerpt={post.data.excerpt}
-            link={`/blog/${post.slug}`}
-          />
-        ))
-      }
+  <main class="bg-black border-y border-gray-800">
+    <div class="container mx-auto max-w-8xl border-x border-gray-800 p-24">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              date={post.data.date}
+              category={post.data.category}
+              excerpt={post.data.excerpt}
+              link={`/blog/${post.slug}`}
+            />
+          ))
+        }
+      </div>
     </div>
   </main>
 </Layout>
