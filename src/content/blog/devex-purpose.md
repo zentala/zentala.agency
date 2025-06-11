@@ -4,7 +4,7 @@ date: '2024-12-14'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/understanding-developer-experience.jpg'
 excerpt: 'Explore why Developer Experience matters in modern software development, how it impacts productivity and well-being, and what strategies can improve it. Learn how leading companies like Spotify and Amazon have leveraged DevEx to solve complex development challenges.'
-authorVersion: 'zentala-devex-consultant'
+authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 ---
 

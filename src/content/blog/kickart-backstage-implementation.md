@@ -4,7 +4,7 @@ date: '2024-12-02'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/kickstart-backstage-implementation.jpg'
 excerpt: 'Kickstart your Backstage implementation with these practical steps to quickly prove value, build momentum, and secure support from both technical teams and management for the ongoing development of your developer portal, while managing limited resources effectively.'
-authorVersion: 'zentala-devex-consultant'
+authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 ---
 
@@ -30,7 +30,7 @@ This foundational cataloging ensures a strong base for further improvements and 
 
 ## 2. Connect All Documentation
 
-Integrate all your existing documentation into Backstage. Whether it’s Markdown files, [Confulence documentation](https://github.com/K-Phoen/backstage-plugin-confluence), or README files in project repositories, connect them to Backstage to make them easily discoverable within their relevant context.
+Integrate all your existing documentation into Backstage. Whether it's Markdown files, [Confulence documentation](https://github.com/K-Phoen/backstage-plugin-confluence), or README files in project repositories, connect them to Backstage to make them easily discoverable within their relevant context.
 
 ## 3. Leverage Available Plugins
 

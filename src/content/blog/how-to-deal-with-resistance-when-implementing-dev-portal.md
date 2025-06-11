@@ -4,9 +4,11 @@ date: '2024-12-14'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/understanding-developer-experience.jpg'
 excerpt: 'Through the lens of Developer Portal implementation, discover why successful organizational change requires empowering teams rather than imposing solutions. Learn how giving people tools and space to drive their own transformation leads to better adoption and reduced resistance. Based on real-world experiences, this article reveals universal change management principles that help teams embrace change on their own terms while maintaining alignment with organizational goals.'
-authorVersion: 'zentala-devex-consultant'
+authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 ---
+
+Implementing a new developer portal is not just a technical challenge; it's also a cultural one.
 
 ## How to Deal with Resistance When Implementing Developer Portals?
 
@@ -28,7 +30,7 @@ My experience as a tech PM in a French start-up Ubudu in Hong Kong taught me how
 
 1.  **Transparency and Clear Communication** – Regardless of what we are implementing, we need to be **honest** about the goals and architecture of the solution. People do not like surprises, especially when they can affect their privacy.
 2.  **Anonymity** – Systems should prioritize anonymity. There is significantly less resistance when people know that the system tracks objects, not individuals. For example, a system that reports a congested area in a warehouse is acceptable, whereas tracking individual employees is not.
-3.  **Empowerment and Control** – The exception where people accept being tracked is when they have **control** over when that tracking happens. An example is a “Find Me” option – the system works on the user's request, which greatly increases its acceptance.
+3.  **Empowerment and Control** – The exception where people accept being tracked is when they have **control** over when that tracking happens. An example is a "Find Me" option – the system works on the user's request, which greatly increases its acceptance.
 4.  **Non-Personalization** – Improving work efficiency should come from monitoring processes, not individual employees. Instead of tracking every developer, the system can point out, for example, repositories that frequently fail with error X or processes that take the most time.
 
 ### Lesson 3: Key Principles – Trust, Control, and Empowerment
