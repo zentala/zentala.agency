@@ -5,6 +5,7 @@ category: 'DevEx'
 imageUrl: 'https://zentala.io/images/continuous-onboarding.jpg'
 excerpt: 'As software development accelerates and becomes more complex, traditional approaches to knowledge transfer and onboarding are breaking down. Learn why organizations need to shift towards continuous onboarding and how to implement it effectively with dedicated technical writing roles and systematic documentation processes.'
 authorVersion: 'zentala-devex-consultant'
+published: false
 ---
 
 ### The Reality of Modern Software Development

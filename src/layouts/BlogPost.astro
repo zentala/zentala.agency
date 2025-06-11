@@ -1,19 +1,17 @@
 ---
-// Istniejący kod...
-const { frontmatter } = Astro.props;
-const bannerEnd = frontmatter.bannerEnd;
+import Layout from './Layout.astro'
+
+const { frontmatter } = Astro.props
+const bannerEnd = frontmatter.bannerEnd
+
+let Banner = null
+if (bannerEnd) {
+  Banner = (await import(`../banners/${bannerEnd}.astro`)).default
+}
 ---
 
-<LayoutBase>
-  <!-- Istniejący kod z treścią wpisu... -->
-  
-  {bannerEnd && (
-    <Fragment>
-      {/* Dynamiczne importowanie bannera na podstawie sluga */}
-      {(() => {
-        const Banner = await import(`../banners/${bannerEnd}.astro`);
-        return <Banner.default />;
-      })()}
-    </Fragment>
-  )}
-</LayoutBase> 
+<Layout title={frontmatter.title}>
+  <slot />
+
+  {bannerEnd && Banner && <Banner />}
+</Layout>

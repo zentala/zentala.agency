@@ -3,13 +3,15 @@ import Layout from '../layouts/Layout.astro'
 // import Hero from '../components/Hero.astro'
 import PostCard from '../components/PostCard.astro'
 import { getCollection } from 'astro:content'
-import TextBlockIcon from '../components/TextBlockIcon.astro'
 
 // const heroProps = {
 //   title: 'Blog',
 //   subtitle: '...',
 // }
-const posts = await getCollection('blog')
+const posts = (await getCollection('blog')).filter(
+  (post) => import.meta.env.DEV || post.data.published !== false,
+)
+const authors = (await getCollection('authors'))[0].data
 ---
 
 <Layout title="Blog">
@@ -57,19 +59,24 @@ const posts = await getCollection('blog')
     <div class="container mx-auto border-x border-gray-800">
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {
-          posts.map((post) => (
-            <PostCard
-              title={post.data.title}
-              date={post.data.date}
-              category={post.data.category}
-              imageUrl={post.data.imageUrl}
-              excerpt={post.data.excerpt}
-              authorName={post.data.authorName}
-              authorAvatar={post.data.authorAvatar}
-              authorRole={post.data.authorRole}
-              link={`/blog/${post.slug}`}
-            />
-          ))
+          posts.map((post) => {
+            const author = authors.find(
+              (a) => a.slug === post.data.authorVersion,
+            )
+            return (
+              <PostCard
+                title={post.data.title}
+                date={post.data.date}
+                category={post.data.category}
+                imageUrl={post.data.imageUrl}
+                excerpt={post.data.excerpt}
+                authorName={author?.name}
+                authorAvatar={author?.avatar}
+                authorRole={author?.role}
+                link={`/blog/${post.slug}`}
+              />
+            )
+          })
         }
       </div>
     </div>

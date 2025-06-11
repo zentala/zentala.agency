@@ -4,7 +4,9 @@ import PostCard from '../../components/PostCard.astro'
 import { getCollection } from 'astro:content'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
+  const posts = (await getCollection('blog')).filter(
+    (post) => import.meta.env.DEV || post.data.published !== false,
+  )
   const categories = [...new Set(posts.map((post) => post.data.category))]
 
   return categories.map((category) => ({
@@ -25,7 +27,18 @@ const { posts } = Astro.props
       Posts in category: {category}
     </h1>
     <div class="grid gap-8">
-      {posts.map((post) => <PostCard {...post.data} />)}
+      {
+        posts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            date={post.data.date}
+            category={post.data.category}
+            imageUrl={post.data.imageUrl}
+            excerpt={post.data.excerpt}
+            link={`/blog/${post.slug}`}
+          />
+        ))
+      }
     </div>
   </main>
 </Layout>
