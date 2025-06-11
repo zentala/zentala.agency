@@ -1,0 +1,136 @@
+---
+export interface QuoteProps {
+  text: string
+  author?: string
+  source?: string
+}
+
+const { text, author, source } = Astro.props
+---
+
+<blockquote class="quote-container">
+  <div class="quote-content">
+    <div class="quote-text">
+      {text}
+    </div>
+    {
+      author && (
+        <footer class="quote-footer">
+          <cite class="quote-author">
+            {author}
+            {source && <span class="quote-source">, {source}</span>}
+          </cite>
+        </footer>
+      )
+    }
+  </div>
+</blockquote>
+
+<style lang="scss">
+  .quote-container {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    border-left: 4px solid #ffffff;
+    border-radius: 8px;
+    padding: 3rem 2rem 2rem 2rem;
+    margin: 2rem 0;
+    max-width: 800px;
+
+    // Duże cudzysłowy na początku
+    &::before {
+      content: '"';
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      color: rgba(255, 255, 255, 0.2);
+      position: absolute;
+      top: -0.5rem;
+      left: 1rem;
+      line-height: 1;
+      z-index: 1;
+    }
+
+    // Duże cudzysłowy na końcu
+    &::after {
+      content: '"';
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      color: rgba(255, 255, 255, 0.2);
+      position: absolute;
+      bottom: -2rem;
+      right: 1rem;
+      line-height: 1;
+      z-index: 1;
+    }
+  }
+
+  .quote-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .quote-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: #ffffff;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      font-size: 2rem;
+      line-height: 1.5;
+    }
+  }
+
+  .quote-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .quote-author {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: normal;
+    font-weight: 500;
+
+    .quote-source {
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  // Wariant z tłem gradientowym
+  .quote-container.gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 51, 234, 0.1) 100%
+    );
+    border-left-color: #3b82f6;
+  }
+
+  // Wariant minimalistyczny
+  .quote-container.minimal {
+    background: transparent;
+    border: none;
+    padding: 2rem 1rem;
+
+    &::before,
+    &::after {
+      color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  // Wariant z cieniem
+  .quote-container.shadow {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+</style>
+
