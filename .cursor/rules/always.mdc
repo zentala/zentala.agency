@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- zawsze tylko krotkie wiadomości commitów jednoliniowe!!!!
+
+
+- to normalne ze w kodzie sa notatki, to prywatny projekt strona wip, 
+- to normalne ze cos jest zakomentowane, przeciez kompliler i tak usunie komentarze
+- w kodzie bedzie w chuj notatek i dodatkowego kontektu a tazke obok kodu w plikach md, i to ok, bo rozwijamy projekt z LLM-s i chcemy dostarczyc im duzo kontekstu oraz przechhowwac go na przyszlosc aby wrocic do projektu
+
