@@ -1,17 +1,37 @@
 ---
-const { number, title, description, icon } = Astro.props
+const { number, title, description, icon, href } = Astro.props
 ---
 
-<a href="" class="block bg-black border border-gray-800 -m-px">
-  <div class="block relative overflow-hidden p-16">
-    <div class="flex justify-end">
-      <span class="icon text-9xl opacity-30 absolute right-4 top-4">{icon}</span
-      >
+{
+  href ? (
+    <a href={href} class="block bg-black border border-gray-800 -m-px">
+      <div class="block relative overflow-hidden p-16">
+        <div class="flex justify-end">
+          <span class="icon text-9xl opacity-30 absolute right-4 top-4">
+            {icon}
+          </span>
+        </div>
+        <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold">
+          {number}
+        </span>
+        <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
+        <p class="lead text-gray-400 text-xl">{description}</p>
+      </div>
+    </a>
+  ) : (
+    <div class="block bg-black border border-gray-800 -m-px">
+      <div class="block relative overflow-hidden p-16">
+        <div class="flex justify-end">
+          <span class="icon text-9xl opacity-30 absolute right-4 top-4">
+            {icon}
+          </span>
+        </div>
+        <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold">
+          {number}
+        </span>
+        <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
+        <p class="lead text-gray-400 text-xl">{description}</p>
+      </div>
     </div>
-    <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold"
-      >{number}</span
-    >
-    <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
-    <p class="lead text-gray-400 text-xl">{description}</p>
-  </div>
-</a>
+  )
+}
