@@ -14,7 +14,10 @@ const posts = (await getCollection('blog')).filter(
 const authors = (await getCollection('authors'))[0].data
 ---
 
-<Layout title="Blog">
+<Layout
+  title="Blog"
+  description="The Żentała Innovation Agency blog - insights, trends, and knowledge on technology, innovation, and business. Explore articles on DevEx, AI, IoT, and more."
+>
   <!-- <Hero {...heroProps} /> -->
 
   <!-- <section
@@ -60,9 +63,7 @@ const authors = (await getCollection('authors'))[0].data
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {
           posts.map((post) => {
-            const author = authors.find(
-              (a) => a.slug === post.data.authorVersion,
-            )
+            const author = authors.find((a) => a.slug === post.data.author)
             return (
               <PostCard
                 title={post.data.title}
@@ -72,7 +73,7 @@ const authors = (await getCollection('authors'))[0].data
                 excerpt={post.data.excerpt}
                 authorName={author?.name}
                 authorAvatar={author?.avatar}
-                authorRole={author?.role}
+                authorRole={post.data.authorRole || author?.role}
                 link={`/blog/${post.slug}`}
               />
             )

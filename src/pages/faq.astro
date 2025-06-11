@@ -38,43 +38,61 @@ const faqData = [
 ]
 ---
 
-<Layout title="FAQ">
+<Layout
+  title="FAQ"
+  description="Find answers to frequently asked questions about Żentała Innovation Agency's services, projects, and collaboration process."
+>
   <Hero {...heroProps} />
   <main class="bg-slate-200">
     <div class="lg:container lg:mx-auto lg:py-16 md:py-12 md:px-6 py-12 px-4">
-
-      <div class="lg:mt-12 bg-gray-100 md:mt-10 mt-8 lg:py-7 lg:px-6 md:p-6 py-6 px-4 lg:w-8/12 w-full mx-auto">
+      <div
+        class="lg:mt-12 bg-gray-100 md:mt-10 mt-8 lg:py-7 lg:px-6 md:p-6 py-6 px-4 lg:w-8/12 w-full mx-auto"
+      >
         <div class="flex justify-between md:flex-row flex-col">
           <div class="md:mb-0 mb-8 md:text-left text-center">
             <h2 class="font-medium text-xl leading-5 text-black lg:mb-2 mb-4">
               Questions
             </h2>
-            <p class="font-normal text-sm leading-5 text-gray-600 md:w-8/12 md:ml-0 w-11/12 mx-auto">
-              If you don’t find your answer, Please contact us or Leave a Message, we’ll be more than happy to assist you.
+            <p
+              class="font-normal text-sm leading-5 text-gray-600 md:w-8/12 md:ml-0 w-11/12 mx-auto"
+            >
+              If you don't find your answer, Please contact us or Leave a
+              Message, we'll be more than happy to assist you.
             </p>
           </div>
 
           <label class="input input-bordered flex items-center gap-2">
             <input type="text" class="grow" placeholder="Search" />
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              class="w-4 h-4 opacity-70"
+              ><path
+                fill-rule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clip-rule="evenodd"></path></svg
+            >
           </label>
         </div>
       </div>
- 
+
       <div class="lg:w-8/12 w-full mx-auto">
-        {faqData.map((faq, index) => (
-          <div data-key={index}>
-            <div class="collapse collapse-arrow bg-base-200 my-4">
-              <input type="radio" name="faq-accordion" />
-              <div class="collapse-title text-xl font-medium">
-                Q{index + 1}. {faq.question}
-              </div>
-              <div class="collapse-content">
-                <p>{faq.answer}</p>
+        {
+          faqData.map((faq, index) => (
+            <div data-key={index}>
+              <div class="collapse collapse-arrow bg-base-200 my-4">
+                <input type="radio" name="faq-accordion" />
+                <div class="collapse-title text-xl font-medium">
+                  Q{index + 1}. {faq.question}
+                </div>
+                <div class="collapse-content">
+                  <p>{faq.answer}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </main>
