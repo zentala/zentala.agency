@@ -4,20 +4,42 @@ export interface Props {
   subtitle: string
   image?: string
   link?: string
+  linkTitle?: string
   key: string
 }
 
-const { title, subtitle, link, key } = Astro.props // image
+const { title, subtitle, link, linkTitle, key } = Astro.props // image
+
+// Determine if link is external (starts with http)
+const isExternalLink = link && (link.startsWith('http://') || link.startsWith('https://'))
+const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer' } : {}
 ---
 
-<a
-  href={link ?? '#'}
-  class="block bg-black border border-gray-800 -m-px"
-  data-key={key}
->
-  <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
-  <div class="p-16">
-    <h2 class="text-2xl text-white font-light">{title}</h2>
-    <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
+{link ? (
+  <a
+    href={link}
+    class="block bg-black border border-gray-800 -m-px hover:bg-gray-900 transition-colors"
+    data-key={key}
+    {...linkProps}
+  >
+    <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
+    <div class="p-16">
+      <h2 class="text-2xl text-white font-light">{title}</h2>
+      <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
+      {linkTitle && (
+        <p class="mt-4 text-sm text-blue-400 opacity-75">→ {linkTitle}</p>
+      )}
+    </div>
+  </a>
+) : (
+  <div
+    class="block bg-black border border-gray-800 -m-px"
+    data-key={key}
+  >
+    <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
+    <div class="p-16">
+      <h2 class="text-2xl text-white font-light">{title}</h2>
+      <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
+    </div>
   </div>
-</a>
+)}
