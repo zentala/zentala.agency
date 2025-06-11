@@ -1,11 +1,12 @@
 ---
-import { getCollection, getEntry } from 'astro:content'
-import type { CollectionEntry } from 'astro:content'
+import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import TagList from '../../components/TagList.astro'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
+  const posts = (await getCollection('blog')).filter(
+    (post) => import.meta.env.DEV || post.data.published !== false,
+  )
   return posts.map((post) => ({
     params: { postSlug: post.slug },
   }))
@@ -103,21 +104,18 @@ const { Content } = await post.render()
       </article>
 
       {
-        post.data.bannerEnd && (
-          <Fragment>
-            {(async () => {
-              try {
-                const Banner = await import(
-                  `../../banners/${post.data.bannerEnd}.astro`
-                )
-                return <Banner.default />
-              } catch (error) {
-                console.error('Błąd ładowania bannera:', error)
-                return null
-              }
-            })()}
-          </Fragment>
-        )
+        post.data.bannerEnd &&
+          (async () => {
+            try {
+              const Banner = await import(
+                `../../banners/${post.data.bannerEnd}.astro`
+              )
+              return <Banner.default />
+            } catch (error) {
+              console.error('Błąd ładowania bannera:', error)
+              return null
+            }
+          })()
       }
     </div>
   </main>

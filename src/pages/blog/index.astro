@@ -3,7 +3,9 @@ import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/PostCard.astro'
 
-const posts = await getCollection('blog')
+const posts = (await getCollection('blog')).filter(
+  (post) => import.meta.env.DEV || post.data.published !== false,
+)
 ---
 
 <Layout title="Blog">
@@ -24,4 +26,3 @@ const posts = await getCollection('blog')
     </div>
   </main>
 </Layout>
-
