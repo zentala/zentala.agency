@@ -1,20 +1,5 @@
-- slug: zentala-devex-consultant
+- slug: pawel-zentala
   name: Paweł Żentała
   role: DevEx Consultant
   avatar: https://avatars.githubusercontent.com/u/7286123?v=4
   profileUrl: /about/me
-  version: zentala-devex-consultant
-
-- slug: zentala-innovation-activist
-  name: Paweł Żentała
-  role: Innovation Activist
-  avatar: https://avatars.githubusercontent.com/u/7286123?v=4
-  profileUrl: /about/me
-  version: zentala-innovation-activist
-
-- slug: zentala-solution-architect
-  name: Paweł Żentała
-  role: Solution Architect
-  avatar: https://avatars.githubusercontent.com/u/7286123?v=4
-  profileUrl: /about/me
-  version: zentala-solution-architect
