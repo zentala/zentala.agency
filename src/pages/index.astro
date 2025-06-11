@@ -1,28 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import TrustedMe from '../components/TrustedMe.astro'
+import TextBlockIcon from '../components/TextBlockIcon.astro'
+const heroProps = {
+  title: 'Żentała',
+  subtitle: 'Innovation Agency',
+}
 ---
 
-<Layout title="Home">
-  <section class="hero bg-black flex justify-center items-center">
+<Layout
+  title="Home"
+  description="Żentała Innovation Agency - Driving progress through cutting-edge technology solutions in software, IoT, and automation. Let's build the future, together."
+>
+  <Hero {...heroProps} />
+  <main class="bg-black border-y border-gray-800">
     <div class="container mx-auto max-w-8xl border-x border-gray-800 p-24">
       <img src="./logo.ext.svg" class="mx-auto max-w-6xl" />
     </div>
+  </main>
+  <section>
+    <TrustedMe />
   </section>
-  <section></section>
   <section class="hero bg-black border-y border-gray-800 text-white">
-    <div class="container mx-auto max-w-8xl border-gray-800 border-x p-16">
-      <div class="hero-content text-center">
-        <div class="max-w-lg">
-          <!-- <h1 class="text-5xl font-bold">OUR MISSION IS</h1>
-          <p class="py-6">
-            Integrate complex technical systems into practical business
-            solutions that generate revenue, optimize, streamline, and automate
-            our clients' processes.
-          </p>
-          <button class="btn btn-primary">Read more</button>
-        </div> -->
-        </div>
-      </div>
+    <div class="container mx-auto max-w-8xl border-x border-gray-800 p-24">
+      <h2 class="text-4xl font-bold">Zaufali mi</h2>
     </div>
   </section>
 
