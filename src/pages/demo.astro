@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro'
+import TrustedMe from '../components/TrustedMe.astro'
+import Hero from '../components/Hero.astro'
+
+const heroProps = {
+  title: 'Demo',
+  subtitle: 'Testing ground for new components',
+}
+---
+
+<Layout
+  title="Demo - Component Testing"
+  description="Demo page for testing and developing new components locally before implementation."
+>
+  <Hero {...heroProps} />
+
+  <main class="bg-black border-y border-gray-800">
+    <div class="container mx-auto max-w-8xl border-x border-gray-800 p-24">
+      <div class="text-white mb-8">
+        <h2 class="text-4xl font-light mb-4">Component Testing Area</h2>
+        <p class="text-gray-400">
+          This page is for testing new components locally before implementing
+          them on the main site.
+        </p>
+      </div>
+
+      <!-- Trusted Me Component Test -->
+      <section class="mb-16">
+        <h3 class="text-2xl font-light text-white mb-8">
+          Trusted Me Component
+        </h3>
+        <TrustedMe />
+      </section>
+
+      <!-- Additional sections for future components -->
+      <section class="mb-16">
+        <h3 class="text-2xl font-light text-white mb-8">Zaufali mi Section</h3>
+        <div class="hero bg-black border border-gray-800 text-white">
+          <div class="p-24">
+            <h2 class="text-4xl font-bold">Zaufali mi</h2>
+            <p class="text-gray-400 mt-4">
+              Sekcja do pokazania klientów - do rozwinięcia
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Placeholder for more components -->
+      <section>
+        <h3 class="text-2xl font-light text-white mb-8">Future Components</h3>
+        <div class="border border-gray-800 p-8 text-center text-gray-400">
+          <p>Miejsce na nowe komponenty w przyszłości</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
