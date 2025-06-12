@@ -3,204 +3,354 @@ import Layout from '../../layouts/Layout.astro'
 import Hero from '../../components/Hero.astro'
 
 const heroProps = {
-  title: 'Backstage Developer Portal Services',
-  subtitle:
-    'Professional Backstage implementation, plugins development, and DevEx consulting',
+  title: 'Backstage IDP Services',
+  subtitle: 'Bringing innovative solutions to your Developer Experience',
 }
 
-const services = [
+//TODO make some hereo with it
+// title: 'Extend Backstage. Upgrade Your Developer Experience.',
+//   subtitle:
+//     'Custom plugins, processors, and strategic consulting to transform your developer portal into a productivity powerhouse.',
+// }
+
+// TODO can use in copy : Creative DevEx engineer & strategic consultant who brings innovative solutions to your developer experience
+
+const developmentServices = [
   {
-    name: 'Custom Processors',
+    name: 'Custom Plugin Development',
+    icon: '🚀',
+    description:
+      'Bespoke plugins that solve your specific workflow challenges - from simple automations to complex full-stack features',
+    features: [
+      'API integrations with your tech stack',
+      'Custom UI components & workflows',
+      'Entity pages & homepage widgets',
+      'Real-time data synchronization',
+    ],
+  },
+  {
+    name: 'Processors & Catalog Engineering',
     icon: '⚙️',
-    price: 'from €299',
     description:
-      'Custom data processors and integrations for your Backstage catalog to index non-standard resources and systems',
+      'Pre/post processors that transform how Backstage catalogs and processes your resources',
     features: [
-      'Entity discovery automation',
-      'Custom resource cataloging',
-      'API integrations',
-      'Legacy system connectors',
+      'Custom entity processors',
+      'Non-standard resource cataloging',
+      'Automated discovery & ingestion',
+      'Data transformation pipelines',
     ],
   },
   {
-    name: 'Theme Customization',
+    name: 'Theme & UI Customization',
     icon: '🎨',
-    price: 'from €799',
     description:
-      'Custom branding, UI customization, and AI-powered design solutions aligned with your brand identity',
+      'Transform Backstage into a branded experience that developers love to use',
     features: [
-      'Brand-aligned visual design',
-      'Custom CSS themes',
-      'Component customization',
-      'Dark/light mode support',
-    ],
-  },
-  {
-    name: 'Plugin Development',
-    icon: '🔧',
-    price: 'from €1299',
-    description:
-      'Bespoke plugin creation and full-stack development services tailored to your specific needs',
-    features: [
-      'Frontend React components',
-      'Backend Node.js services',
-      'Database integrations',
-      'Third-party API connections',
-    ],
-  },
-  {
-    name: 'Strategic Consulting',
-    icon: '💡',
-    price: 'from €2500/day',
-    description:
-      'Strategic guidance, implementation support, and expert consultation for your Developer Portal journey',
-    features: [
-      'DevEx strategy planning',
-      'Architecture consulting',
-      'Team training & workshops',
-      'Implementation roadmaps',
+      'Custom corporate theming',
+      'Portal branding - naming, logo, taglines',
+      'Dark mode optimization',
+      'Optionally custom navigation',
     ],
   },
 ]
 
-const expertiseAreas = [
-  'Full-stack Backstage plugin development',
-  'Custom entity processors for cataloging non-standard resources',
-  'Brand-aligned theme customization and UI development',
-  'AI chatbots with MCP & RAG integration',
-  'Infrastructure integration and automation',
-  'Developer team education and mentoring',
-  'Strategic management consultancy for DevEx transformation',
+const consultingServices = [
+  {
+    name: 'Strategic DevEx Consulting',
+    icon: '💡',
+    description:
+      'Long-term strategic guidance to architect and implement your Backstage ecosystem',
+    features: [
+      'DevEx strategy & roadmaps',
+      'Platform architecture design',
+      'Integration strategy planning',
+      'Team skill development planning',
+      'Innovation & best practices',
+      'Monthly progress reviews',
+    ],
+  },
+  {
+    name: 'AI-Powered DevEx',
+    icon: '🤖',
+    description:
+      'Integrate cutting-edge AI capabilities into your developer workflows',
+    features: [
+      'AI chatbots with MCP & RAG',
+      'LLM-powered automations',
+      'Custom AI plugin development',
+      'Workflow intelligence',
+    ],
+  },
+  {
+    name: 'Developer Education',
+    icon: '🎓',
+    description:
+      'Empower your teams with knowledge and best practices for Backstage success',
+    features: [
+      'Team workshops & training',
+      'Plugin development courses',
+      'Best practices mentoring',
+      'Documentation & guides',
+    ],
+  },
+]
+
+const whyExternalConsultant = [
+  'Fresh perspective on your challenges',
+  'Hands-on builder who codes alongside your team',
+  'Latest DevEx trends, Backstage solutions and AI innovations',
+  'Objective assessment of your needs',
+  'No internal politics or bias',
+  'Focus on knowledge transfer, not dependency',
+  'Knowledge transfer built into every engagement',
+  'Accelerate your roadmap by months',
 ]
 ---
 
 <Layout
-  title="Backstage Developer Portal Services - Żentała Agency"
-  description="Professional Backstage implementation services including custom plugins, processors, theming, and strategic consulting for Internal Developer Portals."
+  title="Backstage DevEx Consulting - Żentała Agency"
+  description="Creative DevEx engineer and strategic consultant specializing in Backstage implementation, AI integration, and developer experience transformation."
 >
   <Hero {...heroProps} />
 
-  <!-- Introduction Section -->
-  <section class="bg-black border-b border-gray-800">
-    <div class="container mx-auto px-6 py-16 max-w-6xl">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold text-white mb-6">
-          Enterprise-Grade Backstage Solutions
-        </h2>
-        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-          Transform your development workflow with professionally implemented
-          Internal Developer Portals. I specialize in building Backstage IDPs
-          that streamline developer experience and boost productivity.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section class="bg-black border-b border-gray-800">
-    <div class="container mx-auto px-6 py-16 max-w-8xl">
-      <h2 class="text-4xl font-bold text-white text-center mb-12">
-        Our Services
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {
-          services.map((service) => (
-            <div class="bg-gray-900 border border-gray-800 rounded-lg p-8 hover:border-gray-700 transition-colors">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center">
-                  <span class="text-4xl mr-4">{service.icon}</span>
-                  <div>
-                    <h3 class="text-2xl font-semibold text-white">
-                      {service.name}
-                    </h3>
-                    <span class="text-blue-400 font-medium">
-                      {service.price}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-gray-400 mb-6">{service.description}</p>
-              <ul class="space-y-2">
-                {service.features.map((feature) => (
-                  <li class="flex items-center text-gray-300">
-                    <span class="text-green-400 mr-2">✓</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Expertise Section -->
+  <!-- About Section -->
   <section class="bg-black border-b border-gray-800">
     <div class="container mx-auto px-6 py-16 max-w-6xl">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 class="text-4xl font-bold text-white mb-6">
-            My Backstage Expertise
+            Your Creative DevEx Partner
           </h2>
-          <p class="text-xl text-gray-400 mb-8">
-            With extensive experience in building Backstage IDPs for enterprise
-            clients, I deliver comprehensive solutions that enhance developer
-            productivity and streamline operations.
+          <p class="text-xl text-gray-400 mb-6">
+            I'm Paweł Żentała, a creative DevEx engineer with 20+ years bridging
+            technology and human communicationation. From building robots and
+            IoT systems to crafting developer portals, I bring fresh ideas and
+            proven solutions to your team.
           </p>
-          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 class="text-xl font-semibold text-white mb-4">
-              Recent Highlights
-            </h3>
-            <p class="text-gray-400">
-              Developed AI chatbots with MCP & RAG integration, created custom
-              homepage components, and collaborated with stakeholders on
-              infrastructure integration for major enterprise clients.
-            </p>
-          </div>
+          <p class="text-lg text-gray-400 mb-8">
+            Companies hire me as their <strong class="text-white"
+              >external DevEx consultant</strong
+            > for months-long engagements. I become part of your team, architecting
+            solutions, building complex features, and elevating your entire developer
+            experience.
+          </p>
+          <p class="text-lg text-gray-400 mb-8"></p>
+          My approach focuses on <strong class="text-white"
+            >inspiring and educating</strong
+          > your team while handling the most innovative and challenging development
+          work. I help you build capabilities, not dependencies.
         </div>
-        <div>
-          <h3 class="text-2xl font-semibold text-white mb-6">What I Deliver</h3>
-          <ul class="space-y-4">
-            {
-              expertiseAreas.map((area) => (
-                <li class="flex items-start">
-                  <span class="text-blue-400 mr-3 mt-1">▶</span>
-                  <span class="text-gray-300">{area}</span>
-                </li>
-              ))
-            }
-          </ul>
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+          <h3 class="text-xl font-semibold text-white mb-4">What I Deliver</h3>
+          <p>I design dev portals that teams actually want to use.</p>
+          <p class="text-gray-400">
+            Transform your Developer Experience through strategic guidance,
+            innovative solutions, hands-on development, and knowledge transfer
+            that empowers your developers to succeed long-term.
+          </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="bg-black">
-    <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
-      <h2 class="text-4xl font-bold text-white mb-6">
-        Ready to Transform Your Developer Experience?
-      </h2>
-      <p class="text-xl text-gray-400 mb-8">
-        Let's discuss how Backstage can revolutionize your development workflow
-        and boost team productivity.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/contact"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
-        >
-          Start Your Project
-        </a>
-        <a
-          href="/portfolio"
-          class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg border border-gray-700 transition-colors"
-        >
-          View Portfolio
-        </a>
+      <div>
+        <h3 class="text-2xl font-semibold text-white mb-6">
+          Why Hire an External Backstage Expert & DevEx Consultant?
+        </h3>
+        <ul class="space-y-4">
+          {
+            whyExternalConsultant.map((benefit) => (
+              <li class="flex items-start">
+                <span class="text-blue-400 mr-3 mt-1">▶</span>
+                <span class="text-gray-300">{benefit}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 </Layout>
 
+<!-- Development Services -->
+<section class="bg-black border-b border-gray-800">
+  <div class="container mx-auto px-6 py-16 max-w-8xl">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-white mb-4">Development Services</h2>
+      <p class="text-xl text-gray-400">
+        Innovative technical solutions and custom development
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        developmentServices.map((service) => (
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-8 hover:border-gray-700 transition-colors">
+            <div class="text-center mb-6">
+              <span class="text-5xl mb-4 block">{service.icon}</span>
+              <h3 class="text-2xl font-semibold text-white mb-2">
+                {service.name}
+              </h3>
+            </div>
+            <p class="text-gray-400 mb-6 text-center">{service.description}</p>
+            <ul class="space-y-2">
+              {service.features.map((feature) => (
+                <li class="flex items-center text-gray-300">
+                  <span class="text-green-400 mr-2">✓</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Consulting Services -->
+<section class="bg-black border-b border-gray-800">
+  <div class="container mx-auto px-6 py-16 max-w-8xl">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-white mb-4">Strategic Consulting</h2>
+      <p class="text-xl text-gray-400">
+        Vision, strategy, and knowledge transfer for long-term success
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        consultingServices.map((service) => (
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-8 hover:border-gray-700 transition-colors">
+            <div class="text-center mb-6">
+              <span class="text-5xl mb-4 block">{service.icon}</span>
+              <h3 class="text-2xl font-semibold text-white mb-2">
+                {service.name}
+              </h3>
+            </div>
+            <p class="text-gray-400 mb-6 text-center">{service.description}</p>
+            <ul class="space-y-2">
+              {service.features.map((feature) => (
+                <li class="flex items-center text-gray-300">
+                  <span class="text-green-400 mr-2">✓</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Engagement Model -->
+<section class="bg-black border-b border-gray-800">
+  <div class="container mx-auto px-6 py-16 max-w-6xl">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-white mb-6">
+        Long-Term Partnership Model
+      </h2>
+      <p class="text-xl text-gray-400 mb-8">
+        Companies hire me as an external consultant for multi-month engagements.
+        I integrate with your team, not just deliver workshops.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-8">
+        <h3 class="text-2xl font-semibold text-white mb-4">
+          Extended Engagement
+        </h3>
+        <p class="text-gray-400 mb-6">
+          Become your dedicated DevEx engineer for months. I join your daily
+          standups, architect solutions, implement complex features, and mentor
+          your team throughout the journey.
+        </p>
+        <ul class="space-y-2 text-gray-300">
+          <li>• Daily involvement in your project</li>
+          <li>• Direct hands-on development</li>
+          <li>• Architecture & strategic planning</li>
+          <li>• Continuous knowledge transfer</li>
+        </ul>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-8">
+        <h3 class="text-2xl font-semibold text-white mb-4">Project Sprints</h3>
+        <p class="text-gray-400 mb-6">
+          Intensive development sprints for specific features like custom
+          plugins, AI integrations, or processor development with immediate
+          impact and results.
+        </p>
+        <ul class="space-y-2 text-gray-300">
+          <li>• 2-4 week focused sprints</li>
+          <li>• Specific feature delivery</li>
+          <li>• Team training included</li>
+          <li>• Documentation & handover</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Value Proposition -->
+<section class="bg-black border-b border-gray-800">
+  <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
+    <h2 class="text-3xl font-bold text-white mb-6">
+      I Don't Just Consult. I Build.
+    </h2>
+    <p class="text-xl text-gray-400 mb-8">
+      While I provide strategic guidance and educate your teams, I also roll up
+      my sleeves and code. I handle the most innovative and challenging
+      development work, creating solutions your team can learn from and build
+      upon.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-white mb-2">Strategic Vision</h3>
+        <p class="text-gray-400 text-sm">
+          Architecture design, roadmap planning, and DevEx strategy
+        </p>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-white mb-2">Hands-On Coding</h3>
+        <p class="text-gray-400 text-sm">
+          Full-stack development, custom plugins, and complex integrations
+        </p>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-white mb-2">Team Empowerment</h3>
+        <p class="text-gray-400 text-sm">
+          Knowledge transfer, best practices, and ongoing mentorship
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="bg-black">
+  <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
+    <h2 class="text-4xl font-bold text-white mb-6">
+      Ready to Transform Your Backstage?
+    </h2>
+    <p class="text-xl text-gray-400 mb-8">
+      Let's discuss how I can join your team as a dedicated DevEx engineer. From
+      strategic planning to hands-on development, I'll help you build a
+      developer portal that accelerates your entire organization.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+      <a
+        href="https://calendly.com/zentala"
+        target="_blank"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+      >
+        Schedule Discovery Call
+      </a>
+      <a
+        href="https://linkedin.com/in/zentala"
+        target="_blank"
+        class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg border border-gray-700 transition-colors"
+      >
+        Connect on LinkedIn
+      </a>
+    </div>
+    <p class="text-gray-500 text-sm">
+      Extending Backstage for innovative teams with powerful plugins and custom
+      development services.
+    </p>
+  </div>
+</section>
