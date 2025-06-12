@@ -46,10 +46,8 @@ if (!author) {
   }
 </style>
 
-<article
-  class="flex flex-col items-start border border-gray-800 p-16 -m-px post-card bg-black hover:bg-gray-900 transition-colors relative"
->
-  <a href={link} class="absolute inset-0 z-0"></a>
+<article class="flex flex-col items-start p-16 post-card card-item relative">
+  <!-- Removed overlay div to avoid nested anchor issues; card is now clickable via the title link -->
   <div class="flex items-center gap-x-2 text-gray-700">
     <img
       src={author.avatar}
@@ -78,8 +76,8 @@ if (!author) {
   </div>
 
   <div class="group relative">
-    <h3 class="mt-3 text-3xl font-light text-white">
-      {title}
+    <h3 class="mt-3 text-3xl font-light text-white hover:text-gray-200">
+      <a href={link} aria-label={title}>{title}</a>
     </h3>
     {
       excerpt && (
