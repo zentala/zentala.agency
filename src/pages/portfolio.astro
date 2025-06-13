@@ -77,7 +77,6 @@ const elements = [
     link: 'https://web.archive.org/web/20080219083253/http://wifi-live.pl/',
     linkTitle: 'WiFi-Live.pl archive from 2008',
   },
-
   {
     title: 'NFC Table',
     subtitle:
@@ -88,20 +87,11 @@ const elements = [
     subtitle:
       'Vue + Nuxt app for managing your life. It implements such time managment metodologies like scrum, eisenhower matrix, circle of life and more to help you organize you pivate life. ',
   },
-  // {
-  //   title: 'MoveUp',
-  //   subtitle:
-  //     'Open Smart Desk comanion app that laverages data form sensors in order to encourage you to move up. It can suggest breaks or raise itself autonomously to encourage standing work.',
-  // },
   {
     title: 'WFH Signalizator',
     subtitle:
       'IoT device for working in home proffesionalss. Helps to inform other householders about your state of remote involvment - if you are on the call with camera, if spekaing, are you busy or not. ',
   },
-
-  // futures studies
-  // strategie marketingu
-  // ideas
 ]
 ---
 
@@ -110,9 +100,9 @@ const elements = [
   description="Explore the portfolio of Żentała Innovation Agency, showcasing projects in Real Time Location Systems, Smart Home, Backstage Developer Portals, and more."
 >
   <Hero {...heroProps} />
-  <section class="bg-black border-b border-gray-800">
-    <div class="container mx-auto p-0 max-w-8xl border-x border-gray-800">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="cards-grid">
         {
           elements.map((element, index) => (
             <PortfolioItem key={`portfolio-${index}`} {...element} />

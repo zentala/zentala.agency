@@ -10,7 +10,13 @@ if (bannerEnd) {
 ---
 
 <Layout title={frontmatter.title} description={frontmatter.excerpt}>
-  <slot />
+  <section class="section-full">
+    <div class="container-padded">
+      <article class="prose text-white">
+        <slot />
+      </article>
+    </div>
+  </section>
 
   {bannerEnd && Banner && <Banner />}
 </Layout>

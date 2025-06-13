@@ -66,19 +66,10 @@ if (!author) {
 
       // Let the browser render first, then check if we need to truncate
       requestAnimationFrame(() => {
-        // Simple approach: check if excerpt overflows the card
-        const cardHeight = card.offsetHeight
-        const cardStyle = getComputedStyle(card)
-        const cardPaddingTop = parseFloat(cardStyle.paddingTop) || 0
-        const cardPaddingBottom = parseFloat(cardStyle.paddingBottom) || 0
-
-        // Available height = card height minus padding
-        const availableHeight = cardHeight - cardPaddingTop - cardPaddingBottom
-
         // Check if excerpt overflows
         const isOverflowing =
           excerpt.scrollHeight > excerpt.offsetHeight ||
-          card.scrollHeight > cardHeight
+          card.scrollHeight > card.offsetHeight
 
         if (!isOverflowing) {
           // Text fits, no need to truncate
@@ -99,7 +90,7 @@ if (!author) {
           excerpt.textContent = textWithEllipsis
 
           // Check if this fits
-          const cardOverflows = card.scrollHeight > cardHeight
+          const cardOverflows = card.scrollHeight > card.offsetHeight
           const excerptOverflows = excerpt.scrollHeight > excerpt.offsetHeight
 
           if (!cardOverflows && !excerptOverflows) {
@@ -127,51 +118,53 @@ if (!author) {
   })
 </script>
 
-<article class="flex flex-col items-start p-16 post-card card-item relative">
-  <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
-  <div class="flex items-center gap-x-2 text-gray-700">
-    <img
-      src={author.avatar}
-      alt={author.name}
-      class="h-5 w-5 rounded-full bg-gray-50"
-    />
-    <div class="text-sm leading-6">
-      <p class="">
-        <span class="font text-gray-400">
-          <a href={author.profileUrl} class="relative z-10">
-            {author.name}
-          </a>
-        </span>
-        <br />
-      </p>
-    </div>
-    ·
-    <time datetime={date} class="text-gray-700">{date}</time>
-    ·
-    <a
-      href={`/category/${category}`}
-      class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
-    >
-      {category}
-    </a>
-  </div>
-
-  <div
-    class="group relative pointer-events-none flex flex-col flex-1 min-h-0 w-full"
-  >
-    <h3 class="mt-3 text-3xl font-light text-white">
-      {title}
-    </h3>
-    {
-      excerpt && (
-        <p
-          class="mt-5 text-lg leading-6 text-gray-300 flex-1 min-h-0 overflow-hidden text-ellipsis"
-          style="display: -webkit-box; -webkit-box-orient: vertical;"
-          data-excerpt
-        >
-          {excerpt}
+<article class="card-link">
+  <div class="flex flex-col items-start p-16 post-card relative min-h-full">
+    <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
+    <div class="flex items-center gap-x-2 text-gray-700">
+      <img
+        src={author.avatar}
+        alt={author.name}
+        class="h-5 w-5 rounded-full bg-gray-50"
+      />
+      <div class="text-sm leading-6">
+        <p class="">
+          <span class="font text-gray-400">
+            <a href={author.profileUrl} class="relative z-10">
+              {author.name}
+            </a>
+          </span>
+          <br />
         </p>
-      )
-    }
+      </div>
+      ·
+      <time datetime={date} class="text-gray-700">{date}</time>
+      ·
+      <a
+        href={`/category/${category}`}
+        class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
+      >
+        {category}
+      </a>
+    </div>
+
+    <div
+      class="group relative pointer-events-none flex flex-col flex-1 min-h-0 w-full"
+    >
+      <h3 class="mt-3 text-3xl font-light text-white">
+        {title}
+      </h3>
+      {
+        excerpt && (
+          <p
+            class="mt-5 text-lg leading-6 text-gray-300 flex-1 min-h-0 overflow-hidden text-ellipsis"
+            style="display: -webkit-box; -webkit-box-orient: vertical;"
+            data-excerpt
+          >
+            {excerpt}
+          </p>
+        )
+      }
+    </div>
   </div>
 </article>

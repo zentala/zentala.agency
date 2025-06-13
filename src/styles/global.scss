@@ -59,41 +59,70 @@
     @apply bg-black border-b border-gray-800 grid-pattern w-full;
   }
 
-  // Grid System for cards
-  .card-grid {
+  // New grid system without -m-px
+  .cards-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
 
-    .card {
-      @apply block bg-black border border-gray-800 -m-px;
-      @apply hover:border-gray-700 transition-colors duration-200;
+    > * {
+      @apply border-r border-gray-800;
+
+      // Remove right border for last items in each row
+      &:nth-child(3n) {
+        @apply border-r-0;
+      }
+
+      @media (max-width: 1023px) {
+        &:nth-child(3n) {
+          @apply border-r border-gray-800;
+        }
+        &:nth-child(2n) {
+          @apply border-r-0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        &:nth-child(2n) {
+          @apply border-r border-gray-800;
+        }
+        &:nth-child(1n) {
+          @apply border-r-0;
+        }
+      }
+
+      // Add internal horizontal borders between rows
+      &:nth-child(n + 4) {
+        @apply border-t border-gray-800;
+      }
+
+      @media (max-width: 1023px) {
+        &:nth-child(n + 4) {
+          @apply border-t-0;
+        }
+        &:nth-child(n + 3) {
+          @apply border-t border-gray-800;
+        }
+      }
+
+      @media (max-width: 767px) {
+        &:nth-child(n + 3) {
+          @apply border-t-0;
+        }
+        &:nth-child(n + 2) {
+          @apply border-t border-gray-800;
+        }
+      }
     }
   }
 
-  // Common card styles
+  // Common card styles - borders handled by .cards-grid
   .card-item {
-    @apply block bg-black border border-gray-800 -m-px;
+    @apply block bg-black;
     @apply hover:bg-gray-900 transition-colors duration-200;
   }
 
   .card-link {
-    @apply block bg-black border border-gray-800 -m-px;
+    @apply block bg-black;
     @apply hover:border-gray-700 hover:bg-gray-900 transition-all duration-200;
-  }
-
-  // Full-width horizontal lines
-  .full-width-border {
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      height: 1px;
-      background-color: theme('colors.gray.800');
-    }
   }
 
   // Spacing System
