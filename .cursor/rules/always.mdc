@@ -5,6 +5,9 @@ alwaysApply: true
 ---
 # Development Rules
 
+## Styling
+- use @design.mdc for styling instructions, and update it when global styling settings are updated
+
 ## Always Follow
 - Zawsze tylko krótkie wiadomości commitów jednoliniowe!!!
 - Przed pushem zrób `npm run build` aby sprawdzić czy przejdzie i ewentualnie poprawić błędy

@@ -1,90 +1,54 @@
 ---
 import Logo from '../components/Logo.astro'
+import '../styles/footer.scss'
+
+// Responsive logo props - using auto-scaling system
 const footerLogoProps = {
   link: '/',
   color: '#FFFFFF',
   type: 'full',
-  height: '60px',
-  width: '80%',
+  width: '240px', // Responsive - will be overridden by CSS
+  height: '44px', // Base height for CSS variables system
 }
 ---
 
-<style lang="scss">
-  .footer-heading {
-    @apply uppercase font-semibold mb-6 relative;
-    letter-spacing: 0.26rem;
-  }
-
-  a {
-    background: transparent;
-    position: relative;
-    z-index: 1;
-
-    &:hover {
-      cursor: pointer;
-      background: transparent;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: -1px;
-        bottom: 2px;
-        width: 100%;
-        height: 8px;
-        background-color: currentColor;
-        opacity: 0.2;
-        z-index: -1;
-      }
-    }
-  }
-</style>
-
 <footer class="bg-black text-white">
-  <div class="container-padded py-8">
-    <div class="mb-6 lg:mb-0 flex justify-between items-center">
+  <div class="container-padded">
+    <div class="footer-logo-social mb-0">
       <div>
         <Logo {...footerLogoProps} />
       </div>
-      <div class="flex justify-end text-3xl space-x-4 text-gray-400">
+      <div class="footer-social-icons">
         <a
           href="https://www.linkedin.com/in/zentala/"
           target="_blank"
-          rel="noopener noreferrer"
-          class="text-gray-300 hover:text-gray-100"
-          ><i class="fa-brands fa-linkedin"></i></a
+          rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a
         >
         <a
           href="https://www.facebook.com/zentala/"
           target="_blank"
-          rel="noopener noreferrer"
-          class="text-gray-300 hover:text-gray-100"
-          ><i class="fa-brands fa-facebook"></i></a
+          rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a
         >
         <!-- <a
           href="https://www.instagram.com/pzentala/"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-300 hover:text-gray-100"
           ><i class="fa-brands fa-instagram"></i></a
         > -->
         <a
           href="https://github.com/zentala"
           target="_blank"
-          rel="noopener noreferrer"
-          class="text-gray-300 hover:text-gray-100"
-          ><i class="fa-brands fa-github"></i></a
+          rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a
         >
         <a
           href="mailto:zentala@gmail.com"
           target="_blank"
-          rel="noopener noreferrer"
-          class="text-gray-300 hover:text-gray-100"
-          ><i class="fa-regular fa-envelope"></i></a
+          rel="noopener noreferrer"><i class="fa-regular fa-envelope"></i></a
         >
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 text-sm">
+    <div class="grid grid-cols-1 gap-8 text-sm lg:grid-cols-5">
       <!-- <div class="mb-6 lg:mb-0">
         Żentała Innovation Agency specializes in implementing comprehensive
         applications and solutions in software, web development, marketing,
@@ -109,8 +73,8 @@ const footerLogoProps = {
   </div>
   <div class="flex items-center border-y border-gray-800">
     <div class="container-padded flex justify-between">
-      <div class="grid grid-cols-12 gap-4 w-full">
-        <div class="col-span-5">
+      <div class="footer-responsive-grid">
+        <div class="footer-about">
           <h2 class="footer-heading">About</h2>
           <p>
             Żentała Innovation Agency specializes in R&D projects and innovative
@@ -119,14 +83,9 @@ const footerLogoProps = {
             solutions, from needs analysis to Proof of Concept, enhancing your
             company's competitiveness.
           </p>
-          <!-- <p class="mt-2">
-            More:
-            <a href="#">Mission</a>, <a href="#">About</a>, <a href="#">Offer</a
-            >
-          </p> -->
         </div>
-        <div class="col-span-2"></div>
-        <div class="col-span-3">
+        <div class="footer-spacer"></div>
+        <div class="footer-offer">
           <h2 class="footer-heading">Offer</h2>
           <ul class="space-y-2">
             <li>Backstage Consulting</li>
@@ -136,7 +95,7 @@ const footerLogoProps = {
             <li>Innovation Consulting</li>
           </ul>
         </div>
-        <div class="col-span-2">
+        <div class="footer-blogs">
           <h2 class="footer-heading">Blogs</h2>
           <ul class="space-y-2">
             <li>
@@ -169,16 +128,11 @@ const footerLogoProps = {
   </div>
 
   <div class="flex items-center">
-    <div class="container-padded py-12 flex justify-between">
-      <div class="text-neutral-400 text-sm">
-        © 2024 <a href="/" class="hover:text-neutral-200 text-neutral-300"
-          >Żentała Innovation Agency</a
-        >
+    <div class="container-padded spacing-y-md flex justify-between">
+      <div class="footer-copyright text-sm text-neutral-400">
+        © 2025 <a href="/">Żentała Innovation Agency</a>
         <span class="mx-2">·</span>
-        <a
-          href="/privacy-policy/"
-          class="hover:text-neutral-200 text-neutral-300">Privacy Policy</a
-        >
+        <a href="/privacy-policy/">Privacy Policy</a>
       </div>
       <div>
         <!-- <button class="text-gray-300 hover:text-gray-100">

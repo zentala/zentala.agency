@@ -26,6 +26,65 @@ const links = [
     letter-spacing: 0.26rem;
   }
 
+  // Animated Hamburger Menu
+  .hamburger {
+    @apply w-7 h-5 flex flex-col justify-center cursor-pointer relative;
+    gap: 4px;
+
+    // Hide on desktop
+    @media (min-width: 771px) {
+      @apply hidden;
+    }
+
+    .line {
+      @apply w-full bg-white transition-all duration-300 ease-in-out;
+      height: 3px; // Thicker lines
+      transform-origin: center;
+    }
+
+    &.active {
+      .line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      .line:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+
+      .line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+  }
+
+  // Mobile nav overlay
+  .mobile-nav-overlay {
+    @apply fixed bg-black bg-opacity-50 hidden transition-opacity duration-300;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40; /* Above content but BELOW header (50) and mobile nav (1100) */
+
+    &.active {
+      @apply block;
+    }
+
+    @media (min-width: 771px) {
+      display: none !important; /* Force hide on desktop */
+    }
+  }
+
+  // Medium desktop nav adjustments
+  .desktop-nav {
+    // Hide first link (Home) on medium desktop
+    @media (min-width: 771px) and (max-width: 999px) {
+      a:first-child {
+        @apply hidden;
+      }
+    }
+  }
+
   @media (max-width: 1200px) {
     .logo-container {
       display: flex;
@@ -67,7 +126,8 @@ const links = [
         </span> -->
       </a>
     </div>
-    <nav class="flex space-x-10 text-base">
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav">
       {
         links.map((link) => (
           <a
@@ -79,8 +139,34 @@ const links = [
         ))
       }
     </nav>
+
+    <!-- Mobile Hamburger Button -->
+    <button class="mobile-nav-toggle hamburger" id="mobile-toggle">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav" id="mobile-nav">
+    <nav>
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-white hover:text-gray-400 uppercase tracking-wide font-medium py-2 border-b border-gray-800"
+          >
+            {link.text}
+          </a>
+        ))
+      }
+    </nav>
   </div>
 </header>
+
+<!-- Mobile Navigation Overlay - Outside header to cover full page -->
+<div class="mobile-nav-overlay" id="mobile-overlay"></div>
 
 <style>
   header {
@@ -90,6 +176,7 @@ const links = [
 </style>
 
 <script>
+  // Scroll header behavior
   window.addEventListener('scroll', function () {
     const header = document.querySelector('#header .container')
     if (!header) return
@@ -99,6 +186,92 @@ const links = [
     } else {
       header.classList.add('py-6')
       header.classList.remove('py-4')
+    }
+  })
+
+  // Mobile navigation toggle
+  document.addEventListener('DOMContentLoaded', function () {
+    const mobileToggle = document.getElementById('mobile-toggle')
+    const mobileNav = document.getElementById('mobile-nav')
+    const mobileOverlay = document.getElementById('mobile-overlay')
+    const header = document.getElementById('header')
+
+    function updateMobileNavPosition() {
+      if (header && mobileNav) {
+        const headerHeight = header.offsetHeight
+        mobileNav.style.top = `${headerHeight}px`
+      }
+    }
+
+    function closeMobileNav() {
+      if (mobileNav && mobileToggle && mobileOverlay) {
+        mobileNav.classList.remove('active')
+        mobileToggle.classList.remove('active')
+        mobileOverlay.classList.remove('active')
+        document.body.classList.remove('mobile-nav-open')
+      }
+    }
+
+    function openMobileNav() {
+      if (mobileNav && mobileToggle && mobileOverlay && header) {
+        updateMobileNavPosition()
+        const headerHeight = header.offsetHeight
+        mobileOverlay.style.top = `${headerHeight}px`
+        mobileNav.classList.add('active')
+        mobileToggle.classList.add('active')
+        mobileOverlay.classList.add('active')
+        document.body.classList.add('mobile-nav-open')
+      }
+    }
+
+    function toggleMobileNav() {
+      if (mobileNav) {
+        const isActive = mobileNav.classList.contains('active')
+        if (isActive) {
+          closeMobileNav()
+        } else {
+          openMobileNav()
+        }
+      }
+    }
+
+    if (mobileToggle && mobileNav) {
+      mobileToggle.addEventListener('click', toggleMobileNav)
+
+      // Close mobile nav when clicking on a link
+      const mobileLinks = mobileNav.querySelectorAll('a')
+      mobileLinks.forEach((link) => {
+        link.addEventListener('click', closeMobileNav)
+      })
+
+      // Close mobile nav when clicking on overlay
+      if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', closeMobileNav)
+      }
+
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function (e) {
+        const target = e.target as HTMLElement
+        if (
+          target &&
+          !mobileToggle.contains(target) &&
+          !mobileNav.contains(target)
+        ) {
+          closeMobileNav()
+        }
+      })
+
+      // Close mobile nav when resizing to desktop view + update position on resize
+      window.addEventListener('resize', function () {
+        if (window.innerWidth >= 771) {
+          closeMobileNav()
+        } else {
+          updateMobileNavPosition()
+        }
+      })
+
+      // Update position on initial load
+      updateMobileNavPosition()
     }
   })
 </script>
