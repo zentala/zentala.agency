@@ -1,0 +1,24 @@
+---
+import ThemedInput from './ThemedInput.astro'
+import ThemedTextarea from './ThemedTextarea.astro'
+---
+
+<div class="cards-grid grid-cols-2">
+  <ThemedInput type="text" id="fName" placeholder="First Name" />
+  <ThemedInput type="text" id="lName" placeholder="Last Name" />
+  <ThemedInput type="email" id="email" placeholder="Email" />
+  <ThemedInput type="tel" id="phone" placeholder="Phone" />
+
+  <div class="col-span-2">
+    <ThemedTextarea id="msg" placeholder="Your message" />
+  </div>
+  <div class="col-span-2 text-right">
+    <button
+      type="submit"
+      class="border border-gray-800 p-8 px-16 text-lg font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white transition-all duration-200"
+    >
+      Send Message
+    </button>
+  </div>
+</div>
+

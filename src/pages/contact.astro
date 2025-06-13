@@ -1,8 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
-import ThemedInput from '../components/ThemedInput.astro'
-import ThemedTextarea from '../components/ThemedTextarea.astro'
+// import ContactForm from '../components/ContactForm.astro'
 
 const heroProps = {
   title: 'Contact',
@@ -17,51 +16,95 @@ const heroProps = {
   <Hero {...heroProps} />
   <section class="section-full">
     <div class="container-bordered">
-      <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"> -->
-      <!-- <section class="p-12"> -->
-      <div class="flex justify-between">
-        <div class="w-1/3 p-16">
-          <h2 class="text-4xl font-normal mb-4">Let's Talk</h2>
-          <p class="mb-6 text-xl pr-16">
-            Fell free to contact me. <br />I am always ready to help you.
-          </p>
-          <div class="flex items-center mb-4">
-            <img
-              src="https://avatars.githubusercontent.com/u/7286123?v=4"
-              alt="Paweł Żentała"
-              class="w-24 h-24 rounded-full mr-4"
-            />
-            <div>
-              <h3 class="text-2xl font-semibold">Paweł Żentała</h3>
-              <p class="mt-1">
-                <a href="mailto:zentala@gmail.com">zentala@gmail.com</a>
-              </p>
-              <a href="tel:+48517178984">+48 517 17 89 84</a>
+      <div class="cards-grid">
+        <!-- Column 1: Let's Talk -->
+        <div class="card-item">
+          <div class="p-16 text-white">
+            <h2 class="text-4xl font-normal mb-4 text-white">Let's Talk</h2>
+            <p class="mb-6 text-xl text-gray-300">
+              Let's discuss your project and explore how we can work together.
+            </p>
+            <div class="flex items-center mb-4">
+              <img
+                src="https://avatars.githubusercontent.com/u/7286123?v=4"
+                alt="Paweł Żentała"
+                class="w-24 h-24 rounded-full mr-4"
+              />
+              <div>
+                <h3 class="text-2xl font-semibold text-white">Paweł Żentała</h3>
+                <p class="mt-1 text-gray-300">
+                  <a
+                    href="mailto:zentala@gmail.com"
+                    class="hover:text-white transition-colors"
+                    >zentala@gmail.com</a
+                  >
+                </p>
+                <a
+                  href="tel:+48517178984"
+                  class="text-gray-300 hover:text-white transition-colors"
+                  >+48 517 17 89 84</a
+                >
+              </div>
             </div>
           </div>
         </div>
-        <div class="w-2/3 p-0 border-l border-gray-800">
-          <div class="cards-grid grid-cols-2">
-            <ThemedInput type="text" id="fName" placeholder="First Name" />
-            <ThemedInput type="text" id="lName" placeholder="Last Name" />
-            <ThemedInput type="email" id="email" placeholder="Email" />
-            <ThemedInput type="tel" id="phone" placeholder="Phone" />
 
-            <div class="col-span-2">
-              <ThemedTextarea id="msg" placeholder="Your message" />
-            </div>
-            <div class="col-span-2 text-right">
-              <button
-                type="submit"
-                class="border border-gray-800 p-8 px-16 text-lg font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white transition-all duration-200"
-              >
-                Send Message
-              </button>
-            </div>
+        <!-- Column 2: Schedule Meeting -->
+        <div class="card-item relative overflow-hidden">
+          <div class="p-16 text-white relative z-10">
+            <h2 class="text-4xl font-normal mb-4 text-white">
+              Schedule Meeting
+            </h2>
+            <p class="mb-6 text-xl text-gray-300">
+              Let's discuss your needs in a 20-minute free consultation call.
+            </p>
+            <a
+              href="#"
+              class="inline-block border border-gray-800 p-4 px-8 text-lg font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white transition-all duration-200"
+            >
+              Book a Call
+            </a>
+          </div>
+          <!-- Calendar icon background -->
+          <div
+            class="absolute top-4 right-4 opacity-10 text-gray-600 text-9xl transform rotate-12"
+          >
+            📅
+          </div>
+        </div>
+
+        <!-- Column 3: Follow Me -->
+        <div class="card-item relative overflow-hidden">
+          <div class="p-16 text-white relative z-10">
+            <h2 class="text-4xl font-normal mb-4 text-white">Follow Me</h2>
+            <p class="mb-6 text-xl text-gray-300">
+              Connect with me on LinkedIn to stay updated with my latest
+              insights and projects.
+            </p>
+            <a
+              href="https://linkedin.com/in/zentala"
+              target="_blank"
+              class="inline-block border border-gray-800 p-4 px-8 text-lg font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white transition-all duration-200"
+            >
+              Add on LinkedIn
+            </a>
+          </div>
+          <!-- LinkedIn icon background - rotated and cropped -->
+          <div
+            class="absolute -top-8 -right-8 opacity-10 text-gray-600 text-9xl transform rotate-12"
+          >
+            💼
           </div>
         </div>
       </div>
+
+      <!-- Commented out form - now extracted to ContactForm component -->
+      <!-- 
+      <div class="mt-16 border-t border-gray-800 pt-16">
+        <h2 class="text-3xl font-normal mb-8 text-white text-center">Send Message</h2>
+        <ContactForm />
+      </div>
+      -->
     </div>
-    <!-- </div> -->
   </section>
 </Layout>
