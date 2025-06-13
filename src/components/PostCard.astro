@@ -46,8 +46,89 @@ if (!author) {
   }
 </style>
 
+<script is:inline>
+  function truncateExcerpt() {
+    const cards = document.querySelectorAll('.post-card')
+
+    cards.forEach((card) => {
+      const excerpt = card.querySelector('[data-excerpt]')
+      if (!excerpt) return
+
+      // Store original text if not already stored
+      if (!excerpt.dataset.originalText) {
+        excerpt.dataset.originalText = excerpt.textContent.trim()
+      }
+
+      const originalText = excerpt.dataset.originalText
+
+      // Reset to original text first
+      excerpt.textContent = originalText
+
+      // Let the browser render first, then check if we need to truncate
+      requestAnimationFrame(() => {
+        // Simple approach: check if excerpt overflows the card
+        const cardHeight = card.offsetHeight
+        const cardStyle = getComputedStyle(card)
+        const cardPaddingTop = parseFloat(cardStyle.paddingTop) || 0
+        const cardPaddingBottom = parseFloat(cardStyle.paddingBottom) || 0
+
+        // Available height = card height minus padding
+        const availableHeight = cardHeight - cardPaddingTop - cardPaddingBottom
+
+        // Check if excerpt overflows
+        const isOverflowing =
+          excerpt.scrollHeight > excerpt.offsetHeight ||
+          card.scrollHeight > cardHeight
+
+        if (!isOverflowing) {
+          // Text fits, no need to truncate
+          return
+        }
+
+        // Binary search to find the maximum text that fits
+        let left = 0
+        let right = originalText.length
+        let bestFit = originalText
+
+        while (left < right) {
+          const mid = Math.floor((left + right + 1) / 2)
+          const testText = originalText.slice(0, mid)
+          const textWithEllipsis =
+            mid < originalText.length ? testText + '…' : testText
+
+          excerpt.textContent = textWithEllipsis
+
+          // Check if this fits
+          const cardOverflows = card.scrollHeight > cardHeight
+          const excerptOverflows = excerpt.scrollHeight > excerpt.offsetHeight
+
+          if (!cardOverflows && !excerptOverflows) {
+            bestFit = textWithEllipsis
+            left = mid
+          } else {
+            right = mid - 1
+          }
+        }
+
+        excerpt.textContent = bestFit
+      })
+    })
+  }
+
+  // Run on DOM ready and window resize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', truncateExcerpt)
+  } else {
+    truncateExcerpt()
+  }
+
+  window.addEventListener('resize', () => {
+    setTimeout(truncateExcerpt, 100) // Small delay for resize
+  })
+</script>
+
 <article class="flex flex-col items-start p-16 post-card card-item relative">
-  <!-- Removed overlay div to avoid nested anchor issues; card is now clickable via the title link -->
+  <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
   <div class="flex items-center gap-x-2 text-gray-700">
     <img
       src={author.avatar}
@@ -71,17 +152,23 @@ if (!author) {
       href={`/category/${category}`}
       class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
     >
-      {category}</a
-    >
+      {category}
+    </a>
   </div>
 
-  <div class="group relative">
-    <h3 class="mt-3 text-3xl font-light text-white hover:text-gray-200">
-      <a href={link} aria-label={title}>{title}</a>
+  <div
+    class="group relative pointer-events-none flex flex-col flex-1 min-h-0 w-full"
+  >
+    <h3 class="mt-3 text-3xl font-light text-white">
+      {title}
     </h3>
     {
       excerpt && (
-        <p class="mt-5 line-clamp-3 text-lg leading-6 text-gray-300">
+        <p
+          class="mt-5 text-lg leading-6 text-gray-300 flex-1 min-h-0 overflow-hidden text-ellipsis"
+          style="display: -webkit-box; -webkit-box-orient: vertical;"
+          data-excerpt
+        >
           {excerpt}
         </p>
       )
