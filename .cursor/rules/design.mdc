@@ -1,0 +1,201 @@
+---
+description: 
+globs: *.astro
+alwaysApply: false
+---
+# Design System Rules
+
+## Podstawowe Zasady
+
+### 1. Architektura Layoutu
+- Każda strona MUSI używać struktury: `Header → Main → Footer`
+- NIE używaj wrapperów które ograniczają całą stronę
+- Poziome linie (border-b) MUSZĄ przechodzić przez całą szerokość ekranu
+- Pionowe linie (border-x) TYLKO dla contentu wewnątrz sekcji
+
+### 2. System Ramek
+- **Główne ramki:** `border-gray-800`
+- **Hover states:** `border-gray-700` 
+- **Subtelne:** `border-gray-900`
+- ZAWSZE używaj `-m-px` dla grid layoutów aby uniknąć podwójnych ramek
+
+### 3. Kolory
+- **Tło:** `bg-black`
+- **Tekst główny:** `text-white`
+- **Tekst drugorzędny:** `text-gray-300` lub `text-gray-400`
+- **NIE używaj innych kolorów** bez konsultacji
+
+## Obowiązkowe Klasy CSS
+
+### Container System
+```scss
+.container-bordered    // container + border-x
+.container-padded     // container + border-x + p-16
+.container-header     // container + border-x + px-16 py-6
+.container-simple     // tylko container bez ramek
+```
+
+### Section System  
+```scss
+.section-full        // bg-black + border-b + w-full
+.section-grid        // section-full + grid-pattern
+```
+
+### Card System
+```scss
+.card-item          // statyczna karta z hover bg
+.card-link          // karta z linkiem, hover bg + border
+```
+
+### Spacing System
+```scss
+.spacing-xs    // p-4
+.spacing-sm    // p-8  
+.spacing-md    // p-16
+.spacing-lg    // p-24
+.spacing-xl    // p-32
+```
+
+## Mandatory Structure
+
+### Każda Strona
+```html
+<Layout title="Title">
+  <Hero title="..." subtitle="..." />
+  <section class="section-full">
+    <div class="container-bordered">
+      <!-- content -->
+    </div>
+  </section>
+</Layout>
+```
+
+### Cards w Grid
+```html
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  <!-- Z linkiem -->
+  <a href="/link" class="card-link">
+    <div class="p-16">Content</div>
+  </a>
+  
+  <!-- Bez linka -->
+  <div class="card-item">
+    <div class="p-16">Content</div>
+  </div>
+</div>
+```
+
+### Hero Section
+```html
+<section class="section-grid text-white text-center">
+  <div class="container-padded spacing-lg">
+    <h1>Title</h1>
+    <h2>Subtitle</h2>
+  </div>
+</section>
+```
+
+## Forbidden Practices
+
+### ❌ NIE ROB TEGO:
+```html
+<!-- Inline Tailwind dla rzeczy które mają klasy -->
+<div class="container mx-auto max-w-8xl border-x border-gray-800 p-16">
+
+<!-- Wrapper ograniczający całą stronę -->
+<div class="max-w-8xl mx-auto">
+  <Header />
+  <Main />
+  <Footer />
+</div>
+
+<!-- Inne kolory ramek -->
+<div class="border-gray-600">
+
+<!-- Padding inny niż system -->
+<div class="p-12">
+```
+
+### ✅ ROB TO:
+```html
+<!-- Używaj klas systemowych -->
+<div class="container-padded">
+
+<!-- Każdy komponent oddzielnie -->
+<Header />
+<Main />
+<Footer />
+
+<!-- Systemowe kolory -->
+<div class="border-gray-800">
+
+<!-- Systemowy padding -->
+<div class="spacing-md">
+```
+
+## Development Rules
+
+### Nowy Komponent
+1. Sprawdź czy możesz użyć istniejących klas
+2. Jeśli nie - dodaj nową klasę do `global.scss` w `@layer components`
+3. Użyj naming convention: `component-variant` 
+4. Zawsze dodaj hover states
+
+### Nowa Strona
+1. Zacznij od `<Layout>`
+2. Dodaj `<Hero>` jeśli potrzebne
+3. Użyj `section-full` dla każdej sekcji
+4. Wewnątrz użyj `container-*` klas
+
+### Modyfikacje
+1. NIE zmieniaj istniejących klas - dodaj nowe warianty
+2. Trzymaj się ustalonej palety kolorów
+3. Wszystkie zmiany MUSZĄ przejść przez build test
+
+## Responsive Rules
+
+### Mobile First
+- Projektuj najpierw na mobile
+- Używaj `md:` i `lg:` prefixów
+- Na mobile ramki boczne MOGĄ zniknąć
+
+### Breakpoints
+```scss
+// sm: 640px
+// md: 768px  
+// lg: 1024px
+// xl: 1280px
+// 2xl: 1536px
+```
+
+## Performance Rules
+
+### CSS
+- ZAWSZE używaj `@layer components` dla custom klas
+- NIE dodawaj zbędnych !important
+- Unikaj deep nesting (max 3 poziomy)
+
+### HTML
+- Minimalizuj liczbę divów
+- Używaj semantycznych tagów (`section`, `article`, `nav`)
+- Zawsze dodawaj `alt` do obrazków
+
+## Quality Gates
+
+### Przed Commitem
+1. `npm run build` MUSI przejść
+2. Sprawdź responsywność na 3 rozmiarach
+3. Sprawdź hover states
+4. Sprawdź focus states (accessibility)
+
+### Code Review
+- Czy używa systemowych klas?
+- Czy respektuje strukturę layoutu?
+- Czy ma proper hover/focus states?
+- Czy jest responsive?
+
+Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
+
+
+
+

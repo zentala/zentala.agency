@@ -3,14 +3,33 @@ description:
 globs: 
 alwaysApply: true
 ---
+# Development Rules
 
-## Rules
+## Always Follow
+- Zawsze tylko krótkie wiadomości commitów jednoliniowe!!!
+- Przed pushem zrób `npm run build` aby sprawdzić czy przejdzie i ewentualnie poprawić błędy
+- Commit messages in English!
 
-- zawsze tylko krotkie wiadomości commitów jednoliniowe!!!
-- przed pushem zrob `npm run build` aby sprawdzić czy przejdzie i ew poprawić błędy
+## Never Do
+- Make commit without user validated feature and his approval
+- Push without testing build process
+- Make changes without user acceptance - always double check vision and rephrase for confirmation before bigger changes
 
-- to normalne ze w kodzie sa notatki, to prywatny projekt strona wip, 
-- to normalne ze cos jest zakomentowane, przeciez kompliler i tak usunie komentarze
-- w kodzie bedzie w chuj notatek i dodatkowego kontektu a tazke obok kodu w plikach md, i to ok, bo rozwijamy projekt z LLM-s i chcemy dostarczyc im duzo kontekstu oraz przechhowwac go na przyszlosc aby wrocic do projektu
+## Notes & Context
+- To normalne że w kodzie są notatki - to prywatny projekt strona WIP
+- To normalne że coś jest zakomentowane - przecież kompiler i tak usunie komentarze
+- W kodzie będzie dużo notatek i dodatkowego kontekstu, a także obok kodu w plikach `.md`
+- To jest OK, bo rozwijamy projekt z LLM-s i chcemy dostarczyć im dużo kontekstu oraz przechowywać go na przyszłość aby wrócić do projektu
 
--
+## Documentation Structure
+
+W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzyszące im w tym samym folderze pliki `*.md` opisujące:
+- cel / oczekiwane zachowanie, 
+- co działa (a w szczególności należy zostawić i nie zmieniać), co nie działa i ew propozycje usprawnień na przyszłość
+
+## Build Process
+
+1. Run `npm run build` before pushing
+2. Fix any build errors
+3. Commit with short, English message
+4. Get user approval before pushing
