@@ -3,8 +3,122 @@
 @import 'tailwindcss/utilities';
 
 // Twoje niestandardowe style
-body {
-  @apply bg-black text-gray-900;
+@layer base {
+  body {
+    @apply bg-black text-gray-900;
+  }
+}
+
+// Grid pattern for subtle background texture
+.grid-pattern {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@layer components {
+  // Border system utilities
+  .border-system {
+    @apply border-gray-800;
+  }
+
+  .border-system-hover {
+    @apply hover:border-gray-700 transition-colors duration-200;
+  }
+
+  .section-bordered {
+    @apply border-b border-gray-800;
+  }
+
+  // Container System
+  .container-bordered {
+    @apply container mx-auto max-w-8xl border-x border-gray-800;
+  }
+
+  .container-simple {
+    @apply container mx-auto max-w-8xl;
+  }
+
+  .container-padded {
+    @apply container mx-auto max-w-8xl border-x border-gray-800 p-16;
+  }
+
+  .container-header {
+    @apply container mx-auto max-w-8xl border-x border-gray-800 px-16 py-6;
+  }
+
+  // Section System
+  .section-full {
+    @apply bg-black border-b border-gray-800 w-full;
+  }
+
+  .section-grid {
+    @apply bg-black border-b border-gray-800 grid-pattern w-full;
+  }
+
+  // Grid System for cards
+  .card-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+
+    .card {
+      @apply block bg-black border border-gray-800 -m-px;
+      @apply hover:border-gray-700 transition-colors duration-200;
+    }
+  }
+
+  // Common card styles
+  .card-item {
+    @apply block bg-black border border-gray-800 -m-px;
+    @apply hover:bg-gray-900 transition-colors duration-200;
+  }
+
+  .card-link {
+    @apply block bg-black border border-gray-800 -m-px;
+    @apply hover:border-gray-700 hover:bg-gray-900 transition-all duration-200;
+  }
+
+  // Full-width horizontal lines
+  .full-width-border {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 1px;
+      background-color: theme('colors.gray.800');
+    }
+  }
+
+  // Spacing System
+  .spacing-xs {
+    @apply p-4;
+  }
+  .spacing-sm {
+    @apply p-8;
+  }
+  .spacing-md {
+    @apply p-16;
+  }
+  .spacing-lg {
+    @apply p-24;
+  }
+  .spacing-xl {
+    @apply p-32;
+  }
+
+  .spacing-x-md {
+    @apply px-16;
+  }
+  .spacing-y-md {
+    @apply py-16;
+  }
 }
 
 @layer base {

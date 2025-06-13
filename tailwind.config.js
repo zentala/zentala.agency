@@ -4,6 +4,14 @@ import daisyui from 'daisyui'
 
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      maxWidth: {
+        '8xl': '88rem',
+        '9xl': '96rem',
+      },
+    },
+  },
   // theme: {
   //   daisyui: {
   //     zentala: [

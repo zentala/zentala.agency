@@ -58,9 +58,11 @@ const authors = (await getCollection('authors'))[0].data
     </div>
   </section> -->
 
-  <main class="bg-black flex border-y border-gray-800">
-    <div class="container mx-auto border-x border-gray-800">
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+  <main class="bg-black border-b border-gray-800">
+    <div class="w-full">
+      <div
+        class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 container mx-auto max-w-8xl border-x border-gray-800"
+      >
         {
           posts.map((post) => {
             const author = authors.find((a) => a.slug === post.data.author)
