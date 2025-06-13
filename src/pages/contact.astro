@@ -15,8 +15,8 @@ const heroProps = {
   description="Contact Żentała Innovation Agency. Let's talk about your project. I am always ready to help you."
 >
   <Hero {...heroProps} />
-  <section class="border-b border-gray-800 bg-black text-white">
-    <div class="container mx-auto max-w-8xl border-x border-gray-800">
+  <section class="section-full">
+    <div class="container-bordered">
       <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"> -->
       <!-- <section class="p-12"> -->
       <div class="flex justify-between">
@@ -41,7 +41,7 @@ const heroProps = {
           </div>
         </div>
         <div class="w-2/3 p-0 border-l border-gray-800">
-          <form class="grid grid-cols-2 m-px">
+          <div class="cards-grid grid-cols-2">
             <ThemedInput type="text" id="fName" placeholder="First Name" />
             <ThemedInput type="text" id="lName" placeholder="Last Name" />
             <ThemedInput type="email" id="email" placeholder="Email" />
@@ -49,30 +49,16 @@ const heroProps = {
 
             <div class="col-span-2">
               <ThemedTextarea id="msg" placeholder="Your message" />
-              <!-- <label class="form-control">
-                <div class="label">
-                  <span class="label-text">Message</span>
-                </div>
-                <textarea
-                  class="textarea textarea-bordered h-24"
-                  placeholder="Your message"></textarea>
-              </label> -->
-            </div>
-            <div class="col-span-2">
-              <!-- <input
-                type="file"
-                class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-              /> -->
             </div>
             <div class="col-span-2 text-right">
               <button
                 type="submit"
-                class="z-10 radius-0 border border-gray-800 p-8 px-16 text-lg -m-px font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white"
+                class="border border-gray-800 p-8 px-16 text-lg font-normal hover:bg-gray-900 hover:border-blue-400 hover:text-white transition-all duration-200"
               >
                 Send Message
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

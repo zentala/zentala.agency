@@ -13,11 +13,12 @@ alwaysApply: false
 - Poziome linie (border-b) MUSZĄ przechodzić przez całą szerokość ekranu
 - Pionowe linie (border-x) TYLKO dla contentu wewnątrz sekcji
 
-### 2. System Ramek
+### 2. System Ramek 🔥 UPDATED
 - **Główne ramki:** `border-gray-800`
 - **Hover states:** `border-gray-700` 
 - **Subtelne:** `border-gray-900`
-- ZAWSZE używaj `-m-px` dla grid layoutów aby uniknąć podwójnych ramek
+- ❌ **NIGDY** nie używaj `-m-px` - zastąpiono przez `.cards-grid`
+- ✅ **ZAWSZE** używaj `.cards-grid` dla layout kart w 3 kolumnach
 
 ### 3. Kolory
 - **Tło:** `bg-black`
@@ -25,14 +26,14 @@ alwaysApply: false
 - **Tekst drugorzędny:** `text-gray-300` lub `text-gray-400`
 - **NIE używaj innych kolorów** bez konsultacji
 
-## Obowiązkowe Klasy CSS
+## Obowiązkowe Klasy CSS 🔥 UPDATED
 
 ### Container System
 ```scss
-.container-bordered    // container + border-x
-.container-padded     // container + border-x + p-16
-.container-header     // container + border-x + px-16 py-6
-.container-simple     // tylko container bez ramek
+.container-bordered    // container + border-x + max-w-8xl
+.container-padded     // container + border-x + p-16 + max-w-8xl
+.container-header     // container + border-x + px-16 py-6 + max-w-8xl
+.container-simple     // tylko container + max-w-8xl bez ramek
 ```
 
 ### Section System  
@@ -41,10 +42,20 @@ alwaysApply: false
 .section-grid        // section-full + grid-pattern
 ```
 
-### Card System
+### Card Grid System 🆕 NEW
 ```scss
-.card-item          // statyczna karta z hover bg
-.card-link          // karta z linkiem, hover bg + border
+.cards-grid          // inteligentny grid z auto-borders bez -m-px
+  // Automatycznie dodaje:
+  // - border-r między kartami w rzędzie
+  // - border-t między rzędami
+  // - usuwa końcowe ramki (3n, 2n, 1n)
+  // - responsive breakpoints
+```
+
+### Card System 🔥 UPDATED
+```scss
+.card-item          // BEZ border - border dodaje .cards-grid
+.card-link          // BEZ border - border dodaje .cards-grid
 ```
 
 ### Spacing System
@@ -56,7 +67,7 @@ alwaysApply: false
 .spacing-xl    // p-32
 ```
 
-## Mandatory Structure
+## Mandatory Structure 🔥 UPDATED
 
 ### Każda Strona
 ```html
@@ -70,19 +81,23 @@ alwaysApply: false
 </Layout>
 ```
 
-### Cards w Grid
+### Cards w Grid 🆕 NEW SYSTEM
 ```html
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-  <!-- Z linkiem -->
-  <a href="/link" class="card-link">
-    <div class="p-16">Content</div>
-  </a>
-  
-  <!-- Bez linka -->
-  <div class="card-item">
-    <div class="p-16">Content</div>
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid">
+      <!-- Z linkiem -->
+      <a href="/link" class="card-link">
+        <div class="p-16">Content</div>
+      </a>
+      
+      <!-- Bez linka -->
+      <div class="card-item">
+        <div class="p-16">Content</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 ```
 
 ### Hero Section
@@ -95,12 +110,18 @@ alwaysApply: false
 </section>
 ```
 
-## Forbidden Practices
+## Forbidden Practices 🔥 UPDATED
 
 ### ❌ NIE ROB TEGO:
 ```html
 <!-- Inline Tailwind dla rzeczy które mają klasy -->
 <div class="container mx-auto max-w-8xl border-x border-gray-800 p-16">
+
+<!-- Stary system z -m-px -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 -m-px">
+
+<!-- Karty z border gdy używasz .cards-grid -->
+<div class="card-link border border-gray-800">
 
 <!-- Wrapper ograniczający całą stronę -->
 <div class="max-w-8xl mx-auto">
@@ -112,14 +133,20 @@ alwaysApply: false
 <!-- Inne kolory ramek -->
 <div class="border-gray-600">
 
-<!-- Padding inny niż system -->
-<div class="p-12">
+<!-- Footer z border-t -->
+<footer class="border-t border-gray-800">
 ```
 
 ### ✅ ROB TO:
 ```html
 <!-- Używaj klas systemowych -->
 <div class="container-padded">
+
+<!-- Nowy system grid -->
+<div class="cards-grid">
+
+<!-- Karty BEZ border w .cards-grid -->
+<div class="card-link">
 
 <!-- Każdy komponent oddzielnie -->
 <Header />
@@ -129,41 +156,57 @@ alwaysApply: false
 <!-- Systemowe kolory -->
 <div class="border-gray-800">
 
-<!-- Systemowy padding -->
-<div class="spacing-md">
+<!-- Footer BEZ border-t (sekcja ma border-b) -->
+<footer class="bg-black text-white">
 ```
 
-## Development Rules
+## Learningi z Refactoringu 🆕 NEW
+
+### Problem z `-m-px`
+❌ **Problem:** Grid z `-m-px` był o 2px szerszy niż container  
+✅ **Rozwiązanie:** Nowy system `.cards-grid` z inteligentnym borderem
+
+### Problem z podwójnymi liniami
+❌ **Problem:** Sekcja `border-b` + Footer `border-t` = 2 linie  
+✅ **Rozwiązanie:** Footer BEZ `border-t`, sekcje mają `border-b`
+
+### Vertical Alignment Issue
+❌ **Problem:** Header/Footer innej szerokości niż grid  
+✅ **Rozwiązanie:** Wszystkie kontenery `max-w-8xl` tej samej szerokości
+
+## Development Rules 🔥 UPDATED
 
 ### Nowy Komponent
-1. Sprawdź czy możesz użyć istniejących klas
-2. Jeśli nie - dodaj nową klasę do `global.scss` w `@layer components`
+1. Sprawdź czy możesz użyć `.cards-grid` dla grid layoutów
+2. NIE dodawaj border do kart jeśli używasz `.cards-grid`
 3. Użyj naming convention: `component-variant` 
 4. Zawsze dodaj hover states
 
-### Nowa Strona
+### Nowa Strona z Kartami
 1. Zacznij od `<Layout>`
 2. Dodaj `<Hero>` jeśli potrzebne
-3. Użyj `section-full` dla każdej sekcji
-4. Wewnątrz użyj `container-*` klas
+3. Użyj `section-full` + `container-bordered`
+4. Wewnątrz użyj `.cards-grid` (NIE zwykły grid z `-m-px`)
 
-### Modyfikacje
-1. NIE zmieniaj istniejących klas - dodaj nowe warianty
-2. Trzymaj się ustalonej palety kolorów
-3. Wszystkie zmiany MUSZĄ przejść przez build test
+### Modyfikacje Ramek
+1. ❌ **NIGDY** nie używaj `-m-px` w nowych komponentach
+2. ❌ **NIGDY** nie dodawaj `border-t` do Footer
+3. ✅ **ZAWSZE** używaj `.cards-grid` dla układów kart
+4. Wszystkie zmiany MUSZĄ przejść przez build test
 
 ## Responsive Rules
 
 ### Mobile First
 - Projektuj najpierw na mobile
-- Używaj `md:` i `lg:` prefixów
+- `.cards-grid` automatycznie obsługuje responsive
+- Używaj `md:` i `lg:` prefixów dla custom rzeczy
 - Na mobile ramki boczne MOGĄ zniknąć
 
 ### Breakpoints
 ```scss
 // sm: 640px
-// md: 768px  
-// lg: 1024px
+// md: 768px (2 kolumny)
+// lg: 1024px (3 kolumny)
 // xl: 1280px
 // 2xl: 1536px
 ```
@@ -174,6 +217,7 @@ alwaysApply: false
 - ZAWSZE używaj `@layer components` dla custom klas
 - NIE dodawaj zbędnych !important
 - Unikaj deep nesting (max 3 poziomy)
+- `.cards-grid` optymalizuje border rendering
 
 ### HTML
 - Minimalizuj liczbę divów
@@ -187,14 +231,45 @@ alwaysApply: false
 2. Sprawdź responsywność na 3 rozmiarach
 3. Sprawdź hover states
 4. Sprawdź focus states (accessibility)
+5. ✅ **Sprawdź pionowe linie** - czy są wyrównane Header/Footer/Content
 
 ### Code Review
 - Czy używa systemowych klas?
 - Czy respektuje strukturę layoutu?
 - Czy ma proper hover/focus states?
 - Czy jest responsive?
+- ❌ **Czy NIE używa `-m-px`?**
+- ✅ **Czy używa `.cards-grid` dla grid layoutów?**
 
 Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
+
+## Cheat Sheet - Quick Reference
+
+### ✅ DO
+```html
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid">
+      <div class="card-link">
+        <div class="p-16">Content</div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+### ❌ DON'T
+```html
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="grid grid-cols-3 -m-px">
+      <div class="card-link border border-gray-800">
+        <div class="p-16">Content</div>
+      </div>
+    </div>
+  </div>
+</section>
+```
 
 
 

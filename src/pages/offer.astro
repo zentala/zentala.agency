@@ -155,9 +155,9 @@ const offers = [
   description="Discover the wide range of services offered by Żentała Innovation Agency, including strategic consulting, web and mobile app development, IoT, AI, and more."
 >
   <Hero {...heroProps} />
-  <section class="bg-black border-b border-gray-800">
-    <div class="container mx-auto p-0 max-w-8xl border-x border-gray-800">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="cards-grid">
         {offers.map((offer) => <OfferCard {...offer} />)}
       </div>
     </div>
