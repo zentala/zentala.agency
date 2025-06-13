@@ -70,5 +70,9 @@
     "markdown",
     "json"
   ],
-  "prettier.requireConfig": true
+  "prettier.requireConfig": true,
+  "todomd.activatePattern": "**/.cursor/todo/*.md",
+  "todomd.defaultFile": "${workspaceFolder}/.cursor/todo/todo.md",
+  "todomd.defaultArchiveFile": "${workspaceFolder}/.cursor/todo/todo.archive.md",
+  "todomd.defaultSomedayFile": "${workspaceFolder}/.cursor/todo/someday.md"
 }
