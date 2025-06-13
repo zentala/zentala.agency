@@ -18,7 +18,7 @@ const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer
 {link ? (
   <a
     href={link}
-    class="block bg-black border border-gray-800 -m-px hover:bg-gray-900 transition-colors"
+    class="card-link"
     data-key={key}
     {...linkProps}
   >
@@ -33,7 +33,7 @@ const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer
   </a>
 ) : (
   <div
-    class="block bg-black border border-gray-800 -m-px"
+    class="card-item"
     data-key={key}
   >
     <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
