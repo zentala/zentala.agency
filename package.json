@@ -36,7 +36,8 @@
   },
   "prettier": {
     "plugins": [
-      "prettier-plugin-astro"
+      "prettier-plugin-astro",
+      "prettier-plugin-tailwindcss"
     ],
     "semi": false,
     "singleQuote": true,
