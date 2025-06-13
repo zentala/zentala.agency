@@ -45,6 +45,16 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "css.validate": false,
+  "scss.validate": false,
+  "postcss.validate": false,
+  "emmet.includeLanguages": {
+    "postcss": "css"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
+  },
   "[yaml]": {
     "editor.tabSize": 2,
     "editor.insertSpaces": true
@@ -74,5 +84,21 @@
   "todomd.activatePattern": "**/.cursor/todo/*.md",
   "todomd.defaultFile": "${workspaceFolder}/.cursor/todo/todo.md",
   "todomd.defaultArchiveFile": "${workspaceFolder}/.cursor/todo/todo.archive.md",
-  "todomd.defaultSomedayFile": "${workspaceFolder}/.cursor/todo/someday.md"
+  "todomd.defaultSomedayFile": "${workspaceFolder}/.cursor/todo/someday.md",
+  "tailwindCSS.includeLanguages": {
+    "scss": "css",
+    "postcss": "css"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass"
+  ],
+  "tailwindCSS.lint.cssConflict": "warning",
+  "tailwindCSS.lint.invalidApply": "error",
+  "tailwindCSS.lint.invalidScreen": "error",
+  "tailwindCSS.lint.invalidVariant": "error",
+  "tailwindCSS.lint.invalidConfigPath": "error",
+  "tailwindCSS.lint.invalidTailwindDirective": "error",
+  "tailwindCSS.emmetCompletions": true
 }
