@@ -7,7 +7,10 @@
     "rvest.vs-code-prettier-eslint",
     "ghmcadams.lintlens",
     "github.vscode-github-actions",
-    "usernamehw.errorlens"
+    "usernamehw.errorlens",
+    "nuxt.mdc",
+    "usernamehw.todo-md",
+    "unifiedjs.vscode-mdx"
   ],
   "unwantedRecommendations": []
 }

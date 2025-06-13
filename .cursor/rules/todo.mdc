@@ -1,0 +1,61 @@
+---
+description: working with todo, creating tasks
+globs: 
+alwaysApply: false
+---
+# Todo Management - zentala.agency
+
+Kiedy proszę Cię o dodanie czegoś do TODO to znaczy że chcę abyś dodał do naszej struktury plików.
+
+## 📁 Struktura plików (.cursor/todo/)
+- `.cursor/todo/todo.md` - Aktywne zadania i bieżący development (ŹRÓDŁO PRAWDY)
+- `.cursor/todo/someday.md` - Przyszłe pomysły i zadania niskiej priorytety  
+- `.cursor/todo/todo.archive.md` - Ukończone zadania (archiwum)
+- `src/{banners, components, layouts}/(*.)todo.md` (where `*` match to name of astro file, for which we want to make todo e.g. `BlogCard.todo.md` for `BlogCard.astro`, but we can also have general `todo.md` for whole folder)
+
+## Format zadań
+`(Priority) Task description +Project @context #tag {special:value}`
+
+## Priorytety i znaczenie
+- (A) Najwyższy - czerwony - pilne i ważne
+- (B) Wysoki - pomarańczowy - ważne
+- (C) Średni - żółty - normalne
+- (D) Niski - zielony - można odłożyć
+- (E)(F) Najniższe - someday/maybe
+
+## Projekty (+Project)
++ContactForm, +Blog, +Components, +SEO, +Technical, +Content, +Design
+
+## Konteksty (@context)  
+@frontend, @backend, @content, @design, @development, @review, @research
+
+## Tagi (#tag)
+#integration, #ui, #performance, #seo, #a11y, #docs, #feature, #bugfix
+
+## Specjalne tagi
+{due:YYYY-MM-DD} - termin, {f} - favorite, {start:} - rozpoczęcie
+{cm:} - completion date, {cr:} - creation date
+
+## Workflow
+1. Nowe zadania w `todo.md` z priorytetem i projektem
+2. Alt+D toggle completion, archiwizacja do `todo.archive.md`
+3. Niskie priorytety i pomysły do `someday.md`
+4. Filtrowanie: +Project, @context, #tag, $A, $due, $overdue
+
+## 🔧 Konfiguracja VS Code (Todo MD plugin)
+Pliki skonfigurowane w `.vscode/settings.json`:
+- activatePattern: `**/.cursor/todo/*.md`
+- defaultFile: `.cursor/todo/todo.md`
+- defaultArchiveFile: `.cursor/todo/todo.archive.md`  
+- defaultSomedayFile: `.cursor/todo/someday.md`
+
+## Reguły commitów dla todo
+- Po ukończeniu feature commit z opisem
+- Zawsze angielskie commit messages  
+- Format: "feat: complete contact form integration +ContactForm"
+- Plugin Todo MD automatycznie wykrywa pliki w .cursor/todo/
+
+
+
+
+
