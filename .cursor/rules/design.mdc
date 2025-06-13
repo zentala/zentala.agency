@@ -1,6 +1,6 @@
 ---
-description: 
-globs: *.astro
+description: using design system / styling anything
+globs: 
 alwaysApply: false
 ---
 # Design System Rules
@@ -160,7 +160,7 @@ alwaysApply: false
 <footer class="bg-black text-white">
 ```
 
-## Learningi z Refactoringu 🆕 NEW
+## Learningi z Refactoringu 🆕 UPDATED
 
 ### Problem z `-m-px`
 ❌ **Problem:** Grid z `-m-px` był o 2px szerszy niż container  
@@ -173,6 +173,19 @@ alwaysApply: false
 ### Vertical Alignment Issue
 ❌ **Problem:** Header/Footer innej szerokości niż grid  
 ✅ **Rozwiązanie:** Wszystkie kontenery `max-w-8xl` tej samej szerokości
+
+### Mobile UX Problems 🆕 NEW
+❌ **Problem:** Ramki na mobile wyglądają źle, za duże paddingi  
+✅ **Rozwiązanie:** Auto-responsive containers (border-x znika, padding się zmniejsza)
+
+❌ **Problem:** Menu na mobile nieczytelne, za małe  
+✅ **Rozwiązanie:** Hamburger menu poniżej 1000px z overlay
+
+❌ **Problem:** Footer na mobile chaotyczny  
+✅ **Rozwiązanie:** Responsive grid - About→Offer→Blogs na mobile
+
+❌ **Problem:** Logo za duże na mobile  
+✅ **Rozwiązanie:** `.responsive-logo` auto-skaluje się: 600px→350px→280px
 
 ## Development Rules 🔥 UPDATED
 
@@ -194,21 +207,50 @@ alwaysApply: false
 3. ✅ **ZAWSZE** używaj `.cards-grid` dla układów kart
 4. Wszystkie zmiany MUSZĄ przejść przez build test
 
-## Responsive Rules
+## Responsive Rules 🆕 MOBILE ENHANCED
 
-### Mobile First
+### Mobile First Philosophy
 - Projektuj najpierw na mobile
 - `.cards-grid` automatycznie obsługuje responsive
 - Używaj `md:` i `lg:` prefixów dla custom rzeczy
-- Na mobile ramki boczne MOGĄ zniknąć
+- ✅ **Ramki boczne automatycznie znikają poniżej 1450px**
+- ✅ **Padding automatycznie zmniejsza się: 770px→24px, 480px→16px**
+- ✅ **Hamburger menu poniżej 770px**
 
-### Breakpoints
+### Mobile Specific Features
+- **1450px breakpoint:** Container borders disappear
+- **770px breakpoint:** Hamburger menu + tablet spacing + footer reorganization
+- **480px breakpoint:** Ultra-compact mobile experience
+
+### Responsive Classes Available
 ```scss
-// sm: 640px
-// md: 768px (2 kolumny)
-// lg: 1024px (3 kolumny)
-// xl: 1280px
-// 2xl: 1536px
+// Container classes (auto-responsive) 🔥 UPDATED
+.container-bordered     // border-x znika przy 1450px
+.container-padded      // padding 64px→24px→16px responsive
+.container-header      // padding 64px→24px→16px + py responsive
+
+// Spacing classes (auto-responsive) 🔥 UPDATED
+.spacing-xs, .spacing-sm, .spacing-md, .spacing-lg, .spacing-xl
+// Automatycznie zmniejszają padding: 770px→24px, 480px→16px
+
+// Mobile Navigation 🔥 UPDATED
+.mobile-nav-toggle     // hamburger button (hidden above 770px)
+.desktop-nav          // desktop navigation (hidden below 770px)
+.mobile-nav           // mobile menu (no gaps, borders to edge)
+
+// Mobile Footer
+.footer-responsive-grid // reorganizes footer below 770px
+
+// Responsive Logo
+.responsive-logo       // auto-scales logo for mobile
+```
+
+### Breakpoints 🔥 UPDATED
+```scss
+// Mobile: <480px (ultra-compact, 16px padding)
+// Tablet: 480px-770px (compact, 24px padding) 
+// Desktop: >770px (full padding, mobile nav hidden)
+// Container borders: >1450px (visible when space for container + margins)
 ```
 
 ## Performance Rules
@@ -245,7 +287,38 @@ Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
 
 ## Cheat Sheet - Quick Reference
 
-### ✅ DO
+### ✅ RESPONSIVE STRUCTURE (New!)
+```html
+<!-- Auto-responsive: borders disappear on mobile, padding adapts -->
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid">
+      <div class="card-link">
+        <div class="spacing-md">Content</div>  <!-- Auto mobile padding -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Responsive logo on homepage -->
+<div class="responsive-logo mx-auto">
+  <img src="./logo.ext.svg" alt="Logo" />
+</div>
+
+<!-- Mobile navigation in header -->
+<nav class="desktop-nav">Desktop Menu</nav>
+<button class="mobile-nav-toggle">☰</button>
+<div class="mobile-nav">Mobile Menu</div>
+
+<!-- Responsive footer -->
+<div class="footer-responsive-grid">
+  <div class="footer-about">About</div>
+  <div class="footer-offer">Offer</div>
+  <div class="footer-blogs">Blogs</div>
+</div>
+```
+
+### ✅ STATIC STRUCTURE (Original)
 ```html
 <section class="section-full">
   <div class="container-bordered">
@@ -258,7 +331,7 @@ Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
 </section>
 ```
 
-### ❌ DON'T
+### ❌ DON'T (Old System)
 ```html
 <section class="section-full">
   <div class="container-bordered">
@@ -270,6 +343,101 @@ Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
   </div>
 </section>
 ```
+
+# Responsive Padding & Spacing System ✨ IMPROVED
+
+## Gradual Scaling Philosophy 
+**64px → 48px → 32px → 24px → 16px**
+
+Płynne przejścia z więcej breakpointów zamiast gwałtownych skoków.
+
+## Usage Classes
+
+### All-around Padding (p)
+- `.padding-responsive-xs` - desktop: 8px, tablet: 4px, mobile: 4px
+- `.padding-responsive-sm` - desktop: 16px, medium: 12px, tablet: 12px, mobile: 8px  
+- `.padding-responsive-md` - **64px → 48px → 32px → 24px → 16px** ⭐ Main class
+- `.padding-responsive-lg` - 96px → 80px → 64px → 48px → 32px
+- `.padding-responsive-xl` - 128px → 96px → 80px → 64px → 48px
+
+### Horizontal Padding (px) - Headers/Footers
+- `.px-responsive-xs` - desktop: 8px, tablet: 4px, mobile: 4px
+- `.px-responsive-sm` - desktop: 24px, medium: 20px, tablet: 16px, mobile: 12px
+- `.px-responsive-md` - **64px → 48px → 32px → 24px → 16px** ⭐ Container class
+- `.px-responsive-lg` - 96px → 80px → 64px → 48px → 32px
+- `.px-responsive-xl` - 128px → 96px → 80px → 64px → 48px
+
+### Breakpoints Used:
+- **>1440px**: Full desktop (64px+)
+- **1000px-1440px**: Large desktop (48px) 
+- **770px-1000px**: Medium desktop (32px)
+- **480px-770px**: Tablet (24px)
+- **<480px**: Mobile (16px)
+
+### Vertical Padding (py)
+- `.py-responsive-xs` - desktop: py-2, mobile: py-1
+- `.py-responsive-sm` - desktop: py-4, tablet: py-3, mobile: py-2
+- `.py-responsive-md` - desktop: py-8, tablet: py-6, mobile: py-4
+- `.py-responsive-lg` - desktop: py-16, tablet: py-12, mobile: py-8
+- `.py-responsive-xl` - desktop: py-24, tablet: py-16, mobile: py-12
+
+### Gap & Spacing
+- `.gap-responsive-sm` - desktop: gap-4, tablet: gap-3, mobile: gap-2
+- `.gap-responsive-md` - desktop: gap-8, tablet: gap-6, mobile: gap-4
+- `.gap-responsive-lg` - desktop: gap-12, tablet: gap-8, mobile: gap-6
+
+### Space Between (for flex/nav)
+- `.space-x-responsive-sm` - desktop: ml-4, tablet: ml-3, mobile: ml-2
+- `.space-x-responsive-md` - desktop: ml-8, tablet: ml-6, mobile: ml-4
+- `.space-x-responsive-lg` - desktop: ml-10, medium: ml-6, tablet: ml-8, mobile: ml-6
+
+## Example Usage
+
+```html
+<!-- Footer with responsive padding -->
+<footer class="bg-black">
+  <div class="px-responsive-md py-responsive-md">
+    <div class="grid gap-responsive-md">
+      <!-- Content -->
+    </div>
+  </div>
+</footer>
+
+<!-- Nav with responsive spacing -->
+<nav class="space-x-responsive-lg">
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+</nav>
+```
+
+## Integration with Existing System
+
+### Prefer New Responsive Classes Over Static
+✅ **Używaj responsywnych:** `.px-responsive-md` zamiast `.container-padded`  
+✅ **Użyj dla większej kontroli:** `.padding-responsive-md` dla komponentów  
+✅ **Idealne dla:** Navigation, footers, cards, any spacing
+
+### Compatibility with Current System
+- `.spacing-md` (static) vs `.padding-responsive-md` (responsive)
+- `.container-padded` (static) vs `.px-responsive-md` (responsive) 
+- Use responsive when you need mobile optimization
+- Use static when consistent sizing is needed
+
+## Development Guidelines
+
+### When to Use Responsive Padding
+1. **Headers/Footers** - użyj `.px-responsive-md`
+2. **Card content** - użyj `.padding-responsive-md`  
+3. **Navigation spacing** - użyj `.space-x-responsive-lg`
+4. **Section gaps** - użyj `.gap-responsive-md`
+
+### Migration from Static to Responsive
+1. Sprawdź czy komponent potrzebuje mobile optimization
+2. Zamień `.p-16` → `.padding-responsive-md`
+3. Zamień `.px-16` → `.px-responsive-md`
+4. Test na mobile (480px), tablet (770px), desktop (1440px+)
+
+Ten system jest **komplementarny** do obecnego designu i daje większą kontrolę nad mobile UX! 🚀
 
 
 

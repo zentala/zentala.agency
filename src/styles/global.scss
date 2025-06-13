@@ -9,6 +9,121 @@
   }
 }
 
+// =======================================
+// REUSABLE LINK STYLES - Reużywalne style linków
+// =======================================
+@layer components {
+  /* 
+  * SOCIAL MEDIA LINKS - Linki ikon social media
+  * Użycie: class="link-social"
+  * Szare ikony → białe na hover, bez underline
+  */
+  .link-social {
+    @apply text-gray-300 transition-colors duration-200 hover:text-white;
+
+    &:hover::after {
+      display: none !important; // Wyłącza underline effect
+    }
+  }
+
+  /*
+  * COPYRIGHT/FOOTER LINKS - Linki w stopce (copyright, privacy policy)
+  * Użycie: class="link-footer-neutral" 
+  * Subtle neutral links z lekkim brighten na hover
+  */
+  .link-footer-neutral {
+    @apply text-neutral-300 transition-colors duration-200 hover:text-neutral-200;
+  }
+
+  /*
+  * CONTENT/BLOG LINKS - Zwykłe linki w treści (blog links, menu)
+  * Użycie: class="link-content"
+  * Standard białe linki z subtle underline hover
+  */
+  .link-content {
+    @apply text-white transition-colors duration-200 hover:text-gray-300;
+    position: relative;
+
+    &:hover::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+      opacity: 0.6;
+    }
+  }
+
+  /*
+  * NAVIGATION LINKS - Linki w nawigacji głównej
+  * Użycie: class="link-nav"
+  * Bold effect na hover bez underline
+  */
+  .link-nav {
+    @apply text-white transition-colors duration-200 hover:text-gray-200;
+
+    &:hover {
+      font-weight: 500; // Slight bold effect
+    }
+
+    &:hover::after {
+      display: none !important; // No underline for nav
+    }
+  }
+
+  /*
+  * EXTERNAL LINKS - Linki zewnętrzne (do blogów, projektów)
+  * Użycie: class="link-external"
+  * Blue accent links z underline
+  */
+  .link-external {
+    @apply text-blue-400 transition-colors duration-200 hover:text-blue-300;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:hover::after {
+      display: none !important; // Use native underline instead
+    }
+  }
+
+  /*
+  * BUTTON-LIKE LINKS - Linki stylizowane jak przyciski
+  * Użycie: class="link-button"
+  * Background hover effect
+  */
+  .link-button {
+    @apply border border-white px-4 py-2 text-white transition-all duration-200 hover:bg-white hover:text-black;
+
+    &:hover::after {
+      display: none !important; // No underline for buttons
+    }
+  }
+
+  /*
+  * SUBTLE LINKS - Bardzo subtelne linki w tekście
+  * Użycie: class="link-subtle"
+  * Barely visible until hover
+  */
+  .link-subtle {
+    @apply text-gray-400 transition-colors duration-300 hover:text-white;
+
+    &:hover::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+      opacity: 0.3;
+    }
+  }
+}
+
 // Grid pattern for subtle background texture
 .grid-pattern {
   background-image: linear-gradient(
@@ -26,16 +141,21 @@
   }
 
   .border-system-hover {
-    @apply hover:border-gray-700 transition-colors duration-200;
+    @apply transition-colors duration-200 hover:border-gray-700;
   }
 
   .section-bordered {
     @apply border-b border-gray-800;
   }
 
-  // Container System
+  // Container System with Mobile Responsive Borders
   .container-bordered {
     @apply container mx-auto max-w-8xl border-x border-gray-800;
+
+    // Remove side borders only when screen is smaller than container + some margin (1450px)
+    @media (max-width: 1450px) {
+      @apply border-x-0;
+    }
   }
 
   .container-simple {
@@ -44,19 +164,63 @@
 
   .container-padded {
     @apply container mx-auto max-w-8xl border-x border-gray-800 p-16;
+
+    // Remove side borders
+    @media (max-width: 1450px) {
+      @apply border-x-0;
+    }
+
+    // Gradual padding scaling: 64px → 48px → 32px → 24px → 16px
+    @media (max-width: 1440px) {
+      @apply p-12; /* 48px */
+    }
+
+    @media (max-width: 1000px) {
+      @apply p-8; /* 32px */
+    }
+
+    @media (max-width: 770px) {
+      @apply p-6; /* 24px */
+    }
+
+    @media (max-width: 480px) {
+      @apply p-4; /* 16px */
+    }
   }
 
   .container-header {
     @apply container mx-auto max-w-8xl border-x border-gray-800 px-16 py-6;
+
+    // Remove side borders
+    @media (max-width: 1450px) {
+      @apply border-x-0;
+    }
+
+    // Gradual header padding scaling: 64px → 48px → 32px → 24px → 16px
+    @media (max-width: 1440px) {
+      @apply px-12 py-5; /* 48px, 20px */
+    }
+
+    @media (max-width: 1000px) {
+      @apply px-8 py-4; /* 32px, 16px */
+    }
+
+    @media (max-width: 770px) {
+      @apply px-6 py-4; /* 24px, 16px */
+    }
+
+    @media (max-width: 480px) {
+      @apply px-4 py-3; /* 16px, 12px */
+    }
   }
 
   // Section System
   .section-full {
-    @apply bg-black border-b border-gray-800 w-full;
+    @apply w-full border-b border-gray-800 bg-black;
   }
 
   .section-grid {
-    @apply bg-black border-b border-gray-800 grid-pattern w-full;
+    @apply grid-pattern w-full border-b border-gray-800 bg-black;
   }
 
   // New grid system without -m-px
@@ -71,7 +235,7 @@
         @apply border-r-0;
       }
 
-      @media (max-width: 1023px) {
+      @media (max-width: 770px) {
         &:nth-child(3n) {
           @apply border-r border-gray-800;
         }
@@ -80,7 +244,7 @@
         }
       }
 
-      @media (max-width: 767px) {
+      @media (max-width: 480px) {
         &:nth-child(2n) {
           @apply border-r border-gray-800;
         }
@@ -94,7 +258,7 @@
         @apply border-t border-gray-800;
       }
 
-      @media (max-width: 1023px) {
+      @media (max-width: 770px) {
         &:nth-child(n + 4) {
           @apply border-t-0;
         }
@@ -103,7 +267,7 @@
         }
       }
 
-      @media (max-width: 767px) {
+      @media (max-width: 480px) {
         &:nth-child(n + 3) {
           @apply border-t-0;
         }
@@ -117,36 +281,446 @@
   // Common card styles - borders handled by .cards-grid
   .card-item {
     @apply block bg-black;
-    @apply hover:bg-gray-900 transition-colors duration-200;
+    @apply transition-colors duration-200 hover:bg-gray-900;
   }
 
   .card-link {
     @apply block bg-black;
-    @apply hover:border-gray-700 hover:bg-gray-900 transition-all duration-200;
+    @apply transition-all duration-200 hover:border-gray-700 hover:bg-gray-900;
   }
 
-  // Spacing System
+  // Responsive Spacing System
   .spacing-xs {
     @apply p-4;
+    @media (max-width: 480px) {
+      @apply p-2;
+    }
   }
   .spacing-sm {
     @apply p-8;
+    @media (max-width: 770px) {
+      @apply p-6; /* 24px */
+    }
+    @media (max-width: 480px) {
+      @apply p-4; /* 16px */
+    }
   }
   .spacing-md {
     @apply p-16;
+    @media (max-width: 1440px) {
+      @apply p-12; /* 48px */
+    }
+    @media (max-width: 1000px) {
+      @apply p-8; /* 32px */
+    }
+    @media (max-width: 770px) {
+      @apply p-6; /* 24px */
+    }
+    @media (max-width: 480px) {
+      @apply p-4; /* 16px */
+    }
   }
   .spacing-lg {
     @apply p-24;
+    @media (max-width: 1440px) {
+      @apply p-20; /* 80px */
+    }
+    @media (max-width: 1000px) {
+      @apply p-16; /* 64px */
+    }
+    @media (max-width: 770px) {
+      @apply p-12; /* 48px */
+    }
+    @media (max-width: 480px) {
+      @apply p-8; /* 32px */
+    }
   }
   .spacing-xl {
     @apply p-32;
+    @media (max-width: 770px) {
+      @apply p-12; /* 48px */
+    }
+    @media (max-width: 480px) {
+      @apply p-8; /* 32px */
+    }
   }
 
   .spacing-x-md {
     @apply px-16;
+    @media (max-width: 770px) {
+      @apply px-6; /* 24px */
+    }
+    @media (max-width: 480px) {
+      @apply px-4; /* 16px */
+    }
   }
   .spacing-y-md {
     @apply py-16;
+    @media (max-width: 770px) {
+      @apply py-6; /* 24px */
+    }
+    @media (max-width: 480px) {
+      @apply py-4; /* 16px */
+    }
+  }
+
+  // Mobile Navigation (Hamburger Menu)
+  .mobile-nav-toggle {
+    @apply hidden;
+
+    @media (max-width: 770px) {
+      @apply block cursor-pointer;
+    }
+  }
+
+  .desktop-nav {
+    @apply space-x-responsive-lg flex text-base;
+
+    @media (max-width: 770px) {
+      @apply hidden;
+    }
+  }
+
+  .mobile-nav {
+    @apply fixed left-0 hidden w-full border-b border-gray-800 bg-black;
+    z-index: 1100; /* Higher than header (50) and overlay (400) */
+
+    @media (min-width: 771px) {
+      display: none !important; /* Force hide on desktop */
+    }
+
+    &.active {
+      @apply block;
+
+      @media (min-width: 771px) {
+        display: none !important; /* Force hide on desktop even when active */
+      }
+    }
+
+    nav {
+      @apply flex flex-col;
+
+      a {
+        @apply block border-b border-gray-800 px-6 py-4 font-medium uppercase tracking-wide text-white hover:text-gray-400;
+
+        // Responsive padding for mobile nav links
+        @media (max-width: 480px) {
+          @apply px-4 py-3;
+        }
+
+        &:last-child {
+          @apply border-b border-gray-800; // Keep border on last item since we have container border
+        }
+      }
+    }
+  }
+
+  // Prevent body scroll when mobile nav is open
+  body.mobile-nav-open {
+    @apply overflow-hidden;
+  }
+
+  // Responsive Logo
+  .responsive-logo {
+    img {
+      @apply h-auto w-full;
+      max-width: 600px;
+
+      @media (max-width: 1023px) {
+        max-width: 500px;
+      }
+
+      @media (max-width: 767px) {
+        max-width: 350px;
+      }
+
+      @media (max-width: 480px) {
+        max-width: 280px;
+      }
+    }
+  }
+
+  // Responsive Footer Layout
+  .footer-responsive-grid {
+    @apply grid w-full grid-cols-12 gap-4;
+
+    .footer-about {
+      @apply col-span-5;
+
+      @media (max-width: 770px) {
+        @apply col-span-12 mb-6;
+      }
+    }
+
+    .footer-spacer {
+      @apply col-span-2;
+
+      @media (max-width: 770px) {
+        @apply hidden;
+      }
+    }
+
+    .footer-offer {
+      @apply col-span-3;
+
+      @media (max-width: 770px) {
+        @apply col-span-6;
+      }
+
+      @media (max-width: 480px) {
+        @apply col-span-12 mb-4;
+      }
+    }
+
+    .footer-blogs {
+      @apply col-span-2;
+
+      @media (max-width: 770px) {
+        @apply col-span-6;
+      }
+
+      @media (max-width: 480px) {
+        @apply col-span-12;
+      }
+    }
+  }
+
+  // Responsive Padding System - Reusable Classes
+
+  // All-around padding (p)
+  .padding-responsive-xs {
+    @apply p-2;
+    @media (max-width: 770px) {
+      @apply p-1;
+    }
+    @media (max-width: 480px) {
+      @apply p-1;
+    }
+  }
+
+  .padding-responsive-sm {
+    @apply p-4;
+    @media (max-width: 770px) {
+      @apply p-3;
+    }
+    @media (max-width: 480px) {
+      @apply p-2;
+    }
+  }
+
+  .padding-responsive-md {
+    @apply p-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply p-12;
+    } // 48px large
+    @media (max-width: 1000px) {
+      @apply p-8;
+    } // 32px medium
+    @media (max-width: 770px) {
+      @apply p-6;
+    } // 24px tablet
+    @media (max-width: 480px) {
+      @apply p-4;
+    } // 16px mobile
+  }
+
+  .padding-responsive-lg {
+    @apply p-16;
+    @media (max-width: 770px) {
+      @apply p-12;
+    }
+    @media (max-width: 480px) {
+      @apply p-8;
+    }
+  }
+
+  .padding-responsive-xl {
+    @apply p-24;
+    @media (max-width: 770px) {
+      @apply p-16;
+    }
+    @media (max-width: 480px) {
+      @apply p-12;
+    }
+  }
+
+  // Horizontal padding (px)
+  .px-responsive-xs {
+    @apply px-2;
+    @media (max-width: 770px) {
+      @apply px-1;
+    }
+    @media (max-width: 480px) {
+      @apply px-1;
+    }
+  }
+
+  .px-responsive-sm {
+    @apply px-4;
+    @media (max-width: 770px) {
+      @apply px-3;
+    }
+    @media (max-width: 480px) {
+      @apply px-2;
+    }
+  }
+
+  .px-responsive-md {
+    @apply px-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply px-12;
+    } // 48px large
+    @media (max-width: 1000px) {
+      @apply px-8;
+    } // 32px medium
+    @media (max-width: 770px) {
+      @apply px-6;
+    } // 24px tablet
+    @media (max-width: 480px) {
+      @apply px-4;
+    } // 16px mobile
+  }
+
+  .px-responsive-lg {
+    @apply px-16;
+    @media (max-width: 770px) {
+      @apply px-12;
+    }
+    @media (max-width: 480px) {
+      @apply px-8;
+    }
+  }
+
+  .px-responsive-xl {
+    @apply px-24;
+    @media (max-width: 770px) {
+      @apply px-16;
+    }
+    @media (max-width: 480px) {
+      @apply px-12;
+    }
+  }
+
+  // Vertical padding (py)
+  .py-responsive-xs {
+    @apply py-2;
+    @media (max-width: 770px) {
+      @apply py-1;
+    }
+    @media (max-width: 480px) {
+      @apply py-1;
+    }
+  }
+
+  .py-responsive-sm {
+    @apply py-4;
+    @media (max-width: 770px) {
+      @apply py-3;
+    }
+    @media (max-width: 480px) {
+      @apply py-2;
+    }
+  }
+
+  .py-responsive-md {
+    @apply py-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply py-12;
+    } // 48px large
+    @media (max-width: 1000px) {
+      @apply py-8;
+    } // 32px medium
+    @media (max-width: 770px) {
+      @apply py-6;
+    } // 24px tablet
+    @media (max-width: 480px) {
+      @apply py-4;
+    } // 16px mobile
+  }
+
+  .py-responsive-lg {
+    @apply py-16;
+    @media (max-width: 770px) {
+      @apply py-12;
+    }
+    @media (max-width: 480px) {
+      @apply py-8;
+    }
+  }
+
+  .py-responsive-xl {
+    @apply py-24;
+    @media (max-width: 770px) {
+      @apply py-16;
+    }
+    @media (max-width: 480px) {
+      @apply py-12;
+    }
+  }
+
+  // Gap/Spacing responsive
+  .gap-responsive-sm {
+    @apply gap-4;
+    @media (max-width: 770px) {
+      @apply gap-3;
+    }
+    @media (max-width: 480px) {
+      @apply gap-2;
+    }
+  }
+
+  .gap-responsive-md {
+    @apply gap-8;
+    @media (max-width: 770px) {
+      @apply gap-6;
+    }
+    @media (max-width: 480px) {
+      @apply gap-4;
+    }
+  }
+
+  .gap-responsive-lg {
+    @apply gap-12;
+    @media (max-width: 770px) {
+      @apply gap-8;
+    }
+    @media (max-width: 480px) {
+      @apply gap-6;
+    }
+  }
+
+  // Space between responsive (for flex/nav)
+  .space-x-responsive-sm > * + * {
+    @apply ml-4;
+    @media (max-width: 770px) {
+      @apply ml-3;
+    }
+    @media (max-width: 480px) {
+      @apply ml-2;
+    }
+  }
+
+  .space-x-responsive-md > * + * {
+    @apply ml-8;
+    @media (max-width: 770px) {
+      @apply ml-6;
+    }
+    @media (max-width: 480px) {
+      @apply ml-4;
+    }
+  }
+
+  .space-x-responsive-lg > * + * {
+    @apply ml-10;
+    @media (min-width: 771px) and (max-width: 999px) {
+      @apply ml-6;
+    }
+    @media (max-width: 770px) {
+      @apply ml-8;
+    }
+    @media (max-width: 480px) {
+      @apply ml-6;
+    }
   }
 }
 
@@ -176,7 +750,7 @@
     h4,
     h5,
     h6 {
-      @apply font-light mt-8 mb-4;
+      @apply mb-4 mt-8 font-light;
     }
 
     h1 {
@@ -196,7 +770,7 @@
     }
 
     a {
-      @apply text-blue-400 hover:text-blue-300 underline;
+      @apply text-blue-400 underline hover:text-blue-300;
     }
 
     ul,
@@ -209,7 +783,7 @@
     }
 
     blockquote {
-      @apply pl-4 border-l-4 border-gray-700 italic my-4;
+      @apply my-4 border-l-4 border-gray-700 pl-4 italic;
     }
 
     hr {
@@ -217,26 +791,26 @@
     }
 
     pre {
-      @apply p-4 rounded-lg my-4;
+      @apply my-4 rounded-lg p-4;
     }
 
     code {
-      @apply px-1 py-0.5 rounded bg-gray-800 text-sm;
+      @apply rounded bg-gray-800 px-1 py-0.5 text-sm;
     }
 
     img {
-      @apply rounded-lg my-4;
+      @apply my-4 rounded-lg;
     }
 
     table {
-      @apply w-full my-4;
+      @apply my-4 w-full;
 
       th {
         @apply bg-gray-800 p-2 text-left;
       }
 
       td {
-        @apply p-2 border-t border-gray-700;
+        @apply border-t border-gray-700 p-2;
       }
     }
   }
@@ -244,27 +818,27 @@
 
 .custom-markdown {
   h1 {
-    @apply text-5xl font-light mt-10 mb-8;
+    @apply mb-8 mt-10 text-5xl font-light;
   }
 
   h2 {
-    @apply text-4xl font-light mt-28 mb-7;
+    @apply mb-7 mt-28 text-4xl font-light;
   }
 
   h3 {
-    @apply text-3xl font-light mt-20 mb-6;
+    @apply mb-6 mt-20 text-3xl font-light;
   }
 
   h4 {
-    @apply text-2xl font-normal mt-12 mb-5;
+    @apply mb-5 mt-12 text-2xl font-normal;
   }
 
   h5 {
-    @apply text-xl font-normal mt-8 mb-4;
+    @apply mb-4 mt-8 text-xl font-normal;
   }
 
   h6 {
-    @apply text-lg font-normal mt-6 mb-3;
+    @apply mb-3 mt-6 text-lg font-normal;
   }
 
   // Domyślny kolor tekstu
@@ -292,7 +866,7 @@
 
   // Style dla cytatów
   blockquote {
-    @apply pl-6 border-l-4 border-gray-700 italic my-6; // Stylizowane cytaty
+    @apply my-6 border-l-4 border-gray-700 pl-6 italic; // Stylizowane cytaty
   }
 
   // Style dla poziomej linii
@@ -302,28 +876,28 @@
 
   // Style dla kodu
   pre {
-    @apply p-4 rounded-lg my-6 bg-gray-800 text-white; // Stylizowane bloki kodu
+    @apply my-6 rounded-lg bg-gray-800 p-4 text-white; // Stylizowane bloki kodu
   }
 
   code {
-    @apply px-1 py-0.5 rounded bg-gray-800 text-sm; // Stylizowany tekst kodu
+    @apply rounded bg-gray-800 px-1 py-0.5 text-sm; // Stylizowany tekst kodu
   }
 
   // Style dla obrazów
   img {
-    @apply rounded-lg my-6; // Stylizowane obrazy
+    @apply my-6 rounded-lg; // Stylizowane obrazy
   }
 
   // Style dla tabel
   table {
-    @apply w-full my-6;
+    @apply my-6 w-full;
 
     th {
       @apply bg-gray-800 p-2 text-left;
     }
 
     td {
-      @apply p-2 border-t border-gray-700;
+      @apply border-t border-gray-700 p-2;
     }
   }
 
@@ -334,6 +908,6 @@
   }
 
   p {
-    @apply text-gray-400 leading-relaxed; // Zwiększenie wysokości linii
+    @apply leading-relaxed text-gray-400; // Zwiększenie wysokości linii
   }
 }
