@@ -28,7 +28,7 @@ const links = [
 
   // Animated Hamburger Menu
   .hamburger {
-    @apply w-7 h-5 flex flex-col justify-center cursor-pointer relative;
+    @apply relative flex h-5 w-7 cursor-pointer flex-col justify-center;
     gap: 4px;
 
     // Hide on desktop
@@ -60,7 +60,7 @@ const links = [
 
   // Mobile nav overlay
   .mobile-nav-overlay {
-    @apply fixed bg-black bg-opacity-50 hidden transition-opacity duration-300;
+    @apply fixed hidden bg-black bg-opacity-80 transition-opacity duration-300;
     left: 0;
     right: 0;
     bottom: 0;
@@ -109,16 +109,16 @@ const links = [
   }
 </style>
 
-<div class="h-20 bg-black"></div>
+<div class="header-spacer bg-black"></div>
 
 <header
   id="header"
-  class="bg-black shadow-md border-b border-gray-800 backdrop-blur bg-opacity-90 fixed top-0 w-full z-50 transition-all duration-300"
+  class="fixed top-0 z-50 w-full border-b border-gray-800 bg-black bg-opacity-90 shadow-md backdrop-blur transition-all duration-300"
 >
-  <div class="container-header flex justify-between items-center">
+  <div class="container-header flex items-center justify-between">
     <div class="logo-container flex items-center">
       <Logo {...headerLogoProps} />
-      <a href="/" class="flex items-center cursor-pointer">
+      <a href="/" class="flex cursor-pointer items-center">
         <!-- <span
           class="text-lg ml-[40px] text-white tracking-wide font-medium uppercase"
         >
@@ -132,7 +132,7 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="text-white hover:text-gray-400 uppercase tracking-wide font-medium"
+            class="font-medium uppercase tracking-wide text-white hover:text-gray-400"
           >
             {link.text}
           </a>
@@ -155,7 +155,7 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="text-white hover:text-gray-400 uppercase tracking-wide font-medium py-2 border-b border-gray-800"
+            class="border-b border-gray-800 py-2 font-medium uppercase tracking-wide text-white hover:text-gray-400"
           >
             {link.text}
           </a>
