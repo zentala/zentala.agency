@@ -23,7 +23,7 @@ const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer
     {...linkProps}
   >
     <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
-    <div class="p-16">
+    <div class="padding-responsive-md">
       <h2 class="text-2xl text-white font-light">{title}</h2>
       <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
       {linkTitle && (
@@ -37,7 +37,7 @@ const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer
     data-key={key}
   >
     <!-- {image && <img src={image} alt={title} class="w-full h-48 object-cover" />} -->
-    <div class="p-16">
+    <div class="padding-responsive-md">
       <h2 class="text-2xl text-white font-light">{title}</h2>
       <p class="mt-2 text-lg text-gray-400">{subtitle}</p>
     </div>

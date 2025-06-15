@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './variables';
 
 // Twoje niestandardowe style
 @layer base {
@@ -150,132 +151,47 @@
 
   // Container System with Mobile Responsive Borders
   .container-bordered {
-    @apply container mx-auto max-w-8xl border-x border-gray-800;
-
-    // Remove side borders only when screen is smaller than container + some margin (1450px)
-    @media (max-width: 1450px) {
-      @apply border-x-0;
-    }
+    @include container-base;
+    @include container-borders;
   }
 
   .container-simple {
-    @apply container mx-auto max-w-8xl;
+    @include container-base;
   }
 
   .container-padded {
-    @apply container mx-auto max-w-8xl border-x border-gray-800 p-16;
-
-    // Remove side borders
-    @media (max-width: 1450px) {
-      @apply border-x-0;
-    }
-
-    // Gradual padding scaling: 64px → 48px → 32px → 24px → 16px
-    @media (max-width: 1440px) {
-      @apply p-12; /* 48px */
-    }
-
-    @media (max-width: 1000px) {
-      @apply p-8; /* 32px */
-    }
-
-    @media (max-width: 770px) {
-      @apply p-6; /* 24px */
-    }
-
-    @media (max-width: 480px) {
-      @apply p-4; /* 16px */
-    }
+    @include container-base;
+    @include container-borders;
+    @include padding-responsive('md');
   }
 
   .container-header {
-    @apply container mx-auto max-w-8xl border-x border-gray-800 px-16 py-6;
+    @include container-base;
+    @include container-borders;
+    @include px-responsive();
+    @include py-responsive('sm');
+  }
 
-    // Remove side borders
-    @media (max-width: 1450px) {
-      @apply border-x-0;
-    }
-
-    // Gradual header padding scaling: 64px → 48px → 32px → 24px → 16px
-    @media (max-width: 1440px) {
-      @apply px-12 py-5; /* 48px, 20px */
-    }
-
-    @media (max-width: 1000px) {
-      @apply px-8 py-4; /* 32px, 16px */
-    }
-
-    @media (max-width: 770px) {
-      @apply px-6 py-4; /* 24px, 16px */
-    }
-
-    @media (max-width: 480px) {
-      @apply px-4 py-3; /* 16px, 12px */
-    }
+  // Header spacer - matches navbar height responsively
+  .header-spacer {
+    @include header-height-spacer;
   }
 
   // Section System
   .section-full {
-    @apply w-full border-b border-gray-800 bg-black;
+    @apply w-full bg-black;
+    @include section-borders;
   }
 
   .section-grid {
-    @apply grid-pattern w-full border-b border-gray-800 bg-black;
+    @apply grid-pattern w-full bg-black;
+    @include section-borders;
   }
 
   // New grid system without -m-px
   .cards-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-
-    > * {
-      @apply border-r border-gray-800;
-
-      // Remove right border for last items in each row
-      &:nth-child(3n) {
-        @apply border-r-0;
-      }
-
-      @media (max-width: 770px) {
-        &:nth-child(3n) {
-          @apply border-r border-gray-800;
-        }
-        &:nth-child(2n) {
-          @apply border-r-0;
-        }
-      }
-
-      @media (max-width: 480px) {
-        &:nth-child(2n) {
-          @apply border-r border-gray-800;
-        }
-        &:nth-child(1n) {
-          @apply border-r-0;
-        }
-      }
-
-      // Add internal horizontal borders between rows
-      &:nth-child(n + 4) {
-        @apply border-t border-gray-800;
-      }
-
-      @media (max-width: 770px) {
-        &:nth-child(n + 4) {
-          @apply border-t-0;
-        }
-        &:nth-child(n + 3) {
-          @apply border-t border-gray-800;
-        }
-      }
-
-      @media (max-width: 480px) {
-        &:nth-child(n + 3) {
-          @apply border-t-0;
-        }
-        &:nth-child(n + 2) {
-          @apply border-t border-gray-800;
-        }
-      }
-    }
+    @include cards-grid;
+    @include cards-grid-borders;
   }
 
   // Common card styles - borders handled by .cards-grid
@@ -368,7 +284,7 @@
   .mobile-nav-toggle {
     @apply hidden;
 
-    @media (max-width: 770px) {
+    @include tablet {
       @apply block cursor-pointer;
     }
   }
@@ -376,23 +292,24 @@
   .desktop-nav {
     @apply space-x-responsive-lg flex text-base;
 
-    @media (max-width: 770px) {
+    @include tablet {
       @apply hidden;
     }
   }
 
   .mobile-nav {
-    @apply fixed left-0 hidden w-full border-b border-gray-800 bg-black;
+    @apply fixed left-0 hidden w-full bg-black;
+    border-bottom: 1px solid $border-color;
     z-index: 1100; /* Higher than header (50) and overlay (400) */
 
-    @media (min-width: 771px) {
+    @include tablet-up {
       display: none !important; /* Force hide on desktop */
     }
 
     &.active {
       @apply block;
 
-      @media (min-width: 771px) {
+      @include tablet-up {
         display: none !important; /* Force hide on desktop even when active */
       }
     }
@@ -401,15 +318,13 @@
       @apply flex flex-col;
 
       a {
-        @apply block border-b border-gray-800 px-6 py-4 font-medium uppercase tracking-wide text-white hover:text-gray-400;
-
-        // Responsive padding for mobile nav links
-        @media (max-width: 480px) {
-          @apply px-4 py-3;
-        }
+        @apply block font-medium uppercase tracking-wide text-white hover:text-gray-400;
+        border-bottom: 1px solid $border-color;
+        @include px-responsive('sm');
+        @include py-responsive('sm');
 
         &:last-child {
-          @apply border-b border-gray-800; // Keep border on last item since we have container border
+          border-bottom: 1px solid $border-color; // Keep border on last item since we have container border
         }
       }
     }
@@ -426,15 +341,15 @@
       @apply h-auto w-full;
       max-width: 600px;
 
-      @media (max-width: 1023px) {
+      @include medium {
         max-width: 500px;
       }
 
-      @media (max-width: 767px) {
+      @include tablet {
         max-width: 350px;
       }
 
-      @media (max-width: 480px) {
+      @include mobile {
         max-width: 280px;
       }
     }
@@ -447,7 +362,7 @@
     .footer-about {
       @apply col-span-5;
 
-      @media (max-width: 770px) {
+      @include tablet {
         @apply col-span-12 mb-6;
       }
     }
@@ -455,7 +370,7 @@
     .footer-spacer {
       @apply col-span-2;
 
-      @media (max-width: 770px) {
+      @include tablet {
         @apply hidden;
       }
     }
@@ -463,11 +378,11 @@
     .footer-offer {
       @apply col-span-3;
 
-      @media (max-width: 770px) {
+      @include tablet {
         @apply col-span-6;
       }
 
-      @media (max-width: 480px) {
+      @include mobile {
         @apply col-span-12 mb-4;
       }
     }
@@ -475,11 +390,11 @@
     .footer-blogs {
       @apply col-span-2;
 
-      @media (max-width: 770px) {
+      @include tablet {
         @apply col-span-6;
       }
 
-      @media (max-width: 480px) {
+      @include mobile {
         @apply col-span-12;
       }
     }
@@ -545,116 +460,91 @@
   }
 
   // Horizontal padding (px)
-  .px-responsive-xs {
-    @apply px-2;
-    @media (max-width: 770px) {
-      @apply px-1;
-    }
-    @media (max-width: 480px) {
-      @apply px-1;
-    }
-  }
-
   .px-responsive-sm {
-    @apply px-4;
+    // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
+    @apply px-6; // 24px
+    @media (max-width: 1440px) {
+      @apply px-5; // 20px
+    }
+    @media (max-width: 1000px) {
+      @apply px-4; // 16px
+    }
     @media (max-width: 770px) {
-      @apply px-3;
+      @apply px-3; // 12px
     }
     @media (max-width: 480px) {
-      @apply px-2;
+      @apply px-2; // 8px
     }
   }
 
-  .px-responsive-md {
+  .px-responsive {
+    // Main system: 64px → 48px → 32px → 24px → 16px
     @apply px-16; // 64px desktop
     @media (max-width: 1440px) {
-      @apply px-12;
-    } // 48px large
+      @apply px-12; // 48px large
+    }
     @media (max-width: 1000px) {
-      @apply px-8;
-    } // 32px medium
+      @apply px-8; // 32px medium
+    }
     @media (max-width: 770px) {
-      @apply px-6;
-    } // 24px tablet
-    @media (max-width: 480px) {
-      @apply px-4;
-    } // 16px mobile
-  }
-
-  .px-responsive-lg {
-    @apply px-16;
-    @media (max-width: 770px) {
-      @apply px-12;
+      @apply px-6; // 24px tablet
     }
     @media (max-width: 480px) {
-      @apply px-8;
-    }
-  }
-
-  .px-responsive-xl {
-    @apply px-24;
-    @media (max-width: 770px) {
-      @apply px-16;
-    }
-    @media (max-width: 480px) {
-      @apply px-12;
+      @apply px-4; // 16px mobile
     }
   }
 
   // Vertical padding (py)
-  .py-responsive-xs {
-    @apply py-2;
-    @media (max-width: 770px) {
-      @apply py-1;
-    }
-    @media (max-width: 480px) {
-      @apply py-1;
-    }
-  }
-
   .py-responsive-sm {
-    @apply py-4;
+    // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
+    @apply py-6; // 24px
+    @media (max-width: 1440px) {
+      @apply py-5; // 20px
+    }
+    @media (max-width: 1000px) {
+      @apply py-4; // 16px
+    }
     @media (max-width: 770px) {
-      @apply py-3;
+      @apply py-3; // 12px
     }
     @media (max-width: 480px) {
-      @apply py-2;
+      @apply py-2; // 8px
     }
   }
 
   .py-responsive-md {
+    // Cards/sections: 64px → 48px → 32px → 24px → 16px (same as px-responsive)
     @apply py-16; // 64px desktop
     @media (max-width: 1440px) {
-      @apply py-12;
-    } // 48px large
+      @apply py-12; // 48px large
+    }
     @media (max-width: 1000px) {
-      @apply py-8;
-    } // 32px medium
+      @apply py-8; // 32px medium
+    }
     @media (max-width: 770px) {
-      @apply py-6;
-    } // 24px tablet
+      @apply py-6; // 24px tablet
+    }
     @media (max-width: 480px) {
-      @apply py-4;
-    } // 16px mobile
+      @apply py-4; // 16px mobile
+    }
   }
 
   .py-responsive-lg {
-    @apply py-16;
+    // Hero/large sections: 96px → 72px → 48px → 36px → 24px
+    @apply py-24; // 96px
+    @media (max-width: 1440px) {
+      padding-top: 4.5rem; // 72px
+      padding-bottom: 4.5rem;
+    }
+    @media (max-width: 1000px) {
+      @apply py-12; // 48px
+    }
     @media (max-width: 770px) {
-      @apply py-12;
+      padding-top: 2.25rem; // 36px
+      padding-bottom: 2.25rem;
     }
     @media (max-width: 480px) {
-      @apply py-8;
-    }
-  }
-
-  .py-responsive-xl {
-    @apply py-24;
-    @media (max-width: 770px) {
-      @apply py-16;
-    }
-    @media (max-width: 480px) {
-      @apply py-12;
+      @apply py-6; // 24px
     }
   }
 

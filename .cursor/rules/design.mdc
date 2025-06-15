@@ -287,18 +287,21 @@ Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
 
 ## Cheat Sheet - Quick Reference
 
-### ✅ RESPONSIVE STRUCTURE (New!)
+### ✅ RESPONSIVE STRUCTURE (Current System!)
 ```html
 <!-- Auto-responsive: borders disappear on mobile, padding adapts -->
 <section class="section-full">
   <div class="container-bordered">
     <div class="cards-grid">
       <div class="card-link">
-        <div class="spacing-md">Content</div>  <!-- Auto mobile padding -->
+        <div class="padding-responsive-md">Content</div>  <!-- ✅ RESPONSIVE! -->
       </div>
     </div>
   </div>
 </section>
+
+<!-- Responsive header spacer - matches navbar height -->
+<div class="header-spacer bg-black"></div>
 
 <!-- Responsive logo on homepage -->
 <div class="responsive-logo mx-auto">
@@ -318,30 +321,33 @@ Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
 </div>
 ```
 
-### ✅ STATIC STRUCTURE (Original)
+### ✅ CURRENT STRUCTURE (Updated System)
 ```html
 <section class="section-full">
   <div class="container-bordered">
     <div class="cards-grid">
       <div class="card-link">
-        <div class="p-16">Content</div>
+        <div class="padding-responsive-md">Content</div> <!-- ✅ RESPONSIVE! -->
       </div>
     </div>
   </div>
 </section>
 ```
 
-### ❌ DON'T (Old System)
+### ❌ DON'T (Deprecated System)
 ```html
-<section class="section-full">
-  <div class="container-bordered">
-    <div class="grid grid-cols-3 -m-px">
-      <div class="card-link border border-gray-800">
-        <div class="p-16">Content</div>
-      </div>
-    </div>
+<!-- OLD: Static padding in cards -->
+<div class="p-16">Content</div>
+
+<!-- OLD: Grid with -m-px -->
+<div class="grid grid-cols-3 -m-px">
+  <div class="card-link border border-gray-800">
+    <div class="p-16">Content</div>
   </div>
-</section>
+</div>
+
+<!-- OLD: Fixed header spacer -->
+<div class="h-20 bg-black"></div>
 ```
 
 # Responsive Padding & Spacing System ✨ IMPROVED
@@ -438,6 +444,50 @@ Płynne przejścia z więcej breakpointów zamiast gwałtownych skoków.
 4. Test na mobile (480px), tablet (770px), desktop (1440px+)
 
 Ten system jest **komplementarny** do obecnego designu i daje większą kontrolę nad mobile UX! 🚀
+
+# Header Height System ✨ NEW
+
+## Problem Solved
+Fixed header miał stały spacer `h-20` (80px), ale navbar ma responsive padding który się zmienia na różnych ekranach, powodując niezgodność.
+
+## Solution - Responsive Header Spacer
+
+### Header Height Variables
+```scss
+$header-content-height: 2.75rem; // ~44px for logo + text content
+$header-height-desktop: calc(#{$header-content-height} + 3rem); // 92px total
+$header-height-large: calc(#{$header-content-height} + 2.5rem);   // 84px total
+$header-height-medium: calc(#{$header-content-height} + 2rem);    // 76px total
+$header-height-tablet: calc(#{$header-content-height} + 1.5rem);  // 68px total
+$header-height-mobile: calc(#{$header-content-height} + 1rem);    // 60px total
+```
+
+### Usage
+```html
+<!-- ❌ OLD: Fixed spacer -->
+<div class="h-20 bg-black"></div>
+
+<!-- ✅ NEW: Responsive spacer -->
+<div class="header-spacer bg-black"></div>
+```
+
+### Mixin Available
+```scss
+@include header-height-spacer; // Auto responsive height matching navbar
+```
+
+## Benefits
+- ✅ **Perfect alignment** - spacer zawsze pasuje do wysokości navbara
+- ✅ **Mobile optimized** - mniejszy spacer na mobile (60px vs 80px)
+- ✅ **Automatic scaling** - 92px → 84px → 76px → 68px → 60px
+- ✅ **DRY principle** - jedna zmiana w variables.scss aktualizuje wszystko
+
+## Implementation Status
+- ✅ **Variables defined** in `variables.scss`
+- ✅ **Mixin created** `@include header-height-spacer`
+- ✅ **Class available** `.header-spacer`
+- ✅ **Header.astro updated** to use responsive spacer
+- ✅ **System tested** and working correctly
 
 
 

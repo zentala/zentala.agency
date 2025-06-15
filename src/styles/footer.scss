@@ -2,8 +2,16 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'variables';
 
 @layer components {
+  // Footer container with small vertical padding (like navbar)
+  .container-footer-small {
+    @include container-base;
+    @include px-responsive();
+    @include py-responsive('sm');
+  }
+
   // Footer heading styling
   .footer-heading {
     @apply relative mb-6 font-semibold uppercase;

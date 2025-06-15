@@ -1,0 +1,400 @@
+// =======================================
+// BREAKPOINTS & RESPONSIVE VARIABLES
+// =======================================
+
+// Breakpoint Values
+$mobile-max: 480px;
+$tablet-max: 770px;
+$medium-max: 1000px;
+$large-max: 1440px;
+$container-max: 1450px; // Point where container borders disappear
+
+// Container & Layout
+$container-max-width: 8xl; // Tailwind's max-w-8xl
+$border-color: #1f2937; // gray-800
+$border-color-hover: #374151; // gray-700
+$border-color-subtle: #111827; // gray-900
+
+// Spacing Scale (64px → 48px → 32px → 24px → 16px)
+$spacing-desktop: 4rem; // 64px
+$spacing-large: 3rem; // 48px
+$spacing-medium: 2rem; // 32px
+$spacing-tablet: 1.5rem; // 24px
+$spacing-mobile: 1rem; // 16px
+
+// Vertical Spacing
+$spacing-v-xs: 0.5rem; // 8px
+$spacing-v-sm: 1rem; // 16px
+$spacing-v-md: 2rem; // 32px
+$spacing-v-lg: 4rem; // 64px
+$spacing-v-xl: 6rem; // 96px
+
+// =======================================
+// HEADER HEIGHT SYSTEM
+// =======================================
+
+// Header height variables - matches navbar py-responsive('sm') + content height
+$header-content-height: 2.75rem; // ~44px for logo + text content
+$header-height-desktop: calc(
+  #{$header-content-height} + 3rem
+); // 44px + 48px padding = 92px
+$header-height-large: calc(
+  #{$header-content-height} + 2.5rem
+); // 44px + 40px padding = 84px
+$header-height-medium: calc(
+  #{$header-content-height} + 2rem
+); // 44px + 32px padding = 76px
+$header-height-tablet: calc(
+  #{$header-content-height} + 1.5rem
+); // 44px + 24px padding = 68px
+$header-height-mobile: calc(
+  #{$header-content-height} + 1rem
+); // 44px + 16px padding = 60px
+
+// Header height mixin - creates responsive spacer that matches navbar height
+@mixin header-height-spacer {
+  height: $header-height-desktop;
+  @include large {
+    height: $header-height-large;
+  }
+  @include medium {
+    height: $header-height-medium;
+  }
+  @include tablet {
+    height: $header-height-tablet;
+  }
+  @include mobile {
+    height: $header-height-mobile;
+  }
+}
+
+// =======================================
+// RESPONSIVE MIXINS
+// =======================================
+
+// Mobile First Approach
+@mixin mobile {
+  @media (max-width: #{$mobile-max}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet-max}) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media (max-width: #{$medium-max}) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media (max-width: #{$large-max}) {
+    @content;
+  }
+}
+
+@mixin container-responsive {
+  @media (max-width: #{$container-max}) {
+    @content;
+  }
+}
+
+// Desktop First (min-width)
+@mixin mobile-up {
+  @media (min-width: #{$mobile-max + 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{$tablet-max + 1px}) {
+    @content;
+  }
+}
+
+@mixin medium-up {
+  @media (min-width: #{$medium-max + 1px}) {
+    @content;
+  }
+}
+
+@mixin large-up {
+  @media (min-width: #{$large-max + 1px}) {
+    @content;
+  }
+}
+
+// Range Mixins
+@mixin tablet-only {
+  @media (min-width: #{$mobile-max + 1px}) and (max-width: #{$tablet-max}) {
+    @content;
+  }
+}
+
+@mixin medium-only {
+  @media (min-width: #{$tablet-max + 1px}) and (max-width: #{$medium-max}) {
+    @content;
+  }
+}
+
+@mixin large-only {
+  @media (min-width: #{$medium-max + 1px}) and (max-width: #{$large-max}) {
+    @content;
+  }
+}
+
+// =======================================
+// RESPONSIVE SPACING MIXINS
+// =======================================
+
+// All-around Padding with Responsive Scale
+@mixin padding-responsive($size: 'md') {
+  @if $size == 'xs' {
+    padding: 0.5rem;
+    @include tablet {
+      padding: 0.25rem;
+    }
+    @include mobile {
+      padding: 0.25rem;
+    }
+  } @else if $size == 'sm' {
+    padding: 1rem;
+    @include tablet {
+      padding: 0.75rem;
+    }
+    @include mobile {
+      padding: 0.5rem;
+    }
+  } @else if $size == 'md' {
+    padding: $spacing-desktop;
+    @include large {
+      padding: $spacing-large;
+    }
+    @include medium {
+      padding: $spacing-medium;
+    }
+    @include tablet {
+      padding: $spacing-tablet;
+    }
+    @include mobile {
+      padding: $spacing-mobile;
+    }
+  } @else if $size == 'lg' {
+    padding: 1.5rem;
+    @include tablet {
+      padding: 3rem;
+    }
+    @include mobile {
+      padding: 2rem;
+    }
+  } @else if $size == 'xl' {
+    padding: 2rem;
+    @include tablet {
+      padding: 4rem;
+    }
+    @include mobile {
+      padding: 3rem;
+    }
+  }
+}
+
+// Horizontal Padding
+@mixin px-responsive($size: 'md') {
+  @if $size == 'sm' {
+    // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    @include large {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+    @include medium {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    @include tablet {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+    @include mobile {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  } @else {
+    // Default/main system: 64px → 48px → 32px → 24px → 16px
+    padding-left: $spacing-desktop;
+    padding-right: $spacing-desktop;
+    @include large {
+      padding-left: $spacing-large;
+      padding-right: $spacing-large;
+    }
+    @include medium {
+      padding-left: $spacing-medium;
+      padding-right: $spacing-medium;
+    }
+    @include tablet {
+      padding-left: $spacing-tablet;
+      padding-right: $spacing-tablet;
+    }
+    @include mobile {
+      padding-left: $spacing-mobile;
+      padding-right: $spacing-mobile;
+    }
+  }
+}
+
+// Vertical Padding
+@mixin py-responsive($size: 'md') {
+  @if $size == 'sm' {
+    // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    @include large {
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+    @include medium {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    @include tablet {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    @include mobile {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  } @else if $size == 'md' {
+    // Cards/sections: 64px → 48px → 32px → 24px → 16px (same as px-responsive)
+    padding-top: $spacing-desktop;
+    padding-bottom: $spacing-desktop;
+    @include large {
+      padding-top: $spacing-large;
+      padding-bottom: $spacing-large;
+    }
+    @include medium {
+      padding-top: $spacing-medium;
+      padding-bottom: $spacing-medium;
+    }
+    @include tablet {
+      padding-top: $spacing-tablet;
+      padding-bottom: $spacing-tablet;
+    }
+    @include mobile {
+      padding-top: $spacing-mobile;
+      padding-bottom: $spacing-mobile;
+    }
+  } @else if $size == 'lg' {
+    // Hero/large sections: 96px → 72px → 48px → 36px → 24px
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    @include large {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+    @include medium {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+    @include tablet {
+      padding-top: 2.25rem;
+      padding-bottom: 2.25rem;
+    }
+    @include mobile {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+}
+
+// =======================================
+// CONTAINER MIXINS
+// =======================================
+
+@mixin container-base {
+  @apply container mx-auto;
+  max-width: theme('maxWidth.8xl');
+}
+
+@mixin container-borders {
+  border-left: 1px solid $border-color;
+  border-right: 1px solid $border-color;
+
+  @include container-responsive {
+    border-left: none;
+    border-right: none;
+  }
+}
+
+@mixin section-borders {
+  border-bottom: 1px solid $border-color;
+}
+
+// =======================================
+// GRID MIXINS
+// =======================================
+
+@mixin cards-grid {
+  @apply grid grid-cols-1;
+
+  @include tablet-up {
+    @apply grid-cols-2;
+  }
+
+  @include medium-up {
+    @apply grid-cols-3;
+  }
+}
+
+@mixin cards-grid-borders {
+  > * {
+    border-right: 1px solid $border-color;
+
+    // Desktop: 3 columns
+    @include medium-up {
+      &:nth-child(3n) {
+        border-right: none;
+      }
+      &:nth-child(n + 4) {
+        border-top: 1px solid $border-color;
+      }
+    }
+
+    // Tablet: 2 columns
+    @include tablet-only {
+      &:nth-child(3n) {
+        border-right: 1px solid $border-color;
+      }
+      &:nth-child(2n) {
+        border-right: none;
+      }
+      &:nth-child(n + 4) {
+        border-top: none;
+      }
+      &:nth-child(n + 3) {
+        border-top: 1px solid $border-color;
+      }
+    }
+
+    // Mobile: 1 column
+    @include mobile {
+      &:nth-child(2n) {
+        border-right: 1px solid $border-color;
+      }
+      &:nth-child(1n) {
+        border-right: none;
+      }
+      &:nth-child(n + 3) {
+        border-top: none;
+      }
+      &:nth-child(n + 2) {
+        border-top: 1px solid $border-color;
+      }
+    }
+  }
+}

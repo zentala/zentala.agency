@@ -5,32 +5,32 @@ const { number, title, description, icon, href } = Astro.props
 {
   href ? (
     <a href={href} class="card-link">
-      <div class="block relative overflow-hidden p-16">
+      <div class="padding-responsive-md relative block overflow-hidden">
         <div class="flex justify-end">
-          <span class="icon text-9xl opacity-30 absolute right-4 top-4">
+          <span class="icon absolute right-4 top-4 text-9xl opacity-30">
             {icon}
           </span>
         </div>
-        <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold">
+        <span class="number absolute left-4 top-0 text-9xl font-semibold opacity-5">
           {number}
         </span>
-        <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
-        <p class="lead text-gray-400 text-xl">{description}</p>
+        <h3 class="header mb-4 mt-2 text-3xl text-white">{title}</h3>
+        <p class="lead text-xl text-gray-400">{description}</p>
       </div>
     </a>
   ) : (
     <div class="card-item">
-      <div class="block relative overflow-hidden p-16">
+      <div class="padding-responsive-md relative block overflow-hidden">
         <div class="flex justify-end">
-          <span class="icon text-9xl opacity-30 absolute right-4 top-4">
+          <span class="icon absolute right-4 top-4 text-9xl opacity-30">
             {icon}
           </span>
         </div>
-        <span class="number text-9xl opacity-5 absolute left-4 top-0 font-semibold">
+        <span class="number absolute left-4 top-0 text-9xl font-semibold opacity-5">
           {number}
         </span>
-        <h3 class="header text-3xl mt-2 mb-4 text-white">{title}</h3>
-        <p class="lead text-gray-400 text-xl">{description}</p>
+        <h3 class="header mb-4 mt-2 text-3xl text-white">{title}</h3>
+        <p class="lead text-xl text-gray-400">{description}</p>
       </div>
     </div>
   )
