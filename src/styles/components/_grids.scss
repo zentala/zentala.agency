@@ -13,13 +13,49 @@
 }
 
 @layer components {
-  // New grid system without -m-px
+  // Grid system with selective borders - no overlapping margins
   .cards-grid {
     @include cards-grid;
-    @include cards-grid-borders;
+
+    // All children get full borders - but top/left are transparent by default
+    > * {
+      border: 1px solid transparent;
+      border-right-color: $border-color;
+      border-bottom-color: $border-color;
+      position: relative;
+      z-index: 1;
+    }
+
+    // Hover effect - show all borders with hover color
+    > *:hover {
+      z-index: 2;
+      border-color: $border-color-hover;
+    }
+
+    // Remove right border from last column
+    @include medium-up {
+      > *:nth-child(3n) {
+        border-right: none;
+      }
+    }
+
+    // On tablet (2 columns), remove right border from every 2nd item
+    @include tablet-up {
+      @include medium-only {
+        > *:nth-child(2n) {
+          border-right: none;
+        }
+      }
+    }
+
+    @include mobile {
+      > * {
+        border-right: none;
+      }
+    }
   }
 
-  // Common card styles - borders handled by .cards-grid
+  // Common card styles - borders handled by .cards-grid parent
   .card-item {
     @apply block bg-black;
     @apply transition-colors duration-200 hover:bg-gray-900;
@@ -27,6 +63,6 @@
 
   .card-link {
     @apply block bg-black;
-    @apply transition-all duration-200 hover:border-gray-700 hover:bg-gray-900;
+    @apply transition-colors duration-200 hover:bg-gray-900;
   }
 }

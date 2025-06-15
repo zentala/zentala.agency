@@ -76,4 +76,40 @@
       @apply px-4; // 16px mobile
     }
   }
+
+  .px-responsive-lg {
+    // Large system: 96px → 72px → 48px → 36px → 24px (like py-responsive-lg)
+    @apply px-24; // 96px (3rem) desktop
+    @media (max-width: 1440px) {
+      padding-left: 4.5rem; // 72px large
+      padding-right: 4.5rem;
+    }
+    @media (max-width: 1000px) {
+      @apply px-12; // 48px medium
+    }
+    @media (max-width: 770px) {
+      padding-left: 2.25rem; // 36px tablet
+      padding-right: 2.25rem;
+    }
+    @media (max-width: 480px) {
+      @apply px-6; // 24px mobile
+    }
+  }
+
+  .px-responsive-xl {
+    // Extra large system: 128px → 96px → 64px → 48px → 32px
+    @apply px-32; // 128px desktop
+    @media (max-width: 1440px) {
+      @apply px-24; // 96px large
+    }
+    @media (max-width: 1000px) {
+      @apply px-16; // 64px medium
+    }
+    @media (max-width: 770px) {
+      @apply px-12; // 48px tablet
+    }
+    @media (max-width: 480px) {
+      @apply px-8; // 32px mobile
+    }
+  }
 }
