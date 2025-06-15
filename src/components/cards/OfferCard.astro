@@ -1,0 +1,79 @@
+---
+import CardContainer from './CardContainer.astro'
+
+export interface OfferCardProps {
+  number: string
+  title: string
+  description: string
+  icon: string
+  href?: string
+}
+
+const { number, title, description, icon, href } = Astro.props
+---
+
+<CardContainer href={href} backgroundIcon={icon}>
+  <span class="offer-card__number">{number}</span>
+  <h3 class="offer-card__title">{title}</h3>
+  <p class="offer-card__description">{description}</p>
+</CardContainer>
+
+<style>
+  .offer-card__number {
+    position: absolute;
+    left: 0;
+    top: -0.5rem;
+    font-size: 5.5rem; /* text-9xl equivalent */
+    font-weight: 600;
+    opacity: 0.05;
+    z-index: 0;
+  }
+
+  .offer-card__title {
+    font-size: 1.875rem; /* text-3xl */
+    color: white;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .offer-card__description {
+    font-size: 1.25rem; /* text-xl */
+    color: #9ca3af; /* gray-400 */
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Responsive typography */
+  @media (max-width: 770px) {
+    .offer-card__number {
+      font-size: 4.5rem;
+      top: -0.25rem;
+    }
+
+    .offer-card__title {
+      font-size: 1.5rem; /* text-2xl */
+      margin-bottom: 0.75rem;
+    }
+
+    .offer-card__description {
+      font-size: 1.125rem; /* text-lg */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .offer-card__number {
+      font-size: 3.5rem;
+    }
+
+    .offer-card__title {
+      font-size: 1.25rem; /* text-xl */
+      margin-bottom: 0.5rem;
+    }
+
+    .offer-card__description {
+      font-size: 1rem; /* text-base */
+    }
+  }
+</style>

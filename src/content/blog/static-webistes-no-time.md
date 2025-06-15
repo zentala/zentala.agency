@@ -1,7 +1,7 @@
 ---
 title: 'Static Site Generator Stack Ideal for Busy Developer'
 date: '2023-06-01'
-category: 'Development'
+category: 'WebDev'
 imageUrl: 'https://example.com/ssr-static-site-generators.jpg'
 excerpt: 'Exploring the benefits of SSR and static site generators for efficient content creation.'
 authorRole: 'Solution Architect'

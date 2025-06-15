@@ -8,6 +8,7 @@
   // Footer container with small vertical padding (like navbar)
   .container-footer-small {
     @include container-base;
+    @include container-borders;
     @include px-responsive();
     @include py-responsive('sm');
   }

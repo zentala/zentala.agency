@@ -15,6 +15,23 @@ $border-color: #1f2937; // gray-800
 $border-color-hover: #374151; // gray-700
 $border-color-subtle: #111827; // gray-900
 
+// =======================================
+// HEADER SPECIFIC VARIABLES
+// =======================================
+
+// Header scroll behavior
+$scroll-threshold: 50px; // Scroll distance before header changes
+$header-z-index: 50; // Header z-index
+$mobile-nav-z-index: 1100; // Mobile nav z-index
+$mobile-overlay-z-index: 40; // Mobile overlay z-index
+
+// Header navigation breakpoints
+$nav-mobile-breakpoint: 771px; // Where hamburger menu appears
+
+// Header scroll padding classes
+$header-padding-scrolled: 'py-4'; // Padding when scrolled
+$header-padding-default: 'py-6'; // Default padding
+
 // Spacing Scale (64px → 48px → 32px → 24px → 16px)
 $spacing-desktop: 4rem; // 64px
 $spacing-large: 3rem; // 48px

@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content'
+import CardContainer from './CardContainer.astro'
+import PostMeta from '../primitives/PostMeta.astro'
+import TruncateText from '../primitives/TruncateText.astro'
+
+export interface PostProps {
+  title: string
+  date: string
+  category: string
+  imageUrl?: string
+  excerpt?: string
+  authorVersion?: string
+  link: string
+}
+
+const {
+  title,
+  date,
+  category,
+  excerpt,
+  authorVersion = 'pawel-zentala',
+  link,
+} = Astro.props
+
+// Pobieramy dane autora
+const authors = await getCollection('authors')
+const authorData = authors[0].data
+const author = authorData.find((a) => a.slug === authorVersion)
+
+if (!author) {
+  throw new Error(`Author not found for version: ${authorVersion}`)
+}
+---
+
+<CardContainer href={link} class="post-card">
+  <PostMeta
+    author={author}
+    date={date}
+    category={category}
+    class="post-card__meta"
+  />
+
+  <h3 class="post-card__title">
+    {title}
+  </h3>
+
+  {
+    excerpt && (
+      <TruncateText text={excerpt} maxLength={120} class="post-card__excerpt" />
+    )
+  }
+</CardContainer>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .post-card__meta {
+    flex-shrink: 0;
+  }
+
+  .post-card__title {
+    margin-top: 0.75rem;
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 300; /* font-light */
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .post-card__excerpt {
+    margin-top: 1.25rem;
+    font-size: 1.125rem; /* text-lg */
+    line-height: 1.5;
+    color: #d1d5db; /* gray-300 */
+    flex-grow: 1;
+  }
+
+  /* Responsive typography */
+  @media (max-width: 770px) {
+    .post-card__title {
+      font-size: 1.5rem; /* text-2xl */
+      margin-top: 0.5rem;
+    }
+
+    .post-card__excerpt {
+      font-size: 1rem; /* text-base */
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-card__title {
+      font-size: 1.25rem; /* text-xl */
+    }
+
+    .post-card__excerpt {
+      font-size: 0.875rem; /* text-sm */
+      margin-top: 0.75rem;
+    }
+  }
+</style>
