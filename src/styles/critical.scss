@@ -82,4 +82,15 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  // CRITICAL: Responsive Logo (visible immediately)
+  .responsive-logo {
+    height: 2.5rem; // 40px
+    @include tablet {
+      height: 2rem; // 32px
+    }
+    @include mobile {
+      height: 1.75rem; // 28px
+    }
+  }
 }

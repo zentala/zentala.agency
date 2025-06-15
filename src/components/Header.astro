@@ -178,7 +178,7 @@ const links = [
 <script>
   // Scroll header behavior
   window.addEventListener('scroll', function () {
-    const header = document.querySelector('#header .container')
+    const header = document.querySelector('#header .container-header')
     if (!header) return
     if (window.scrollY > 50) {
       header.classList.add('py-4')
@@ -189,12 +189,27 @@ const links = [
     }
   })
 
+  // Update header spacer to match dynamic header height
+  function updateHeaderSpacer() {
+    const header = document.getElementById('header')
+    const spacer = document.querySelector('.header-spacer') as HTMLElement
+    if (header && spacer) {
+      const headerHeight = header.offsetHeight
+      spacer.style.height = `${headerHeight}px`
+    }
+  }
+
   // Mobile navigation toggle
   document.addEventListener('DOMContentLoaded', function () {
     const mobileToggle = document.getElementById('mobile-toggle')
     const mobileNav = document.getElementById('mobile-nav')
     const mobileOverlay = document.getElementById('mobile-overlay')
     const header = document.getElementById('header')
+
+    // Update header spacer on initial load and scroll
+    updateHeaderSpacer()
+    window.addEventListener('scroll', updateHeaderSpacer)
+    window.addEventListener('resize', updateHeaderSpacer)
 
     function updateMobileNavPosition() {
       if (header && mobileNav) {
