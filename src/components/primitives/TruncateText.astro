@@ -1,0 +1,40 @@
+---
+export interface TruncateTextProps {
+  text: string
+  maxLength?: number
+  class?: string
+  element?: 'p' | 'span' | 'div'
+}
+
+const {
+  text,
+  maxLength = 150,
+  class: className = '',
+  element = 'p',
+} = Astro.props
+
+// Smart truncation - try to end at word boundary
+function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text
+
+  // Find the last space within the limit
+  const truncated = text.substring(0, maxLength)
+  const lastSpace = truncated.lastIndexOf(' ')
+
+  // If we found a space and it's reasonably close to the limit, use it
+  if (lastSpace > maxLength * 0.8) {
+    return truncated.substring(0, lastSpace) + '...'
+  }
+
+  // Otherwise, just truncate at the limit
+  return truncated + '...'
+}
+
+const truncatedText = truncateText(text, maxLength)
+const Element = element
+---
+
+<Element class={className} title={text.length > maxLength ? text : undefined}>
+  {truncatedText}
+</Element>
+

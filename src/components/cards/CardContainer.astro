@@ -1,0 +1,122 @@
+---
+export interface CardContainerProps {
+  href?: string
+  hasHover?: boolean
+  backgroundIcon?: string
+  class?: string
+  target?: '_blank' | '_self'
+}
+
+const {
+  href,
+  hasHover = !!href, // Default: hover if link exists
+  backgroundIcon,
+  class: className = '',
+  target = '_self',
+} = Astro.props
+
+const Element = href ? 'a' : 'div'
+---
+
+{
+  Element === 'a' ? (
+    <a
+      href={href}
+      target={target}
+      class={`card-container ${hasHover ? 'card-container--hover' : ''} ${className}`}
+    >
+      {backgroundIcon && (
+        <div class="card-container__bg-icon">{backgroundIcon}</div>
+      )}
+      <div class="card-container__content">
+        <slot />
+      </div>
+    </a>
+  ) : (
+    <div
+      class={`card-container ${hasHover ? 'card-container--hover' : ''} ${className}`}
+    >
+      {backgroundIcon && (
+        <div class="card-container__bg-icon">{backgroundIcon}</div>
+      )}
+      <div class="card-container__content">
+        <slot />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .card-container {
+    display: block;
+    background-color: black;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-container--hover {
+    transition: all 200ms ease-in-out;
+  }
+
+  .card-container--hover:hover {
+    background-color: #111827; /* gray-900 */
+  }
+
+  .card-container__content {
+    /* Responsive padding using mixins */
+    padding: 4rem; /* Desktop: 64px */
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Responsive padding for content */
+  @media (max-width: 1440px) {
+    .card-container__content {
+      padding: 3rem; /* Large: 48px */
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .card-container__content {
+      padding: 2rem; /* Medium: 32px */
+    }
+  }
+
+  @media (max-width: 770px) {
+    .card-container__content {
+      padding: 1.5rem; /* Tablet: 24px */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-container__content {
+      padding: 1rem; /* Mobile: 16px */
+    }
+  }
+
+  .card-container__bg-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    opacity: 0.1;
+    z-index: 0;
+  }
+
+  /* Responsive background icon */
+  @media (max-width: 770px) {
+    .card-container__bg-icon {
+      font-size: 2.5rem;
+      right: 0.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-container__bg-icon {
+      font-size: 2rem;
+      right: 0.5rem;
+    }
+  }
+</style>
+

@@ -3,492 +3,374 @@ description: using design system / styling anything
 globs: 
 alwaysApply: false
 ---
-# Design System Rules
+# Żentała Design System - Complete Reference
 
-## Podstawowe Zasady
+## 🎯 Quick Start Checklist
+Before creating any new component/page, check:
+- [ ] Use `CardContainer` for any card-like element
+- [ ] Use variables from `$space` map for spacing
+- [ ] Use responsive mixins for padding/margins
+- [ ] Check if component already exists before creating
 
-### 1. Architektura Layoutu
-- Każda strona MUSI używać struktury: `Header → Main → Footer`
-- NIE używaj wrapperów które ograniczają całą stronę
-- Poziome linie (border-b) MUSZĄ przechodzić przez całą szerokość ekranu
-- Pionowe linie (border-x) TYLKO dla contentu wewnątrz sekcji
+## 🎨 Core Design Decisions
 
-### 2. System Ramek 🔥 UPDATED
-- **Główne ramki:** `border-gray-800`
-- **Hover states:** `border-gray-700` 
-- **Subtelne:** `border-gray-900`
-- ❌ **NIGDY** nie używaj `-m-px` - zastąpiono przez `.cards-grid`
-- ✅ **ZAWSZE** używaj `.cards-grid` dla layout kart w 3 kolumnach
-
-### 3. Kolory
-- **Tło:** `bg-black`
-- **Tekst główny:** `text-white`
-- **Tekst drugorzędny:** `text-gray-300` lub `text-gray-400`
-- **NIE używaj innych kolorów** bez konsultacji
-
-## Obowiązkowe Klasy CSS 🔥 UPDATED
-
-### Container System
+### Colors (→ see [`variables.scss`](mdc:variables.scss) for full palette)
 ```scss
-.container-bordered    // container + border-x + max-w-8xl
-.container-padded     // container + border-x + p-16 + max-w-8xl
-.container-header     // container + border-x + px-16 py-6 + max-w-8xl
-.container-simple     // tylko container + max-w-8xl bez ramek
+// Primary palette - USE THESE
+$border-color: #1f2937;  // gray-800 - ALL borders
+$border-hover: #374151;  // gray-700 - hover state
+$bg-hover: #111827;      // gray-900 - background hover
+
+// Text colors - use Tailwind
+text-white              // Primary text
+text-gray-300          // Secondary text  
+text-gray-400          // Muted text
+
+// Usage examples
+border: 1px solid $border-color;
+&:hover { 
+  border-color: $border-hover;
+  background-color: $bg-hover;
+}
 ```
 
-### Section System  
+### Spacing System (→ see [`variables.scss`](mdc:variables.scss) → `$space` map)
 ```scss
-.section-full        // bg-black + border-b + w-full
-.section-grid        // section-full + grid-pattern
+// Desktop → Tablet → Mobile (automatic scaling)
+$space-10: 64px → 48px → 32px  // Section padding
+$space-6:  32px → 24px → 16px  // Component padding
+$space-4:  16px → 12px → 8px   // Small gaps
+
+// How to use
+@include spacing('padding', 10);      // Auto-responsive padding
+padding: map-get($space, 10);         // Non-responsive
+class="p-16"                          // Tailwind (64px)
 ```
 
-### Card Grid System 🆕 NEW
+### Breakpoints (→ see [`variables.scss`](mdc:variables.scss) → `$breakpoints`)
 ```scss
-.cards-grid          // inteligentny grid z auto-borders bez -m-px
-  // Automatycznie dodaje:
-  // - border-r między kartami w rzędzie
-  // - border-t między rzędami
-  // - usuwa końcowe ramki (3n, 2n, 1n)
-  // - responsive breakpoints
+// YOUR breakpoints (for SCSS)
+$mobile-max: 480px      // Ultra mobile
+$tablet-max: 770px      // Custom tablet
+$medium-max: 1000px     // Small desktop
+$large-max: 1440px      // Large desktop
+$container-max: 1450px  // Container borders vanish
+
+// TAILWIND breakpoints (for HTML classes)
+sm: 640px   // Don't mix with yours!
+md: 768px   // Use for Tailwind only
+lg: 1024px  // Like: class="lg:grid-cols-3"
+xl: 1280px  // Keep separate from SCSS
 ```
 
-### Card System 🔥 UPDATED
-```scss
-.card-item          // BEZ border - border dodaje .cards-grid
-.card-link          // BEZ border - border dodaje .cards-grid
+## 🧱 Component Library
+
+### CardContainer (→ [`components/cards/CardContainer.astro`](mdc:../components/cards/CardContainer.astro))
+**The base for ALL cards.** Handles:
+- Link wrapping (automatic if href provided)
+- Hover states (auto-enabled for links)
+- Background icons
+- Consistent padding
+- Proper semantics
+
+```astro
+<!-- Basic usage -->
+<CardContainer href="/link" backgroundIcon="🚀">
+  <h3>Title</h3>
+  <p>Content</p>
+</CardContainer>
+
+<!-- Without link (no hover) -->
+<CardContainer>
+  <h3>Static content</h3>
+</CardContainer>
+
+<!-- Custom hover behavior -->
+<CardContainer href="/link" hasHover={false}>
+  <h3>Link without hover effect</h3>
+</CardContainer>
 ```
 
-### Spacing System
-```scss
-.spacing-xs    // p-4
-.spacing-sm    // p-8  
-.spacing-md    // p-16
-.spacing-lg    // p-24
-.spacing-xl    // p-32
-```
+### Cards Grid (→ [`styles/components/_grid.scss`](mdc:components/_grid.scss))
+Smart grid that adds borders between items automatically.
 
-## Mandatory Structure 🔥 UPDATED
-
-### Każda Strona
 ```html
-<Layout title="Title">
-  <Hero title="..." subtitle="..." />
+<div class="cards-grid">
+  <!-- Auto borders between cards -->
+  <CardContainer>...</CardContainer>
+  <CardContainer>...</CardContainer>
+  <CardContainer>...</CardContainer>
+</div>
+```
+
+Features:
+- 3 columns on desktop
+- 2 columns on tablet  
+- 1 column on mobile
+- Smart borders (no -m-px hack!)
+- No border on last items in row
+
+### Container System (→ mixins in [`variables.scss`](mdc:variables.scss))
+```scss
+// THREE types - memorize these!
+.container-bordered   // max-width + side borders (disappear <1450px)
+.container-padded    // max-width + responsive padding
+.container-simple    // ONLY max-width centering
+
+// Common combinations
+.container-bordered.spacing-md  // Bordered + padding
+.container-padded              // Already has padding
+```
+
+### PostMeta Component (→ [`components/PostMeta.astro`](mdc:../components/PostMeta.astro))
+Handles author, date, category in one line.
+
+```astro
+<PostMeta 
+  author={authorObject}
+  date="2024-01-15"
+  category="technology"
+/>
+```
+
+### TruncateText (→ [`components/TruncateText.astro`](mdc:../components/TruncateText.astro))
+Smart text truncation that fits container.
+
+```astro
+<TruncateText 
+  text={longText}
+  class="text-lg text-gray-300"
+/>
+```
+
+## 📐 Layout Patterns
+
+### Standard Page Structure (MEMORIZE THIS!)
+```astro
+<Layout title="Page Title">
+  <!-- Optional hero -->
+  <Hero title="Big Title" subtitle="Subtitle" />
+  
+  <!-- Main content sections -->
   <section class="section-full">
     <div class="container-bordered">
-      <!-- content -->
+      <div class="cards-grid">
+        <CardContainer href="/1">...</CardContainer>
+        <CardContainer href="/2">...</CardContainer>
+        <CardContainer href="/3">...</CardContainer>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Another section -->
+  <section class="section-full">
+    <div class="container-padded">
+      <!-- Non-card content -->
     </div>
   </section>
 </Layout>
 ```
 
-### Cards w Grid 🆕 NEW SYSTEM
+### Section Variants
 ```html
+<!-- Standard section -->
 <section class="section-full">
-  <div class="container-bordered">
-    <div class="cards-grid">
-      <!-- Z linkiem -->
-      <a href="/link" class="card-link">
-        <div class="p-16">Content</div>
-      </a>
-      
-      <!-- Bez linka -->
-      <div class="card-item">
-        <div class="p-16">Content</div>
-      </div>
-    </div>
-  </div>
+  <!-- border-bottom, full width -->
+</section>
+
+<!-- With background pattern -->
+<section class="section-grid">
+  <!-- Same + grid pattern -->
 </section>
 ```
 
-### Hero Section
-```html
-<section class="section-grid text-white text-center">
-  <div class="container-padded spacing-lg">
-    <h1>Title</h1>
-    <h2>Subtitle</h2>
-  </div>
-</section>
-```
+## 🛠️ Mixins & Utilities
 
-## Forbidden Practices 🔥 UPDATED
-
-### ❌ NIE ROB TEGO:
-```html
-<!-- Inline Tailwind dla rzeczy które mają klasy -->
-<div class="container mx-auto max-w-8xl border-x border-gray-800 p-16">
-
-<!-- Stary system z -m-px -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 -m-px">
-
-<!-- Karty z border gdy używasz .cards-grid -->
-<div class="card-link border border-gray-800">
-
-<!-- Wrapper ograniczający całą stronę -->
-<div class="max-w-8xl mx-auto">
-  <Header />
-  <Main />
-  <Footer />
-</div>
-
-<!-- Inne kolory ramek -->
-<div class="border-gray-600">
-
-<!-- Footer z border-t -->
-<footer class="border-t border-gray-800">
-```
-
-### ✅ ROB TO:
-```html
-<!-- Używaj klas systemowych -->
-<div class="container-padded">
-
-<!-- Nowy system grid -->
-<div class="cards-grid">
-
-<!-- Karty BEZ border w .cards-grid -->
-<div class="card-link">
-
-<!-- Każdy komponent oddzielnie -->
-<Header />
-<Main />
-<Footer />
-
-<!-- Systemowe kolory -->
-<div class="border-gray-800">
-
-<!-- Footer BEZ border-t (sekcja ma border-b) -->
-<footer class="bg-black text-white">
-```
-
-## Learningi z Refactoringu 🆕 UPDATED
-
-### Problem z `-m-px`
-❌ **Problem:** Grid z `-m-px` był o 2px szerszy niż container  
-✅ **Rozwiązanie:** Nowy system `.cards-grid` z inteligentnym borderem
-
-### Problem z podwójnymi liniami
-❌ **Problem:** Sekcja `border-b` + Footer `border-t` = 2 linie  
-✅ **Rozwiązanie:** Footer BEZ `border-t`, sekcje mają `border-b`
-
-### Vertical Alignment Issue
-❌ **Problem:** Header/Footer innej szerokości niż grid  
-✅ **Rozwiązanie:** Wszystkie kontenery `max-w-8xl` tej samej szerokości
-
-### Mobile UX Problems 🆕 NEW
-❌ **Problem:** Ramki na mobile wyglądają źle, za duże paddingi  
-✅ **Rozwiązanie:** Auto-responsive containers (border-x znika, padding się zmniejsza)
-
-❌ **Problem:** Menu na mobile nieczytelne, za małe  
-✅ **Rozwiązanie:** Hamburger menu poniżej 1000px z overlay
-
-❌ **Problem:** Footer na mobile chaotyczny  
-✅ **Rozwiązanie:** Responsive grid - About→Offer→Blogs na mobile
-
-❌ **Problem:** Logo za duże na mobile  
-✅ **Rozwiązanie:** `.responsive-logo` auto-skaluje się: 600px→350px→280px
-
-## Development Rules 🔥 UPDATED
-
-### Nowy Komponent
-1. Sprawdź czy możesz użyć `.cards-grid` dla grid layoutów
-2. NIE dodawaj border do kart jeśli używasz `.cards-grid`
-3. Użyj naming convention: `component-variant` 
-4. Zawsze dodaj hover states
-
-### Nowa Strona z Kartami
-1. Zacznij od `<Layout>`
-2. Dodaj `<Hero>` jeśli potrzebne
-3. Użyj `section-full` + `container-bordered`
-4. Wewnątrz użyj `.cards-grid` (NIE zwykły grid z `-m-px`)
-
-### Modyfikacje Ramek
-1. ❌ **NIGDY** nie używaj `-m-px` w nowych komponentach
-2. ❌ **NIGDY** nie dodawaj `border-t` do Footer
-3. ✅ **ZAWSZE** używaj `.cards-grid` dla układów kart
-4. Wszystkie zmiany MUSZĄ przejść przez build test
-
-## Responsive Rules 🆕 MOBILE ENHANCED
-
-### Mobile First Philosophy
-- Projektuj najpierw na mobile
-- `.cards-grid` automatycznie obsługuje responsive
-- Używaj `md:` i `lg:` prefixów dla custom rzeczy
-- ✅ **Ramki boczne automatycznie znikają poniżej 1450px**
-- ✅ **Padding automatycznie zmniejsza się: 770px→24px, 480px→16px**
-- ✅ **Hamburger menu poniżej 770px**
-
-### Mobile Specific Features
-- **1450px breakpoint:** Container borders disappear
-- **770px breakpoint:** Hamburger menu + tablet spacing + footer reorganization
-- **480px breakpoint:** Ultra-compact mobile experience
-
-### Responsive Classes Available
+### Responsive Spacing Mixin (→ [`mixins.scss`](mdc:mixins.scss))
 ```scss
-// Container classes (auto-responsive) 🔥 UPDATED
-.container-bordered     // border-x znika przy 1450px
-.container-padded      // padding 64px→24px→16px responsive
-.container-header      // padding 64px→24px→16px + py responsive
+// THIS IS YOUR MAIN TOOL!
+@include spacing('padding', 10);     // 64px → 48px → 32px
+@include spacing('margin-top', 6);   // 32px → 24px → 16px
+@include spacing('gap', 4);          // 16px → 12px → 8px
 
-// Spacing classes (auto-responsive) 🔥 UPDATED
-.spacing-xs, .spacing-sm, .spacing-md, .spacing-lg, .spacing-xl
-// Automatycznie zmniejszają padding: 770px→24px, 480px→16px
-
-// Mobile Navigation 🔥 UPDATED
-.mobile-nav-toggle     // hamburger button (hidden above 770px)
-.desktop-nav          // desktop navigation (hidden below 770px)
-.mobile-nav           // mobile menu (no gaps, borders to edge)
-
-// Mobile Footer
-.footer-responsive-grid // reorganizes footer below 770px
-
-// Responsive Logo
-.responsive-logo       // auto-scales logo for mobile
+// Turn off responsive
+@include spacing('padding', 10, false);  // Always 64px
 ```
 
-### Breakpoints 🔥 UPDATED
+### Container Mixin
 ```scss
-// Mobile: <480px (ultra-compact, 16px padding)
-// Tablet: 480px-770px (compact, 24px padding) 
-// Desktop: >770px (full padding, mobile nav hidden)
-// Container borders: >1450px (visible when space for container + margins)
+// In your SCSS
+.my-special-section {
+  @include container($bordered: true, $padded: true);
+}
 ```
 
-## Performance Rules
-
-### CSS
-- ZAWSZE używaj `@layer components` dla custom klas
-- NIE dodawaj zbędnych !important
-- Unikaj deep nesting (max 3 poziomy)
-- `.cards-grid` optymalizuje border rendering
-
-### HTML
-- Minimalizuj liczbę divów
-- Używaj semantycznych tagów (`section`, `article`, `nav`)
-- Zawsze dodawaj `alt` do obrazków
-
-## Quality Gates
-
-### Przed Commitem
-1. `npm run build` MUSI przejść
-2. Sprawdź responsywność na 3 rozmiarach
-3. Sprawdź hover states
-4. Sprawdź focus states (accessibility)
-5. ✅ **Sprawdź pionowe linie** - czy są wyrównane Header/Footer/Content
-
-### Code Review
-- Czy używa systemowych klas?
-- Czy respektuje strukturę layoutu?
-- Czy ma proper hover/focus states?
-- Czy jest responsive?
-- ❌ **Czy NIE używa `-m-px`?**
-- ✅ **Czy używa `.cards-grid` dla grid layoutów?**
-
-Ten system jest OBOWIĄZKOWY dla wszystkich nowych komponentów i stron!
-
-## Cheat Sheet - Quick Reference
-
-### ✅ RESPONSIVE STRUCTURE (Current System!)
-```html
-<!-- Auto-responsive: borders disappear on mobile, padding adapts -->
-<section class="section-full">
-  <div class="container-bordered">
-    <div class="cards-grid">
-      <div class="card-link">
-        <div class="padding-responsive-md">Content</div>  <!-- ✅ RESPONSIVE! -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Responsive header spacer - matches navbar height -->
-<div class="header-spacer bg-black"></div>
-
-<!-- Responsive logo on homepage -->
-<div class="responsive-logo mx-auto">
-  <img src="./logo.ext.svg" alt="Logo" />
-</div>
-
-<!-- Mobile navigation in header -->
-<nav class="desktop-nav">Desktop Menu</nav>
-<button class="mobile-nav-toggle">☰</button>
-<div class="mobile-nav">Mobile Menu</div>
-
-<!-- Responsive footer -->
-<div class="footer-responsive-grid">
-  <div class="footer-about">About</div>
-  <div class="footer-offer">Offer</div>
-  <div class="footer-blogs">Blogs</div>
-</div>
-```
-
-### ✅ CURRENT STRUCTURE (Updated System)
-```html
-<section class="section-full">
-  <div class="container-bordered">
-    <div class="cards-grid">
-      <div class="card-link">
-        <div class="padding-responsive-md">Content</div> <!-- ✅ RESPONSIVE! -->
-      </div>
-    </div>
-  </div>
-</section>
-```
-
-### ❌ DON'T (Deprecated System)
-```html
-<!-- OLD: Static padding in cards -->
-<div class="p-16">Content</div>
-
-<!-- OLD: Grid with -m-px -->
-<div class="grid grid-cols-3 -m-px">
-  <div class="card-link border border-gray-800">
-    <div class="p-16">Content</div>
-  </div>
-</div>
-
-<!-- OLD: Fixed header spacer -->
-<div class="h-20 bg-black"></div>
-```
-
-# Responsive Padding & Spacing System ✨ IMPROVED
-
-## Gradual Scaling Philosophy 
-**64px → 48px → 32px → 24px → 16px**
-
-Płynne przejścia z więcej breakpointów zamiast gwałtownych skoków.
-
-## Usage Classes
-
-### All-around Padding (p)
-- `.padding-responsive-xs` - desktop: 8px, tablet: 4px, mobile: 4px
-- `.padding-responsive-sm` - desktop: 16px, medium: 12px, tablet: 12px, mobile: 8px  
-- `.padding-responsive-md` - **64px → 48px → 32px → 24px → 16px** ⭐ Main class
-- `.padding-responsive-lg` - 96px → 80px → 64px → 48px → 32px
-- `.padding-responsive-xl` - 128px → 96px → 80px → 64px → 48px
-
-### Horizontal Padding (px) - Headers/Footers
-- `.px-responsive-xs` - desktop: 8px, tablet: 4px, mobile: 4px
-- `.px-responsive-sm` - desktop: 24px, medium: 20px, tablet: 16px, mobile: 12px
-- `.px-responsive-md` - **64px → 48px → 32px → 24px → 16px** ⭐ Container class
-- `.px-responsive-lg` - 96px → 80px → 64px → 48px → 32px
-- `.px-responsive-xl` - 128px → 96px → 80px → 64px → 48px
-
-### Breakpoints Used:
-- **>1440px**: Full desktop (64px+)
-- **1000px-1440px**: Large desktop (48px) 
-- **770px-1000px**: Medium desktop (32px)
-- **480px-770px**: Tablet (24px)
-- **<480px**: Mobile (16px)
-
-### Vertical Padding (py)
-- `.py-responsive-xs` - desktop: py-2, mobile: py-1
-- `.py-responsive-sm` - desktop: py-4, tablet: py-3, mobile: py-2
-- `.py-responsive-md` - desktop: py-8, tablet: py-6, mobile: py-4
-- `.py-responsive-lg` - desktop: py-16, tablet: py-12, mobile: py-8
-- `.py-responsive-xl` - desktop: py-24, tablet: py-16, mobile: py-12
-
-### Gap & Spacing
-- `.gap-responsive-sm` - desktop: gap-4, tablet: gap-3, mobile: gap-2
-- `.gap-responsive-md` - desktop: gap-8, tablet: gap-6, mobile: gap-4
-- `.gap-responsive-lg` - desktop: gap-12, tablet: gap-8, mobile: gap-6
-
-### Space Between (for flex/nav)
-- `.space-x-responsive-sm` - desktop: ml-4, tablet: ml-3, mobile: ml-2
-- `.space-x-responsive-md` - desktop: ml-8, tablet: ml-6, mobile: ml-4
-- `.space-x-responsive-lg` - desktop: ml-10, medium: ml-6, tablet: ml-8, mobile: ml-6
-
-## Example Usage
-
-```html
-<!-- Footer with responsive padding -->
-<footer class="bg-black">
-  <div class="px-responsive-md py-responsive-md">
-    <div class="grid gap-responsive-md">
-      <!-- Content -->
-    </div>
-  </div>
-</footer>
-
-<!-- Nav with responsive spacing -->
-<nav class="space-x-responsive-lg">
-  <a href="/">Home</a>
-  <a href="/about">About</a>
-</nav>
-```
-
-## Integration with Existing System
-
-### Prefer New Responsive Classes Over Static
-✅ **Używaj responsywnych:** `.px-responsive-md` zamiast `.container-padded`  
-✅ **Użyj dla większej kontroli:** `.padding-responsive-md` dla komponentów  
-✅ **Idealne dla:** Navigation, footers, cards, any spacing
-
-### Compatibility with Current System
-- `.spacing-md` (static) vs `.padding-responsive-md` (responsive)
-- `.container-padded` (static) vs `.px-responsive-md` (responsive) 
-- Use responsive when you need mobile optimization
-- Use static when consistent sizing is needed
-
-## Development Guidelines
-
-### When to Use Responsive Padding
-1. **Headers/Footers** - użyj `.px-responsive-md`
-2. **Card content** - użyj `.padding-responsive-md`  
-3. **Navigation spacing** - użyj `.space-x-responsive-lg`
-4. **Section gaps** - użyj `.gap-responsive-md`
-
-### Migration from Static to Responsive
-1. Sprawdź czy komponent potrzebuje mobile optimization
-2. Zamień `.p-16` → `.padding-responsive-md`
-3. Zamień `.px-16` → `.px-responsive-md`
-4. Test na mobile (480px), tablet (770px), desktop (1440px+)
-
-Ten system jest **komplementarny** do obecnego designu i daje większą kontrolę nad mobile UX! 🚀
-
-# Header Height System ✨ NEW
-
-## Problem Solved
-Fixed header miał stały spacer `h-20` (80px), ale navbar ma responsive padding który się zmienia na różnych ekranach, powodując niezgodność.
-
-## Solution - Responsive Header Spacer
-
-### Header Height Variables
+### Media Query Helpers
 ```scss
-$header-content-height: 2.75rem; // ~44px for logo + text content
-$header-height-desktop: calc(#{$header-content-height} + 3rem); // 92px total
-$header-height-large: calc(#{$header-content-height} + 2.5rem);   // 84px total
-$header-height-medium: calc(#{$header-content-height} + 2rem);    // 76px total
-$header-height-tablet: calc(#{$header-content-height} + 1.5rem);  // 68px total
-$header-height-mobile: calc(#{$header-content-height} + 1rem);    // 60px total
+// Mobile first
+@include media-up('tablet') {
+  // 770px and up
+}
+
+// Desktop first  
+@include media-down('tablet') {
+  // 770px and down
+}
+
+// Range
+@include media-between('mobile', 'tablet') {
+  // 480px to 770px
+}
 ```
 
-### Usage
+## 🚨 Common Patterns & Solutions
+
+### Card Types Quick Reference
+```astro
+<!-- Offer Card -->
+<CardContainer href="/offer/item" backgroundIcon="🚀">
+  <div class="text-gray-500 text-sm mb-2">01</div>
+  <h3 class="text-xl font-bold mb-3">Service Name</h3>
+  <p class="text-gray-300">Description here...</p>
+</CardContainer>
+
+<!-- Blog Card -->
+<CardContainer href={post.url}>
+  <PostMeta author={author} date={date} category={category} />
+  <h3 class="text-2xl font-light text-white mt-3">{title}</h3>
+  <TruncateText text={excerpt} class="mt-5 text-lg text-gray-300" />
+</CardContainer>
+
+<!-- Portfolio Card -->
+<CardContainer href="/portfolio/project">
+  <img src={image} alt={title} class="mb-4 rounded" />
+  <h3 class="text-xl font-bold mb-2">{title}</h3>
+  <p class="text-gray-300 mb-4">{description}</p>
+  <div class="flex flex-wrap gap-2">
+    {techs.map(t => <span class="tag">{t}</span>)}
+  </div>
+</CardContainer>
+```
+
+### Responsive Text Patterns
 ```html
-<!-- ❌ OLD: Fixed spacer -->
-<div class="h-20 bg-black"></div>
+<!-- Use Tailwind responsive prefixes -->
+<h1 class="text-3xl md:text-4xl lg:text-5xl">
+  Responsive heading
+</h1>
 
-<!-- ✅ NEW: Responsive spacer -->
-<div class="header-spacer bg-black"></div>
+<!-- Mobile-first approach -->
+<p class="text-sm md:text-base lg:text-lg">
+  Responsive paragraph
+</p>
 ```
 
-### Mixin Available
+### When @apply Doesn't Work
 ```scss
-@include header-height-spacer; // Auto responsive height matching navbar
+// In .astro components, sometimes @apply fails
+
+// ❌ Doesn't work
+.my-class { @apply text-white bg-black; }
+
+// ✅ Solution 1: Regular CSS
+.my-class { 
+  color: white;
+  background-color: black;
+}
+
+// ✅ Solution 2: Move to external SCSS
+// In components/_my-component.scss
+.my-class { @apply text-white bg-black; }
+
+// ✅ Solution 3: Use classes in template
+<div class="text-white bg-black">
 ```
 
-## Benefits
-- ✅ **Perfect alignment** - spacer zawsze pasuje do wysokości navbara
-- ✅ **Mobile optimized** - mniejszy spacer na mobile (60px vs 80px)
-- ✅ **Automatic scaling** - 92px → 84px → 76px → 68px → 60px
-- ✅ **DRY principle** - jedna zmiana w variables.scss aktualizuje wszystko
+## 📝 Decision Matrix
 
-## Implementation Status
-- ✅ **Variables defined** in `variables.scss`
-- ✅ **Mixin created** `@include header-height-spacer`
-- ✅ **Class available** `.header-spacer`
-- ✅ **Header.astro updated** to use responsive spacer
-- ✅ **System tested** and working correctly
+### "Should I create a component?"
+```
+Used 3+ times?          → YES, create component
+Complex state/logic?    → YES, create component  
+Just styling?          → NO, use Tailwind
+Variations needed?     → YES, create with props
+```
 
+### "Where should styles go?"
+```
+Shared across components?  → /styles/components/
+Specific to component?     → <style> in .astro
+Quick prototype?          → Tailwind in template
+Complex responsive?       → SCSS with mixins
+```
 
+### "Which spacing to use?"
+```
+Component padding?     → $space-6 (32px)
+Section padding?      → $space-10 (64px)
+Small gaps?          → $space-4 (16px)
+Micro adjustments?   → Tailwind (p-2, m-1)
+```
 
+## 🔍 Quick Debug Checklist
 
+- [ ] Container not centered? → Missing `.container` class
+- [ ] Borders not showing? → Check if < 1450px screen
+- [ ] Padding too big on mobile? → Use responsive mixins
+- [ ] Cards not aligned? → Use `.cards-grid`
+- [ ] Hover not working? → Check `hasHover` prop
+- [ ] Text overflowing? → Add `TruncateText`
+
+## 📌 Remember These Files
+
+1. **ALWAYS OPEN**: `variables.scss` - your bible
+2. **FOR MIXINS**: `mixins.scss` - your tools  
+3. **FOR PATTERNS**: This file (`design.mdc`) - your guide
+4. **FOR PROGRESS**: `refactor-next.md` - your todo
+
+## 🔗 Complete File Reference
+
+| What you need | Where to find it | What's inside |
+|--------------|------------------|---------------|
+| **All variables** | [`styles/variables.scss`](mdc:../styles/variables.scss) | Colors, spacing, breakpoints, z-index |
+| **Mixins** | [`styles/mixins.scss`](mdc:../styles/mixins.scss) | spacing(), container(), media queries |
+| **Grid system** | [`styles/components/_grid.scss`](mdc:../styles/components/_grid.scss) | cards-grid with smart borders |
+| **Container classes** | [`styles/global.scss`](mdc:../styles/global.scss) | container-bordered, container-padded |
+| **Card wrapper** | [`components/cards/CardContainer.astro`](mdc:../components/cards/CardContainer.astro) | Reusable card base |
+| **Typography scale** | Use Tailwind classes | text-sm, text-base, text-lg, etc |
+| **Header styles** | [`components/Header.astro`](mdc:../components/Header.astro) | Inside <style> tag |
+| **Footer styles** | [`components/Footer.astro`](mdc:../components/Footer.astro) | Inside <style> tag |
+
+## 📚 When to Check Additional Files
+
+**→ `variables.scss` (Always keep open)**
+- Complete list of ALL variables with values
+- Exact breakpoint pixels
+- Color hex codes
+- Spacing calculations
+- Z-index hierarchy
+
+**→ `mixins.scss` (When writing SCSS)**
+- Implementation details of mixins
+- Available parameters
+- Example usage
+- Edge cases handled
+
+**→ Component source files (When extending)**
+- TypeScript interfaces
+- Props documentation  
+- Slot usage
+- Event handlers
+- Edge cases
+
+**→ `refactor-next.md` (During development)**
+- Hardcoded values to fix
+- Work in progress
+- Known issues
+- Future improvements
+
+---
+
+*Keep this file open at all times. This is your single source of truth for the design system. If something is not here, check the linked files for details.*
+
+*Last updated: 2025-06-15* 
