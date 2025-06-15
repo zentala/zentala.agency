@@ -21,26 +21,6 @@
 }
 
 @layer components {
-  // Responsive Logo - Used in Footer
-  .responsive-logo {
-    img {
-      @apply h-auto w-full;
-      max-width: 600px;
-
-      @include medium {
-        max-width: 500px;
-      }
-
-      @include tablet {
-        max-width: 350px;
-      }
-
-      @include mobile {
-        max-width: 280px;
-      }
-    }
-  }
-
   // Responsive Footer Layout - Used in Footer
   .footer-responsive-grid {
     @apply grid w-full grid-cols-12 gap-4;

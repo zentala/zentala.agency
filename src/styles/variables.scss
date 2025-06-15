@@ -53,11 +53,22 @@ $spacing-v-xl: 6rem; // 96px
 // Header height variables - matches navbar py-responsive('sm') + content height
 $header-content-height: 44px; // Logo + nav content height
 
-$header-height-desktop: calc(#{$header-content-height} + 3rem); // 92px total
-$header-height-large: calc(#{$header-content-height} + 2.5rem); // 84px total
-$header-height-medium: calc(#{$header-content-height} + 2rem); // 76px total
-$header-height-tablet: calc(#{$header-content-height} + 1.5rem); // 68px total
-$header-height-mobile: calc(#{$header-content-height} + 1rem); // 60px total
+// Header heights match py-responsive('sm') + 2px adjustment for perfect alignment
+$header-height-desktop: calc(
+  #{$header-content-height} + 3rem - 3px
+); // 44px + 48px + 2px = 89px
+$header-height-large: calc(
+  #{$header-content-height} + 2.5rem - 3px
+); // 44px + 40px + 2px = 81px
+$header-height-medium: calc(
+  #{$header-content-height} + 2rem - 3px
+); // 44px + 32px + 2px = 73px
+$header-height-tablet: calc(
+  #{$header-content-height} + 1.5rem - 3px
+); // 44px + 24px + 2px = 65px
+$header-height-mobile: calc(
+  #{$header-content-height} + 1rem - 3px
+); // 44px + 16px - 2px = 57px
 
 // Header height mixin - creates responsive spacer that matches navbar height
 @mixin header-height-spacer {
@@ -359,49 +370,4 @@ $header-height-mobile: calc(#{$header-content-height} + 1rem); // 60px total
   }
 }
 
-@mixin cards-grid-borders {
-  > * {
-    // All items get right border except last in each row
-    border-right: 1px solid $border-color;
-
-    // All items get top border except first row
-    border-top: 1px solid $border-color;
-
-    // Desktop: 3 columns
-    @include medium-up {
-      // Remove right border from last column (every 3rd item)
-      &:nth-child(3n) {
-        border-right: none;
-      }
-
-      // Remove top border from first row only (first 3 items)
-      &:nth-child(-n + 3) {
-        border-top: none;
-      }
-    }
-
-    // Tablet: 2 columns
-    @include tablet-only {
-      // Remove right border from last column (every 2nd item)
-      &:nth-child(2n) {
-        border-right: none;
-      }
-
-      // Remove top border from first row only (first 2 items)
-      &:nth-child(-n + 2) {
-        border-top: none;
-      }
-    }
-
-    // Mobile: 1 column
-    @include mobile {
-      // Remove all right borders (single column)
-      border-right: none;
-
-      // Remove top border from first item only
-      &:first-child {
-        border-top: none;
-      }
-    }
-  }
-}
+// cards-grid-borders mixin removed - now using simpler -m-px approach in _grids.scss

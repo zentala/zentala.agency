@@ -76,24 +76,4 @@
       }
     }
   }
-
-  // NON-CRITICAL: Responsive logo (footer)
-  .responsive-logo {
-    img {
-      @apply h-auto w-full;
-      max-width: 600px;
-
-      @include medium {
-        max-width: 500px;
-      }
-
-      @include tablet {
-        max-width: 350px;
-      }
-
-      @include mobile {
-        max-width: 280px;
-      }
-    }
-  }
 }

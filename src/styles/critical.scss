@@ -85,7 +85,18 @@
 
   // CRITICAL: Responsive Logo (visible immediately)
   .responsive-logo {
+    max-width: 100%;
+    width: auto;
     height: 2.5rem; // 40px
+
+    img {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
     @include tablet {
       height: 2rem; // 32px
     }
