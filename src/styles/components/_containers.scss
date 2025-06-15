@@ -1,0 +1,57 @@
+// =======================================
+// CONTAINER SYSTEM - WIDELY USED
+// =======================================
+
+@layer components {
+  // Border system utilities
+  .border-system {
+    @apply border-gray-800;
+  }
+
+  .border-system-hover {
+    @apply transition-colors duration-200 hover:border-gray-700;
+  }
+
+  .section-bordered {
+    @apply border-b border-gray-800;
+  }
+
+  // Container System with Mobile Responsive Borders
+  .container-bordered {
+    @include container-base;
+    @include container-borders;
+  }
+
+  .container-simple {
+    @include container-base;
+  }
+
+  .container-padded {
+    @include container-base;
+    @include container-borders;
+    @include padding-responsive('md');
+  }
+
+  .container-header {
+    @include container-base;
+    @include container-borders;
+    @include px-responsive();
+    @include py-responsive('sm');
+  }
+
+  // Header spacer - matches navbar height responsively
+  .header-spacer {
+    @include header-height-spacer;
+  }
+
+  // Section System
+  .section-full {
+    @apply w-full bg-black;
+    @include section-borders;
+  }
+
+  .section-grid {
+    @apply grid-pattern w-full bg-black;
+    @include section-borders;
+  }
+}

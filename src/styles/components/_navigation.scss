@@ -1,0 +1,74 @@
+// =======================================
+// NAVIGATION SYSTEM - USED IN HEADER
+// =======================================
+
+@layer components {
+  // Mobile Navigation (Hamburger Menu)
+  .mobile-nav-toggle {
+    @apply hidden;
+
+    @include tablet {
+      @apply block cursor-pointer;
+    }
+  }
+
+  .desktop-nav {
+    @apply space-x-responsive-lg flex text-base;
+
+    @include tablet {
+      @apply hidden;
+    }
+  }
+
+  .mobile-nav {
+    @apply fixed left-0 hidden w-full bg-black;
+    border-bottom: 1px solid $border-color;
+    z-index: 1100; /* Higher than header (50) and overlay (400) */
+
+    @include tablet-up {
+      display: none !important; /* Force hide on desktop */
+    }
+
+    &.active {
+      @apply block;
+
+      @include tablet-up {
+        display: none !important; /* Force hide on desktop even when active */
+      }
+    }
+
+    nav {
+      @apply flex flex-col;
+
+      a {
+        @apply block font-medium uppercase tracking-wide text-white hover:text-gray-400;
+        border-bottom: 1px solid $border-color;
+        @include px-responsive('sm');
+        @include py-responsive('sm');
+
+        &:last-child {
+          border-bottom: 1px solid $border-color; // Keep border on last item since we have container border
+        }
+      }
+    }
+  }
+
+  // Prevent body scroll when mobile nav is open
+  body.mobile-nav-open {
+    @apply overflow-hidden;
+  }
+
+  // Space between responsive (for flex/nav)
+  .space-x-responsive-lg > * + * {
+    @apply ml-10;
+    @media (min-width: 771px) and (max-width: 999px) {
+      @apply ml-6;
+    }
+    @media (max-width: 770px) {
+      @apply ml-8;
+    }
+    @media (max-width: 480px) {
+      @apply ml-6;
+    }
+  }
+}

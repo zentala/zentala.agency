@@ -1,0 +1,32 @@
+// =======================================
+// GRID & CARD SYSTEM - WIDELY USED
+// =======================================
+
+// Grid pattern for subtle background texture
+.grid-pattern {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@layer components {
+  // New grid system without -m-px
+  .cards-grid {
+    @include cards-grid;
+    @include cards-grid-borders;
+  }
+
+  // Common card styles - borders handled by .cards-grid
+  .card-item {
+    @apply block bg-black;
+    @apply transition-colors duration-200 hover:bg-gray-900;
+  }
+
+  .card-link {
+    @apply block bg-black;
+    @apply transition-all duration-200 hover:border-gray-700 hover:bg-gray-900;
+  }
+}

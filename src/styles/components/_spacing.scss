@@ -1,0 +1,79 @@
+// =======================================
+// RESPONSIVE SPACING SYSTEM - ACTIVELY USED
+// =======================================
+
+@layer components {
+  // Responsive Padding System - Reusable Classes
+
+  // All-around padding (p) - ACTIVELY USED
+  .padding-responsive-md {
+    @apply p-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply p-12;
+    } // 48px large
+    @media (max-width: 1000px) {
+      @apply p-8;
+    } // 32px medium
+    @media (max-width: 770px) {
+      @apply p-6;
+    } // 24px tablet
+    @media (max-width: 480px) {
+      @apply p-4;
+    } // 16px mobile
+  }
+
+  // Vertical padding (py) - ACTIVELY USED
+  .py-responsive-lg {
+    // Hero/large sections: 96px → 72px → 48px → 36px → 24px
+    @apply py-24; // 96px
+    @media (max-width: 1440px) {
+      padding-top: 4.5rem; // 72px
+      padding-bottom: 4.5rem;
+    }
+    @media (max-width: 1000px) {
+      @apply py-12; // 48px
+    }
+    @media (max-width: 770px) {
+      padding-top: 2.25rem; // 36px
+      padding-bottom: 2.25rem;
+    }
+    @media (max-width: 480px) {
+      @apply py-6; // 24px
+    }
+  }
+
+  .py-responsive-md {
+    // Cards/sections: 64px → 48px → 32px → 24px → 16px (same as px-responsive)
+    @apply py-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply py-12; // 48px large
+    }
+    @media (max-width: 1000px) {
+      @apply py-8; // 32px medium
+    }
+    @media (max-width: 770px) {
+      @apply py-6; // 24px tablet
+    }
+    @media (max-width: 480px) {
+      @apply py-4; // 16px mobile
+    }
+  }
+
+  // Horizontal padding (px) - USED OCCASIONALLY
+  .px-responsive {
+    // Main system: 64px → 48px → 32px → 24px → 16px
+    @apply px-16; // 64px desktop
+    @media (max-width: 1440px) {
+      @apply px-12; // 48px large
+    }
+    @media (max-width: 1000px) {
+      @apply px-8; // 32px medium
+    }
+    @media (max-width: 770px) {
+      @apply px-6; // 24px tablet
+    }
+    @media (max-width: 480px) {
+      @apply px-4; // 16px mobile
+    }
+  }
+}
