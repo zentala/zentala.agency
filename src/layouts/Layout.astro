@@ -21,14 +21,33 @@ const {
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preload critical resources -->
+    <link
+      rel="preload"
+      href="https://kit.fontawesome.com/71aeb2a21d.js"
+      as="script"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font loading optimization -->
+    <script is:inline>
+      // Preload system fonts
+      document.head.insertAdjacentHTML(
+        'beforeend',
+        '<link rel="preload" href="data:font/woff2;base64," as="font" type="font/woff2" crossorigin>',
+      )
+    </script>
+
     <script
       src="https://kit.fontawesome.com/71aeb2a21d.js"
       crossorigin="anonymous"
+      defer
       is:inline></script>
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Żentała Innovation Agency</title>
   </head>
-  <body class="bg-black min-h-screen overflow-x-hidden">
+  <body class="min-h-screen overflow-x-hidden bg-black">
     <Header />
     <main>
       <slot />

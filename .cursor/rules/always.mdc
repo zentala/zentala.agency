@@ -6,7 +6,7 @@ alwaysApply: true
 # Development Rules
 
 ## Styling
-- use @design.mdc for styling instructions, and update it when global styling settings are updated
+- use [design.mdc] for styling instructions, and update it when global styling settings are updated
 
 ## Always Follow
 - Zawsze tylko krótkie wiadomości commitów jednoliniowe!!!
@@ -34,5 +34,11 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 
 1. Run `npm run build` before pushing
 2. Fix any build errors
-3. Commit with short, English message
-4. Get user approval before pushing
+3. Commit
+
+## Git
+
+* Never commit but instead prepare stage (add there files) and propose to the user short English commit message.
+* Never push, user will.
+* When using `git show` MUST be with `--no-pager` flag
+ 

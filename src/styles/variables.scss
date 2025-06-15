@@ -51,22 +51,24 @@ $spacing-v-xl: 6rem; // 96px
 // =======================================
 
 // Header height variables - matches navbar py-responsive('sm') + content height
-$header-content-height: 2.75rem; // ~44px for logo + text content
+$header-content-height: 44px; // Logo + nav content height
+
+// Header heights match py-responsive('sm') + 2px adjustment for perfect alignment
 $header-height-desktop: calc(
-  #{$header-content-height} + 3rem
-); // 44px + 48px padding = 92px
+  #{$header-content-height} + 3rem - 3px
+); // 44px + 48px + 2px = 89px
 $header-height-large: calc(
-  #{$header-content-height} + 2.5rem
-); // 44px + 40px padding = 84px
+  #{$header-content-height} + 2.5rem - 3px
+); // 44px + 40px + 2px = 81px
 $header-height-medium: calc(
-  #{$header-content-height} + 2rem
-); // 44px + 32px padding = 76px
+  #{$header-content-height} + 2rem - 3px
+); // 44px + 32px + 2px = 73px
 $header-height-tablet: calc(
-  #{$header-content-height} + 1.5rem
-); // 44px + 24px padding = 68px
+  #{$header-content-height} + 1.5rem - 3px
+); // 44px + 24px + 2px = 65px
 $header-height-mobile: calc(
-  #{$header-content-height} + 1rem
-); // 44px + 16px padding = 60px
+  #{$header-content-height} + 1rem - 3px
+); // 44px + 16px - 2px = 57px
 
 // Header height mixin - creates responsive spacer that matches navbar height
 @mixin header-height-spacer {
@@ -368,50 +370,4 @@ $header-height-mobile: calc(
   }
 }
 
-@mixin cards-grid-borders {
-  > * {
-    border-right: 1px solid $border-color;
-
-    // Desktop: 3 columns
-    @include medium-up {
-      &:nth-child(3n) {
-        border-right: none;
-      }
-      &:nth-child(n + 4) {
-        border-top: 1px solid $border-color;
-      }
-    }
-
-    // Tablet: 2 columns
-    @include tablet-only {
-      &:nth-child(3n) {
-        border-right: 1px solid $border-color;
-      }
-      &:nth-child(2n) {
-        border-right: none;
-      }
-      &:nth-child(n + 4) {
-        border-top: none;
-      }
-      &:nth-child(n + 3) {
-        border-top: 1px solid $border-color;
-      }
-    }
-
-    // Mobile: 1 column
-    @include mobile {
-      &:nth-child(2n) {
-        border-right: 1px solid $border-color;
-      }
-      &:nth-child(1n) {
-        border-right: none;
-      }
-      &:nth-child(n + 3) {
-        border-top: none;
-      }
-      &:nth-child(n + 2) {
-        border-top: 1px solid $border-color;
-      }
-    }
-  }
-}
+// cards-grid-borders mixin removed - now using simpler -m-px approach in _grids.scss

@@ -1,0 +1,79 @@
+// =======================================
+// NON-CRITICAL CSS - LAZY LOADED
+// =======================================
+// This file contains CSS for below-the-fold content
+// Will be loaded asynchronously after initial render
+
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// Component Imports - Non-critical (below fold)
+@import './components/grids'; // Cards grid system (below fold)
+@import './components/spacing'; // Additional spacing utilities
+@import './components/navigation'; // Mobile nav (only when opened)
+@import './components/typography'; // Prose content (below fold)
+
+// Future use components (commented out)
+// @import './components/links';      // Unused link utilities
+
+@layer components {
+  // NON-CRITICAL: Grid pattern (background decoration)
+  .grid-pattern {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  // NON-CRITICAL: Sections (below fold)
+  .section-full {
+    @apply w-full bg-black;
+    @include section-borders;
+  }
+
+  .section-grid {
+    @apply grid-pattern w-full bg-black;
+    @include section-borders;
+  }
+
+  // NON-CRITICAL: Footer responsive grid (bottom of page)
+  .footer-responsive-grid {
+    @apply grid w-full grid-cols-12 gap-4;
+
+    .footer-about {
+      @apply col-span-5;
+      @include tablet {
+        @apply col-span-12 mb-6;
+      }
+    }
+
+    .footer-spacer {
+      @apply col-span-2;
+      @include tablet {
+        @apply hidden;
+      }
+    }
+
+    .footer-offer {
+      @apply col-span-3;
+      @include tablet {
+        @apply col-span-6;
+      }
+      @include mobile {
+        @apply col-span-12 mb-4;
+      }
+    }
+
+    .footer-blogs {
+      @apply col-span-2;
+      @include tablet {
+        @apply col-span-6;
+      }
+      @include mobile {
+        @apply col-span-12;
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+// =======================================
+// CRITICAL CSS - ABOVE THE FOLD ONLY
+// =======================================
+// This file contains ONLY the CSS needed for initial page render
+// Will be inlined in <head> to prevent render blocking
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import './variables';
+
+// Core critical styles only
+@layer base {
+  body {
+    @apply bg-black text-gray-900;
+  }
+}
+
+@layer components {
+  // CRITICAL: Header container (visible immediately)
+  .container-header {
+    @include container-base;
+    @include container-borders;
+    @include px-responsive();
+    @include py-responsive('sm');
+  }
+
+  // CRITICAL: Navigation (above fold)
+  .desktop-nav {
+    @apply space-x-responsive-lg flex text-base;
+    @include tablet {
+      @apply hidden;
+    }
+  }
+
+  .mobile-nav-toggle {
+    @apply hidden;
+    @include tablet {
+      @apply block cursor-pointer;
+    }
+  }
+
+  // CRITICAL: Hero section padding (first thing users see)
+  .py-responsive-lg {
+    @apply py-24;
+    @media (max-width: 1440px) {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+    @media (max-width: 1000px) {
+      @apply py-12;
+    }
+    @media (max-width: 770px) {
+      padding-top: 2.25rem;
+      padding-bottom: 2.25rem;
+    }
+    @media (max-width: 480px) {
+      @apply py-6;
+    }
+  }
+
+  // CRITICAL: Container borders (structural layout)
+  .container-bordered {
+    @include container-base;
+    @include container-borders;
+  }
+
+  .container-padded {
+    @include container-base;
+    @include container-borders;
+    @include padding-responsive('md');
+  }
+
+  // CRITICAL: Header spacer (prevents layout shift)
+  .header-spacer {
+    @include header-height-spacer;
+  }
+
+  // CRITICAL: Text styles (immediately visible)
+  .text-gradient {
+    background: linear-gradient(to right, #ffffff, #d1d5db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  // CRITICAL: Responsive Logo (visible immediately)
+  .responsive-logo {
+    max-width: 100%;
+    width: auto;
+    height: 2.5rem; // 40px
+
+    img {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    @include tablet {
+      height: 2rem; // 32px
+    }
+    @include mobile {
+      height: 1.75rem; // 28px
+    }
+  }
+}
