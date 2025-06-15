@@ -12,20 +12,34 @@ export interface OfferCardProps {
 const { number, title, description, icon, href } = Astro.props
 ---
 
-<CardContainer href={href} backgroundIcon={icon}>
-  <span class="offer-card__number">{number}</span>
+<CardContainer href={href} class="offer-card">
+  <!-- Large icon in top-right corner like before -->
+  <div class="flex justify-end">
+    <span class="icon absolute right-4 top-4 text-9xl opacity-30">
+      {icon}
+    </span>
+  </div>
+
+  <!-- Large number in top-left corner like before -->
+  <span class="number absolute left-4 top-0 text-9xl font-semibold opacity-5">
+    {number}
+  </span>
+
   <h3 class="offer-card__title">{title}</h3>
   <p class="offer-card__description">{description}</p>
 </CardContainer>
 
 <style>
-  .offer-card__number {
-    position: absolute;
-    left: 0;
-    top: -0.5rem;
-    font-size: 5.5rem; /* text-9xl equivalent */
-    font-weight: 600;
-    opacity: 0.05;
+  .offer-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .icon {
+    z-index: 0;
+  }
+
+  .number {
     z-index: 0;
   }
 
@@ -47,9 +61,12 @@ const { number, title, description, icon, href } = Astro.props
 
   /* Responsive typography */
   @media (max-width: 770px) {
-    .offer-card__number {
-      font-size: 4.5rem;
-      top: -0.25rem;
+    .icon {
+      font-size: 7rem; /* Smaller but still big */
+    }
+
+    .number {
+      font-size: 7rem;
     }
 
     .offer-card__title {
@@ -63,8 +80,12 @@ const { number, title, description, icon, href } = Astro.props
   }
 
   @media (max-width: 480px) {
-    .offer-card__number {
-      font-size: 3.5rem;
+    .icon {
+      font-size: 5rem; /* Even smaller but still prominent */
+    }
+
+    .number {
+      font-size: 5rem;
     }
 
     .offer-card__title {
