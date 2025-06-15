@@ -51,22 +51,13 @@ $spacing-v-xl: 6rem; // 96px
 // =======================================
 
 // Header height variables - matches navbar py-responsive('sm') + content height
-$header-content-height: 2.75rem; // ~44px for logo + text content
-$header-height-desktop: calc(
-  #{$header-content-height} + 3rem
-); // 44px + 48px padding = 92px
-$header-height-large: calc(
-  #{$header-content-height} + 2.5rem
-); // 44px + 40px padding = 84px
-$header-height-medium: calc(
-  #{$header-content-height} + 2rem
-); // 44px + 32px padding = 76px
-$header-height-tablet: calc(
-  #{$header-content-height} + 1.5rem
-); // 44px + 24px padding = 68px
-$header-height-mobile: calc(
-  #{$header-content-height} + 1rem
-); // 44px + 16px padding = 60px
+$header-content-height: 44px; // Logo + nav content height
+
+$header-height-desktop: calc(#{$header-content-height} + 3rem); // 92px total
+$header-height-large: calc(#{$header-content-height} + 2.5rem); // 84px total
+$header-height-medium: calc(#{$header-content-height} + 2rem); // 76px total
+$header-height-tablet: calc(#{$header-content-height} + 1.5rem); // 68px total
+$header-height-mobile: calc(#{$header-content-height} + 1rem); // 60px total
 
 // Header height mixin - creates responsive spacer that matches navbar height
 @mixin header-height-spacer {
@@ -370,47 +361,46 @@ $header-height-mobile: calc(
 
 @mixin cards-grid-borders {
   > * {
+    // All items get right border except last in each row
     border-right: 1px solid $border-color;
+
+    // All items get top border except first row
+    border-top: 1px solid $border-color;
 
     // Desktop: 3 columns
     @include medium-up {
+      // Remove right border from last column (every 3rd item)
       &:nth-child(3n) {
         border-right: none;
       }
-      &:nth-child(n + 4) {
-        border-top: 1px solid $border-color;
+
+      // Remove top border from first row only (first 3 items)
+      &:nth-child(-n + 3) {
+        border-top: none;
       }
     }
 
     // Tablet: 2 columns
     @include tablet-only {
-      &:nth-child(3n) {
-        border-right: 1px solid $border-color;
-      }
+      // Remove right border from last column (every 2nd item)
       &:nth-child(2n) {
         border-right: none;
       }
-      &:nth-child(n + 4) {
+
+      // Remove top border from first row only (first 2 items)
+      &:nth-child(-n + 2) {
         border-top: none;
-      }
-      &:nth-child(n + 3) {
-        border-top: 1px solid $border-color;
       }
     }
 
     // Mobile: 1 column
     @include mobile {
-      &:nth-child(2n) {
-        border-right: 1px solid $border-color;
-      }
-      &:nth-child(1n) {
-        border-right: none;
-      }
-      &:nth-child(n + 3) {
+      // Remove all right borders (single column)
+      border-right: none;
+
+      // Remove top border from first item only
+      &:first-child {
         border-top: none;
-      }
-      &:nth-child(n + 2) {
-        border-top: 1px solid $border-color;
       }
     }
   }

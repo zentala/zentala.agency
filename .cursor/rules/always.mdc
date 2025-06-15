@@ -36,3 +36,4 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 2. Fix any build errors
 3. Commit with short, English message
 4. Get user approval before pushing
+ 
