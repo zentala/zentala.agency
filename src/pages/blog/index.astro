@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 
 const posts = (await getCollection('blog')).filter(
-  (post) => import.meta.env.DEV || post.data.published,
+  (post) => import.meta.env.DEV || post.data.published !== false,
 )
 const authors = (await getCollection('authors'))[0].data
 ---
