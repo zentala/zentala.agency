@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro'
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts
-    .filter((post) => import.meta.env.DEV || post.data.published)
+    .filter((post) => import.meta.env.DEV || post.data.published !== false)
     .map((post) => ({
       params: { postSlug: post.slug },
     }))
@@ -13,7 +13,8 @@ export async function getStaticPaths() {
 
 const { postSlug } = Astro.params
 const post = (await getCollection('blog')).find(
-  (p) => p.slug === postSlug && (import.meta.env.DEV || p.data.published),
+  (p) =>
+    p.slug === postSlug && (import.meta.env.DEV || p.data.published !== false),
 )
 const authorData = (await getCollection('authors'))[0].data
 

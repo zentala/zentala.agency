@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter(
-    (post) => import.meta.env.DEV || post.data.published,
+    (post) => import.meta.env.DEV || post.data.published !== false,
   )
   const categories = [...new Set(posts.map((post) => post.data.category))]
 
