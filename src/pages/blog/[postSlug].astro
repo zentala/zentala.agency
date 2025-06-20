@@ -4,9 +4,11 @@ import Layout from '../../layouts/Layout.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
-  return posts.map((post) => ({
-    params: { postSlug: post.slug },
-  }))
+  return posts
+    .filter((post) => import.meta.env.DEV || post.data.published)
+    .map((post) => ({
+      params: { postSlug: post.slug },
+    }))
 }
 
 const { postSlug } = Astro.params
@@ -32,8 +34,8 @@ const { Content } = await post.render()
 <Layout title={post.data.title}>
   <section class="section-full">
     <div class="container-padded">
-      <div class="pt-8 pb-16">
-        <div class="flex items-center gap-x-4 mb-8 pt-8 text-lg">
+      <div class="pb-16 pt-8">
+        <div class="mb-8 flex items-center gap-x-4 pt-8 text-lg">
           <img
             class="h-10 w-10 rounded-full"
             src={author.avatar}
@@ -41,7 +43,7 @@ const { Content } = await post.render()
           />
           <span class="text-white">
             <span class="font-semibold">{author.name}</span>
-            <span class="text-gray-400 ml-2">{authorRole}</span>
+            <span class="ml-2 text-gray-400">{authorRole}</span>
           </span>
           <span class="text-gray-600">·</span>
           {
@@ -68,18 +70,18 @@ const { Content } = await post.render()
           </time>
         </div>
 
-        <h1 class="text-6xl font-light mb-8 text-white">{post.data.title}</h1>
+        <h1 class="mb-8 text-6xl font-light text-white">{post.data.title}</h1>
 
         {
           post.data.excerpt && (
-            <p class="text-3xl text-gray-300 leading-relaxed mb-12 font-light">
+            <p class="mb-12 text-3xl font-light leading-relaxed text-gray-300">
               {post.data.excerpt}
             </p>
           )
         }
 
         <article
-          class="prose text-white custom-markdown [&>p]:text-2xl [&>h2]:text-4xl [&>h3]:text-3xl [&>ul]:text-2xl [&>ol]:text-2xl [&>blockquote]:text-2xl"
+          class="prose custom-markdown text-white [&>blockquote]:text-2xl [&>h2]:text-4xl [&>h3]:text-3xl [&>ol]:text-2xl [&>p]:text-2xl [&>ul]:text-2xl"
         >
           <Content />
         </article>
