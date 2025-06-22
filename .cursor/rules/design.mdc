@@ -184,6 +184,44 @@ Smart text truncation that fits container.
 </section>
 ```
 
+### Responsive Padding Classes
+```html
+<!-- Use these classes instead of fixed padding values -->
+<div class="py-responsive-md">
+  <!-- Vertical padding that scales: 64px → 48px → 32px → 24px → 16px -->
+</div>
+
+<div class="px-responsive-md">
+  <!-- Horizontal padding that scales: 64px → 48px → 32px → 24px → 16px -->
+</div>
+
+<div class="padding-responsive-md">
+  <!-- All-around padding that scales: 64px → 48px → 32px → 24px → 16px -->
+</div>
+
+<!-- For larger sections like heroes -->
+<div class="py-responsive-lg">
+  <!-- Larger vertical padding: 96px → 72px → 48px → 36px → 24px -->
+</div>
+```
+
+### Hero Component Pattern
+```astro
+<!-- Standard Hero with centered text -->
+<Hero 
+  title="Page Title" 
+  subtitle="Descriptive subtitle text here" 
+/>
+
+<!-- Implementation in Hero.astro -->
+<section class="section-grid text-center text-white">
+  <div class="container-padded py-responsive-lg">
+    <h1 class="text-8xl font-light">{title}</h1>
+    <h2 class="mt-8 text-4xl font-light text-gray-300">{subtitle}</h2>
+  </div>
+</section>
+```
+
 ## 🛠️ Mixins & Utilities
 
 ### Responsive Spacing Mixin (→ [`mixins.scss`](mdc:mixins.scss))
@@ -252,6 +290,97 @@ Smart text truncation that fits container.
 </CardContainer>
 ```
 
+### Specialized Card Components
+
+```astro
+<!-- OfferCard - Use for service/feature listings -->
+<OfferCard
+  number="01"
+  title="Service Title"
+  description="Service description text"
+  icon="🚀"
+  href="/optional-link"
+/>
+
+<!-- PortfolioItem - Use for portfolio/project listings -->
+<PortfolioItem
+  title="Project Title"
+  subtitle="Project description"
+  image="/path/to/image.jpg"
+  link="/project-link"
+  linkTitle="View Project"
+  tags={["React", "TypeScript"]}
+/>
+
+<!-- PostCard - Use for blog post listings -->
+<PostCard
+  title="Blog Post Title"
+  date="2024-01-15"
+  category="Technology"
+  excerpt="Blog post excerpt text..."
+  authorVersion="pawel-zentala"
+  link="/blog/post-slug"
+/>
+```
+
+### Page Type Patterns
+
+```astro
+<!-- Standard Content Page -->
+<Layout title="Page Title">
+  <Hero title="Page Title" subtitle="Page subtitle" />
+  <section class="section-full">
+    <div class="container-padded">
+      <!-- Content here -->
+    </div>
+  </section>
+</Layout>
+
+<!-- Card Grid Page -->
+<Layout title="Page Title">
+  <Hero title="Page Title" subtitle="Page subtitle" />
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="cards-grid">
+        <!-- Cards here -->
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<!-- Blog Post Page -->
+<Layout title={frontmatter.title} description={frontmatter.excerpt}>
+  <section class="section-full">
+    <div class="container-padded">
+      <article class="prose text-white">
+        <!-- Content here -->
+      </article>
+    </div>
+  </section>
+</Layout>
+```
+
+### Typography Patterns
+
+```html
+<!-- Page Titles (in Hero) -->
+<h1 class="text-8xl font-light">Page Title</h1>
+<h2 class="mt-8 text-4xl font-light text-gray-300">Subtitle</h2>
+
+<!-- Section Headers -->
+<h2 class="mb-4 text-4xl font-bold text-white">Section Title</h2>
+<p class="text-xl text-gray-400">Section description</p>
+
+<!-- Card Titles -->
+<h3 class="text-2xl font-semibold text-white mb-4">Card Title</h3>
+<p class="text-gray-300">Card description</p>
+
+<!-- Blog Content -->
+<article class="prose text-white">
+  <!-- Prose styling handles all typography -->
+</article>
+```
+
 ### Responsive Text Patterns
 ```html
 <!-- Use Tailwind responsive prefixes -->
@@ -312,6 +441,20 @@ Small gaps?          → $space-4 (16px)
 Micro adjustments?   → Tailwind (p-2, m-1)
 ```
 
+### "Which container to use?"
+```
+Card grid layout?       → container-bordered + cards-grid
+Text content?          → container-padded
+Custom layout?         → container-simple + custom padding
+```
+
+### "Which section type to use?"
+```
+Standard content?      → section-full
+With background grid?  → section-grid
+Hero section?          → Hero component
+```
+
 ## 🔍 Quick Debug Checklist
 
 - [ ] Container not centered? → Missing `.container` class
@@ -320,6 +463,8 @@ Micro adjustments?   → Tailwind (p-2, m-1)
 - [ ] Cards not aligned? → Use `.cards-grid`
 - [ ] Hover not working? → Check `hasHover` prop
 - [ ] Text overflowing? → Add `TruncateText`
+- [ ] Inconsistent spacing? → Use py-responsive-md/px-responsive-md classes
+- [ ] Card not inheriting styles? → Make sure to use CardContainer as base
 
 ## 📌 Remember These Files
 
@@ -340,6 +485,8 @@ Micro adjustments?   → Tailwind (p-2, m-1)
 | **Typography scale** | Use Tailwind classes | text-sm, text-base, text-lg, etc |
 | **Header styles** | [`components/Header.astro`](mdc:../components/Header.astro) | Inside <style> tag |
 | **Footer styles** | [`components/Footer.astro`](mdc:../components/Footer.astro) | Inside <style> tag |
+| **Hero component** | [`components/Hero.astro`](mdc:../components/Hero.astro) | Standard page hero |
+| **Card components** | [`components/cards/`](mdc:../components/cards) | OfferCard, PortfolioItem, PostCard |
 
 ## 📚 When to Check Additional Files
 
@@ -372,5 +519,6 @@ Micro adjustments?   → Tailwind (p-2, m-1)
 ---
 
 *Keep this file open at all times. This is your single source of truth for the design system. If something is not here, check the linked files for details.*
+
 
 *Last updated: 2025-06-15* 
