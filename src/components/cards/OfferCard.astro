@@ -1,5 +1,6 @@
 ---
 import CardContainer from './CardContainer.astro'
+import CardBackgroundIcon from '../primitives/CardBackgroundIcon.astro'
 
 export interface OfferCardProps {
   number: string
@@ -13,12 +14,7 @@ const { number, title, description, icon, href } = Astro.props
 ---
 
 <CardContainer href={href} class="offer-card">
-  <!-- Large icon in top-right corner like before -->
-  <div class="flex justify-end">
-    <span class="icon absolute right-4 top-4 text-9xl opacity-30">
-      {icon}
-    </span>
-  </div>
+  <CardBackgroundIcon icon={icon} />
 
   <!-- Large number in top-left corner like before -->
   <span class="number absolute left-4 top-0 text-9xl font-semibold opacity-5">
@@ -35,11 +31,6 @@ const { number, title, description, icon, href } = Astro.props
   .offer-card {
     position: relative;
     overflow: hidden;
-    z-index: 0;
-  }
-
-  .icon {
-    z-index: 0;
   }
 
   .number {
@@ -49,22 +40,21 @@ const { number, title, description, icon, href } = Astro.props
   .offer-card__title {
     @extend %card-title-large;
     margin-top: 0.5rem;
+    margin-bottom: 1rem;
     position: relative;
     z-index: 1;
   }
 
   .offer-card__description {
     @extend %card-content;
+    font-size: 1.25rem;
+    color: #9ca3af;
     position: relative;
     z-index: 1;
   }
 
   /* Responsive typography */
   @media (max-width: 770px) {
-    .icon {
-      font-size: 7rem; /* Smaller but still big */
-    }
-
     .number {
       font-size: 7rem;
     }
@@ -80,10 +70,6 @@ const { number, title, description, icon, href } = Astro.props
   }
 
   @media (max-width: 480px) {
-    .icon {
-      font-size: 5rem; /* Even smaller but still prominent */
-    }
-
     .number {
       font-size: 5rem;
     }

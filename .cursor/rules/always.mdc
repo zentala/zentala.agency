@@ -41,4 +41,4 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 * Never commit but instead prepare stage (add there files) and propose to the user short English commit message.
 * Never push, user will.
 * Using `git show`, `log` and `diff` MUST be with `--no-pager` flag
- 
+* zakaz robienia commitow bez pozwolenia usera, tylko propzycje nazw dawaj i dodwaj do stash tylko to co zmieniles i sprawdzkj czy inne pliki nie zostaly dodnae do stasha co konliktuja 
