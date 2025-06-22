@@ -1,0 +1,42 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  href: string
+  text: string
+  target?: string
+  variant?: 'primary' | 'secondary' | 'outline' | 'filled'
+  icon?: string // Lucide icon name from astro-icon
+}
+
+const { href, text, target, variant = 'primary', icon } = Astro.props
+
+let buttonClasses = 'px-8 py-3 font-semibold text-white transition-colors'
+
+// Base styles for all buttons (no rounded corners)
+buttonClasses += ' inline-flex items-center justify-center' // To center icon and text
+
+switch (variant) {
+  case 'primary':
+    buttonClasses += ' bg-blue-600 hover:bg-blue-700'
+    break
+  case 'secondary':
+    buttonClasses += ' border border-gray-700 bg-gray-800 hover:bg-gray-700'
+    break
+  case 'outline':
+    buttonClasses +=
+      ' border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+    break
+  case 'filled':
+    buttonClasses += ' bg-gray-700 hover:bg-gray-600' // Example filled style
+    break
+  default: // Default to primary if variant is not recognized
+    buttonClasses += ' bg-blue-600 hover:bg-blue-700'
+    break
+}
+---
+
+<a href={href} target={target} class={buttonClasses}>
+  {icon && <Icon name={`lucide:${icon}`} class="mr-2 h-5 w-5" />}
+  {text}
+</a>

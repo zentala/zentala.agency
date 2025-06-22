@@ -17,7 +17,9 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/mdx": "^3.0.1",
     "@astrojs/tailwind": "^5.1.0",
+    "@iconify-json/lucide": "^1.2.51",
     "astro": "^4.9.2",
+    "astro-icon": "^1.1.5",
     "sharp": "^0.33.4",
     "typescript": "^5.4.5"
   },
