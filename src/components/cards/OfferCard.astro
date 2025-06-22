@@ -29,10 +29,13 @@ const { number, title, description, icon, href } = Astro.props
   <p class="offer-card__description">{description}</p>
 </CardContainer>
 
-<style>
+<style lang="scss">
+  @use '../../styles/components/cards' as *;
+
   .offer-card {
     position: relative;
     overflow: hidden;
+    z-index: 0;
   }
 
   .icon {
@@ -44,17 +47,14 @@ const { number, title, description, icon, href } = Astro.props
   }
 
   .offer-card__title {
-    font-size: 1.875rem; /* text-3xl */
-    color: white;
-    margin-bottom: 1rem;
+    @extend %card-title-large;
     margin-top: 0.5rem;
     position: relative;
     z-index: 1;
   }
 
   .offer-card__description {
-    font-size: 1.25rem; /* text-xl */
-    color: #9ca3af; /* gray-400 */
+    @extend %card-content;
     position: relative;
     z-index: 1;
   }

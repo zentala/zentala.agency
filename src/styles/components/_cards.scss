@@ -1,0 +1,46 @@
+%card-title {
+  color: white;
+  font-weight: 300; // font-light
+  margin-bottom: 0.5rem;
+}
+
+%card-title-large {
+  @extend %card-title;
+  font-size: 1.875rem; // text-3xl
+}
+
+%card-title-medium {
+  @extend %card-title;
+  font-size: 1.5rem; // text-2xl
+}
+
+%card-content {
+  color: #9ca3af; // gray-400
+  font-size: 1.125rem; // text-lg
+  line-height: 1.6;
+
+  ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+.card-content-wrapper {
+  h2,
+  h3 {
+    @extend %card-title-medium;
+  }
+
+  p,
+  ul {
+    @extend %card-content;
+  }
+
+  &--large-title {
+    h2,
+    h3 {
+      @extend %card-title-large;
+    }
+  }
+}
