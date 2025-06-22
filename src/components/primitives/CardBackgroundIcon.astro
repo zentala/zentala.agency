@@ -1,0 +1,35 @@
+---
+export interface Props {
+  icon: string
+}
+const { icon } = Astro.props
+---
+
+<span class="card-background-icon">
+  {icon}
+</span>
+
+<style>
+  .card-background-icon {
+    position: absolute;
+    top: 1rem; /* top-4 */
+    right: 1rem; /* right-4 */
+    font-size: 8rem; /* Equivalent to text-9xl */
+    opacity: 0.3; /* Equivalent to opacity-30 */
+    z-index: 0;
+    pointer-events: none; /* Make sure it doesn't interfere with clicks */
+  }
+
+  /* Responsive adjustments from OfferCard */
+  @media (max-width: 770px) {
+    .card-background-icon {
+      font-size: 7rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-background-icon {
+      font-size: 5rem;
+    }
+  }
+</style>
