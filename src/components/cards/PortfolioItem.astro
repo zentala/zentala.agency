@@ -47,18 +47,15 @@ const target =
   {linkTitle && <p class="portfolio-item__link-title">→ {linkTitle}</p>}
 </CardContainer>
 
-<style>
+<style lang="scss">
+  @use '../../styles/components/cards' as *;
+
   .portfolio-item__title {
-    font-size: 1.5rem; /* text-2xl */
-    color: white;
-    font-weight: 300; /* font-light */
-    margin-bottom: 0.5rem;
+    @extend %card-title-medium;
   }
 
   .portfolio-item__subtitle {
-    font-size: 1.125rem; /* text-lg */
-    color: #9ca3af; /* gray-400 */
-    line-height: 1.6;
+    @extend %card-content;
   }
 
   .portfolio-item__tags {
