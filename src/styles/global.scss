@@ -1,17 +1,15 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-@import './variables';
+@use 'tailwindcss/base';
+@use 'tailwindcss/components';
+@use 'tailwindcss/utilities';
+@use './variables' as *;
 
-// Component Imports - Organized by Usage
-@import './components/containers'; // Widely used containers
-@import './components/grids'; // Grid & card system
-@import './components/spacing'; // Active responsive spacing
-@import './components/navigation'; // Mobile nav system
-@import './components/typography'; // Prose & typography
-
-// Future use components (commented out to reduce bundle size)
-// @import './components/links';      // Unused link utilities
+// Import component styles
+@use './components/containers'; // Widely used containers
+@use './components/grids';
+@use './components/typography';
+@use './components/links';
+@use './components/navigation';
+@use './components/spacing';
 
 // Twoje niestandardowe style
 @layer base {

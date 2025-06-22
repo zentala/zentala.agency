@@ -173,7 +173,9 @@ $header-height-mobile: calc(
 // All-around Padding with Responsive Scale
 @mixin padding-responsive($size: 'md') {
   @if $size == 'xs' {
-    padding: 0.5rem;
+    & {
+      padding: 0.5rem;
+    }
     @include tablet {
       padding: 0.25rem;
     }
@@ -181,7 +183,9 @@ $header-height-mobile: calc(
       padding: 0.25rem;
     }
   } @else if $size == 'sm' {
-    padding: 1rem;
+    & {
+      padding: 1rem;
+    }
     @include tablet {
       padding: 0.75rem;
     }
@@ -189,7 +193,9 @@ $header-height-mobile: calc(
       padding: 0.5rem;
     }
   } @else if $size == 'md' {
-    padding: $spacing-desktop;
+    & {
+      padding: $spacing-desktop;
+    }
     @include large {
       padding: $spacing-large;
     }
@@ -203,7 +209,9 @@ $header-height-mobile: calc(
       padding: $spacing-mobile;
     }
   } @else if $size == 'lg' {
-    padding: 1.5rem;
+    & {
+      padding: 1.5rem;
+    }
     @include tablet {
       padding: 3rem;
     }
@@ -211,7 +219,9 @@ $header-height-mobile: calc(
       padding: 2rem;
     }
   } @else if $size == 'xl' {
-    padding: 2rem;
+    & {
+      padding: 2rem;
+    }
     @include tablet {
       padding: 4rem;
     }
@@ -225,8 +235,10 @@ $header-height-mobile: calc(
 @mixin px-responsive($size: 'md') {
   @if $size == 'sm' {
     // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    & {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
     @include large {
       padding-left: 1.25rem;
       padding-right: 1.25rem;
@@ -245,8 +257,10 @@ $header-height-mobile: calc(
     }
   } @else {
     // Default/main system: 64px → 48px → 32px → 24px → 16px
-    padding-left: $spacing-desktop;
-    padding-right: $spacing-desktop;
+    & {
+      padding-left: $spacing-desktop;
+      padding-right: $spacing-desktop;
+    }
     @include large {
       padding-left: $spacing-large;
       padding-right: $spacing-large;
@@ -270,8 +284,10 @@ $header-height-mobile: calc(
 @mixin py-responsive($size: 'md') {
   @if $size == 'sm' {
     // Navbar/small elements: 24px → 20px → 16px → 12px → 8px
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    & {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
     @include large {
       padding-top: 1.25rem;
       padding-bottom: 1.25rem;
@@ -290,8 +306,10 @@ $header-height-mobile: calc(
     }
   } @else if $size == 'md' {
     // Cards/sections: 64px → 48px → 32px → 24px → 16px (same as px-responsive)
-    padding-top: $spacing-desktop;
-    padding-bottom: $spacing-desktop;
+    & {
+      padding-top: $spacing-desktop;
+      padding-bottom: $spacing-desktop;
+    }
     @include large {
       padding-top: $spacing-large;
       padding-bottom: $spacing-large;
@@ -310,8 +328,10 @@ $header-height-mobile: calc(
     }
   } @else if $size == 'lg' {
     // Hero/large sections: 96px → 72px → 48px → 36px → 24px
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    & {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
     @include large {
       padding-top: 4.5rem;
       padding-bottom: 4.5rem;
