@@ -32,7 +32,7 @@ const developmentServices = [
     ],
   },
   {
-    name: 'Processors & Catalog Engineering',
+    name: 'Processors Engineering',
     icon: '⚙️',
     description:
       'Pre/post processors that transform how Backstage catalogs and processes your resources',
@@ -115,70 +115,6 @@ const whyExternalConsultant = [
   description="Creative DevEx engineer and strategic consultant specializing in Backstage implementation, AI integration, and developer experience transformation."
 >
   <Hero {...heroProps} />
-
-  <!-- About Section -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <div class="cards-grid cards-grid--two-one">
-          <CardContainer>
-            <h2 class="mb-6 text-4xl font-light text-white">
-              Your Creative DevEx Partner
-            </h2>
-            <p class="mb-6 text-xl text-gray-400">
-              I'm Paweł Żentała, a creative DevEx engineer with 20+ years
-              bridging technology and human communication. From building robots
-              and IoT systems to crafting developer portals, I bring fresh ideas
-              and proven solutions to your team.
-            </p>
-            <p class="mb-8 text-lg text-gray-400">
-              Companies hire me as their <strong class="text-white"
-                >external DevEx consultant</strong
-              > for months-long engagements. I become part of your team, architecting
-              solutions, building complex features, and <strong
-                class="text-white"
-                >elevating your entire Developer Experience</strong
-              >.
-            </p>
-            <p class="text-lg text-gray-400">
-              My approach focuses on <strong class="text-white"
-                >inspiring and educating</strong
-              > your team while handling the most innovative and challenging development
-              work. I help you build capabilities, not dependencies.
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-2xl font-semibold text-white">
-              What I Deliver
-            </h3>
-            <p class="mb-4 text-lg text-white">
-              I design dev portals that teams actually want to use.
-            </p>
-            <p class="text-gray-300">
-              Transform your Developer Experience through strategic guidance,
-              innovative solutions, hands-on development, and knowledge transfer
-              that empowers your developers to succeed long-term.
-            </p>
-          </CardContainer>
-        </div>
-        <div class="mt-16">
-          <h3 class="font-regular mb-6 text-2xl text-white">
-            Why Hire an External Backstage Expert & DevEx Consultant?
-          </h3>
-          <ul class="space-y-4">
-            {
-              whyExternalConsultant.map((benefit) => (
-                <li class="flex items-start">
-                  <span class="mr-3 mt-1 text-blue-400">▶</span>
-                  <span class="text-gray-300">{benefit}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Development Services -->
   <section class="section-full">
@@ -358,6 +294,70 @@ const whyExternalConsultant = [
           Extending Backstage for innovative teams with powerful plugins and
           custom development services.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="mb-[-1px]">
+        <div class="cards-grid cards-grid--two-one">
+          <CardContainer>
+            <h2 class="mb-6 text-4xl font-light text-white">
+              Your Creative DevEx Partner
+            </h2>
+            <p class="mb-6 text-xl text-gray-400">
+              I'm Paweł Żentała, a creative DevEx engineer with 20+ years
+              bridging technology and human communication. From building robots
+              and IoT systems to crafting developer portals, I bring fresh ideas
+              and proven solutions to your team.
+            </p>
+            <p class="mb-8 text-lg text-gray-400">
+              Companies hire me as their <strong class="text-white"
+                >external DevEx consultant</strong
+              > for months-long engagements. I become part of your team, architecting
+              solutions, building complex features, and <strong
+                class="text-white"
+                >elevating your entire Developer Experience</strong
+              >.
+            </p>
+            <p class="text-lg text-gray-400">
+              My approach focuses on <strong class="text-white"
+                >inspiring and educating</strong
+              > your team while handling the most innovative and challenging development
+              work. I help you build capabilities, not dependencies.
+            </p>
+          </CardContainer>
+          <CardContainer>
+            <h3 class="mb-4 text-2xl font-semibold text-white">
+              What I Deliver
+            </h3>
+            <p class="mb-4 text-lg text-white">
+              I design dev portals that teams actually want to use.
+            </p>
+            <p class="text-gray-300">
+              Transform your Developer Experience through strategic guidance,
+              innovative solutions, hands-on development, and knowledge transfer
+              that empowers your developers to succeed long-term.
+            </p>
+          </CardContainer>
+        </div>
+        <div class="mt-16">
+          <h3 class="font-regular mb-6 text-2xl text-white">
+            Why Hire an External Backstage Expert & DevEx Consultant?
+          </h3>
+          <ul class="space-y-4">
+            {
+              whyExternalConsultant.map((benefit) => (
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1 text-blue-400">▶</span>
+                  <span class="text-gray-300">{benefit}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </section>

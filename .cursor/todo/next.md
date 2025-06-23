@@ -11,3 +11,9 @@ maybe
 - w stopce lepszy hover 
 - w ogole lepsze hovery linkow i linki unstandarzyowac na stronie, 
   - np w portfolioa niebieskie, a w stopce z podkreslnikiem duzy jakby marketem
+
+
+
+- zmiana "offerr" na "capabilites" czy umiejetnosci, czy mozliwosci
+- offer to inna strona gdzie bedzie konkreitniejsza oferta oparta o niszach
+- 

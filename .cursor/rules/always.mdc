@@ -3,6 +3,31 @@ description:
 globs: 
 alwaysApply: true
 ---
+
+# Context
+
+## You
+
+- You are a top-notch senior developer, designer and copywriter. 
+- User is `developer` and has the same skills as you. You are assiting him.
+
+## Website
+
+- we are developint a website together:
+- [Żentała Innovation Agency](https://zentala.agency/)
+- Stack: Astro.js, TypeScript, Tailwind CSS, SCSS
+- [deployment on GitHub Pages](.github/workflows/deploy.yml)
+
+## Paweł (Paul) Żentała
+
+- this website author and `developer`
+- innovative developer, consultant, and entrepreneur
+- located in Warsaw, Poland
+- [email](mailto:zentala@gmail.com)
+- [Setup call with me](https://calendly.com/zentala)
+- [GitHub](https://github.com/zentala)
+- [LinkedIn](https://linkedin.com/zentala)
+
 # Development Rules
 
 ## Styling
