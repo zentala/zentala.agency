@@ -1,39 +1,65 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter(
-    (post) => import.meta.env.DEV || post.data.published !== false,
+    (post: CollectionEntry<'blog'>) =>
+      import.meta.env.DEV || post.data.published !== false,
   )
-  const categories = [...new Set(posts.map((post) => post.data.category))]
+  const categories = [
+    ...new Set(
+      posts.map((post: CollectionEntry<'blog'>) => post.data.category),
+    ),
+  ]
 
   return categories.map((category) => ({
     params: { category },
     props: {
-      posts: posts.filter((post) => post.data.category === category),
+      posts: posts.filter(
+        (post: CollectionEntry<'blog'>) => post.data.category === category,
+      ),
     },
   }))
 }
 
-const { category } = Astro.params
+interface Props {
+  posts: CollectionEntry<'blog'>[]
+}
+
+const { category } = Astro.params as { category: string }
 const { posts } = Astro.props
 const authors = (await getCollection('authors'))[0].data
+
+const categoryDescriptionEntry = await getEntry(
+  'category-descriptions',
+  category.toLowerCase(),
+).catch(() => null)
+const Content = categoryDescriptionEntry
+  ? (await categoryDescriptionEntry.render()).Content
+  : null
+
+const displayTitle = categoryDescriptionEntry?.data?.title || category
 ---
 
-<Layout title={`Category: ${category}`}>
+<Layout title={`Category: ${displayTitle}`}>
   <section class="section-full">
     <div class="container-bordered">
       <div class="padding-responsive-md border-b border-gray-800">
-        <h1 class="text-4xl font-light text-white">
-          Posts in category: {category}
-        </h1>
+        <h1 class="text-4xl font-light text-white">Category: {displayTitle}</h1>
+        {
+          Content && (
+            <div class="category-description-content prose prose-invert prose-strong:text-white mt-4 max-w-none text-gray-300">
+              <Content />
+            </div>
+          )
+        }
       </div>
       <div class="cards-grid">
         {
           posts.map((post) => {
-            const author = authors.find((a) => a.slug === post.data.author)
+            const author = authors.find((a: any) => a.slug === post.data.author)
             return (
               <PostCard
                 title={post.data.title}
@@ -53,3 +79,10 @@ const authors = (await getCollection('authors'))[0].data
     </div>
   </section>
 </Layout>
+
+<style lang="postcss" is:global>
+  .category-description-content p,
+  .category-description-content li {
+    @apply text-xl;
+  }
+</style>
