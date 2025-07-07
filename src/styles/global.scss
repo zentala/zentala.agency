@@ -3,8 +3,8 @@
 @use 'tailwindcss/utilities';
 @use './variables' as *;
 
-// Import component styles
-@use './components/containers'; // Widely used containers
+// Import component styles before any @layer rules
+@use './components/containers';
 @use './components/grids';
 @use './components/typography';
 @use './components/links';

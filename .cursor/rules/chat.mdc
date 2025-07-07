@@ -1,0 +1,85 @@
+---
+description: when modyfing chat design
+alwaysApply: false
+---
+
+# Chatbot Development Workflow
+
+This document outlines the complete workflow for customizing, managing, and deploying the Flowise chatbot UI. It serves as the single source of truth for this feature.
+
+## 1. Goal & History
+
+The primary objective was to embed a Flowise chat widget with full control over its appearance—specifically to remove the "Powered by Flowise" footer, which was not possible through standard configurations.
+
+Initially, we manually downloaded the official embed script, hosted it locally, and modified it. This approach, while effective, made updates difficult. To solve this, we adopted a more robust Git submodule strategy.
+
+## 2. Architecture Overview
+
+- **Source Code**: The chatbot's source is in the `/chat` directory, a Git submodule pointing to our custom fork: `zentala/zentala.agency-FlowiseChatEmbed`. This allows us to maintain our changes while being able to pull updates from the original `FlowiseChatEmbed` repository.
+- **Build Process**: We build the chatbot from its source to have full, granular control over its appearance and functionality.
+- **Distribution File**: The final, compiled JavaScript file used by the main website is located at `/public/chat.js`.
+- **Initialization Script**: The chatbot is configured and initialized in `/public/init-chat.js`, where we pass critical settings like `chatflowid`, `apiHost`, and the `theme` object.
+- **VS Code Task**: The build process is automated via a VS Code task defined in `.vscode/tasks.json`.
+
+---
+
+## 3. Development Workflow
+
+This process allows you to make changes and see them in a live-preview environment before applying them to the main website.
+
+### Step 3.1: Live Preview with Hot-Reload
+
+The submodule has its own Vite-based development server for isolated development.
+
+1.  **Navigate to the chatbot directory:**
+    `cd chat`
+2.  **Start the dev server:**
+    `yarn dev`
+3.  Vite will start a development server (usually at `http://localhost:5678`). Open this URL to see a test page with the chatbot.
+4.  Modify the source code in `/chat/src/`. Changes will be reflected live.
+    - **Styling**: Edit `/chat/src/assets/index.css`.
+    - **Functionality**: Modify `.tsx` components in `/chat/src/components/`.
+
+### Step 3.2: Build and Apply Changes to the Website
+
+Once you're satisfied, build the production script and update it in the main project.
+
+1.  **Run the VS Code Build Task:**
+    - Open the Command Palette: `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac).
+    - Type "Run Build Task" and select **Build and Update Chatbot**.
+    - This task automates compiling the source into `/chat/dist/web.js` and copying it to `/public/chat.js`.
+2.  **Verify the changes:**
+    - Run the main website (`npm run dev`) to see your customized chatbot in action.
+
+---
+
+## 4. Managing Changes with Git
+
+Since the chatbot is a submodule, managing changes is a two-stage process.
+
+### Step 4.1: Committing Changes within the Submodule
+
+First, commit your changes to the submodule's own repository.
+
+1.  **Navigate to the submodule directory:** `cd chat`
+2.  **Check the status:** `git status` (You should see your modified files).
+3.  **Stage and commit:**
+    ```bash
+    git add .
+    git commit -m "feat(ui): Describe your change here"
+    ```
+4.  **Push the changes to the submodule's remote:** `git push`
+
+### Step 4.2: Updating the Main Repository
+
+After committing to the submodule, update the main repository to point to the new submodule commit.
+
+1.  **Navigate back to the project root:** `cd ..`
+2.  **Check the status:** `git status` (You should see `modified: chat (new commits)`).
+3.  **Stage the submodule change and commit:**
+    ```bash
+    git add chat
+    git commit -m "feat(chat): Update chatbot to the latest version"
+    ```
+
+This two-step process ensures that both the submodule's history and the main project's history are correctly tracked.

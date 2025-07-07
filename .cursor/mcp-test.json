@@ -1,0 +1,11 @@
+"sqlite": {
+  "command": "uvx",
+  "args": [
+    "--directory",
+    "C:\\code\\depo-dev-portal\\src\\packages\\backend\\db",
+    "run",
+    "mcp-server-sqlite",
+    "--db-path",
+    "~/catalog.sqlite"
+  ]
+},

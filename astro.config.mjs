@@ -2,9 +2,16 @@ import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
+import react from '@astrojs/react'
 
 export default defineConfig({
-  integrations: [tailwind(), mdx(), icon({ include: { lucide: ['*'] } })],
+  output: 'hybrid',
+  integrations: [
+    tailwind(),
+    mdx(),
+    icon({ include: { lucide: ['*'] } }),
+    react(),
+  ],
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
