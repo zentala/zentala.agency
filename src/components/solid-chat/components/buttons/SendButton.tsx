@@ -1,13 +1,13 @@
-import { Show } from 'solid-js';
-import { JSX } from 'solid-js/jsx-runtime';
-import { DeleteIcon, SendIcon } from '../icons';
+import { Show } from 'solid-js'
+import type { JSX } from 'solid-js'
+import { DeleteIcon, SendIcon } from '../icons'
 
 type SendButtonProps = {
-  sendButtonColor?: string;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  disableIcon?: boolean;
-} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
+  sendButtonColor?: string
+  isDisabled?: boolean
+  isLoading?: boolean
+  disableIcon?: boolean
+} & JSX.ButtonHTMLAttributes<HTMLButtonElement>
 
 export const SendButton = (props: SendButtonProps) => {
   return (
@@ -16,21 +16,24 @@ export const SendButton = (props: SendButtonProps) => {
       disabled={props.isDisabled || props.isLoading}
       {...props}
       class={
-        'py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 chatbot-button ' +
+        'chatbot-button flex items-center justify-center px-4 py-2 font-semibold text-white filter transition-all hover:brightness-90 focus:outline-none active:brightness-75 disabled:cursor-not-allowed disabled:opacity-50 disabled:brightness-100 ' +
         props.class
       }
       style={{ background: 'transparent', border: 'none' }}
     >
       <Show when={!props.isLoading} fallback={<Spinner class="text-white" />}>
-        <SendIcon color={props.sendButtonColor} class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')} />
+        <SendIcon
+          color={props.sendButtonColor}
+          class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')}
+        />
       </Show>
     </button>
-  );
-};
+  )
+}
 export const DeleteButton = (props: SendButtonProps) => {
   // Check if <flowise-fullchatbot> is present in the DOM
-  const isFullChatbot = document.querySelector('flowise-fullchatbot') !== null;
-  const paddingClass = isFullChatbot ? 'px-4' : 'px-12';
+  const isFullChatbot = document.querySelector('flowise-fullchatbot') !== null
+  const paddingClass = isFullChatbot ? 'px-4' : 'px-12'
 
   return (
     <button
@@ -38,33 +41,43 @@ export const DeleteButton = (props: SendButtonProps) => {
       disabled={props.isDisabled || props.isLoading}
       {...props}
       class={
-        `py-2 ${paddingClass} justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 chatbot-button ` +
+        `py-2 ${paddingClass} chatbot-button flex items-center justify-center font-semibold text-white filter transition-all hover:brightness-90 focus:outline-none active:brightness-75 disabled:cursor-not-allowed disabled:opacity-50 disabled:brightness-100 ` +
         props.class
       }
       style={{ background: 'transparent', border: 'none' }}
       title="Reset Chat"
     >
       <Show when={!props.isLoading} fallback={<Spinner class="text-white" />}>
-        <DeleteIcon color={props.sendButtonColor} class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')} />
+        <DeleteIcon
+          color={props.sendButtonColor}
+          class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')}
+        />
       </Show>
     </button>
-  );
-};
+  )
+}
 
 export const Spinner = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
   <svg
     {...props}
-    class={'animate-spin -ml-1 mr-3 h-5 w-5 ' + props.class}
+    class={'-ml-1 mr-3 h-5 w-5 animate-spin ' + props.class}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     data-testid="loading-spinner"
   >
-    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+    <circle
+      class="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      stroke-width="4"
+    />
     <path
       class="opacity-75"
       fill="currentColor"
       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
     />
   </svg>
-);
+)

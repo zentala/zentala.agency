@@ -1,5 +1,5 @@
-import { JSX } from 'solid-js/jsx-runtime';
-const defaultButtonColor = '#3B81F6';
+import type { JSX } from 'solid-js'
+const defaultButtonColor = '#3B81F6'
 export const TrashIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,4 +18,4 @@ export const TrashIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     <line x1="10" x2="10" y1="11" y2="17" />
     <line x1="14" x2="14" y1="11" y2="17" />
   </svg>
-);
+)

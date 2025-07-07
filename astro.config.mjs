@@ -3,17 +3,16 @@ import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 import react from '@astrojs/react'
-
 import solidJs from '@astrojs/solid-js'
 
 export default defineConfig({
-  output: 'hybrid',
+  output: 'static',
   integrations: [
     tailwind(),
     mdx(),
     icon({ include: { lucide: ['*'] } }),
-    react(),
-    solidJs(),
+    react({ include: ['src/components/react-stuff/**/*'] }),
+    solidJs({ include: ['src/components/solid-chat/**/*'] }),
   ],
   image: {
     service: {

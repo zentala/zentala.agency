@@ -1,4 +1,4 @@
-import { For, Show, Switch, Match } from 'solid-js/web'
+import { For, Show, Switch, Match } from 'solid-js'
 import type { BotProps } from '../types/chat'
 import { useChat } from '../hooks/useChat'
 import { GuestBubble } from '../components/bubbles/GuestBubble'

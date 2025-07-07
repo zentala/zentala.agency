@@ -1,4 +1,4 @@
-import styles from '../../../assets/index.css'
+import styles from '../../../assets/index.css?inline'
 import { Bot, type BotProps } from '@/components/solid-chat/components/Bot'
 import type { BubbleParams } from '@/components/solid-chat/features/bubble/types'
 import { createSignal, onCleanup, onMount, Show } from 'solid-js'

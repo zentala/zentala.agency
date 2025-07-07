@@ -24,8 +24,6 @@ const defaultBackgroundColor = '#ffffff'
 const defaultTextColor = '#303235'
 
 export const TextInput = (props: TextInputProps) => {
-  let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
-
   const handleInput = (e: Event) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement
     props.onInput(target.value)
@@ -33,7 +31,11 @@ export const TextInput = (props: TextInputProps) => {
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      const isIMEComposition = e.isComposing || e.keyCode === 229
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - keyCode is deprecated but still used for IME composition detection
+      const isIMEComposition =
+        e.isComposing ||
+        (e as KeyboardEvent & { keyCode?: number }).keyCode === 229
       if (!isIMEComposition) {
         e.preventDefault()
         props.onSend()
@@ -59,7 +61,6 @@ export const TextInput = (props: TextInputProps) => {
       onKeyDown={handleKeyDown}
     >
       <textarea
-        ref={(el) => (inputRef = el)}
         class="flex-1 resize-none bg-transparent px-4 py-4 focus:outline-none"
         value={props.value}
         onInput={handleInput}

@@ -1,5 +1,4 @@
-import { For, Show } from 'solid-js'
-import { Avatar } from '../avatars/Avatar'
+import { For } from 'solid-js'
 import { Marked } from '@ts-stack/markdown'
 import type { FileUpload, MessageType } from '../../types/chat'
 import { AttachmentIcon } from '../icons'

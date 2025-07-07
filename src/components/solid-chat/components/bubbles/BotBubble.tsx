@@ -1,4 +1,3 @@
-import { Show } from 'solid-js'
 import { Marked } from '@ts-stack/markdown'
 import type { MessageType } from '../../types/chat'
 

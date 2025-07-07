@@ -5,7 +5,7 @@ import {
   onCleanup,
   createEffect,
 } from 'solid-js'
-import styles from '../../../assets/index.css'
+import styles from '../../../assets/index.css?inline'
 import { BubbleButton } from './BubbleButton'
 import type { BubbleParams } from '../types'
 import { Bot, type BotProps } from '../../../components/Bot'

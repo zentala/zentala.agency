@@ -42,4 +42,9 @@ const theme = {
 }
 ---
 
-<Bubble client:idle botId={chatflowid} apiHost={apiHost} theme={theme} />
+<Bubble
+  client:only="solid-js"
+  botId={chatflowid}
+  apiHost={apiHost}
+  theme={theme}
+/>
