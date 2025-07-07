@@ -1,0 +1,1 @@
+czy i jak mozemy wyekstrachowac z tego projektu skrotke ktora bedzie roziwjaa glownie tutaj (ale i nie tylko) i chce aby jak bede ja zmienial to byll life reload, ale chce ten najlepeij aby byla jakims submodule, aby inne projekty mogly z tego korzystac, albo zrobimy ew monorepo i te monoreepo bedzie zawieralao

@@ -4,6 +4,8 @@ import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 import react from '@astrojs/react'
 
+import solidJs from '@astrojs/solid-js'
+
 export default defineConfig({
   output: 'hybrid',
   integrations: [
@@ -11,6 +13,7 @@ export default defineConfig({
     mdx(),
     icon({ include: { lucide: ['*'] } }),
     react(),
+    solidJs(),
   ],
   image: {
     service: {
@@ -18,6 +21,11 @@ export default defineConfig({
     },
   },
   vite: {
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
+    },
     server: {
       watch: {
         usePolling: true,
