@@ -55,11 +55,15 @@
 
     ul,
     ol {
-      @apply my-4 ml-4;
+      @apply my-4 pl-4;
     }
 
-    li {
-      @apply mb-2;
+    ul li {
+      @apply mb-2 list-disc;
+    }
+
+    ol li {
+      @apply mb-2 list-decimal;
     }
 
     blockquote {

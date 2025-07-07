@@ -24,6 +24,28 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
+    },
+    {
+      "label": "Build and Update Chatbot",
+      "type": "shell",
+      "command": "cd chat && yarn build && cd .. && cp ./chat/dist/web.js ./public/chat.js",
+      "windows": {
+        "command": "cd chat; yarn build; cd ..; copy .\\chat\\dist\\web.js .\\public\\chat.js"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "detail": "Builds the custom chatbot from the '/chat' submodule and copies the output to '/public/chat.js'."
     }
   ]
 }

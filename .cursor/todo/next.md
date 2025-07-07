@@ -16,4 +16,7 @@ maybe
 
 - zmiana "offerr" na "capabilites" czy umiejetnosci, czy mozliwosci
 - offer to inna strona gdzie bedzie konkreitniejsza oferta oparta o niszach
-- 
+- na stornie glownej nie tyle offerta co "specjalizuje sie w"
+  - backstage developr portal and experice
+  - rapid websapp rprototyping end-2-end: business analitycs, prorotyping with cloud solutions, framerwoks, ai, UI/UX, analitycs. 
+  - ogolnie ze specjalizuje sie w e2e i jestem dobry w zaczynaniu od zera czegos fajnego

@@ -1,25 +1,18 @@
-import eslintPluginPrettier from 'eslint-plugin-prettier'
+import eslintPluginAstro from 'eslint-plugin-astro'
+import tseslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
-export default [
+export default tseslint.config(
   {
-    ignores: ['node_modules/**', '.astro/'],
+    ignores: ['node_modules/**', '.astro/**', 'dist/**'],
   },
+  ...eslintPluginAstro.configs['flat/recommended'],
+  ...tseslint.configs.recommended,
+  eslintConfigPrettier,
   {
-    files: ['**/*.{js,ts,jsx,tsx}'],
-    plugins: {
-      prettier: eslintPluginPrettier,
-    },
-    languageOptions: {
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-      },
-    },
     rules: {
-      ...eslintConfigPrettier.rules,
-      'prettier/prettier': 'error',
       'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }],
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
-]
+)

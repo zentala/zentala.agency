@@ -1,0 +1,3 @@
+[submodule "chat"]
+	path = chat
+	url = https://github.com/zentala/zentala.agency-FlowiseChatEmbed
