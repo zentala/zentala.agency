@@ -4,7 +4,6 @@ import {
   useContext,
   type JSXElement,
   Show,
-  For,
   createEffect,
 } from 'solid-js'
 import { createStore } from 'solid-js/store'
@@ -171,13 +170,6 @@ export const RichTreeView = (props: RichTreeViewProps) => {
   const handleNodeSelect = (itemId: string) => {
     setStore('selectedItem', itemId)
     props.onNodeSelect && props.onNodeSelect(itemId)
-  }
-
-  // Enhanced context with selection functionality
-  const enhancedContext = {
-    selectedItem: () => store.selectedItem,
-    highlightedItems: () => store.highlightedItems,
-    handleNodeSelect,
   }
 
   return (

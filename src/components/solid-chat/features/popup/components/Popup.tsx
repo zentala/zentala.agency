@@ -1,4 +1,4 @@
-import styles from '../../../assets/index.css'
+import styles from '../../../assets/index.css?inline'
 import { createSignal, Show, splitProps, createEffect, onMount } from 'solid-js'
 import { isNotDefined } from '@/components/solid-chat/utils/index'
 

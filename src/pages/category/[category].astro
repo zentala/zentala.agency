@@ -30,12 +30,19 @@ interface Props {
 
 const { category } = Astro.params as { category: string }
 const { posts } = Astro.props
-const authors = (await getCollection('authors'))[0].data
+const authorsCollection = await getCollection('authors')
+const authors: any[] =
+  authorsCollection && authorsCollection[0]
+    ? (authorsCollection[0].data as any[])
+    : []
 
-const categoryDescriptionEntry = await getEntry(
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error - Astro content typing limitation for dynamic slug
+const categoryDescriptionEntry = (await getEntry(
   'category-descriptions',
   category.toLowerCase(),
-).catch(() => null)
+).catch(() => null)) as any | null
+
 const Content = categoryDescriptionEntry
   ? (await categoryDescriptionEntry.render()).Content
   : null
@@ -49,9 +56,15 @@ const displayTitle = categoryDescriptionEntry?.data?.title || category
       <div class="padding-responsive-md border-b border-gray-800">
         <h1 class="text-4xl font-light text-white">Category: {displayTitle}</h1>
         {
-          Content && (
-            <div class="category-description-content prose prose-invert prose-strong:text-white mt-4 max-w-none text-gray-300">
-              <Content />
+          categoryDescriptionEntry ? (
+            Content && (
+              <div class="category-description-content prose prose-invert mt-4 max-w-none text-gray-300 prose-strong:text-white">
+                <Content />
+              </div>
+            )
+          ) : (
+            <div class="category-description-content prose prose-invert mt-4 max-w-none text-gray-300 prose-strong:text-white">
+              Category description not found.
             </div>
           )
         }
