@@ -176,3 +176,17 @@ Poniżej znajduje się lista pytań, które mogą zadać użytkownicy. Posłuż�
 13. Czy uczysz się na podstawie naszych rozmów?
 14. Jaki jest główny cel tej strony internetowej?
 15. Opowiedz coś nieoczekiwanego o sobie.
+
+---
+
+
+
+
+powiedz mi cos ciekaego o palwe?
+- a co Ciebie ciekawi?
+- pawel zajmuje sie wieloma obszarami od programowania, do AI dalej po iot i robotyke i do ux i designu, biznes i zarzadzanie sczzegolnie produkowe az po psychologie  i publicyskystke, a co CIebie interesuje?
+- 
+
+---
+
+custom markdown niech zwraca a to niech komponuje custome lements

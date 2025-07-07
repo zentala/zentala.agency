@@ -2,6 +2,7 @@
 import '../styles/global.scss'
 import Footer from '../components/Footer.astro'
 import Header from '../components/Header.astro'
+import Chatbot from '../components/Chatbot.astro'
 
 interface Props {
   title: string
@@ -53,6 +54,7 @@ const {
       <slot />
     </main>
     <Footer />
-    <script type="module" src="/init-chat.js"></script>
+    <Chatbot />
+    <!-- <script type="module" src="/init-chat.js"></script> -->
   </body>
 </html>
