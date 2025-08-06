@@ -1,5 +1,6 @@
 import { Marked } from '@ts-stack/markdown'
 import type { MessageType } from '../../types/chat'
+import { createEffect } from 'solid-js'
 
 const defaultBackgroundColor = '#f7f8ff'
 const defaultTextColor = '#303235'
@@ -12,33 +13,37 @@ export type Props = {
 }
 
 export const BotBubble = (props: Props) => {
+  let botMessageEl: HTMLSpanElement | undefined
+
   Marked.setOptions({
     isNoP: true,
     sanitize: true,
   })
 
-  const setBotMessageRef = (el: HTMLSpanElement) => {
-    if (el) {
-      el.innerHTML = Marked.parse(props.message.message)
-      el.querySelectorAll(
-        'a, h1, h2, h3, h4, h5, h6, strong, em, blockquote, li',
-      ).forEach((element) => {
-        ;(element as HTMLElement).style.color = defaultTextColor
-      })
-      el.querySelectorAll('pre').forEach((element) => {
+  createEffect(() => {
+    if (botMessageEl) {
+      botMessageEl.innerHTML = Marked.parse(props.message.message)
+      botMessageEl
+        .querySelectorAll(
+          'a, h1, h2, h3, h4, h5, h6, strong, em, blockquote, li',
+        )
+        .forEach((element) => {
+          ;(element as HTMLElement).style.color = defaultTextColor
+        })
+      botMessageEl.querySelectorAll('pre').forEach((element) => {
         ;(element as HTMLElement).style.color = '#FFFFFF'
         element.querySelectorAll('code').forEach((codeElement) => {
           ;(codeElement as HTMLElement).style.color = '#FFFFFF'
         })
       })
-      el.querySelectorAll('code:not(pre code)').forEach((element) => {
+      botMessageEl.querySelectorAll('code:not(pre code)').forEach((element) => {
         ;(element as HTMLElement).style.color = '#4CAF50'
       })
-      el.querySelectorAll('a').forEach((link) => {
+      botMessageEl.querySelectorAll('a').forEach((link) => {
         link.target = '_blank'
       })
     }
-  }
+  })
 
   return (
     <div
@@ -55,7 +60,7 @@ export const BotBubble = (props: Props) => {
         }}
       >
         <span
-          ref={setBotMessageRef}
+          ref={botMessageEl}
           class="mr-2 whitespace-pre-wrap"
           style={{ 'font-size': `${defaultFontSize}px` }}
         />

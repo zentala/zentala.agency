@@ -16,10 +16,30 @@ List of usefull links and technologies to use.
 - https://github.com/astro-community
 -
 
+### Wanna use
+
+- https://giscus.app/pl - comments
+- https://docs.astro.build/en/guides/integrations-guide/sitemap/
+- https://astro-embed.netlify.app/
+- https://github.com/onwidget/astrolib/tree/main/packages/seo
+- https://github.com/delucis/astro-og-canvas/tree/latest/packages/astro-og-canvas
+- https://www.npmjs.com/package/lucide-astro
+- https://docs.astro-breadcrumbs.kasimir.dev/
+- Potential extentions
+  - https://clerk.com/docs/references/astro/overview - payments?
+  - https://www.sanity.io/astro-cms - cms?
+  - https://www.lemonsqueezy.com/wedges/docs/installation/astro - another payments?
+
 ## Tailwind
 
 - [Tailwind CSS Framework](https://tailwindcss.com/)
 - [Daisy UI Tailwind Plugin](https://daisyui.com/) - semantic classes
+- https://www.eldoraui.site/docs/components/
+- https://www.shadcnblocks.com/ & https://ui.shadcn.com/blocks
+- https://kitwind.io/products/kometa
+- https://originui.com/ ciekawe inspiracje
+- https://kokonutui.com/
+- https://reactbits.dev/
 
 ## Components
 
@@ -37,8 +57,9 @@ This is the main wrapper component for any card. It should be used as the root e
 
 ```astro
 ---
-import CardContainer from '~/components/cards/CardContainer.astro';
+import CardContainer from '~/components/cards/CardContainer.astro'
 ---
+
 <CardContainer href="/your-link">
   <h3>Card Title</h3>
   <p>Card content goes here.</p>
@@ -94,9 +115,10 @@ A reusable component to display a large, decorative icon in the top-right corner
 
 ```astro
 ---
-import CardContainer from '~/components/cards/CardContainer.astro';
-import CardBackgroundIcon from '~/components/primitives/CardBackgroundIcon.astro';
+import CardContainer from '~/components/cards/CardContainer.astro'
+import CardBackgroundIcon from '~/components/primitives/CardBackgroundIcon.astro'
 ---
+
 <CardContainer>
   <CardBackgroundIcon icon="🎉" />
   ...
@@ -108,7 +130,7 @@ import CardBackgroundIcon from '~/components/primitives/CardBackgroundIcon.astro
 whenver possible use
 
 ```astro
-<style lang="postcss">
+<style lang="postcss"></style>
 ```
 
 i dziedzciz style za pomocą `@apply` z tailwind i innych klas jakie mamy, bo chcemy miec max reuzywanlny kod
