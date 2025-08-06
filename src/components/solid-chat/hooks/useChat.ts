@@ -108,19 +108,24 @@ export const useChat = (props: BotProps) => {
     e.preventDefault()
     const userInput = input()
     if (!userInput.trim() && previews().length === 0) return
-
+    console.log('Submitting message:', userInput)
     addChatMessage(userInput, 'userMessage')
     setInput('')
 
     const uploadedFiles = await handleFileUploads()
     clearPreviews()
-
+    console.log('Calling fetchResponseFromEventStream with:', {
+      question: userInput,
+      chatId: props.chatId,
+    })
     await fetchResponseFromEventStream({
       question: userInput,
       history: messages().slice(0, -1),
       chatId: props.chatId,
+      streaming: true,
       ...(uploadedFiles.length > 0 && { uploadedFiles }),
     })
+    console.log('Submit complete')
   }
 
   const clearChat = () => {

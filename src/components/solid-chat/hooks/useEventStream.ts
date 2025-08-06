@@ -28,6 +28,7 @@ export const useEventStream = (props: UseEventStreamProps) => {
   >([])
 
   const fetchResponseFromEventStream = async (body: PredictionBody) => {
+    console.log('Starting event stream with body:', body)
     ctrl = new AbortController()
     setIsMessageStreaming(true)
     setIsStreamStarted(false)
@@ -36,6 +37,7 @@ export const useEventStream = (props: UseEventStreamProps) => {
     await fetchEventSource(
       `${props.apiHost ?? 'http://localhost:3000'}/api/v1/prediction/${props.botId}`,
       {
+        openWhenHidden: true,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,12 +45,15 @@ export const useEventStream = (props: UseEventStreamProps) => {
         body: JSON.stringify(body),
         signal: ctrl.signal,
         onopen: async (response) => {
+          console.log('Event source opened, status:', response.status)
           if (!response.ok) {
             const error = await response.json()
+            console.error('Event source error:', error)
             throw new Error(error.message)
           }
         },
         onmessage: (event) => {
+          console.log('Received event:', event.data)
           const { data, type } = JSON.parse(event.data)
           if (type === 'start') {
             setIsStreamStarted(true)
@@ -64,16 +69,19 @@ export const useEventStream = (props: UseEventStreamProps) => {
           }
         },
         onerror: (err) => {
+          console.error('Event source error:', err)
           setIsMessageStreaming(false)
           props.onStreamEnd()
-          throw err // Rethrow to be caught by the outer catch block
+          throw err
         },
         onclose: () => {
+          console.log('Event source closed')
           setIsMessageStreaming(false)
           props.onStreamEnd()
         },
       },
     )
+    console.log('Event stream completed')
   }
 
   const abortMessage = () => {

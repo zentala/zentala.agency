@@ -185,10 +185,12 @@ export type BotProps = {
 }
 
 export type PredictionBody = {
-  question: string
-  history: MessageType[]
+  question?: string
   chatId?: string
+  history?: MessageType[]
+  overrideConfig?: Record<string, unknown>
   uploadedFiles?: Partial<FileUpload>[]
+  streaming?: boolean
 }
 
 export type LeadsConfig = {
