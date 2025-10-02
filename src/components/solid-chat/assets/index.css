@@ -30,12 +30,12 @@
   --PhoneInput-color--focus: transparent;
 }
 
-a {
+.chatbot-container a {
   color: #16bed7;
   font-weight: 500;
 }
 
-a:hover {
+.chatbot-container a:hover {
   text-decoration: underline;
 }
 

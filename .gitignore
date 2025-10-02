@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+
+# Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
+.specstory/**
+.cursorindexingignore
