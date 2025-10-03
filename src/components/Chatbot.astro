@@ -2,6 +2,8 @@
 // src/components/Chatbot.astro
 import { Bubble } from './solid-chat/features/bubble/components/Bubble'
 
+const isChatEnabled = import.meta.env.FLOWISE_CHAT_ENABLED === 'true' || false
+
 // Hard-coded props that were previously in init-chat.js
 const chatflowid = 'da2375f4-1ceb-4207-a23c-71caf273778a'
 const apiHost = 'https://flowise.zentala.agency'
@@ -42,9 +44,11 @@ const theme = {
 }
 ---
 
-<Bubble
-  client:only="solid-js"
-  botId={chatflowid}
-  apiHost={apiHost}
-  theme={theme}
-/>
+{isChatEnabled && (
+  <Bubble
+    client:only="solid-js"
+    botId={chatflowid}
+    apiHost={apiHost}
+    theme={theme}
+  />
+)}
