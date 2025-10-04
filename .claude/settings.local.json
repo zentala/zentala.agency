@@ -12,7 +12,9 @@
       "Bash(Move-Item -Path \"HOMEPAGE_FINAL_CONTENT.md\" -Destination \".claude/tasks/001_home_page/\")",
       "Bash(cat:*)",
       "Bash(Test-Path \"c:\\code\\zentala.agency\\src\\components\\home\")",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(Test-Path .claude/tasks/backlog)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
