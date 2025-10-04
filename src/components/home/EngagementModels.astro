@@ -1,70 +1,73 @@
 ---
 import EngagementCard from './EngagementCard.astro'
 import Button from '../Button.astro'
-import NoteBox from './NoteBox.astro'
+import NoteBox from '../primitives/NoteBox.astro'
 ---
 
-<div id="engagement" class="engagement-section px-responsive-md py-responsive-lg">
+<div
+  id="engagement"
+  class="engagement-section px-responsive-md py-responsive-lg"
+>
   <div class="engagement-header">
     <h2 class="engagement-headline">Engagement Models</h2>
     <p class="engagement-subhead">
-      From strategic consulting to full team assembly and leadership -
-      flexible engagement to match your needs.
+      From strategic consulting to full team assembly and leadership - flexible
+      engagement to match your needs.
     </p>
   </div>
 
   <div class="cards-grid">
-      <EngagementCard
-        title="Innovation Consulting"
-        bestFor="Product validation, technical strategy, early-stage planning"
-      >
-        <h4>What you get:</h4>
-        <ul>
-          <li>Technical product vision & feasibility assessment</li>
-          <li>Architecture planning & technology stack selection</li>
-          <li>Team structure design & hiring strategy</li>
-          <li>Business-technical alignment consulting</li>
-          <li>Go-to-market input from technical perspective</li>
-        </ul>
-        <p class="format">
-          <strong>Format:</strong> Strategic sessions, documentation, ongoing advisory
-        </p>
-      </EngagementCard>
+    <EngagementCard
+      title="Innovation Consulting"
+      bestFor="Product validation, technical strategy, early-stage planning"
+    >
+      <h4>What you get:</h4>
+      <ul>
+        <li>Technical product vision & feasibility assessment</li>
+        <li>Architecture planning & technology stack selection</li>
+        <li>Team structure design & hiring strategy</li>
+        <li>Business-technical alignment consulting</li>
+        <li>Go-to-market input from technical perspective</li>
+      </ul>
+      <p class="format">
+        <strong>Format:</strong> Strategic sessions, documentation, ongoing advisory
+      </p>
+    </EngagementCard>
 
-      <EngagementCard
-        title="Prototype Development"
-        bestFor="Taking ideas from concept to working demonstration"
-      >
-        <h4>What you get:</h4>
-        <ul>
-          <li>Full technical architecture design</li>
-          <li>Working, usable prototype (not just mockup)</li>
-          <li>Technology foundation for scaling</li>
-          <li>Documentation & knowledge transfer</li>
-          <li>UX design included</li>
-        </ul>
-        <p class="format">
-          <strong>Format:</strong> Intensive development sprint (weeks to months
-          depending on complexity)
-        </p>
-      </EngagementCard>
+    <EngagementCard
+      title="Prototype Development"
+      bestFor="Taking ideas from concept to working demonstration"
+    >
+      <h4>What you get:</h4>
+      <ul>
+        <li>Full technical architecture design</li>
+        <li>Working, usable prototype (not just mockup)</li>
+        <li>Technology foundation for scaling</li>
+        <li>Documentation & knowledge transfer</li>
+        <li>UX design included</li>
+      </ul>
+      <p class="format">
+        <strong>Format:</strong> Intensive development sprint (weeks to months depending
+        on complexity)
+      </p>
+    </EngagementCard>
 
-      <EngagementCard
-        title="Team Assembly & Leadership"
-        bestFor="Building technical teams from scratch"
-      >
-        <h4>What you get:</h4>
-        <ul>
-          <li>Complete team assessment & hiring</li>
-          <li>Technical leadership & project management</li>
-          <li>Development of initial product/platform</li>
-          <li>Team education & capability building</li>
-          <li>Transition plan for ongoing operations</li>
-        </ul>
-        <p class="format">
-          <strong>Format:</strong> Multi-month engagement as hands-on CTO
-        </p>
-      </EngagementCard>
+    <EngagementCard
+      title="Team Assembly & Leadership"
+      bestFor="Building technical teams from scratch"
+    >
+      <h4>What you get:</h4>
+      <ul>
+        <li>Complete team assessment & hiring</li>
+        <li>Technical leadership & project management</li>
+        <li>Development of initial product/platform</li>
+        <li>Team education & capability building</li>
+        <li>Transition plan for ongoing operations</li>
+      </ul>
+      <p class="format">
+        <strong>Format:</strong> Multi-month engagement as hands-on CTO
+      </p>
+    </EngagementCard>
   </div>
 
   <NoteBox icon="lightbulb">
