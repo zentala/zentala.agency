@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string
+  bestFor: string
+}
+
+const { title, bestFor } = Astro.props
+---
+
+<div class="engagement-card">
+  <h3 class="card-title">{title}</h3>
+  <p class="card-best-for">
+    <strong>Best for:</strong>
+    {bestFor}
+  </p>
+  <div class="card-content">
+    <slot />
+  </div>
+</div>
+

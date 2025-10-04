@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:zentala.agency)",
+      "Read(//c/code/**)",
+      "Bash(echo $PROFILE)",
+      "Bash(pwsh:*)",
+      "Read(//c/Users/Lenovo/Documents/PowerShell/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(Move-Item -Path \"HOMEPAGE_REDESIGN_PLAN.md\" -Destination \".claude/tasks/001_home_page/\")",
+      "Bash(Move-Item -Path \"HOMEPAGE_FINAL_CONTENT.md\" -Destination \".claude/tasks/001_home_page/\")",
+      "Bash(cat:*)",
+      "Bash(Test-Path \"c:\\code\\zentala.agency\\src\\components\\home\")",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

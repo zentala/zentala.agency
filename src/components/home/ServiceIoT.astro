@@ -1,0 +1,85 @@
+---
+import ServiceSection from './ServiceSection.astro'
+import FeaturedProjects from './FeaturedProjects.astro'
+import ProjectCard from './ProjectCard.astro'
+import Button from '../Button.astro'
+---
+
+<ServiceSection
+  id="iot"
+  headline="IoT Product Engineering"
+  subhead="From vision to working prototype to production-ready systems"
+>
+  <div class="service-description">
+    <p>
+      End-to-end development of IoT solutions - hardware selection, firmware,
+      cloud infrastructure, mobile and web applications. I create the technical
+      vision, build initial prototypes, and if needed, assemble specialized
+      teams to scale production.
+    </p>
+  </div>
+
+  <div class="service-deliverables">
+    <h3 class="section-subheading">WHAT YOU GET</h3>
+    <ul>
+      <li>Product architecture & technical strategy</li>
+      <li>Hardware integration & firmware development</li>
+      <li>Cloud infrastructure & data pipelines</li>
+      <li>Mobile & web application development</li>
+      <li>Team assembly & technical leadership</li>
+    </ul>
+  </div>
+
+  <div class="service-experience">
+    <h3 class="section-subheading">EXPERIENCE HIGHLIGHTS</h3>
+    <ul class="experience-list">
+      <li>
+        <strong>Ubudu</strong> (French IoT startup) - RTLS indoor location systems
+      </li>
+      <li>
+        <strong>BSH</strong> (Bosch Siemens Hausgeräte) - Smart home appliances
+        firmware
+      </li>
+      <li>
+        <strong>Cheil Poland</strong> (Samsung subsidiary) - Socially-aware humanoid
+        robot
+      </li>
+    </ul>
+  </div>
+
+  <FeaturedProjects>
+    <ProjectCard
+      title="RTLS Indoor Location Systems"
+      description="Real-time indoor location tracking for retail, logistics, and events. Developed software and deployed systems worldwide at Ubudu - French IoT startup. Experience with hardware, location algorithms, and business implementation."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=RTLS"
+      link="/portfolio"
+    />
+
+    <ProjectCard
+      title="Smart Height Adjustable Desk"
+      description="Open research project automating ergonomic workspaces as part of smart home ecosystem. IoT integration encouraging movement and activity for knowledge workers spending careers at desks."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Smart+Desk"
+      link="https://desk.zentala.io"
+      linkText="Visit desk.zentala.io →"
+    />
+
+    <ProjectCard
+      title="Smart Home System"
+      description="Complete 50m² apartment automation - electrical design, intelligent lighting, alarm integration, sensors (water, motion, humidity), and heating controllers. Automated operations for comfort, security, and energy efficiency."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Smart+Home"
+      link="https://ihome.zentala.io"
+      linkText="Visit ihome.zentala.io →"
+    />
+  </FeaturedProjects>
+
+  <div class="service-cta">
+    <Button
+      href="https://cal.com/zentala"
+      text="Discuss your IoT project"
+      variant="primary"
+      target="_blank"
+      icon="message-circle"
+    />
+  </div>
+</ServiceSection>
+

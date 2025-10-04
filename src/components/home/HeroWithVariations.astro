@@ -1,0 +1,62 @@
+---
+import HeroVariantA from './HeroVariantA.astro'
+import HeroVariantB from './HeroVariantB.astro'
+import HeroVariantC from './HeroVariantC.astro'
+import HeroVariantD from './HeroVariantD.astro'
+import HeroVariantE from './HeroVariantE.astro'
+---
+
+<div id="hero" class="hero-section">
+  <div data-variant="A" class="hero-variant-wrapper hero-variant-active">
+    <HeroVariantA />
+  </div>
+  <div data-variant="B" class="hero-variant-wrapper hero-variant-hidden">
+    <HeroVariantB />
+  </div>
+  <div data-variant="C" class="hero-variant-wrapper hero-variant-hidden">
+    <HeroVariantC />
+  </div>
+  <div data-variant="D" class="hero-variant-wrapper hero-variant-hidden">
+    <HeroVariantD />
+  </div>
+  <div data-variant="E" class="hero-variant-wrapper hero-variant-hidden">
+    <HeroVariantE />
+  </div>
+</div>
+
+<style>
+  .hero-variant-hidden {
+    display: none;
+  }
+
+  .hero-variant-active {
+    display: block;
+  }
+</style>
+
+<script>
+  // Client-side variant switching based on URL parameter
+  function switchHeroVariant() {
+    const urlParams = new URLSearchParams(window.location.search)
+    const variant = urlParams.get('hero')?.toUpperCase() || 'A'
+    const validVariants = ['A', 'B', 'C', 'D', 'E']
+    const activeVariant = validVariants.includes(variant) ? variant : 'A'
+
+    // Hide all variants
+    document.querySelectorAll('.hero-variant-wrapper').forEach(el => {
+      el.classList.remove('hero-variant-active')
+      el.classList.add('hero-variant-hidden')
+    })
+
+    // Show active variant
+    const activeEl = document.querySelector(`[data-variant="${activeVariant}"]`)
+    if (activeEl) {
+      activeEl.classList.remove('hero-variant-hidden')
+      activeEl.classList.add('hero-variant-active')
+    }
+  }
+
+  // Run on load and on URL change
+  switchHeroVariant()
+  window.addEventListener('popstate', switchHeroVariant)
+</script>
