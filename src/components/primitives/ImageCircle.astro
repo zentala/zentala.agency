@@ -1,0 +1,78 @@
+---
+export interface ImageCircleProps {
+  src: string
+  alt: string
+  class?: string
+  loading?: 'eager' | 'lazy'
+  animateIn?: boolean
+  hoverZoom?: boolean
+}
+
+const {
+  src,
+  alt,
+  class: className = '',
+  loading = 'eager',
+  animateIn = false,
+  hoverZoom = true,
+} = Astro.props
+---
+
+<div
+  class={`image-circle ${className}`}
+  data-animate-in={String(animateIn)}
+  data-hover-zoom={String(hoverZoom)}
+>
+  <img src={src} alt={alt} class="image-circle__img" loading={loading} />
+</div>
+
+<style>
+  .image-circle {
+    width: 100%;
+  }
+
+  .image-circle__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    /* border: 3px solid #1f2937; */
+    /* matches $border-color */
+  }
+
+  /* Entrance animation */
+  .image-circle[data-animate-in='true'] .image-circle__img {
+    animation: ic-appear 800ms ease-out both;
+  }
+
+  @keyframes ic-appear {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Hover zoom on precise pointers */
+  @media (hover: hover) and (pointer: fine) {
+    .image-circle[data-hover-zoom='true'] .image-circle__img {
+      transition: transform 300ms ease;
+    }
+    .image-circle[data-hover-zoom='true']:hover .image-circle__img {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .image-circle__img {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

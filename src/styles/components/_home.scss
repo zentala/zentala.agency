@@ -56,24 +56,6 @@
   @include tablet {
     flex: 0 0 auto;
   }
-
-  .photo-circular {
-    width: 100%;
-    max-width: 420px;
-    height: auto;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid $border-color;
-
-    @include tablet {
-      max-width: 250px;
-    }
-
-    @include mobile {
-      max-width: 180px;
-    }
-  }
 }
 
 .hero-title {
@@ -292,7 +274,6 @@
   }
 }
 
-
 // Featured Projects
 .featured-projects {
   margin-top: 2rem;
@@ -309,7 +290,6 @@
     font-size: 1.375rem;
   }
 }
-
 
 // Project Card
 .project-card {
@@ -431,7 +411,6 @@
     font-size: 1.125rem;
   }
 }
-
 
 .why-cta {
   display: flex;
@@ -600,7 +579,6 @@
     font-size: 1.125rem;
   }
 }
-
 
 .engagement-cta {
   display: flex;
