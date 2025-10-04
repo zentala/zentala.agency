@@ -18,6 +18,7 @@
   // Grid system with selective borders - no overlapping margins
   .cards-grid {
     @include cards-grid;
+    border-top: 1px solid $border-color;
 
     // All children get full borders - but top/left are transparent by default
     > * {
@@ -26,6 +27,7 @@
       border-bottom-color: $border-color;
       position: relative;
       z-index: 1;
+      overflow: hidden;
     }
 
     // Hover effect - show all borders with hover color

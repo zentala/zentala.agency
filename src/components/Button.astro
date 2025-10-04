@@ -6,10 +6,11 @@ interface Props {
   text: string
   target?: string
   variant?: 'primary' | 'secondary' | 'outline' | 'filled'
-  icon?: string // Lucide icon name from astro-icon
+  icon?: string // Lucide icon name from astro-icon (left icon)
+  arrow?: boolean // Show arrow on right (default true)
 }
 
-const { href, text, target, variant = 'primary', icon } = Astro.props
+const { href, text, target, variant = 'primary', icon, arrow = true } = Astro.props
 
 let buttonClasses = 'px-8 py-3 font-semibold text-white transition-colors'
 
@@ -37,6 +38,7 @@ switch (variant) {
 ---
 
 <a href={href} target={target} class={buttonClasses}>
-  {icon && <Icon name={`lucide:${icon}`} class="mr-2 h-5 w-5" />}
-  {text}
+  {icon && <Icon name={`lucide:${icon}`} class="mr-2 h-5 w-5" style="stroke-width: 1.5;" />}
+  <span>{text}</span>
+  {arrow && <Icon name="lucide:chevron-right" class="ml-2 h-4 w-4" style="stroke-width: 2;" />}
 </a>

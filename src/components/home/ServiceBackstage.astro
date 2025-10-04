@@ -1,0 +1,86 @@
+---
+import ServiceSection from './ServiceSection.astro'
+import FeaturedProjects from './FeaturedProjects.astro'
+import ProjectCard from './ProjectCard.astro'
+import Button from '../Button.astro'
+import NoteBox from './NoteBox.astro'
+---
+
+<ServiceSection
+  id="backstage"
+  headline="Backstage Developer Portals"
+  subhead="Internal Developer Platform implementation for scaling engineering organizations"
+>
+  <div class="service-description">
+    <p>
+      Complete Backstage IDP deployment for companies with 50-200+ developers.
+      Custom plugin development, entity processors, theme customization, and AI
+      integrations to transform developer experience.
+    </p>
+  </div>
+
+  <div class="service-deliverables">
+    <h3 class="section-subheading">WHAT YOU GET</h3>
+    <ul>
+      <li>Backstage deployment & configuration with UX refinements</li>
+      <li>Full-stack custom plugin development</li>
+      <li>Entity processors for non-standard resources</li>
+      <li>AI chatbot integration (MCP & RAG)</li>
+      <li>DevEx strategy & team education</li>
+    </ul>
+  </div>
+
+  <div class="service-ideal">
+    <h3 class="section-subheading">IDEAL FOR</h3>
+    <p>
+      Mid-to-large tech companies scaling engineering teams who need internal
+      developer platforms to improve productivity, reduce friction, and
+      standardize workflows.
+    </p>
+  </div>
+
+  <FeaturedProjects>
+    <ProjectCard
+      title="Enterprise IDP Implementations"
+      description="Custom Backstage developer portals for enterprise clients. Full-stack plugin development, custom entity processors, theme customization for brand alignment, and homepage component development."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Backstage+IDP"
+      link="/offer/backstage"
+      linkText="View Backstage services →"
+    />
+
+    <ProjectCard
+      title="AI Chatbot Integration"
+      description="MCP & RAG-powered AI chatbot integration for Backstage platforms. Enables developers to query infrastructure, documentation, and resources through conversational interface."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=AI+Chatbot"
+      link="/offer/backstage"
+      linkText="Explore AI integration →"
+    />
+
+    <ProjectCard
+      title="Custom Entity Processors"
+      description="Entity processors cataloging non-standard infrastructure resources in Backstage. Extends catalog capabilities beyond default entities for organization-specific needs."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Processors"
+      link="/offer/backstage"
+      linkText="Learn about processors →"
+    />
+  </FeaturedProjects>
+
+  <div class="service-cta">
+    <Button
+      href="https://devstage.io"
+      text="Visit DevStage.io"
+      variant="primary"
+      target="_blank"
+      icon="external-link"
+    />
+  </div>
+
+  <NoteBox icon="info">
+    <p>
+      <strong>Note:</strong> DevStage.io is our dedicated product brand for Backstage
+      services - visit the standalone site for detailed plugin catalog, blog, and
+      specific offerings.
+    </p>
+  </NoteBox>
+</ServiceSection>
+

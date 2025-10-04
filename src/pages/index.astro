@@ -1,18 +1,57 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import HeroWithVariations from '../components/home/HeroWithVariations.astro'
+import ServiceIoT from '../components/home/ServiceIoT.astro'
+import ServiceBackstage from '../components/home/ServiceBackstage.astro'
+import ServiceRapidDev from '../components/home/ServiceRapidDev.astro'
+import WhyWorkWithMe from '../components/home/WhyWorkWithMe.astro'
+import EngagementModels from '../components/home/EngagementModels.astro'
+import CTASection from '../components/home/CTASection.astro'
 ---
 
 <Layout
-  title="Home"
-  description="Żentała - Driving progress through cutting-edge technology solutions in software, IoT, and automation. Let's build the future, together."
+  title="Paweł Żentała - Hands-On CTO for Innovation Projects"
+  description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
   <section class="section-grid">
-    <div class="container-bordered px-responsive-xl py-responsive-lg">
-      <div class="responsive-logo mx-auto">
-        <img src="./logo.ext.svg" alt="Żentała Innovation Agency" />
-      </div>
+    <div class="container-bordered">
+      <HeroWithVariations />
     </div>
   </section>
 
-  <style></style>
+  <section class="section-grid">
+    <div class="container-bordered">
+      <ServiceIoT />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="container-bordered">
+      <ServiceBackstage />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="container-bordered">
+      <ServiceRapidDev />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="container-bordered">
+      <WhyWorkWithMe />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="container-bordered">
+      <EngagementModels />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="container-bordered">
+      <CTASection />
+    </div>
+  </section>
 </Layout>

@@ -1,0 +1,49 @@
+---
+import Logo from '../Logo.astro'
+import Button from '../Button.astro'
+---
+
+<div class="hero-variant hero-variant-b">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <Logo type="full" color="#ffffff" width="200px" height="auto" />
+    </div>
+
+    <div class="hero-photo">
+      <img
+        src="https://cdn.zentala.io/images/avatar.jpg"
+        alt="Paweł Żentała"
+        class="photo-circular"
+      />
+    </div>
+
+    <h1 class="hero-name">Paweł Żentała</h1>
+    <h2 class="hero-title">
+      Technical Leader for Greenfield Engineering Projects
+    </h2>
+
+    <p class="hero-question">
+      Starting a complex tech project with no technical team?
+    </p>
+
+    <p class="hero-description">
+      I transform ideas into working solutions - from IoT products and developer
+      platforms to rapid application prototypes. With 20+ years building
+      everything from humanoid robots to enterprise software, I bring hands-on
+      expertise across programming, UX, DevOps, and business understanding.
+    </p>
+
+    <p class="hero-tagline">One person. Complete technical capabilities.</p>
+
+    <div class="hero-cta">
+      <Button
+        href="https://cal.com/zentala"
+        text="Let's Talk About Your Project"
+        variant="primary"
+        target="_blank"
+      />
+      <Button href="/portfolio" text="See My Work" variant="secondary" />
+    </div>
+  </div>
+</div>
+

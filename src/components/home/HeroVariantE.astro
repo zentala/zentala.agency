@@ -1,0 +1,47 @@
+---
+import Logo from '../Logo.astro'
+import Button from '../Button.astro'
+---
+
+<div class="hero-variant hero-variant-e">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <Logo type="full" color="#ffffff" width="200px" height="auto" />
+    </div>
+
+    <div class="hero-photo">
+      <img
+        src="https://cdn.zentala.io/images/avatar.jpg"
+        alt="Paweł Żentała"
+        class="photo-circular"
+      />
+    </div>
+
+    <h1 class="hero-name">Paweł Żentała</h1>
+    <h2 class="hero-title">
+      Full-Stack Technical Leader | IoT | DevEx | Rapid Prototyping
+    </h2>
+
+    <p class="hero-description">
+      20+ years building complex engineering solutions - from RTLS systems and
+      humanoid robots to enterprise developer platforms and rapid web
+      applications. I act as hands-on CTO for greenfield projects: creating
+      vision, building prototypes, assembling teams.
+    </p>
+
+    <p class="hero-tagline">
+      Technical expertise + UX + DevOps + business understanding in one person.
+    </p>
+
+    <div class="hero-cta">
+      <Button
+        href="https://cal.com/zentala"
+        text="Work With Me"
+        variant="primary"
+        target="_blank"
+      />
+      <Button href="/portfolio" text="See Projects" variant="secondary" />
+    </div>
+  </div>
+</div>
+
