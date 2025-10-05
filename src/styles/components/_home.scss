@@ -10,17 +10,13 @@
   align-items: center;
   justify-content: center;
   background-color: #000;
-  padding: 4rem 0; // Reduced from py-responsive-lg
-
-  @include mobile {
-    padding: 2rem 0;
-  }
+  // No padding - border alignment handled by content-grid
 }
 
 .hero-variant {
   width: 100%;
   margin: 0 auto;
-  @include px-responsive('md');
+  // No padding - handled by content-grid__text children
 }
 
 .hero-content {
@@ -85,33 +81,6 @@
   }
 }
 
-.hero-quote {
-  margin: 0 0 2rem 0;
-  padding: 0;
-  border: none;
-
-  &-text {
-    font-size: 1.5rem;
-    font-weight: 400;
-    font-style: italic;
-    color: #60a5fa;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
-
-    @include mobile {
-      font-size: 1.25rem;
-    }
-  }
-
-  &-author {
-    display: block;
-    font-size: 1rem;
-    font-weight: 400;
-    font-style: normal;
-    color: rgba(255, 255, 255, 0.7);
-  }
-}
-
 .hero-cta {
   display: flex;
   gap: 1rem;
@@ -129,7 +98,7 @@
 
 // Service Section Styles
 .service-section {
-  @include py-responsive('lg');
+  // No padding - border alignment handled by grid system
 }
 
 .section-subheading {
@@ -154,10 +123,18 @@
 
 .service-header {
   text-align: center;
-  margin-bottom: 4rem;
+  @include py-responsive('md');
+  @include px-responsive('md');
+  border: 1px solid transparent;
+  border-bottom-color: $border-color;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: $border-color-hover;
+  }
 
   @include mobile {
-    margin-bottom: 3rem;
+    text-align: left;
   }
 }
 

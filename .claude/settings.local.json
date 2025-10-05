@@ -14,7 +14,8 @@
       "Bash(Test-Path \"c:\\code\\zentala.agency\\src\\components\\home\")",
       "Bash(npm run build:*)",
       "Bash(Test-Path .claude/tasks/backlog)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(Test-Path .claude/tasks/005_section_primitives)"
     ],
     "deny": [],
     "ask": []

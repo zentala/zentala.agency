@@ -314,25 +314,138 @@ $container-max: 1450px;
 
 ---
 
+## 📐 Content Grid System
+
+### Overview
+
+The `.content-grid` is a flexible 2-column grid system for hero sections and content blocks. Unlike `.cards-grid` (which uses a 3-column responsive system), `.content-grid` provides:
+
+- Custom proportions (1/2 + 1/2, 2/3 + 1/3, 1/3 + 2/3)
+- Vertical dividers between columns
+- Support for text content, images, and CTAs
+- Same transparent border pattern as cards-grid
+
+### Basic Usage
+
+```astro
+<div class="content-grid content-grid--two-one">
+  <div class="content-grid__text">
+    <!-- Text content with internal padding -->
+    <h1>Headline</h1>
+    <p>Description text...</p>
+  </div>
+
+  <div class="content-grid__image">
+    <!-- Image with no padding, full bleed -->
+    <ImageSquare src="..." alt="..." />
+  </div>
+</div>
+```
+
+### Grid Modifiers
+
+```scss
+.content-grid--halves    // 1/2 + 1/2 (default)
+.content-grid--two-one   // 2/3 + 1/3 (10/16 + 6/16 = 1.67fr + 1fr)
+.content-grid--one-two   // 1/3 + 2/3 (6/16 + 10/16 = 1fr + 1.67fr)
+```
+
+### Child Element Classes
+
+**`.content-grid__text`** - For text content:
+- Includes responsive padding (via `py-responsive('md')` and `px-responsive('md')`)
+- Flex column layout with vertical centering
+- Use for: headlines, paragraphs, lists, CTAs
+
+**`.content-grid__image`** - For images:
+- No padding (full bleed)
+- Flex centering for image
+- Use for: ImageSquare, ImageCircle, media elements
+
+### Border Behavior
+
+Content grid uses the same transparent border pattern:
+
+```scss
+.content-grid {
+  border-top: 1px solid $border-color;  // Top border aligns with section
+
+  > * {
+    border: 1px solid transparent;
+    border-right-color: $border-color;  // Vertical dividers
+    border-bottom-color: $border-color;
+  }
+
+  > *:last-child {
+    border-right: none;  // Remove right border from last column
+  }
+}
+```
+
+**CRITICAL:** The content-grid's top border aligns perfectly with the section's border. Children have internal padding, but the grid itself has NO top padding. This ensures borders overlap correctly.
+
+### Components
+
+**ImageSquare** - Square version of ImageCircle for content grids:
+- Located: `src/components/primitives/ImageSquare.astro`
+- Props: `src`, `alt`, `loading`, `animateIn`, `hoverZoom`
+- Usage: `<ImageSquare src="..." alt="..." />`
+
+**GridCTA** - Full-width clickable grid item:
+- Located: `src/components/primitives/GridCTA.astro`
+- Props: `href`, `text`, `icon` (Lucide), `arrow` (default: true), `variant`
+- Usage in grid: Wrap in `.cards-grid` to get borders
+
+```astro
+<div class="cards-grid">
+  <GridCTA
+    href="https://example.com"
+    text="Click me"
+    icon="message-circle"
+    variant="primary"
+  />
+</div>
+```
+
+### Responsive Behavior
+
+Desktop (>1000px):
+- 2 columns with custom proportions
+- Vertical divider between columns
+- Text has full responsive padding
+
+Tablet (770-1000px):
+- Same 2-column layout
+- Reduced padding via responsive mixins
+
+Mobile (<770px):
+- Single column stack
+- No right borders
+- Text padding scales down
+
 ## ✅ Best Practices
 
 ### DO:
 
-1. ✅ Use `.cards-grid` for all grids of similar elements
-2. ✅ Let the grid system handle borders
-3. ✅ Use responsive spacing mixins
-4. ✅ Follow font-weight: 300 for headlines
-5. ✅ Use `#60a5fa` for accent colors
-6. ✅ Wrap sections in `section-grid` + `container-bordered`
+1. ✅ Use `.cards-grid` for grids of 3+ similar elements
+2. ✅ Use `.content-grid` for 2-column hero/content layouts
+3. ✅ Let the grid system handle borders
+4. ✅ Use responsive spacing mixins
+5. ✅ Follow font-weight: 300 for headlines
+6. ✅ Use `#60a5fa` for accent colors
+7. ✅ Wrap sections in `section-grid` + `container-bordered`
+8. ✅ Use `.content-grid__text` for text content
+9. ✅ Use `.content-grid__image` for images
 
 ### DON'T:
 
 1. ❌ Add borders to individual card components
-2. ❌ Create manual grid layouts - use `.cards-grid`
+2. ❌ Create manual grid layouts - use `.cards-grid` or `.content-grid`
 3. ❌ Use fixed pixel spacing - use mixins
 4. ❌ Use font-weight > 400 for headlines
 5. ❌ Create custom border systems
 6. ❌ Add border-top to section components (handled by section-grid)
+7. ❌ Add padding to `.content-grid` itself (children have padding)
 
 ---
 

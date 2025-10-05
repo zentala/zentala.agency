@@ -2,7 +2,7 @@
 import ServiceSection from './ServiceSection.astro'
 import FeaturedProjects from './FeaturedProjects.astro'
 import ProjectCard from './ProjectCard.astro'
-import Button from '../Button.astro'
+import GridCTA from '../primitives/GridCTA.astro'
 import NoteBox from '../primitives/NoteBox.astro'
 ---
 
@@ -65,15 +65,12 @@ import NoteBox from '../primitives/NoteBox.astro'
     />
   </FeaturedProjects>
 
-  <div class="service-cta">
-    <Button
-      href="https://devstage.io"
-      text="Visit DevStage.io"
-      variant="primary"
-      target="_blank"
-      icon="external-link"
-    />
-  </div>
+  <GridCTA
+    href="https://devstage.io"
+    text="Visit DevStage.io"
+    icon="external-link"
+    variant="primary"
+  />
 
   <NoteBox icon="info">
     <p>

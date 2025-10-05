@@ -1,0 +1,84 @@
+---
+/**
+ * ImageSquare Component
+ *
+ * Square version of ImageCircle for use in content grids and hero sections.
+ * Maintains aspect-ratio: 1 with animateIn and hoverZoom features.
+ * Based on ImageCircle.astro
+ */
+
+export interface ImageSquareProps {
+  src: string
+  alt: string
+  class?: string
+  loading?: 'eager' | 'lazy'
+  animateIn?: boolean
+  hoverZoom?: boolean
+}
+
+const {
+  src,
+  alt,
+  class: className = '',
+  loading = 'eager',
+  animateIn = false,
+  hoverZoom = true,
+} = Astro.props
+---
+
+<div
+  class={`image-square ${className}`}
+  data-animate-in={String(animateIn)}
+  data-hover-zoom={String(hoverZoom)}
+>
+  <img src={src} alt={alt} class="image-square__img" loading={loading} />
+</div>
+
+<style>
+  .image-square {
+    width: 100%;
+  }
+
+  .image-square__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 0; /* Square, not circular */
+    object-fit: cover;
+  }
+
+  /* Entrance animation */
+  .image-square[data-animate-in='true'] .image-square__img {
+    animation: is-appear 800ms ease-out both;
+  }
+
+  @keyframes is-appear {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Hover zoom on precise pointers */
+  @media (hover: hover) and (pointer: fine) {
+    .image-square[data-hover-zoom='true'] .image-square__img {
+      transition: transform 300ms ease;
+    }
+    .image-square[data-hover-zoom='true']:hover .image-square__img {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .image-square__img {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
