@@ -1,6 +1,6 @@
 ---
 import CapabilityBlock from './CapabilityBlock.astro'
-import Button from '../Button.astro'
+import GridCTA from '../primitives/GridCTA.astro'
 ---
 
 <div id="why" class="why-section px-responsive-md py-responsive-lg">
@@ -104,13 +104,11 @@ import Button from '../Button.astro'
       </CapabilityBlock>
     </div>
 
-    <div class="why-cta">
-      <Button
-        href="/portfolio"
-        text="View Complete Portfolio"
-        variant="secondary"
-        icon="folder"
-      />
-    </div>
+    <GridCTA
+      href="/portfolio"
+      text="View Complete Portfolio"
+      icon="folder"
+      variant="secondary"
+    />
   </div>
 </div>

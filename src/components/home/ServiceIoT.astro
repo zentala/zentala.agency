@@ -2,7 +2,7 @@
 import ServiceSection from './ServiceSection.astro'
 import FeaturedProjects from './FeaturedProjects.astro'
 import ProjectCard from './ProjectCard.astro'
-import Button from '../Button.astro'
+import GridCTA from '../primitives/GridCTA.astro'
 ---
 
 <ServiceSection
@@ -72,14 +72,11 @@ import Button from '../Button.astro'
     />
   </FeaturedProjects>
 
-  <div class="service-cta">
-    <Button
-      href="https://cal.com/zentala"
-      text="Discuss your IoT project"
-      variant="primary"
-      target="_blank"
-      icon="message-circle"
-    />
-  </div>
+  <GridCTA
+    href="https://cal.com/zentala"
+    text="Discuss your IoT project"
+    icon="message-circle"
+    variant="primary"
+  />
 </ServiceSection>
 

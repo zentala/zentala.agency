@@ -1,0 +1,136 @@
+---
+/**
+ * GridCTA Component
+ *
+ * Full-width clickable grid item that acts as a call-to-action button.
+ * Designed to be used within content-grid or cards-grid.
+ * Supports icon (left) and arrow (right) decorations.
+ */
+
+import { Icon } from 'astro-icon/components'
+
+export interface GridCTAProps {
+  href: string
+  text: string
+  icon?: string // Lucide icon name (e.g., 'package', 'zap')
+  arrow?: boolean
+  variant?: 'primary' | 'secondary'
+  class?: string
+}
+
+const {
+  href,
+  text,
+  icon,
+  arrow = true,
+  variant = 'primary',
+  class: className = '',
+} = Astro.props
+---
+
+<a
+  href={href}
+  class={`grid-cta grid-cta--${variant} ${className}`}
+  data-has-icon={String(!!icon)}
+  data-has-arrow={String(arrow)}
+>
+  <span class="grid-cta__content">
+    {icon && <Icon name={`lucide:${icon}`} class="grid-cta__icon" />}
+    <span class="grid-cta__text">{text}</span>
+    {arrow && <Icon name="lucide:chevron-right" class="grid-cta__arrow" />}
+  </span>
+</a>
+
+<style lang="scss">
+  @import '@/styles/variables.scss';
+
+  .grid-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    @include py-responsive('md');
+    @include px-responsive('md');
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-bottom-color: $border-color; // Bottom border always visible
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+    cursor: pointer;
+
+    @include mobile {
+      min-height: 100px;
+    }
+
+    &:hover {
+      border-color: $border-color-hover; // All borders on hover
+      transform: translateY(-2px);
+
+      .grid-cta__arrow {
+        transform: translateX(4px);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .grid-cta__content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .grid-cta__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .grid-cta__text {
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    @include mobile {
+      font-size: 0.9375rem;
+    }
+  }
+
+  .grid-cta__arrow {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  // Variant styles
+  .grid-cta--primary {
+    // Default styling (already defined above)
+  }
+
+  .grid-cta--secondary {
+    background-color: rgba(255, 255, 255, 0.02);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .grid-cta,
+    .grid-cta__arrow {
+      transition: none !important;
+    }
+
+    .grid-cta:hover {
+      transform: none !important;
+    }
+  }
+</style>
