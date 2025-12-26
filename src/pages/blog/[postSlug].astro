@@ -82,10 +82,61 @@ const { Content } = await post.render()
         }
 
         <article
-          class="custom-markdown prose max-w-none text-white [&>blockquote]:text-2xl [&>h2]:text-4xl [&>h3]:text-3xl [&>ol]:list-decimal [&>ol]:pl-8 [&>ol]:text-2xl [&>p]:text-2xl [&>ul]:list-disc [&>ul]:pl-8 [&>ul]:text-2xl"
+          class="custom-markdown prose max-w-none text-white [&>blockquote]:text-2xl [&>h2]:text-4xl [&>h2]:text-white [&>h3]:text-3xl [&>h3]:text-white [&>h4]:text-white [&>h5]:text-white [&>h6]:text-white [&>ol]:list-decimal [&>ol]:pl-8 [&>ol]:text-2xl [&>p]:text-2xl [&>ul]:list-disc [&>ul]:pl-8 [&>ul]:text-2xl [&_a:hover]:text-gray-300 [&_a]:text-white [&_a]:no-underline [&_b]:text-white [&_strong]:text-white"
         >
           <Content />
         </article>
+
+        <style>
+          /* Override Tailwind Typography plugin blue colors for blog posts */
+          .prose.custom-markdown {
+            --tw-prose-links: theme('colors.white');
+            --tw-prose-headings: theme('colors.white');
+            --tw-prose-bold: theme('colors.white');
+          }
+
+          .prose.custom-markdown h1,
+          .prose.custom-markdown h2,
+          .prose.custom-markdown h3,
+          .prose.custom-markdown h4,
+          .prose.custom-markdown h5,
+          .prose.custom-markdown h6 {
+            color: white !important;
+          }
+
+          .prose.custom-markdown a {
+            color: white !important;
+            text-decoration: none;
+            position: relative;
+            transition: color 200ms ease-in-out;
+          }
+
+          .prose.custom-markdown a:hover {
+            color: rgb(209 213 219) !important; /* gray-300 */
+          }
+
+          .prose.custom-markdown a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            opacity: 0.4;
+            transition: opacity 200ms ease-in-out;
+          }
+
+          .prose.custom-markdown a:hover::after {
+            opacity: 0.8;
+          }
+
+          .prose.custom-markdown strong,
+          .prose.custom-markdown b {
+            color: white !important;
+            font-weight: 600;
+          }
+        </style>
 
         {
           post.data.bannerEnd &&
