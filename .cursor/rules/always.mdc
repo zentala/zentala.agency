@@ -65,6 +65,7 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 ## E2E Testing
 
 - **All new UI features and fixes MUST be tested with E2E GUI tests**
+- **NEVER push code with broken internal links** - always run link validation tests before pushing
 - E2E tests are located in `tests/e2e/` directory
 - Run tests with `npm run test:e2e` or `npx playwright test`
 - Always run e2e tests before pushing to ensure:
@@ -72,9 +73,12 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
   - All linked pages are accessible (status 200)
   - Pages don't show 404 or error messages
   - UI functionality works as expected
-- When creating new banners or adding links, the test `tests/e2e/banner-links.spec.ts` automatically extracts links from banner files - no manual updates needed
+- **Link validation before push**: Run `npm run prepush` or `npm run test:links` before pushing to catch broken links
+- When creating new banners or adding links, tests automatically extract links from files - no manual updates needed
 - Test files should follow the pattern: `tests/e2e/*.spec.ts`
-- `banner-links.spec.ts` is an integration test for pre-deployment validation - it parses actual banner files and verifies all internal links work
+- `all-links.spec.ts` - comprehensive test that validates ALL internal links (banners, header, footer, etc.) - use before deployment
+- `banner-links.spec.ts` - focused test for banner links only
+- Tests run automatically in CI/CD pipeline before deployment - broken links will fail the build
 
 ## Git
 
