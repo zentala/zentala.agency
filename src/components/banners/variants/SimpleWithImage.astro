@@ -1,0 +1,167 @@
+---
+interface SimpleWithImageBannerProps {
+  title: string
+  description: string
+  linkText: string
+  linkHref: string
+  image: string
+  class?: string
+}
+
+const {
+  title,
+  description,
+  linkText,
+  linkHref,
+  image,
+  class: className = '',
+} = Astro.props
+---
+
+<!-- Full banner is clickable (like cards) -->
+<a href={linkHref} class={`banner banner-simple-with-image ${className}`}>
+  <img src={image} alt={title} class="banner-image" />
+  <div class="banner-content">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <span class="banner-link" aria-hidden="true">{linkText}</span>
+  </div>
+</a>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .banner-simple-with-image {
+    width: 100%;
+    margin: 0;
+    background: black;
+    border: 1px solid $border-color; /* default framing */
+    position: relative;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background-color 200ms ease-in-out,
+      border-color 200ms ease-in-out,
+      box-shadow 200ms ease-in-out;
+    overflow: hidden;
+
+    // Responsive padding using design system
+    @include padding-responsive('md'); // 64px → 48px → 32px → 24px → 16px
+
+    &:hover {
+      background-color: $border-color-subtle; // gray-900
+      border-color: $border-color-hover; // gray-700
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 1px $border-color-hover;
+    }
+
+    .banner-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      border-radius: 4px;
+    }
+
+    .banner-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    h3 {
+      @apply mb-4 font-light text-white;
+      font-size: 2rem; // text-3xl
+      line-height: 1.2;
+
+      @include tablet {
+        font-size: 1.75rem; // text-2xl
+      }
+
+      @include mobile {
+        font-size: 1.5rem; // text-xl
+      }
+    }
+
+    p {
+      @apply mb-6 text-gray-300;
+      font-size: 1.25rem; // text-xl
+      line-height: 1.6;
+
+      @include tablet {
+        font-size: 1.125rem; // text-lg
+      }
+
+      @include mobile {
+        font-size: 1rem; // text-base
+      }
+    }
+
+    .banner-link {
+      @apply inline-block text-white transition-colors duration-200;
+      font-size: 1.125rem; // text-lg
+      position: relative;
+      padding-bottom: 2px;
+
+      @include tablet {
+        font-size: 1rem; // text-base
+      }
+
+      @include mobile {
+        font-size: 0.875rem; // text-sm
+      }
+
+      &:hover {
+        @apply text-gray-300;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background-color: currentColor;
+        opacity: 0.6;
+        transition: opacity 200ms ease-in-out;
+      }
+
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  /**
+   * Full-bleed behavior inside padded containers:
+   * container-padded adds responsive padding around content; this removes it only for the banner
+   * so borders align with the grid/container borders.
+   */
+  :global(.container-padded) .banner-simple-with-image {
+    /* Full-bleed inside container-padded without relying on margins (more deterministic). */
+    left: calc(var(--container-padded-padding) * -1);
+    width: calc(100% + (var(--container-padded-padding) * 2));
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+
+    &:hover {
+      /* Show "full border" on hover (like cards) without double-borders with the container. */
+      box-shadow: inset 0 0 0 1px $border-color-hover;
+    }
+  }
+
+  /* Remove container padding above/below when the banner is flush to the edges (first/last). */
+  :global(.container-padded > .banner-simple-with-image:first-child) {
+    margin-top: calc(var(--container-padded-padding) * -1);
+  }
+
+  :global(.container-padded > .banner-simple-with-image:last-child) {
+    margin-bottom: calc(var(--container-padded-padding) * -1);
+  }
+</style>
+
