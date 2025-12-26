@@ -1,12 +1,11 @@
 ---
 import Banner from '../components/banners/Banner.astro'
-import { getBannerConfig } from '../components/banners/config'
-
-const config = getBannerConfig('devex')
-
-if (!config) {
-  throw new Error('Banner config "devex" not found')
-}
 ---
 
-<Banner variant="simple" {...config} />
+<Banner
+  variant="simple"
+  title="Want to enhance your Developer Experience?"
+  description="Let me help you design and execute your DevEx strategy through Backstage implementation."
+  linkText="Learn more →"
+  linkHref="/offer/backstage-developer-experience"
+/>

@@ -1,12 +1,11 @@
 ---
 import Banner from '../components/banners/Banner.astro'
-import { getBannerConfig } from '../components/banners/config'
-
-const config = getBannerConfig('ai-automation')
-
-if (!config) {
-  throw new Error('Banner config "ai-automation" not found')
-}
 ---
 
-<Banner variant="simple" {...config} />
+<Banner
+  variant="simple"
+  title="Interested in AI Automation?"
+  description="Explore more articles about AI Automation:"
+  linkText="See more →"
+  linkHref="/category/AIAutomation"
+/>

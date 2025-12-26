@@ -9,27 +9,51 @@ interface SimpleBannerProps {
   class?: string
 }
 
-const { title, description, linkText, linkHref, class: className = '' } = Astro.props
+const {
+  title,
+  description,
+  linkText,
+  linkHref,
+  class: className = '',
+} = Astro.props
 ---
 
-<div class={`banner banner-simple ${className}`}>
+<!-- Full banner is clickable (like cards) -->
+<a href={linkHref} class={`banner banner-simple ${className}`}>
   <h3>{title}</h3>
   <p>{description}</p>
-  <a href={linkHref} class="banner-link">{linkText}</a>
-</div>
+  <span class="banner-link" aria-hidden="true">{linkText}</span>
+</a>
 
 <style lang="scss">
   @use '../../../styles/variables' as *;
 
   .banner-simple {
     width: 100%;
-    margin: 4rem 0;
+    margin: 0;
     background: black;
-    border: 1px solid $border-color; /* border-gray-800 */
-    border-left: 1px solid white; /* White left border */
+    border: 1px solid $border-color; /* default framing */
+    position: relative;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background-color 200ms ease-in-out,
+      border-color 200ms ease-in-out,
+      box-shadow 200ms ease-in-out;
 
     // Responsive padding using design system
     @include padding-responsive('md'); // 64px → 48px → 32px → 24px → 16px
+
+    &:hover {
+      background-color: $border-color-subtle; // gray-900
+      border-color: $border-color-hover; // gray-700
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 1px $border-color-hover;
+    }
 
     h3 {
       @apply mb-4 font-light text-white;
@@ -94,5 +118,32 @@ const { title, description, linkText, linkHref, class: className = '' } = Astro.
       }
     }
   }
-</style>
 
+  /**
+   * Full-bleed behavior inside padded containers:
+   * container-padded adds responsive padding around content; this removes it only for the banner
+   * so borders align with the grid/container borders.
+   */
+  :global(.container-padded) .banner-simple {
+    /* Full-bleed inside container-padded without relying on margins (more deterministic). */
+    left: calc(var(--container-padded-padding) * -1);
+    width: calc(100% + (var(--container-padded-padding) * 2));
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+
+    &:hover {
+      /* Show "full border" on hover (like cards) without double-borders with the container. */
+      box-shadow: inset 0 0 0 1px $border-color-hover;
+    }
+  }
+
+  /* Remove container padding above/below when the banner is flush to the edges (first/last). */
+  :global(.container-padded > .banner-simple:first-child) {
+    margin-top: calc(var(--container-padded-padding) * -1);
+  }
+
+  :global(.container-padded > .banner-simple:last-child) {
+    margin-bottom: calc(var(--container-padded-padding) * -1);
+  }
+</style>

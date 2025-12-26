@@ -1,35 +1,65 @@
 # Banner Component System
 
-Unified banner system with reusable templates and easy content management.
+Unified banner system with reusable variants and per-banner content files.
 
 ## Structure
 
 ```
-src/components/banners/
-├── Banner.astro          # Main component (wrapper)
-├── types.ts             # TypeScript interfaces
-├── config.ts            # Banner content configurations
-├── variants/
-│   └── Simple.astro     # Simple banner template
-└── README.md           # This file
+src/
+├── components/banners/
+│   ├── Banner.astro          # Main component (wrapper)
+│   ├── types.ts              # TypeScript interfaces
+│   ├── variants/
+│   │   └── Simple.astro      # Simple banner variant template
+│   └── README.md            # This file
+└── banners/
+    ├── devex.astro           # DevEx banner (content + design)
+    ├── devex-category.astro  # DevEx category banner
+    └── ai-automation.astro   # AI Automation banner
 ```
 
 ## Usage
 
 ### Option 1: Using existing banner files (recommended)
 
-Existing banner files in `src/banners/` automatically use the new system:
+Each banner in `src/banners/` is a self-contained `.astro` file with its own content and can have custom design:
 
 ```astro
 ---
 // src/banners/devex.astro
 import Banner from '../components/banners/Banner.astro'
-import { getBannerConfig } from '../components/banners/config'
-
-const config = getBannerConfig('devex')
 ---
 
-<Banner variant="simple" {...config} />
+<Banner
+  variant="simple"
+  title="Want to enhance your Developer Experience?"
+  description="Let me help you design and execute your DevEx strategy through Backstage implementation."
+  linkText="Learn more →"
+  linkHref="/offer/backstage-developer-experience"
+/>
+```
+
+You can also add custom styles directly in the banner file if needed:
+
+```astro
+---
+import Banner from '../components/banners/Banner.astro'
+---
+
+<Banner
+  variant="simple"
+  title="Custom Banner"
+  description="With custom styling"
+  linkText="Learn more →"
+  linkHref="/link"
+  class="my-custom-banner"
+/>
+
+<style>
+  .my-custom-banner {
+    /* Your custom styles here */
+  }
+</style>
 ```
 
 ### Option 2: Direct usage in pages
@@ -48,32 +78,35 @@ import Banner from '../components/banners/Banner.astro'
 />
 ```
 
-### Option 3: Using config file
+## Creating New Banners
+
+Create a new `.astro` file in `src/banners/`:
 
 ```astro
 ---
+// src/banners/your-banner.astro
 import Banner from '../components/banners/Banner.astro'
-import { getBannerConfig } from '../components/banners/config'
-
-const config = getBannerConfig('devex')
 ---
 
-<Banner variant="simple" {...config} />
+<Banner
+  variant="simple"
+  title="Your Title"
+  description="Your description"
+  linkText="Learn more →"
+  linkHref="/your-link"
+/>
+
+<!-- Optional: Add custom styles, images, or other assets -->
+<style>
+  /* Custom banner-specific styles */
+</style>
 ```
 
-## Adding New Banner Content
+Then use it in your content by referencing the filename (without `.astro`):
 
-Edit `src/components/banners/config.ts`:
-
-```typescript
-export const bannerConfigs: Record<string, Omit<BannerProps, 'variant'>> = {
-  'your-banner-key': {
-    title: 'Your Title',
-    description: 'Your description',
-    linkText: 'Learn more →',
-    linkHref: '/your-link',
-  },
-}
+```yaml
+# In your blog post frontmatter
+bannerEnd: 'your-banner'
 ```
 
 ## Creating New Variants
@@ -93,12 +126,12 @@ export const bannerConfigs: Record<string, Omit<BannerProps, 'variant'>> = {
    const { title, description, linkText, linkHref, image, class: className } = Astro.props
    ---
    
-   <div class={`banner banner-with-image ${className}`}>
+   <a href={linkHref} class={`banner banner-with-image ${className}`}>
      <img src={image} alt={title} />
      <h3>{title}</h3>
      <p>{description}</p>
-     <a href={linkHref} class="banner-link">{linkText}</a>
-   </div>
+     <span class="banner-link">{linkText}</span>
+   </a>
    
    <style lang="scss">
      /* Your styles */
@@ -126,18 +159,17 @@ export const bannerConfigs: Record<string, Omit<BannerProps, 'variant'>> = {
 
 ## Design Principles
 
-- **Consistent styling**: All banners use the same design system
-- **Easy content management**: All text content in `config.ts`
-- **Future-proof**: Easy to add new variants without breaking existing ones
+- **Self-contained banners**: Each banner in `src/banners/` has its own content and can have custom design
+- **Reusable variants**: Variants in `src/components/banners/variants/` provide consistent templates
+- **Flexible**: You can write custom design directly in banner files, or extract to variants later
 - **Type-safe**: Full TypeScript support
 
 ## Current Variants
 
-- `simple` - Basic banner with title, description, and link (white left border)
+- `simple` - Basic clickable banner with title, description, and link (entire banner is clickable)
 
 ## Future Variants (planned)
 
 - `simpleWithImage` - Simple banner with image
 - `centered` - Centered content layout
 - `split` - Split layout with image and content
-

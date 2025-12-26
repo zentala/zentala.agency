@@ -1,12 +1,11 @@
 ---
 import Banner from '../components/banners/Banner.astro'
-import { getBannerConfig } from '../components/banners/config'
-
-const config = getBannerConfig('devex-category')
-
-if (!config) {
-  throw new Error('Banner config "devex-category" not found')
-}
 ---
 
-<Banner variant="simple" {...config} />
+<Banner
+  variant="simple"
+  title="Interested in DevEx?"
+  description="Check out more articles about Developer Experience:"
+  linkText="See more →"
+  linkHref="/category/DevEx"
+/>
