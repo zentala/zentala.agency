@@ -37,6 +37,7 @@ alwaysApply: true
 - Zawsze tylko krótkie wiadomości commitów jednoliniowe!!!
 - Przed pushem zrób `npm run build` aby sprawdzić czy przejdzie i ewentualnie poprawić błędy
 - Commit messages in English!
+- Messages, logs, commends and any other text on website and in the code in english
 
 ## Never Do
 - Make commit without user validated feature and his approval
