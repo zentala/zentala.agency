@@ -1,32 +1,57 @@
 ---
 import type { BannerProps } from './types'
 import SimpleBanner from './variants/Simple.astro'
+import SimpleWithImageBanner from './variants/SimpleWithImage.astro'
 
-const { variant, title, description, linkText, linkHref, image, class: className } = Astro.props
+const {
+  variant,
+  title,
+  description,
+  linkText,
+  linkHref,
+  image,
+  class: className,
+} = Astro.props
+
+// Variant component mapping - scalable approach for adding new variants
+const variantComponents = {
+  simple: SimpleBanner,
+  simpleWithImage: SimpleWithImageBanner,
+} as const
 
 // Validate variant
-if (variant !== 'simple' && variant !== 'simpleWithImage') {
-  throw new Error(`Unknown banner variant: ${variant}`)
+if (!(variant in variantComponents)) {
+  throw new Error(
+    `Unknown banner variant: ${variant}. Available variants: ${Object.keys(variantComponents).join(', ')}`,
+  )
+}
+
+// Get the component for the selected variant
+// Type assertion needed because TypeScript can't narrow the type from the check above
+const VariantComponent =
+  variantComponents[variant as keyof typeof variantComponents]
+
+// Prepare props based on variant requirements
+// Each variant can have different required/optional props
+const getVariantProps = () => {
+  const baseProps = {
+    title,
+    description,
+    linkText,
+    linkHref,
+    class: className,
+  }
+
+  // Variant-specific props
+  if (variant === 'simpleWithImage') {
+    if (!image) {
+      throw new Error(`Banner variant '${variant}' requires an 'image' prop`)
+    }
+    return { ...baseProps, image }
+  }
+
+  return baseProps
 }
 ---
 
-{variant === 'simple' && (
-  <SimpleBanner
-    title={title}
-    description={description}
-    linkText={linkText}
-    linkHref={linkHref}
-    class={className}
-  />
-)}
-
-{variant === 'simpleWithImage' && (
-  <SimpleBanner
-    title={title}
-    description={description}
-    linkText={linkText}
-    linkHref={linkHref}
-    class={className}
-  />
-)}
-
+<VariantComponent {...getVariantProps()} />

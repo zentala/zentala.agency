@@ -5,6 +5,30 @@
 // =======================================
 
 @layer components {
+  /**
+   * Expose header height as a global CSS var (used for hero sizing / scroll offsets).
+   * Header is fixed; content starts after `.header-spacer`.
+   */
+  :root {
+    --header-spacer-height: #{$header-height-desktop};
+
+    @include large {
+      --header-spacer-height: #{$header-height-large};
+    }
+
+    @include medium {
+      --header-spacer-height: #{$header-height-medium};
+    }
+
+    @include tablet {
+      --header-spacer-height: #{$header-height-tablet};
+    }
+
+    @include mobile {
+      --header-spacer-height: #{$header-height-mobile};
+    }
+  }
+
   // Border system utilities
   .border-system {
     @apply border-gray-800;
@@ -31,7 +55,27 @@
   .container-padded {
     @include container-base;
     @include container-borders;
-    @include padding-responsive('md');
+
+    // Keep padding values accessible as a CSS var so children (e.g. banners)
+    // can align/bleed to the container borders without guessing spacing.
+    --container-padded-padding: #{$spacing-desktop};
+    padding: var(--container-padded-padding);
+
+    @include large {
+      --container-padded-padding: #{$spacing-large};
+    }
+
+    @include medium {
+      --container-padded-padding: #{$spacing-medium};
+    }
+
+    @include tablet {
+      --container-padded-padding: #{$spacing-tablet};
+    }
+
+    @include mobile {
+      --container-padded-padding: #{$spacing-mobile};
+    }
   }
 
   .container-header {
@@ -43,7 +87,7 @@
 
   // Header spacer - matches navbar height responsively
   .header-spacer {
-    @include header-height-spacer;
+    height: var(--header-spacer-height);
   }
 
   // Section System
