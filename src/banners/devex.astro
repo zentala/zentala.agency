@@ -1,56 +1,12 @@
 ---
+import Banner from '../components/banners/Banner.astro'
+import { getBannerConfig } from '../components/banners/config'
 
+const config = getBannerConfig('devex')
+
+if (!config) {
+  throw new Error('Banner config "devex" not found')
+}
 ---
 
-<div class="banner banner-devex">
-  <h3>Want to enhance your Developer Experience?</h3>
-  <p>
-    Let me help you design and execute your DevEx strategy through Backstage
-    implementation.
-  </p>
-  <a href="/offer/backstage-developer-experience" class="banner-link"
-    >Learn more →</a
-  >
-</div>
-
-<style lang="scss">
-  .banner {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: black;
-    border: 1px solid theme('colors.gray.900'); /* border-gray-800 */
-  }
-
-  .banner-devex {
-    border-left: 4px solid theme('colors.gray.900');
-  }
-
-  h3 {
-    @apply text-white text-lg font-semibold mb-2;
-  }
-
-  p {
-    @apply text-gray-400;
-  }
-
-  .banner-link {
-    @apply inline-block mt-4 text-gray-300 hover:text-gray-100;
-
-    &:hover {
-      cursor: pointer;
-      background: transparent;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: -1px;
-        bottom: 2px;
-        width: 100%;
-        height: 8px;
-        background-color: currentColor;
-        opacity: 0.2;
-        z-index: -1;
-      }
-    }
-  }
-</style>
+<Banner variant="simple" {...config} />

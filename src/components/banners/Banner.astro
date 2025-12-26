@@ -1,0 +1,32 @@
+---
+import type { BannerProps } from './types'
+import SimpleBanner from './variants/Simple.astro'
+
+const { variant, title, description, linkText, linkHref, image, class: className } = Astro.props
+
+// Validate variant
+if (variant !== 'simple' && variant !== 'simpleWithImage') {
+  throw new Error(`Unknown banner variant: ${variant}`)
+}
+---
+
+{variant === 'simple' && (
+  <SimpleBanner
+    title={title}
+    description={description}
+    linkText={linkText}
+    linkHref={linkHref}
+    class={className}
+  />
+)}
+
+{variant === 'simpleWithImage' && (
+  <SimpleBanner
+    title={title}
+    description={description}
+    linkText={linkText}
+    linkHref={linkHref}
+    class={className}
+  />
+)}
+
