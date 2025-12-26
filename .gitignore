@@ -23,6 +23,10 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
 .specstory/**

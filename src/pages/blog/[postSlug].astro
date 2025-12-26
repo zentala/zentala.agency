@@ -30,129 +30,278 @@ if (!author) {
 }
 
 const { Content } = await post.render()
+
+// Import banner if exists
+let Banner = null
+if (post.data.bannerEnd) {
+  try {
+    Banner = (await import(`../../banners/${post.data.bannerEnd}.astro`))
+      .default
+  } catch (error) {
+    console.error('Banner loading error:', error)
+  }
+}
+
+const contentBoxClass = 'py-responsive-md'
 ---
 
 <Layout title={post.data.title}>
+  <!-- HERO BOX (meta + title + excerpt) -->
   <section class="section-full">
-    <div class="container-padded">
-      <div class="pb-16 pt-8">
-        <div class="mb-8 flex items-center gap-x-4 pt-8 text-lg">
-          <img
-            class="h-10 w-10 rounded-full"
-            src={author.avatar}
-            alt={`Avatar of ${author.name}`}
-          />
-          <span class="text-white">
-            <span class="font-semibold">{author.name}</span>
-            <span class="ml-2 text-gray-400">{authorRole}</span>
-          </span>
-          <span class="text-gray-600">·</span>
-          {
-            post.data.category && (
-              <>
-                <a
-                  href={`/category/${post.data.category}`}
-                  class="text-gray-500 hover:text-gray-300"
-                >
-                  {post.data.category}
-                </a>
-                <span class="text-gray-600">·</span>
-              </>
-            )
-          }
-          <time datetime={post.data.date} class="text-gray-500">
-            {
-              new Date(post.data.date).toLocaleDateString('pl-PL', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })
-            }
-          </time>
-        </div>
-
-        <h1 class="mb-8 text-6xl font-light text-white">{post.data.title}</h1>
-
-        {
-          post.data.excerpt && (
-            <p class="mb-12 text-3xl font-light leading-relaxed text-gray-300">
-              {post.data.excerpt}
-            </p>
-          )
-        }
-
-        <article
-          class="custom-markdown prose max-w-none text-white [&>blockquote]:text-2xl [&>h2]:text-4xl [&>h2]:text-white [&>h3]:text-3xl [&>h3]:text-white [&>h4]:text-white [&>h5]:text-white [&>h6]:text-white [&>ol]:list-decimal [&>ol]:pl-8 [&>ol]:text-2xl [&>p]:text-2xl [&>ul]:list-disc [&>ul]:pl-8 [&>ul]:text-2xl [&_a:hover]:text-gray-300 [&_a]:text-white [&_a]:no-underline [&_b]:text-white [&_strong]:text-white"
-        >
-          <Content />
-        </article>
-
-        <style>
-          /* Override Tailwind Typography plugin blue colors for blog posts */
-          .prose.custom-markdown {
-            --tw-prose-links: theme('colors.white');
-            --tw-prose-headings: theme('colors.white');
-            --tw-prose-bold: theme('colors.white');
-          }
-
-          .prose.custom-markdown h1,
-          .prose.custom-markdown h2,
-          .prose.custom-markdown h3,
-          .prose.custom-markdown h4,
-          .prose.custom-markdown h5,
-          .prose.custom-markdown h6 {
-            color: white !important;
-          }
-
-          .prose.custom-markdown a {
-            color: white !important;
-            text-decoration: none;
-            position: relative;
-            transition: color 200ms ease-in-out;
-          }
-
-          .prose.custom-markdown a:hover {
-            color: rgb(209 213 219) !important; /* gray-300 */
-          }
-
-          .prose.custom-markdown a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 1px;
-            background-color: currentColor;
-            opacity: 0.4;
-            transition: opacity 200ms ease-in-out;
-          }
-
-          .prose.custom-markdown a:hover::after {
-            opacity: 0.8;
-          }
-
-          .prose.custom-markdown strong,
-          .prose.custom-markdown b {
-            color: white !important;
-            font-weight: 600;
-          }
-        </style>
-
-        {
-          post.data.bannerEnd &&
-            (async () => {
-              try {
-                const Banner = await import(
-                  `../../banners/${post.data.bannerEnd}.astro`
+    <div class="container-bordered">
+      <div class="px-responsive py-responsive-lg">
+        <div class="blog-hero mx-auto flex max-w-6xl flex-col">
+          <div class="blog-hero__content">
+            <div class="mb-10 flex items-center gap-x-4 pt-2 text-xl">
+              <img
+                class="h-10 w-10 rounded-full"
+                src={author.avatar}
+                alt={`Avatar of ${author.name}`}
+              />
+              <span class="text-white">
+                <span class="font-semibold">{author.name}</span>
+                <span class="ml-2 text-gray-400">{authorRole}</span>
+              </span>
+              <span class="text-gray-600">·</span>
+              {
+                post.data.category && (
+                  <>
+                    <a
+                      href={`/category/${post.data.category}`}
+                      class="text-gray-500 hover:text-gray-300"
+                    >
+                      {post.data.category}
+                    </a>
+                    <span class="text-gray-600">·</span>
+                  </>
                 )
-                return <Banner.default />
-              } catch (error) {
-                console.error('Błąd ładowania bannera:', error)
-                return null
               }
-            })()
-        }
+              <time datetime={post.data.date} class="text-gray-500">
+                {
+                  new Date(post.data.date).toLocaleDateString('pl-PL', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })
+                }
+              </time>
+            </div>
+
+            <h1
+              class="mb-10 text-6xl font-light leading-tight text-white md:text-7xl"
+            >
+              {post.data.title}
+            </h1>
+
+            {
+              post.data.excerpt && (
+                <p class="mb-0 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl">
+                  {post.data.excerpt}
+                </p>
+              )
+            }
+          </div>
+
+          <a
+            href="#post-content"
+            class="blog-hero__scroll-indicator"
+            aria-label="Scroll to article content"
+          >
+            <span class="blog-hero__chevron" aria-hidden="true">
+              <span class="blog-hero__chevron-left"></span>
+              <span class="blog-hero__chevron-right"></span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- CONTENT BOX (article + banner) -->
+  <section class={`section-full ${Banner ? 'has-banner' : ''}`}>
+    <div class="container-padded">
+      <div class={contentBoxClass}>
+        <article
+          id="post-content"
+          class="custom-markdown prose-blog prose mx-auto max-w-5xl text-white"
+          style="scroll-margin-top: calc(var(--header-spacer-height) + 24px);"
+        >
+          <Content />
+        </article>
+      </div>
+
+      {
+        Banner && (
+          <div class="blog-banner-wrapper">
+            <Banner />
+          </div>
+        )
+      }
+    </div>
+  </section>
 </Layout>
+
+<script is:inline>
+  // Smooth-scroll to article content for the hero indicator
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.querySelector('.blog-hero__scroll-indicator')
+    const target = document.getElementById('post-content')
+    if (!trigger || !target) return
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault()
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  })
+</script>
+
+<style lang="scss">
+  /* Hero section: full viewport height minus header */
+  .section-full:first-of-type {
+    /* Use max-height to prevent section from exceeding viewport */
+    max-height: calc(100dvh - var(--header-spacer-height, 0px));
+    max-height: calc(100svh - var(--header-spacer-height, 0px));
+    max-height: calc(100vh - var(--header-spacer-height, 0px));
+    min-height: calc(100dvh - var(--header-spacer-height, 0px));
+    min-height: calc(100svh - var(--header-spacer-height, 0px));
+    min-height: calc(100vh - var(--header-spacer-height, 0px));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .section-full:first-of-type > .container-bordered {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Allow flexbox to shrink */
+  }
+
+  .section-full:first-of-type > .container-bordered > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Allow flexbox to shrink */
+  }
+
+  .blog-hero {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Allow flexbox to shrink */
+  }
+
+  .blog-hero__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .blog-hero__scroll-indicator {
+    display: block;
+    width: min(200px, 50vw);
+    height: 18px;
+    margin: 2.5rem auto 0;
+    padding: 1rem 0 0.25rem;
+    opacity: 0.55;
+    transition:
+      opacity 450ms ease-in-out,
+      transform 450ms ease-in-out;
+    animation: blogHeroBreathe 1800ms ease-in-out infinite;
+  }
+
+  .blog-hero__scroll-indicator:hover {
+    opacity: 1;
+    animation: none;
+    transform: translateY(2px);
+  }
+
+  .blog-hero__chevron {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .blog-hero__chevron-left,
+  .blog-hero__chevron-right {
+    height: 0;
+    /* Use border-top for sharper rendering on thin lines */
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    transition:
+      border-top-color 450ms ease-in-out,
+      transform 450ms ease-in-out;
+    transform: translateZ(0);
+    will-change: transform;
+    /* Improve rendering sharpness */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .blog-hero__chevron-left {
+    transform-origin: right center;
+    transform: translateZ(0) rotate(4deg);
+  }
+
+  .blog-hero__chevron-right {
+    transform-origin: left center;
+    transform: translateZ(0) rotate(-4deg);
+  }
+
+  .blog-hero__scroll-indicator:hover .blog-hero__chevron-left,
+  .blog-hero__scroll-indicator:hover .blog-hero__chevron-right {
+    border-top-color: rgba(255, 255, 255, 0.95);
+  }
+
+  .blog-hero__scroll-indicator:hover .blog-hero__chevron-left {
+    transform: translateZ(0) rotate(35deg);
+  }
+
+  .blog-hero__scroll-indicator:hover .blog-hero__chevron-right {
+    transform: translateZ(0) rotate(-35deg);
+  }
+
+  .blog-hero__scroll-indicator:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 6px;
+    border-radius: 9999px;
+    opacity: 1;
+    animation: none;
+  }
+
+  @keyframes blogHeroBreathe {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+
+  /* Remove padding-bottom from container-padded when banner is present */
+  .section-full.has-banner > .container-padded {
+    padding-bottom: 0;
+  }
+
+  /* Banner wrapper: equal top spacing to match article top padding (py-responsive-md) */
+  .blog-banner-wrapper {
+    margin-top: 4rem; /* 64px desktop - matches py-responsive-md padding-top */
+    @media (max-width: 1440px) {
+      margin-top: 3rem; /* 48px large */
+    }
+    @media (max-width: 1000px) {
+      margin-top: 2rem; /* 32px medium */
+    }
+    @media (max-width: 770px) {
+      margin-top: 1.5rem; /* 24px tablet */
+    }
+    @media (max-width: 480px) {
+      margin-top: 1rem; /* 16px mobile */
+    }
+  }
+</style>
