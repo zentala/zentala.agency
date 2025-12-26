@@ -3,14 +3,28 @@ export interface QuoteProps {
   text: string
   author?: string
   source?: string
+  quoteMarkVariant?: 'typographic' | 'heavy' | 'sans-serif'
 }
 
-const { text, author, source } = Astro.props
+const { text, author, source, quoteMarkVariant = 'typographic' } = Astro.props
+
+// Mapowanie wariantów na znaki Unicode
+const quoteMarks = {
+  typographic: { left: '"', right: '"' }, // U+201C, U+201D
+  heavy: { left: '❝', right: '❞' }, // U+275D, U+275E
+  'sans-serif': { left: '🙶', right: '🙷' }, // U+1F676, U+1F677
+} as const
+
+const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
 ---
 
-<blockquote class="quote-container">
+<blockquote class="quote-container" data-quote-variant={quoteMarkVariant}>
   <div class="quote-content">
-    <div class="quote-text">
+    <div
+      class="quote-text"
+      data-quote-left={marks.left}
+      data-quote-right={marks.right}
+    >
       {text}
     </div>
     {
@@ -29,61 +43,73 @@ const { text, author, source } = Astro.props
 <style lang="scss">
   .quote-container {
     position: relative;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
-    border-left: 4px solid #ffffff;
-    border-radius: 8px;
-    padding: 3rem 2rem 2rem 2rem;
-    margin: 2rem 0;
-    max-width: 800px;
+    /* Minimal: no background, no borders */
+    background: transparent;
+    border: none;
+    border-radius: 14px;
 
-    // Duże cudzysłowy na początku
-    &::before {
-      content: '"';
-      font-family: Georgia, serif;
-      font-size: 6rem;
-      color: rgba(255, 255, 255, 0.2);
-      position: absolute;
-      top: -0.5rem;
-      left: 1rem;
-      line-height: 1;
-      z-index: 1;
-    }
+    /* Center + keep space around on large screens */
+    width: 100%;
+    max-width: 56rem; /* ~896px */
+    margin: 3.5rem auto;
+    padding: clamp(2rem, 3vw, 3rem) clamp(1.5rem, 2.5vw, 2.5rem);
 
-    // Duże cudzysłowy na końcu
-    &::after {
-      content: '"';
-      font-family: Georgia, serif;
-      font-size: 6rem;
-      color: rgba(255, 255, 255, 0.2);
-      position: absolute;
-      bottom: -2rem;
-      right: 1rem;
-      line-height: 1;
-      z-index: 1;
+    /* On wide screens keep ~10–15% space on both sides */
+    @media (min-width: 1000px) {
+      width: 80%;
     }
   }
 
   .quote-content {
     position: relative;
-    z-index: 2;
+    z-index: 1;
   }
 
   .quote-text {
-    font-size: 1.5rem;
-    line-height: 1.6;
-    font-weight: 300;
+    position: relative;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: clamp(1.75rem, 2.2vw, 2.6rem);
+    line-height: 1.35;
+    font-weight: 400;
     color: #ffffff;
     font-style: italic;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 
-    @media (min-width: 768px) {
-      font-size: 2rem;
-      line-height: 1.5;
+    // TODO: Improve quote marks positioning and change font to appropriate one
+    // Lewy cudzysłow - w lewym górnym rogu ramki tekstu, nachodzi ~30-40% od góry i lewej
+    &::before {
+      content: attr(data-quote-left);
+      font-family: Georgia, serif;
+      font-size: clamp(8rem, 12vw, 14rem);
+      color: rgba(255, 255, 255, 0.0525);
+      position: absolute;
+      /* Pozycjonowanie względem ramki .quote-text - lewy górny róg */
+      top: 0;
+      left: 0;
+      /* ~60-70% poza tekstem, ~30-40% nachodzi na tekst (transform w % szerokości/wysokości tekstu) */
+      transform: translate(-70%, -25%);
+      line-height: 1;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    // Prawy cudzysłow - w prawym dolnym rogu ramki tekstu, nachodzi ~30-40% od prawej i dołu
+    &::after {
+      content: attr(data-quote-right);
+      font-family: Georgia, serif;
+      font-size: clamp(8rem, 12vw, 14rem);
+      color: rgba(255, 255, 255, 0.0525);
+      position: absolute;
+      /* Pozycjonowanie względem ramki .quote-text - prawy dolny róg */
+      top: auto;
+      bottom: 0;
+      right: 0;
+      /* ~60-70% poza tekstem, ~30-40% nachodzi na tekst - przesuwa w prawo i w dół */
+      transform: translate(70%, 30%);
+      line-height: 1;
+      z-index: -1;
+      pointer-events: none;
     }
   }
 
@@ -133,4 +159,3 @@ const { text, author, source } = Astro.props
     backdrop-filter: blur(10px);
   }
 </style>
-

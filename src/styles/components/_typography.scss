@@ -74,4 +74,132 @@
       @apply my-8;
     }
   }
+
+  /**
+   * Blog typography preset
+   * Scoped to blog post content only (opt-in via class="prose prose-blog")
+   */
+  .prose.prose-blog {
+    /* Override Tailwind Typography defaults (e.g. blue links) for blog posts */
+    --tw-prose-body: theme('colors.white');
+    --tw-prose-headings: theme('colors.white');
+    --tw-prose-lead: theme('colors.gray.300');
+    --tw-prose-links: theme('colors.white');
+    --tw-prose-bold: theme('colors.white');
+    --tw-prose-counters: theme('colors.gray.400');
+    --tw-prose-bullets: theme('colors.gray.400');
+    --tw-prose-hr: theme('colors.gray.800');
+    --tw-prose-quotes: theme('colors.gray.200');
+    --tw-prose-quote-borders: theme('colors.gray.700');
+    --tw-prose-captions: theme('colors.gray.400');
+    --tw-prose-code: theme('colors.gray.100');
+    --tw-prose-pre-code: theme('colors.gray.100');
+    --tw-prose-pre-bg: theme('colors.gray.900');
+    --tw-prose-th-borders: theme('colors.gray.800');
+    --tw-prose-td-borders: theme('colors.gray.800');
+
+    /* Headings: bigger top spacing than bottom for better scanning rhythm */
+    h1 {
+      @apply mt-16 mb-8 text-5xl font-light leading-tight md:text-6xl;
+    }
+
+    h2 {
+      @apply mt-20 mb-8 text-5xl font-light leading-tight md:text-6xl;
+    }
+
+    h3 {
+      @apply mt-14 mb-7 text-4xl font-light leading-snug md:text-5xl;
+    }
+
+    h4 {
+      @apply mt-12 mb-5 text-3xl font-light leading-snug md:text-4xl;
+    }
+
+    h5 {
+      @apply mt-8 mb-3 text-lg font-medium leading-snug;
+    }
+
+    h6 {
+      @apply mt-8 mb-3 text-base font-medium uppercase tracking-wide text-gray-300;
+    }
+
+    /* Paragraphs: comfortable reading size + line-height */
+    p {
+      @apply mb-8 text-xl leading-9 md:text-2xl md:leading-10;
+    }
+
+    /* Links: keep strong affordance on dark UI */
+    a {
+      @apply text-white underline decoration-white/40 decoration-1 underline-offset-4 transition-colors duration-200 hover:text-gray-200 hover:decoration-white/80;
+    }
+
+    /* Lists: consistent indentation + spacing, including nested lists */
+    ul,
+    ol {
+      @apply my-8 pl-7 md:pl-9;
+    }
+
+    li {
+      @apply my-3 text-xl leading-9 md:text-2xl md:leading-10;
+    }
+
+    li > p {
+      @apply my-2;
+    }
+
+    ul ul,
+    ul ol,
+    ol ul,
+    ol ol {
+      @apply my-3;
+    }
+
+    /* Quotes: give them a container feel (not just italic text)
+       NOTE: exclude Quote component (.quote-container), which has its own styling. */
+    blockquote:not(.quote-container) {
+      @apply my-12 border-l-2 border-gray-700 bg-gray-900/20 py-6 pl-7 pr-6 text-2xl leading-10 text-gray-200 not-italic;
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+
+    blockquote:not(.quote-container) p {
+      @apply my-0;
+    }
+
+    /* Code: inline and block */
+    code {
+      @apply rounded border border-gray-800 bg-gray-900/60 px-1.5 py-0.5 font-mono text-[0.9em] text-gray-100;
+    }
+
+    pre {
+      @apply my-10 overflow-x-auto rounded-lg border border-gray-800 bg-gray-900 p-6;
+    }
+
+    pre code {
+      @apply border-0 bg-transparent p-0 text-[0.95em];
+    }
+
+    /* Horizontal rule */
+    hr {
+      @apply my-12 border-gray-800;
+    }
+
+    /* Tables (when they appear in MDX/MD) */
+    table {
+      @apply my-10 w-full;
+    }
+
+    thead th {
+      @apply border-b border-gray-800 pb-3 text-left text-sm font-medium uppercase tracking-wide text-gray-300;
+    }
+
+    tbody td {
+      @apply border-b border-gray-900 py-3 align-top text-base text-gray-200;
+    }
+
+    /* Images */
+    img {
+      @apply my-10 rounded-lg border border-gray-800;
+    }
+  }
 }
