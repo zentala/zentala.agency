@@ -35,7 +35,7 @@ import Banner from '../components/banners/Banner.astro'
   title="Want to enhance your Developer Experience?"
   description="Let me help you design and execute your DevEx strategy through Backstage implementation."
   linkText="Learn more →"
-  linkHref="/offer/backstage-developer-experience"
+  linkHref="/offer/backstage"
 />
 ```
 

@@ -62,6 +62,20 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 2. Fix any build errors
 3. Commit
 
+## E2E Testing
+
+- **All new UI features and fixes MUST be tested with E2E GUI tests**
+- E2E tests are located in `tests/e2e/` directory
+- Run tests with `npm run test:e2e` or `npx playwright test`
+- Always run e2e tests before pushing to ensure:
+  - All banner links point to existing pages
+  - All linked pages are accessible (status 200)
+  - Pages don't show 404 or error messages
+  - UI functionality works as expected
+- When creating new banners or adding links, the test `tests/e2e/banner-links.spec.ts` automatically extracts links from banner files - no manual updates needed
+- Test files should follow the pattern: `tests/e2e/*.spec.ts`
+- `banner-links.spec.ts` is an integration test for pre-deployment validation - it parses actual banner files and verifies all internal links work
+
 ## Git
 
 * Never commit but instead prepare stage (add there files) and propose to the user short English commit message.
