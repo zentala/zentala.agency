@@ -1,0 +1,147 @@
+---
+/**
+ * SectionImage - Images for section grids and bento layouts
+ *
+ * Enhanced version of ImageSquare with:
+ * - Multiple aspect ratios (square, 16/9, 4/3, auto)
+ * - Background image mode
+ * - Border mechanics integration
+ * - Animation & hover support
+ *
+ * Usage:
+ * <SectionImage
+ *   src="..."
+ *   alt="..."
+ *   aspectRatio="square"
+ *   hoverZoom={true}
+ * />
+ */
+
+interface Props {
+  src: string
+  alt: string
+  class?: string
+  loading?: 'eager' | 'lazy'
+  aspectRatio?: 'square' | '16/9' | '4/3' | 'auto'
+  objectFit?: 'cover' | 'contain'
+  background?: boolean // Use as background image
+  animateIn?: boolean
+  hoverZoom?: boolean
+}
+
+const {
+  src,
+  alt,
+  class: className = '',
+  loading = 'lazy',
+  aspectRatio = 'square',
+  objectFit = 'cover',
+  background = false,
+  animateIn = false,
+  hoverZoom = true,
+} = Astro.props
+
+const ratios = {
+  square: '1 / 1',
+  '16/9': '16 / 9',
+  '4/3': '4 / 3',
+  auto: 'auto',
+}
+---
+
+{
+  background ? (
+    <div
+      class={`section-image section-image--background ${className}`}
+      style={`background-image: url(${src}); aspect-ratio: ${ratios[aspectRatio]};`}
+      role="img"
+      aria-label={alt}
+      data-animate-in={String(animateIn)}
+      data-hover-zoom={String(hoverZoom)}
+    >
+      <slot />
+    </div>
+  ) : (
+    <div
+      class={`section-image ${className}`}
+      style={`aspect-ratio: ${ratios[aspectRatio]};`}
+      data-animate-in={String(animateIn)}
+      data-hover-zoom={String(hoverZoom)}
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading={loading}
+        class="section-image__img"
+        style={`object-fit: ${objectFit};`}
+      />
+    </div>
+  )
+}
+
+<style>
+  .section-image {
+    width: 100%;
+    height: 100%; /* Fill parent (BentoCard) completely */
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+
+  .section-image__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%; /* Ensure full coverage */
+    object-position: center; /* Center the image */
+  }
+
+  .section-image--background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Entrance animation */
+  .section-image[data-animate-in='true'] .section-image__img,
+  .section-image[data-animate-in='true'].section-image--background {
+    animation: si-appear 800ms ease-out both;
+  }
+
+  @keyframes si-appear {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Hover zoom on precise pointers */
+  @media (hover: hover) and (pointer: fine) {
+    .section-image[data-hover-zoom='true'] .section-image__img {
+      transition: transform 300ms ease;
+    }
+    .section-image[data-hover-zoom='true']:hover .section-image__img {
+      transform: scale(1.05);
+    }
+
+    .section-image[data-hover-zoom='true'].section-image--background {
+      transition: transform 300ms ease;
+    }
+    .section-image[data-hover-zoom='true'].section-image--background:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .section-image__img,
+    .section-image--background {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

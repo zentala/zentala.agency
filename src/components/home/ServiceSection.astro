@@ -1,4 +1,6 @@
 ---
+import SectionHeader from '../primitives/sections/SectionHeader.astro'
+
 interface Props {
   id: string
   headline: string
@@ -8,13 +10,7 @@ interface Props {
 const { id, headline, subhead } = Astro.props
 ---
 
-<div id={id} class="service-section">
-  <div class="service-header">
-    <h2 class="service-headline">{headline}</h2>
-    <p class="service-subhead">{subhead}</p>
-  </div>
-
-  <div class="service-content">
-    <slot />
-  </div>
+<div id={id}>
+  <SectionHeader headline={headline} subhead={subhead} />
+  <slot />
 </div>

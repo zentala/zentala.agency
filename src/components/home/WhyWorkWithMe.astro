@@ -1,22 +1,19 @@
 ---
-import CapabilityBlock from './CapabilityBlock.astro'
-import GridCTA from '../primitives/GridCTA.astro'
+import SectionHeader from '../primitives/sections/SectionHeader.astro'
+import SectionGrid from '../primitives/sections/SectionGrid.astro'
+import SectionContent from '../primitives/sections/SectionContent.astro'
+import SectionCTA from '../primitives/sections/SectionCTA.astro'
 ---
 
-<div id="why" class="why-section px-responsive-md py-responsive-lg">
-    <div class="why-header">
-      <h2 class="why-headline">
-        Not Just a Developer. Hands-On CTO With Business & UX Understanding.
-      </h2>
-      <p class="why-subhead">
-        Where others need specialized teams, I bring broad-horizon expertise
-        across the entire technical stack - plus business strategy and user
-        experience perspective.
-      </p>
-    </div>
+<div id="why" class="why-section">
+    <SectionHeader
+      headline="Not Just a Developer. Hands-On CTO With Business & UX Understanding."
+      subhead="Where others need specialized teams, I bring broad-horizon expertise across the entire technical stack - plus business strategy and user experience perspective."
+    />
 
-    <div class="cards-grid">
-      <CapabilityBlock title="Complete Technical Capabilities">
+    <SectionGrid columns={3}>
+      <SectionContent context="grid">
+        <h3>Complete Technical Capabilities</h3>
         <h4>What makes this possible:</h4>
         <ul>
           <li>
@@ -49,9 +46,10 @@ import GridCTA from '../primitives/GridCTA.astro'
           user experience. One person with the perspective of an entire technical
           team.
         </p>
-      </CapabilityBlock>
+      </SectionContent>
 
-      <CapabilityBlock title="Corporate Experience, Independent Execution">
+      <SectionContent context="grid">
+        <h3>Corporate Experience, Independent Execution</h3>
         <h4>20+ years building complex systems:</h4>
         <ul>
           <li>
@@ -74,9 +72,10 @@ import GridCTA from '../primitives/GridCTA.astro'
           others instead. You get corporate-grade expertise with startup
           agility.
         </p>
-      </CapabilityBlock>
+      </SectionContent>
 
-      <CapabilityBlock title="From Vision to Working Team">
+      <SectionContent context="grid">
+        <h3>From Vision to Working Team</h3>
         <h4>I don't just consult. I build.</h4>
         <h5>My process:</h5>
         <ol>
@@ -101,10 +100,10 @@ import GridCTA from '../primitives/GridCTA.astro'
           <strong>The result:</strong> You go from "nothing" to "working solution
           with team in place" to continue independently.
         </p>
-      </CapabilityBlock>
-    </div>
+      </SectionContent>
+    </SectionGrid>
 
-    <GridCTA
+    <SectionCTA
       href="/portfolio"
       text="View Complete Portfolio"
       icon="folder"

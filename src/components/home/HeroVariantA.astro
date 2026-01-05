@@ -1,7 +1,7 @@
 ---
 import Button from '../Button.astro'
-import ImageSquare from '../primitives/ImageSquare.astro'
-import BlockQuote from '../primitives/BlockQuote.astro'
+import SectionImage from '../primitives/sections/SectionImage.astro'
+import SectionBlockQuote from '../primitives/sections/SectionBlockQuote.astro'
 ---
 
 <div class="content-grid content-grid--two-one">
@@ -18,10 +18,11 @@ import BlockQuote from '../primitives/BlockQuote.astro'
     </p>
 
     <!-- Quote -->
-    <BlockQuote
+    <SectionBlockQuote
       quote="Where you have nothing, I build everything."
       author="Paweł Żentała"
-      variant="hero"
+      role=""
+      variant="large"
     />
 
     <!-- CTA Buttons -->
@@ -44,9 +45,11 @@ import BlockQuote from '../primitives/BlockQuote.astro'
 
   <!-- Professional Photo -->
   <div class="content-grid__image">
-    <ImageSquare
+    <SectionImage
       src="https://cdn.zentala.io/images/avatar.jpg"
       alt="Paweł Żentała"
+      aspectRatio="square"
+      objectFit="cover"
     />
   </div>
 </div>

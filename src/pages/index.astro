@@ -1,10 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Section from '../components/primitives/sections/Section.astro'
 import HeroWithVariations from '../components/home/HeroWithVariations.astro'
 import ServiceIoT from '../components/home/ServiceIoT.astro'
 import ServiceBackstage from '../components/home/ServiceBackstage.astro'
 import ServiceRapidDev from '../components/home/ServiceRapidDev.astro'
 import WhyWorkWithMe from '../components/home/WhyWorkWithMe.astro'
+import BentoShowcase from '../components/home/BentoShowcase.astro'
 import EngagementModels from '../components/home/EngagementModels.astro'
 import CTASection from '../components/home/CTASection.astro'
 ---
@@ -13,45 +15,34 @@ import CTASection from '../components/home/CTASection.astro'
   title="Paweł Żentała - Hands-On CTO for Innovation Projects"
   description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
-  <section class="section-grid">
-    <div class="container-bordered">
-      <HeroWithVariations />
-    </div>
-  </section>
+  <Section id="hero">
+    <HeroWithVariations />
+  </Section>
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <ServiceIoT />
-    </div>
-  </section>
+  <Section>
+    <ServiceIoT />
+  </Section>
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <ServiceBackstage />
-    </div>
-  </section>
+  <Section>
+    <ServiceBackstage />
+  </Section>
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <ServiceRapidDev />
-    </div>
-  </section>
+  <Section>
+    <ServiceRapidDev />
+  </Section>
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <WhyWorkWithMe />
-    </div>
-  </section>
+  <Section id="why">
+    <WhyWorkWithMe />
+  </Section>
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <EngagementModels />
-    </div>
-  </section>
+  <!-- Bento Grid Showcase - NEW Section Primitives System -->
+  <BentoShowcase />
 
-  <section class="section-grid">
-    <div class="container-bordered">
-      <CTASection />
-    </div>
-  </section>
+  <Section id="engagement">
+    <EngagementModels />
+  </Section>
+
+  <Section id="cta">
+    <CTASection />
+  </Section>
 </Layout>
