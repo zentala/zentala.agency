@@ -1,3 +1,7 @@
+---
+title: 'Developer Portal Strategy'
+---
+
 wdrazajac deve poortal czesto intucyjnie widzimy jego potencjal i sposob w jaki pomoze nam zaadresowac problemy
 ale kiedy szukamy finansowania na rozwoj tego projektu potrzebujemy dostarczyc wizje i strategie jego rozwoju
 

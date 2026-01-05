@@ -1,3 +1,7 @@
+---
+title: '6 Practical Steps to Kickstart Your Backstage Implementation'
+---
+
 6 Practical Steps to Kickstart Your Backstage Implementation: Focusing on Low-Hanging Fruits
 ============================================================================================
 

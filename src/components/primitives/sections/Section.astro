@@ -1,0 +1,29 @@
+---
+/**
+ * Section - Base wrapper for all page sections
+ *
+ * Provides:
+ * - Container with borders (left/right)
+ * - Consistent structure across all sections
+ * - Integration with border system
+ *
+ * Usage:
+ * <Section id="services">
+ *   <SectionHeader ... />
+ *   <SectionGrid>...</SectionGrid>
+ * </Section>
+ */
+
+interface Props {
+  id?: string
+  class?: string
+}
+
+const { id, class: className } = Astro.props
+---
+
+<section id={id} class="section-grid">
+  <div class={`container-bordered ${className || ''}`}>
+    <slot />
+  </div>
+</section>

@@ -1,4 +1,6 @@
-title: Desiging DX strategy: my favourties success indicators KPIs how I describe them with developer stories
+---
+title: 'Designing DX Strategy: Success Indicators and Developer Stories'
+---
 
 I consider Developer Experience as something that extends User Experience. Therefore I map and apply UX principles in Developer Experience. Because DX is ussability applied to developer env. While in UX we improve ussabilityt for users and clients. 
 

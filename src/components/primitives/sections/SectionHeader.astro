@@ -1,0 +1,84 @@
+---
+/**
+ * SectionHeader - Header block for sections
+ *
+ * Provides:
+ * - Consistent headline + subhead styling
+ * - Bottom border separator
+ * - Responsive typography
+ * - Optional text alignment
+ *
+ * Usage:
+ * <SectionHeader
+ *   headline="Services"
+ *   subhead="What I offer"
+ *   tag="h2"
+ *   align="left"
+ * />
+ */
+
+interface Props {
+  headline: string
+  subhead?: string
+  tag?: 'h1' | 'h2' | 'h3'
+  align?: 'left' | 'center'
+  interactive?: boolean // Enable hover effects
+}
+
+const { headline, subhead, tag = 'h2', align = 'left', interactive = false } = Astro.props
+const HeadingTag = tag
+---
+
+<div class="section-header" data-align={align} data-interactive={interactive}>
+  <HeadingTag class="section-headline">{headline}</HeadingTag>
+  {subhead && <p class="section-subhead">{subhead}</p>}
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .section-header {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    border-bottom: 1px solid $border-color;
+
+    &[data-align='center'] {
+      text-align: center;
+    }
+
+    // Interactive variant - with hover effects
+    &[data-interactive='true'] {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      border: 1px solid $border-color;
+
+      &:hover {
+        transform: scale(1.1);
+        background-color: #111827; /* gray-900 - same as cards */
+        border-color: #60a5fa; /* blue-400 - same as cards */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        z-index: 10;
+
+        .section-headline {
+          transform: scale(1.15);
+        }
+
+        .section-subhead {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .section-headline {
+    @apply text-3xl md:text-4xl font-light text-white;
+    transition: all 0.3s ease;
+  }
+
+  .section-subhead {
+    @apply text-lg text-white/80 mt-4;
+    transition: all 0.3s ease;
+  }
+</style>

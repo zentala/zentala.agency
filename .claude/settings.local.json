@@ -1,21 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:zentala.agency)",
-      "Read(//c/code/**)",
-      "Bash(echo $PROFILE)",
-      "Bash(pwsh:*)",
-      "Read(//c/Users/Lenovo/Documents/PowerShell/**)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(Move-Item -Path \"HOMEPAGE_REDESIGN_PLAN.md\" -Destination \".claude/tasks/001_home_page/\")",
-      "Bash(Move-Item -Path \"HOMEPAGE_FINAL_CONTENT.md\" -Destination \".claude/tasks/001_home_page/\")",
-      "Bash(cat:*)",
-      "Bash(Test-Path \"c:\\code\\zentala.agency\\src\\components\\home\")",
-      "Bash(npm run build:*)",
-      "Bash(Test-Path .claude/tasks/backlog)",
-      "Bash(mkdir:*)",
-      "Bash(Test-Path .claude/tasks/005_section_primitives)"
+      "Bash(Remove-Item \"c:\\code\\zentala.agency\\src\\components\\home\\EngagementCard.astro\" -Force)",
+      "Bash(Remove-Item \"c:\\code\\zentala.agency\\src\\components\\home\\CapabilityBlock.astro\" -Force)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

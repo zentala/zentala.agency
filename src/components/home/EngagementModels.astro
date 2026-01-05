@@ -1,26 +1,21 @@
 ---
-import EngagementCard from './EngagementCard.astro'
+import SectionHeader from '../primitives/sections/SectionHeader.astro'
+import SectionGrid from '../primitives/sections/SectionGrid.astro'
+import SectionContent from '../primitives/sections/SectionContent.astro'
 import Button from '../Button.astro'
 import NoteBox from '../primitives/NoteBox.astro'
 ---
 
-<div
-  id="engagement"
-  class="engagement-section px-responsive-md py-responsive-lg"
->
-  <div class="engagement-header">
-    <h2 class="engagement-headline">Engagement Models</h2>
-    <p class="engagement-subhead">
-      From strategic consulting to full team assembly and leadership - flexible
-      engagement to match your needs.
-    </p>
-  </div>
+<div id="engagement" class="engagement-section">
+  <SectionHeader
+    headline="Engagement Models"
+    subhead="From strategic consulting to full team assembly and leadership - flexible engagement to match your needs."
+  />
 
-  <div class="cards-grid">
-    <EngagementCard
-      title="Innovation Consulting"
-      bestFor="Product validation, technical strategy, early-stage planning"
-    >
+  <SectionGrid columns={3}>
+    <SectionContent context="grid">
+      <h3>Innovation Consulting</h3>
+      <p><strong>Best for:</strong> Product validation, technical strategy, early-stage planning</p>
       <h4>What you get:</h4>
       <ul>
         <li>Technical product vision & feasibility assessment</li>
@@ -32,12 +27,11 @@ import NoteBox from '../primitives/NoteBox.astro'
       <p class="format">
         <strong>Format:</strong> Strategic sessions, documentation, ongoing advisory
       </p>
-    </EngagementCard>
+    </SectionContent>
 
-    <EngagementCard
-      title="Prototype Development"
-      bestFor="Taking ideas from concept to working demonstration"
-    >
+    <SectionContent context="grid">
+      <h3>Prototype Development</h3>
+      <p><strong>Best for:</strong> Taking ideas from concept to working demonstration</p>
       <h4>What you get:</h4>
       <ul>
         <li>Full technical architecture design</li>
@@ -50,12 +44,11 @@ import NoteBox from '../primitives/NoteBox.astro'
         <strong>Format:</strong> Intensive development sprint (weeks to months depending
         on complexity)
       </p>
-    </EngagementCard>
+    </SectionContent>
 
-    <EngagementCard
-      title="Team Assembly & Leadership"
-      bestFor="Building technical teams from scratch"
-    >
+    <SectionContent context="grid">
+      <h3>Team Assembly & Leadership</h3>
+      <p><strong>Best for:</strong> Building technical teams from scratch</p>
       <h4>What you get:</h4>
       <ul>
         <li>Complete team assessment & hiring</li>
@@ -67,8 +60,8 @@ import NoteBox from '../primitives/NoteBox.astro'
       <p class="format">
         <strong>Format:</strong> Multi-month engagement as hands-on CTO
       </p>
-    </EngagementCard>
-  </div>
+    </SectionContent>
+  </SectionGrid>
 
   <NoteBox icon="lightbulb">
     <p>

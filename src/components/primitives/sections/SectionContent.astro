@@ -1,0 +1,132 @@
+---
+/**
+ * SectionContent - Universal content block
+ *
+ * Provides:
+ * - Auto-adjusting padding based on context (full vs grid)
+ * - Prose typography for text content
+ * - Hover states with border mechanics
+ *
+ * Context modes:
+ * - 'full': Large padding, max-width, centered (standalone)
+ * - 'grid': Compact padding, full space (inside grid)
+ * - 'auto': Auto-detect based on parent (TODO: implement)
+ *
+ * Usage:
+ * <SectionContent context="full">
+ *   <h3>Headline</h3>
+ *   <p>Text content...</p>
+ * </SectionContent>
+ */
+
+interface Props {
+  context?: 'full' | 'grid' | 'auto'
+  prose?: boolean
+}
+
+const { context = 'auto', prose = true } = Astro.props
+
+// Auto-detect: default to 'full' for now (can enhance later)
+const actualContext = context === 'auto' ? 'full' : context
+---
+
+<div class={`section-content section-content--${actualContext} ${prose ? 'prose' : ''}`}>
+  <slot />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .section-content {
+    background: #000;
+    transition: background 200ms;
+    position: relative;
+    z-index: 1;
+
+    &:hover {
+      background: #111827;
+      z-index: 10; // Lift above siblings
+    }
+  }
+
+  // Full-width context: generous padding + max-width
+  .section-content--full {
+    @include px-responsive('lg'); // 64→48→32→24→16px
+    @include py-responsive('lg'); // 96→72→48→36→24px
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  // Grid context: compact padding, use available space
+  .section-content--grid {
+    // Much smaller padding for grid items (especially in bento)
+    padding: 0.75rem 1rem; // ~12-16px
+
+    @include medium-up {
+      padding: 1rem 1.25rem; // ~16-20px
+    }
+
+    @include large-up {
+      padding: 1.25rem 1.5rem; // ~20-24px on large screens
+    }
+  }
+
+  // Prose styling for text content
+  .prose {
+    h3 {
+      @apply text-2xl font-light mb-4;
+      color: rgba(255, 255, 255, 0.95); // Brighter headings
+    }
+
+    h4 {
+      @apply text-xl font-light mb-3;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    h5 {
+      @apply text-lg font-light mb-2;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    p {
+      @apply text-base md:text-lg text-white/80 mb-4;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul,
+    ol {
+      @apply text-base md:text-lg text-white/80 mb-4 ml-6;
+
+      li {
+        @apply mb-2;
+
+        strong {
+          @apply text-white;
+        }
+      }
+    }
+
+    ul {
+      list-style: disc;
+    }
+
+    ol {
+      list-style: decimal;
+    }
+
+    strong {
+      @apply text-white font-normal;
+    }
+
+    .value-statement {
+      @apply text-white/70 italic mt-4;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,212 @@
+---
+/**
+ * SectionCTA - Call-to-action button/link for sections
+ *
+ * Enhanced version of GridCTA with:
+ * - Top border for section integration
+ * - Full-width layout
+ * - Icon + text + arrow pattern
+ * - Hover states
+ * - External link support
+ *
+ * Usage:
+ * <SectionCTA
+ *   href="/contact"
+ *   text="Get Started"
+ *   icon="rocket"
+ *   variant="primary"
+ * />
+ */
+
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  href: string
+  text: string
+  icon?: string // Lucide icon name
+  arrow?: boolean
+  variant?: 'primary' | 'secondary'
+  external?: boolean
+  bgText?: string // Large background text (e.g., "PORTFOLIO")
+  class?: string
+}
+
+const {
+  href,
+  text,
+  icon,
+  arrow = true,
+  variant = 'primary',
+  external = false,
+  bgText,
+  class: className = '',
+} = Astro.props
+
+const target = external ? '_blank' : undefined
+const rel = external ? 'noopener noreferrer' : undefined
+---
+
+<a
+  href={href}
+  class={`section-cta section-cta--${variant} ${className}`}
+  target={target}
+  rel={rel}
+>
+  {bgText && <span class="section-cta__bg-text" aria-hidden="true">{bgText}</span>}
+  <span class="section-cta__content">
+    {icon && <Icon name={`lucide:${icon}`} class="section-cta__icon" />}
+    <span class="section-cta__text">{text}</span>
+    {arrow && <Icon name="lucide:arrow-right" class="section-cta__arrow" />}
+  </span>
+</a>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .section-cta {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-top: 1px solid $border-color;
+    background: #000;
+    transition: all 200ms;
+    min-height: 120px;
+    position: relative;
+    z-index: 2; // Higher than Section's z-index: 1
+    overflow: hidden; // Clip background text
+
+    @include mobile {
+      min-height: 100px;
+    }
+
+    &:hover {
+      background: #111827;
+      border-color: $border-color-hover;
+      z-index: 20; // Much higher on hover to show all borders
+      border: 1px solid $border-color-hover; // Force all borders visible
+
+      .section-cta__arrow {
+        transform: translateX(4px);
+      }
+
+      .section-cta__bg-text {
+        opacity: 0.15; // Slightly more visible on hover
+      }
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Large background text
+  .section-cta__bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    font-weight: 100;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 0;
+    transition: opacity 200ms;
+
+    @include mobile {
+      font-size: 40px;
+    }
+  }
+
+  .section-cta__content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 1; // Above background text
+  }
+
+  .section-cta__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .section-cta__text {
+    @apply text-lg font-normal;
+
+    @include mobile {
+      @apply text-base;
+    }
+  }
+
+  .section-cta__arrow {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    transition: transform 200ms;
+  }
+
+  // Variants
+  .section-cta--primary {
+    .section-cta__text {
+      @apply text-blue-400;
+    }
+
+    .section-cta__icon,
+    .section-cta__arrow {
+      @apply text-blue-400;
+    }
+
+    &:hover {
+      .section-cta__text {
+        @apply text-blue-300;
+      }
+
+      .section-cta__icon,
+      .section-cta__arrow {
+        @apply text-blue-300;
+      }
+    }
+  }
+
+  .section-cta--secondary {
+    background-color: rgba(255, 255, 255, 0.02);
+
+    .section-cta__text {
+      @apply text-white;
+    }
+
+    .section-cta__icon,
+    .section-cta__arrow {
+      @apply text-white/60;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+
+      .section-cta__icon,
+      .section-cta__arrow {
+        @apply text-white/80;
+      }
+    }
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .section-cta,
+    .section-cta__arrow {
+      transition: none !important;
+    }
+
+    .section-cta:hover,
+    .section-cta:active {
+      transform: none !important;
+    }
+  }
+</style>
