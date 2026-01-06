@@ -39,6 +39,11 @@
 
 (C) Setup proper TypeScript types +Technical @development #types
 (C) Add error handling +Technical @development #robustness
+(B) Fix homepage console errors: SVG `height=\"auto\"` in Logo usage +Home @frontend #bug
+(B) Add `rel=\"noopener noreferrer\"` when `target=\"_blank\"` in Button component +Components @frontend #security
+(C) Remove/replace unused font preload in Layout +Performance @frontend #perf
+(C) Replace external placeholder images (`via.placeholder.com`) with local/cdn assets +Home @frontend #reliability
+(D) Decide between WhyWorkWithMe vs BentoShowcase duplication on homepage +Home @ux #content
 (D) Improve build performance +Technical @build #optimization
 (D) Add LLM generated reports into .cursor context +Context @development #llm
 

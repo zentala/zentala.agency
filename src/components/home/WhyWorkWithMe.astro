@@ -5,14 +5,14 @@ import SectionContent from '../primitives/sections/SectionContent.astro'
 import SectionCTA from '../primitives/sections/SectionCTA.astro'
 ---
 
-<div id="why" class="why-section">
-    <SectionHeader
-      headline="Not Just a Developer. Hands-On CTO With Business & UX Understanding."
-      subhead="Where others need specialized teams, I bring broad-horizon expertise across the entire technical stack - plus business strategy and user experience perspective."
-    />
+<div class="why-section">
+  <SectionHeader
+    headline="Not Just a Developer. Hands-On CTO With Business & UX Understanding."
+    subhead="Where others need specialized teams, I bring broad-horizon expertise across the entire technical stack - plus business strategy and user experience perspective."
+  />
 
-    <SectionGrid columns={3}>
-      <SectionContent context="grid">
+  <SectionGrid columns={3}>
+    <SectionContent context="grid">
         <h3>Complete Technical Capabilities</h3>
         <h4>What makes this possible:</h4>
         <ul>
@@ -46,9 +46,9 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
           user experience. One person with the perspective of an entire technical
           team.
         </p>
-      </SectionContent>
+    </SectionContent>
 
-      <SectionContent context="grid">
+    <SectionContent context="grid">
         <h3>Corporate Experience, Independent Execution</h3>
         <h4>20+ years building complex systems:</h4>
         <ul>
@@ -72,9 +72,9 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
           others instead. You get corporate-grade expertise with startup
           agility.
         </p>
-      </SectionContent>
+    </SectionContent>
 
-      <SectionContent context="grid">
+    <SectionContent context="grid">
         <h3>From Vision to Working Team</h3>
         <h4>I don't just consult. I build.</h4>
         <h5>My process:</h5>
@@ -100,14 +100,13 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
           <strong>The result:</strong> You go from "nothing" to "working solution
           with team in place" to continue independently.
         </p>
-      </SectionContent>
-    </SectionGrid>
+    </SectionContent>
+  </SectionGrid>
 
-    <SectionCTA
-      href="/portfolio"
-      text="View Complete Portfolio"
-      icon="folder"
-      variant="secondary"
-    />
-  </div>
+  <SectionCTA
+    href="/portfolio"
+    text="View Complete Portfolio"
+    icon="folder"
+    variant="secondary"
+  />
 </div>

@@ -144,3 +144,49 @@ Lista plików:
 3. **Inline style keys** Regex `'(background|font|white|margin|transform|z)-[a-z-]+'` → convert to camelCase.
 
 Po wykonaniu powyższych kroków ponownie uruchom `npm run build`. Pozostałe błędy, jeśli się pojawią, będą już specyficzne i łatwe do poprawienia.
+
+# Home page backlog (P1+)
+
+Context: console messages observed on `/` (dev + prod).
+
+## P1 - SVG console errors: `<svg> attribute height: Expected length, "auto".`
+
+- Likely source: `Logo` usage in hero variants passes `height="auto"` (invalid for SVG `height` attribute).
+- Occurrences:
+  - `src/components/home/HeroVariantB.astro`
+  - `src/components/home/HeroVariantC.astro`
+  - `src/components/home/HeroVariantD.astro`
+  - `src/components/home/HeroVariantE.astro`
+- Suggested fix:
+  - Do not pass `height="auto"` as an attribute.
+  - Prefer CSS sizing (e.g. `style="height:auto"` or class) and set only `width` OR use `viewBox`-driven sizing.
+
+## P1 - External links opened in new tab should include `rel`
+
+- `src/components/Button.astro` supports `target="_blank"` but does not add `rel="noopener noreferrer"`.
+- Suggested fix: add `rel` automatically when `target === '_blank'` (match `SectionCTA` behavior).
+
+## P1 - Unused font preload warning
+
+- `src/layouts/Layout.astro` injects preload for `data:font/woff2;base64,` which is not used.
+- Suggested fix: remove it, or replace with real font preload(s) actually used by the page.
+
+## P2 - `SectionHeader interactive` provides click affordance without action
+
+- `SectionHeader` sets `cursor: pointer` and hover scale when `interactive={true}`.
+- Suggested fix: only enable when header is a link/button or triggers a real interaction.
+
+## P2 - Duplicated messaging on homepage ("Why Work With Me")
+
+- `WhyWorkWithMe` is a dedicated section, and `BentoShowcase` uses `SectionHeader headline="Why Work With Me"` too.
+- Suggested fix: decide which one is canonical (or reframe Bento as a different heading).
+
+## P2 - Placeholder images are an external dependency
+
+- Several `ProjectCard` items use `https://via.placeholder.com/...` URLs.
+- On dev you observed load failures; consider hosting placeholders in `public/` or using `cdn.zentala.io` to avoid DNS/network issues.
+
+## P3 - WebSocket connection to `ws://localhost:8081/` failed
+
+- Looks like a browser extension/content script artifact (not site code).
+- No action unless we find site code attempting this connection.
