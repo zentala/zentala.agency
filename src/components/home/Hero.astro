@@ -1,0 +1,160 @@
+---
+import Logo from '../Logo.astro'
+import Button from '../Button.astro'
+import ImageCircle from '../primitives/ImageCircle.astro'
+import SectionImage from '../primitives/sections/SectionImage.astro'
+import SectionBlockQuote from '../primitives/sections/SectionBlockQuote.astro'
+
+type HeroLayout = 'split' | 'profile'
+
+type HeroCTA = {
+  href: string
+  text: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  target?: string
+  icon?: string
+}
+
+type HeroQuote = {
+  quote: string
+  author?: string
+  role?: string
+  variant?: 'large' | 'minimal'
+}
+
+interface Props {
+  layout: HeroLayout
+
+  // shared
+  title: string
+  description: string
+  ctas?: HeroCTA[]
+
+  // profile layout
+  name?: string
+  question?: string
+  tagline?: string
+  experience?: string
+  showLogo?: boolean
+  logoColor?: string
+  logoWidth?: string
+  logoHeight?: string
+  avatarSrc?: string
+  avatarAlt?: string
+
+  // split layout
+  quote?: HeroQuote
+  imageSrc?: string
+  imageAlt?: string
+  imageAspectRatio?: string
+  imageObjectFit?: string
+}
+
+const {
+  layout,
+  title,
+  description,
+  ctas = [],
+  name,
+  question,
+  tagline,
+  experience,
+  showLogo = true,
+  logoColor = '#ffffff',
+  logoWidth = '200px',
+  logoHeight = 'auto',
+  avatarSrc = 'https://cdn.zentala.io/images/avatar.jpg',
+  avatarAlt = 'Paweł Żentała',
+  quote,
+  imageSrc = 'https://cdn.zentala.io/images/avatar.jpg',
+  imageAlt = 'Paweł Żentała',
+  imageAspectRatio = 'square',
+  imageObjectFit = 'cover',
+} = Astro.props
+---
+
+{layout === 'split' ? (
+  <div class="content-grid content-grid--two-one">
+    <div class="content-grid__text">
+      <h1 class="hero-title">{title}</h1>
+
+      <p class="hero-description">{description}</p>
+
+      {quote ? (
+        <SectionBlockQuote
+          quote={quote.quote}
+          author={quote.author ?? ''}
+          role={quote.role ?? ''}
+          variant={quote.variant ?? 'large'}
+        />
+      ) : null}
+
+      {ctas.length ? (
+        <div class="hero-cta">
+          {ctas.map(cta => (
+            <Button
+              href={cta.href}
+              text={cta.text}
+              variant={cta.variant ?? 'primary'}
+              target={cta.target}
+              icon={cta.icon}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+
+    <div class="content-grid__image">
+      <SectionImage
+        src={imageSrc}
+        alt={imageAlt}
+        aspectRatio={imageAspectRatio}
+        objectFit={imageObjectFit}
+      />
+    </div>
+  </div>
+) : (
+  <div class="hero-variant">
+    <div class="hero-content">
+      {showLogo ? (
+        <div class="hero-logo">
+          <Logo
+            type="full"
+            color={logoColor}
+            width={logoWidth}
+            height={logoHeight}
+          />
+        </div>
+      ) : null}
+
+      <div class="hero-photo">
+        <ImageCircle src={avatarSrc} alt={avatarAlt} />
+      </div>
+
+      {name ? <h1 class="hero-name">{name}</h1> : null}
+      <h2 class="hero-title">{title}</h2>
+
+      {question ? <p class="hero-question">{question}</p> : null}
+
+      <p class="hero-description">{description}</p>
+
+      {experience ? <p class="hero-experience">{experience}</p> : null}
+      {tagline ? <p class="hero-tagline">{tagline}</p> : null}
+
+      {ctas.length ? (
+        <div class="hero-cta">
+          {ctas.map(cta => (
+            <Button
+              href={cta.href}
+              text={cta.text}
+              variant={cta.variant ?? 'primary'}
+              target={cta.target}
+              icon={cta.icon}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  </div>
+)}
+

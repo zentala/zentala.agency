@@ -2,13 +2,551 @@
 import Layout from '../layouts/Layout.astro'
 import Section from '../components/primitives/sections/Section.astro'
 import HeroWithVariations from '../components/home/HeroWithVariations.astro'
-import ServiceIoT from '../components/home/ServiceIoT.astro'
-import ServiceBackstage from '../components/home/ServiceBackstage.astro'
-import ServiceRapidDev from '../components/home/ServiceRapidDev.astro'
+import ServiceSection from '../components/home/ServiceSection.astro'
+import FeaturedProjects from '../components/home/FeaturedProjects.astro'
+import ProjectCard from '../components/home/ProjectCard.astro'
+import SectionCTA from '../components/primitives/sections/SectionCTA.astro'
+import NoteBox from '../components/primitives/NoteBox.astro'
 import WhyWorkWithMe from '../components/home/WhyWorkWithMe.astro'
 import BentoShowcase from '../components/home/BentoShowcase.astro'
 import EngagementModels from '../components/home/EngagementModels.astro'
 import CTASection from '../components/home/CTASection.astro'
+
+const CAL_URL = 'https://cal.com/zentala'
+const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
+const AVATAR_URL = 'https://cdn.zentala.io/images/avatar.jpg'
+
+const heroVariants = {
+  A: {
+    componentProps: {
+      layout: 'split',
+      title: 'Hands-On CTO for Innovation Projects',
+      description:
+        'I build complex technology solutions from vision to working prototype - and assemble teams to scale them. With 20+ years across full-stack development, IoT, robotics, DevOps, management, and UX, I act as your technical co-founder until you have a team.',
+      quote: {
+        quote: 'Where you have nothing, I build everything.',
+        author: 'Paweł Żentała',
+        role: '',
+        variant: 'large',
+      },
+      imageSrc: AVATAR_URL,
+      imageAlt: 'Paweł Żentała',
+      ctas: [
+        {
+          href: CAL_URL,
+          text: 'Schedule Discovery Call',
+          variant: 'primary',
+          target: '_blank',
+          icon: 'calendar',
+        },
+        {
+          href: '/portfolio',
+          text: 'View Portfolio',
+          variant: 'secondary',
+          icon: 'briefcase',
+        },
+      ],
+    },
+  },
+  B: {
+    componentProps: {
+      layout: 'profile',
+      name: 'Paweł Żentała',
+      title: 'Technical Leader for Greenfield Engineering Projects',
+      question: 'Starting a complex tech project with no technical team?',
+      description:
+        'I transform ideas into working solutions - from IoT products and developer platforms to rapid application prototypes. With 20+ years building everything from humanoid robots to enterprise software, I bring hands-on expertise across programming, UX, DevOps, and business understanding.',
+      tagline: 'One person. Complete technical capabilities.',
+      avatarSrc: AVATAR_URL,
+      avatarAlt: 'Paweł Żentała',
+      ctas: [
+        {
+          href: CAL_URL,
+          text: "Let's Talk About Your Project",
+          variant: 'primary',
+          target: '_blank',
+        },
+        {
+          href: '/portfolio',
+          text: 'See My Work',
+          variant: 'secondary',
+        },
+      ],
+    },
+  },
+  C: {
+    componentProps: {
+      layout: 'profile',
+      name: 'Paweł Żentała',
+      title: 'I Build Innovation Teams From Scratch',
+      description:
+        'For investors, founders, and companies starting complex engineering projects with no technical team - I am your hands-on CTO. I create technical vision, build working prototypes, assemble specialized teams, and transfer knowledge.',
+      experience:
+        '20+ years across IoT, robotics, full-stack development, DevOps, and UX. From vision to working prototype to production-ready team.',
+      avatarSrc: AVATAR_URL,
+      avatarAlt: 'Paweł Żentała',
+      ctas: [
+        {
+          href: CAL_URL,
+          text: 'Schedule Discovery Call',
+          variant: 'primary',
+          target: '_blank',
+        },
+        {
+          href: '/portfolio',
+          text: 'View Portfolio',
+          variant: 'secondary',
+        },
+      ],
+    },
+  },
+  D: {
+    componentProps: {
+      layout: 'profile',
+      name: 'Paweł Żentała',
+      title: 'Builder of Complex Technology Solutions',
+      description:
+        "I specialize in greenfield engineering projects - where there's no team, no architecture, no prototype. From IoT products to developer platforms to rapid web applications, I bring 20+ years of hands-on experience across programming, robotics, DevOps, UX, and business strategy.",
+      tagline: 'Your technical co-founder when you need to start from zero.',
+      avatarSrc: AVATAR_URL,
+      avatarAlt: 'Paweł Żentała',
+      ctas: [
+        {
+          href: CAL_URL,
+          text: 'Schedule Call',
+          variant: 'primary',
+          target: '_blank',
+        },
+        {
+          href: '/portfolio',
+          text: 'Portfolio',
+          variant: 'secondary',
+        },
+      ],
+    },
+  },
+  E: {
+    componentProps: {
+      layout: 'profile',
+      name: 'Paweł Żentała',
+      title: 'Full-Stack Technical Leader | IoT | DevEx | Rapid Prototyping',
+      description:
+        '20+ years building complex engineering solutions - from RTLS systems and humanoid robots to enterprise developer platforms and rapid web applications. I act as hands-on CTO for greenfield projects: creating vision, building prototypes, assembling teams.',
+      tagline:
+        'Technical expertise + UX + DevOps + business understanding in one person.',
+      avatarSrc: AVATAR_URL,
+      avatarAlt: 'Paweł Żentała',
+      ctas: [
+        {
+          href: CAL_URL,
+          text: 'Work With Me',
+          variant: 'primary',
+          target: '_blank',
+        },
+        {
+          href: '/portfolio',
+          text: 'See Projects',
+          variant: 'secondary',
+        },
+      ],
+    },
+  },
+} as const
+
+const engagementModels = {
+  headline: 'Engagement Models',
+  subhead:
+    'From strategic consulting to full team assembly and leadership - flexible engagement to match your needs.',
+  cards: [
+    {
+      title: 'Innovation Consulting',
+      bestFor: 'Product validation, technical strategy, early-stage planning',
+      whatYouGetTitle: 'What you get:',
+      whatYouGet: [
+        'Technical product vision & feasibility assessment',
+        'Architecture planning & technology stack selection',
+        'Team structure design & hiring strategy',
+        'Business-technical alignment consulting',
+        'Go-to-market input from technical perspective',
+      ],
+      format: 'Strategic sessions, documentation, ongoing advisory',
+    },
+    {
+      title: 'Prototype Development',
+      bestFor: 'Taking ideas from concept to working demonstration',
+      whatYouGetTitle: 'What you get:',
+      whatYouGet: [
+        'Full technical architecture design',
+        'Working, usable prototype (not just mockup)',
+        'Technology foundation for scaling',
+        'Documentation & knowledge transfer',
+        'UX design included',
+      ],
+      format:
+        'Intensive development sprint (weeks to months depending on complexity)',
+    },
+    {
+      title: 'Team Assembly & Leadership',
+      bestFor: 'Building technical teams from scratch',
+      whatYouGetTitle: 'What you get:',
+      whatYouGet: [
+        'Complete team assessment & hiring',
+        'Technical leadership & project management',
+        'Development of initial product/platform',
+        'Team education & capability building',
+        'Transition plan for ongoing operations',
+      ],
+      format: 'Multi-month engagement as hands-on CTO',
+    },
+  ],
+  note: {
+    icon: 'lightbulb',
+    title: 'Common Thread',
+    text: 'All engagements focus on knowledge transfer, not dependency. You keep the capabilities when I leave.',
+  },
+  cta: {
+    href: CAL_URL,
+    text: 'Schedule discovery call to discuss your needs',
+    variant: 'primary',
+    target: '_blank',
+    icon: 'calendar',
+  },
+} as const
+
+const whyWorkWithMe = {
+  headline:
+    'Not Just a Developer. Hands-On CTO With Business & UX Understanding.',
+  subhead:
+    'Where others need specialized teams, I bring broad-horizon expertise across the entire technical stack - plus business strategy and user experience perspective.',
+  columns: [
+    {
+      title: 'Complete Technical Capabilities',
+      subtitle: 'What makes this possible:',
+      list: [
+        {
+          label: 'Programming',
+          text: 'TypeScript, Python, Bash - full-stack web, IoT, automation',
+        },
+        {
+          label: 'DevOps',
+          text: 'CI/CD pipelines, cloud infrastructure, Docker, deployment automation',
+        },
+        {
+          label: 'IoT & Robotics',
+          text: 'Hardware integration, firmware, sensor systems, ROS',
+        },
+        {
+          label: 'UX/Design',
+          text: 'Interface design, information architecture, user-centered thinking',
+        },
+        {
+          label: 'Product & Business',
+          text: 'Marketing background, sales experience, business coaching training',
+        },
+        {
+          label: 'Leadership',
+          text: 'Team assessment, assembly, and management',
+        },
+      ],
+      paragraphs: [
+        {
+          strongLabel: 'The value',
+          text: 'You get someone who understands the complete picture - from business requirements through technical architecture to user experience. One person with the perspective of an entire technical team.',
+          className: 'value-statement',
+        },
+      ],
+    },
+    {
+      title: 'Corporate Experience, Independent Execution',
+      subtitle: '20+ years building complex systems:',
+      list: [
+        {
+          label: 'BSH',
+          text: '(Bosch Siemens Hausgeräte) - Smart home appliances firmware',
+        },
+        {
+          label: 'Cheil Poland',
+          text: '(Samsung subsidiary) - Humanoid robotics prototypes',
+        },
+        {
+          label: 'Ubudu',
+          text: '(French IoT startup) - RTLS systems deployed worldwide',
+        },
+        { text: 'Multiple product development roles across industries' },
+      ],
+      headingAfterList: 'Why independent:',
+      paragraphs: [
+        {
+          text: "I couldn't advance to higher leadership positions within corporate structures (limited roles, politics), so I build innovation teams for others instead. You get corporate-grade expertise with startup agility.",
+        },
+      ],
+    },
+    {
+      title: 'From Vision to Working Team',
+      subtitle: "I don't just consult. I build.",
+      paragraphs: [{ text: 'My process:' }],
+      list: [
+        {
+          label: 'Vision & Architecture',
+          text: 'Technical strategy, system design, foundation',
+        },
+        {
+          label: 'Prototype Development',
+          text: 'Working, usable prototypes demonstrating value',
+        },
+        {
+          label: 'Team Assembly',
+          text: '(if needed) - Assessment, hiring, and team building',
+        },
+        {
+          label: 'Knowledge Transfer',
+          text: 'Your team gains ownership, capabilities remain',
+        },
+      ],
+      paragraphs: [
+        {
+          strongLabel: 'The result',
+          text: 'You go from "nothing" to "working solution with team in place" to continue independently.',
+          className: 'value-statement',
+        },
+      ],
+    },
+  ],
+  cta: {
+    href: '/portfolio',
+    text: 'View Complete Portfolio',
+    icon: 'folder',
+    variant: 'secondary',
+  },
+} as const
+
+const ctaSection = {
+  headline: "Let's Build Something From Scratch",
+  subhead:
+    "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
+  buttons: [
+    {
+      href: CAL_URL,
+      text: 'Schedule Discovery Call',
+      variant: 'primary',
+      target: '_blank',
+      icon: 'calendar',
+    },
+    {
+      href: LINKEDIN_URL,
+      text: 'Connect on LinkedIn',
+      variant: 'secondary',
+      target: '_blank',
+      icon: 'linkedin',
+    },
+    {
+      href: '/portfolio',
+      text: 'Explore Portfolio',
+      variant: 'outline',
+      icon: 'folder',
+    },
+  ],
+  footerText: 'Based in Warsaw, Poland • Available for projects worldwide',
+} as const
+
+type ServiceProject = {
+  title: string
+  description: string
+  image: string
+  link: string
+  linkText?: string
+}
+
+type ServiceConfig = {
+  id: string
+  headline: string
+  subhead: string
+  description: string
+  deliverables: string[]
+  extraTitle?: string
+  extraList?: Array<{ label?: string; text: string }>
+  extraText?: string
+  projects: ServiceProject[]
+  cta: {
+    href: string
+    text: string
+    icon?: string
+    variant?: 'primary' | 'secondary' | 'outline'
+  }
+  note?: { icon?: string; htmlStrongLabel?: string; text: string }
+}
+
+const services: ServiceConfig[] = [
+  {
+    id: 'iot',
+    headline: 'IoT Product Engineering',
+    subhead: 'From vision to working prototype to production-ready systems',
+    description:
+      'End-to-end development of IoT solutions - hardware selection, firmware, cloud infrastructure, mobile and web applications. I create the technical vision, build initial prototypes, and if needed, assemble specialized teams to scale production.',
+    deliverables: [
+      'Product architecture & technical strategy',
+      'Hardware integration & firmware development',
+      'Cloud infrastructure & data pipelines',
+      'Mobile & web application development',
+      'Team assembly & technical leadership',
+    ],
+    extraTitle: 'EXPERIENCE HIGHLIGHTS',
+    extraList: [
+      {
+        label: 'Ubudu',
+        text: '(French IoT startup) - RTLS indoor location systems',
+      },
+      {
+        label: 'BSH',
+        text: '(Bosch Siemens Hausgeräte) - Smart home appliances firmware',
+      },
+      {
+        label: 'Cheil Poland',
+        text: '(Samsung subsidiary) - Socially-aware humanoid robot',
+      },
+    ],
+    projects: [
+      {
+        title: 'RTLS Indoor Location Systems',
+        description:
+          'Real-time indoor location tracking for retail, logistics, and events. Developed software and deployed systems worldwide at Ubudu - French IoT startup. Experience with hardware, location algorithms, and business implementation.',
+        image: 'https://via.placeholder.com/400x300/1e293b/3b82f6?text=RTLS',
+        link: '/portfolio',
+      },
+      {
+        title: 'Smart Height Adjustable Desk',
+        description:
+          'Open research project automating ergonomic workspaces as part of smart home ecosystem. IoT integration encouraging movement and activity for knowledge workers spending careers at desks.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Smart+Desk',
+        link: 'https://desk.zentala.io',
+        linkText: 'Visit desk.zentala.io →',
+      },
+      {
+        title: 'Smart Home System',
+        description:
+          'Complete 50m² apartment automation - electrical design, intelligent lighting, alarm integration, sensors (water, motion, humidity), and heating controllers. Automated operations for comfort, security, and energy efficiency.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Smart+Home',
+        link: 'https://ihome.zentala.io',
+        linkText: 'Visit ihome.zentala.io →',
+      },
+    ],
+    cta: {
+      href: CAL_URL,
+      text: 'Discuss your IoT project',
+      icon: 'message-circle',
+      variant: 'primary',
+    },
+  },
+  {
+    id: 'backstage',
+    headline: 'Backstage Developer Portals',
+    subhead:
+      'Internal Developer Platform implementation for scaling engineering organizations',
+    description:
+      'Complete Backstage IDP deployment for companies with 50-200+ developers. Custom plugin development, entity processors, theme customization, and AI integrations to transform developer experience.',
+    deliverables: [
+      'Backstage deployment & configuration with UX refinements',
+      'Full-stack custom plugin development',
+      'Entity processors for non-standard resources',
+      'AI chatbot integration (MCP & RAG)',
+      'DevEx strategy & team education',
+    ],
+    extraTitle: 'IDEAL FOR',
+    extraText:
+      'Mid-to-large tech companies scaling engineering teams who need internal developer platforms to improve productivity, reduce friction, and standardize workflows.',
+    projects: [
+      {
+        title: 'Enterprise IDP Implementations',
+        description:
+          'Custom Backstage developer portals for enterprise clients. Full-stack plugin development, custom entity processors, theme customization for brand alignment, and homepage component development.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Backstage+IDP',
+        link: '/offer/backstage',
+        linkText: 'View Backstage services →',
+      },
+      {
+        title: 'AI Chatbot Integration',
+        description:
+          'MCP & RAG-powered AI chatbot integration for Backstage platforms. Enables developers to query infrastructure, documentation, and resources through conversational interface.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=AI+Chatbot',
+        link: '/offer/backstage',
+        linkText: 'Explore AI integration →',
+      },
+      {
+        title: 'Custom Entity Processors',
+        description:
+          'Entity processors cataloging non-standard infrastructure resources in Backstage. Extends catalog capabilities beyond default entities for organization-specific needs.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Processors',
+        link: '/offer/backstage',
+        linkText: 'Learn about processors →',
+      },
+    ],
+    cta: {
+      href: 'https://devstage.io',
+      text: 'Visit DevStage.io',
+      icon: 'external-link',
+      variant: 'primary',
+    },
+    note: {
+      icon: 'info',
+      htmlStrongLabel: 'Note',
+      text: 'DevStage.io is our dedicated product brand for Backstage services - visit the standalone site for detailed plugin catalog, blog, and specific offerings.',
+    },
+  },
+  {
+    id: 'rapid-prototyping',
+    headline: 'Rapid Application Prototyping with AI',
+    subhead:
+      'Full-stack TypeScript applications from problem to working prototype',
+    description:
+      'I build functional web applications rapidly using AI-assisted development. Not just "AI-powered apps" - but using AI to accelerate development of full-stack solutions with UX awareness and business understanding. If you have a problem, I\'ll find the solution through a custom application.',
+    deliverables: [
+      'Full-stack TypeScript applications (React, Astro, Node.js)',
+      'UX-aware development - interfaces designed for users, not just functionality',
+      'Understanding client needs & translating problems into software solutions',
+      'Rapid iteration from concept to working prototype',
+      'Optional: Team assembly for scaling to production',
+    ],
+    extraTitle: 'TECH STACK',
+    extraText:
+      'TypeScript, React, Astro, Supabase, Node.js, AI integrations where appropriate',
+    projects: [
+      {
+        title: 'Game Player Nick Finder (gPNF)',
+        description:
+          'Platform reconnecting RPG gaming communities through nickname search. Full-stack application with user profiles, direct messaging, and email notifications. Rapid prototype demonstrating concept viability.',
+        image: 'https://via.placeholder.com/400x300/1e293b/3b82f6?text=gPNF',
+        link: 'https://gpnf.zentala.io',
+        linkText: 'Visit gpnf.zentala.io →',
+      },
+      {
+        title: 'Infopill - News Aggregation Platform',
+        description:
+          'News aggregation system with email automation. Collects, processes, and distributes curated content to subscribers. Example of data pipeline + user-facing application.',
+        image:
+          'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Infopill',
+        link: '/portfolio',
+      },
+      {
+        title: 'Interactive Transit Display',
+        description:
+          'Real-time public transport information system for city services. Interactive displays showing schedules, delays, and route information. Public-facing application with live data integration.',
+        image: 'https://via.placeholder.com/400x300/1e293b/3b82f6?text=Transit',
+        link: '/portfolio',
+      },
+    ],
+    cta: {
+      href: CAL_URL,
+      text: 'Discuss rapid prototyping needs',
+      icon: 'message-circle',
+      variant: 'primary',
+    },
+  },
+]
 ---
 
 <Layout
@@ -16,33 +554,103 @@ import CTASection from '../components/home/CTASection.astro'
   description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
   <Section id="hero">
-    <HeroWithVariations />
+    <HeroWithVariations variants={heroVariants} defaultVariant="A" />
   </Section>
 
-  <Section>
-    <ServiceIoT />
-  </Section>
+  {
+    services.map((service) => (
+      <Section>
+        <ServiceSection
+          id={service.id}
+          headline={service.headline}
+          subhead={service.subhead}
+        >
+          <div class="service-description">
+            <p>{service.description}</p>
+          </div>
 
-  <Section>
-    <ServiceBackstage />
-  </Section>
+          <div class="service-deliverables">
+            <h3 class="section-subheading">WHAT YOU GET</h3>
+            <ul>
+              {service.deliverables.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
 
-  <Section>
-    <ServiceRapidDev />
-  </Section>
+          {service.extraTitle ||
+          service.extraText ||
+          service.extraList?.length ? (
+            <div
+              class={
+                service.extraList?.length
+                  ? 'service-experience'
+                  : 'service-ideal'
+              }
+            >
+              {service.extraTitle ? (
+                <h3 class="section-subheading">{service.extraTitle}</h3>
+              ) : null}
+              {service.extraList?.length ? (
+                <ul class="experience-list">
+                  {service.extraList.map((item) => (
+                    <li>
+                      {item.label ? <strong>{item.label}</strong> : null}{' '}
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {service.extraText ? <p>{service.extraText}</p> : null}
+            </div>
+          ) : null}
+
+          <FeaturedProjects title="Featured Projects" columns={3}>
+            {service.projects.map((project) => (
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                image={project.image}
+                link={project.link}
+                linkText={project.linkText}
+              />
+            ))}
+          </FeaturedProjects>
+
+          <SectionCTA
+            href={service.cta.href}
+            text={service.cta.text}
+            icon={service.cta.icon}
+            variant={service.cta.variant ?? 'primary'}
+          />
+
+          {service.note ? (
+            <NoteBox icon={service.note.icon ?? 'info'}>
+              <p>
+                {service.note.htmlStrongLabel ? (
+                  <strong>{service.note.htmlStrongLabel}:</strong>
+                ) : null}{' '}
+                {service.note.text}
+              </p>
+            </NoteBox>
+          ) : null}
+        </ServiceSection>
+      </Section>
+    ))
+  }
 
   <Section id="why">
-    <WhyWorkWithMe />
+    <WhyWorkWithMe {...whyWorkWithMe} />
   </Section>
 
   <!-- Bento Grid Showcase - NEW Section Primitives System -->
   <BentoShowcase />
 
   <Section id="engagement">
-    <EngagementModels />
+    <EngagementModels {...engagementModels} />
   </Section>
 
   <Section id="cta">
-    <CTASection />
+    <CTASection {...ctaSection} />
   </Section>
 </Layout>

@@ -1,27 +1,29 @@
 ---
-import HeroVariantA from './HeroVariantA.astro'
-import HeroVariantB from './HeroVariantB.astro'
-import HeroVariantC from './HeroVariantC.astro'
-import HeroVariantD from './HeroVariantD.astro'
-import HeroVariantE from './HeroVariantE.astro'
+import Hero from './Hero.astro'
+
+type VariantKey = 'A' | 'B' | 'C' | 'D' | 'E'
+
+type HeroVariantConfig = {
+  componentProps: Record<string, any>
+}
+
+interface Props {
+  variants: Record<VariantKey, HeroVariantConfig>
+  defaultVariant?: VariantKey
+}
+
+const { variants, defaultVariant = 'A' } = Astro.props
 ---
 
 <div class="hero-section">
-  <div data-variant="A" class="hero-variant-wrapper hero-variant-active">
-    <HeroVariantA />
-  </div>
-  <div data-variant="B" class="hero-variant-wrapper hero-variant-hidden">
-    <HeroVariantB />
-  </div>
-  <div data-variant="C" class="hero-variant-wrapper hero-variant-hidden">
-    <HeroVariantC />
-  </div>
-  <div data-variant="D" class="hero-variant-wrapper hero-variant-hidden">
-    <HeroVariantD />
-  </div>
-  <div data-variant="E" class="hero-variant-wrapper hero-variant-hidden">
-    <HeroVariantE />
-  </div>
+  {Object.entries(variants).map(([key, config]) => (
+    <div
+      data-variant={key}
+      class={`hero-variant-wrapper ${key === defaultVariant ? 'hero-variant-active' : 'hero-variant-hidden'}`}
+    >
+      <Hero {...config.componentProps} />
+    </div>
+  ))}
 </div>
 
 <style>

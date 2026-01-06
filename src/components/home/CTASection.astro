@@ -1,39 +1,43 @@
 ---
 import SectionHeader from '../primitives/sections/SectionHeader.astro'
 import Button from '../Button.astro'
+
+type CTAButton = {
+  href: string
+  text: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  target?: string
+  icon?: string
+}
+
+interface Props {
+  headline: string
+  subhead: string
+  buttons: CTAButton[]
+  footerText?: string
+}
+
+const { headline, subhead, buttons, footerText } = Astro.props
 ---
 
 <div class="cta-section">
   <SectionHeader
-    headline="Let's Build Something From Scratch"
-    subhead="Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help."
+    headline={headline}
+    subhead={subhead}
     align="center"
   />
 
   <div class="cta-buttons">
-    <Button
-      href="https://cal.com/zentala"
-      text="Schedule Discovery Call"
-      variant="primary"
-      target="_blank"
-      icon="calendar"
-    />
-    <Button
-      href="https://linkedin.com/in/zentala"
-      text="Connect on LinkedIn"
-      variant="secondary"
-      target="_blank"
-      icon="linkedin"
-    />
-    <Button
-      href="/portfolio"
-      text="Explore Portfolio"
-      variant="outline"
-      icon="folder"
-    />
+    {buttons.map(btn => (
+      <Button
+        href={btn.href}
+        text={btn.text}
+        variant={btn.variant ?? 'primary'}
+        target={btn.target}
+        icon={btn.icon}
+      />
+    ))}
   </div>
 
-  <p class="cta-footer">
-    Based in Warsaw, Poland • Available for projects worldwide
-  </p>
+  {footerText ? <p class="cta-footer">{footerText}</p> : null}
 </div>

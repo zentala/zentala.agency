@@ -4,79 +4,77 @@ import SectionGrid from '../primitives/sections/SectionGrid.astro'
 import SectionContent from '../primitives/sections/SectionContent.astro'
 import Button from '../Button.astro'
 import NoteBox from '../primitives/NoteBox.astro'
+
+type EngagementCard = {
+  title: string
+  bestFor: string
+  whatYouGetTitle?: string
+  whatYouGet: string[]
+  format: string
+}
+
+type CTAButton = {
+  href: string
+  text: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  target?: string
+  icon?: string
+}
+
+interface Props {
+  headline: string
+  subhead: string
+  cards: EngagementCard[]
+  note?: { icon?: string; title?: string; text: string }
+  cta?: CTAButton
+}
+
+const { headline, subhead, cards, note, cta } = Astro.props
 ---
 
 <div class="engagement-section">
   <SectionHeader
-    headline="Engagement Models"
-    subhead="From strategic consulting to full team assembly and leadership - flexible engagement to match your needs."
+    headline={headline}
+    subhead={subhead}
   />
 
   <SectionGrid columns={3}>
-    <SectionContent context="grid">
-      <h3>Innovation Consulting</h3>
-      <p><strong>Best for:</strong> Product validation, technical strategy, early-stage planning</p>
-      <h4>What you get:</h4>
-      <ul>
-        <li>Technical product vision & feasibility assessment</li>
-        <li>Architecture planning & technology stack selection</li>
-        <li>Team structure design & hiring strategy</li>
-        <li>Business-technical alignment consulting</li>
-        <li>Go-to-market input from technical perspective</li>
-      </ul>
-      <p class="format">
-        <strong>Format:</strong> Strategic sessions, documentation, ongoing advisory
-      </p>
-    </SectionContent>
-
-    <SectionContent context="grid">
-      <h3>Prototype Development</h3>
-      <p><strong>Best for:</strong> Taking ideas from concept to working demonstration</p>
-      <h4>What you get:</h4>
-      <ul>
-        <li>Full technical architecture design</li>
-        <li>Working, usable prototype (not just mockup)</li>
-        <li>Technology foundation for scaling</li>
-        <li>Documentation & knowledge transfer</li>
-        <li>UX design included</li>
-      </ul>
-      <p class="format">
-        <strong>Format:</strong> Intensive development sprint (weeks to months depending
-        on complexity)
-      </p>
-    </SectionContent>
-
-    <SectionContent context="grid">
-      <h3>Team Assembly & Leadership</h3>
-      <p><strong>Best for:</strong> Building technical teams from scratch</p>
-      <h4>What you get:</h4>
-      <ul>
-        <li>Complete team assessment & hiring</li>
-        <li>Technical leadership & project management</li>
-        <li>Development of initial product/platform</li>
-        <li>Team education & capability building</li>
-        <li>Transition plan for ongoing operations</li>
-      </ul>
-      <p class="format">
-        <strong>Format:</strong> Multi-month engagement as hands-on CTO
-      </p>
-    </SectionContent>
+    {cards.map(card => (
+      <SectionContent context="grid">
+        <h3>{card.title}</h3>
+        <p>
+          <strong>Best for:</strong> {card.bestFor}
+        </p>
+        <h4>{card.whatYouGetTitle ?? 'What you get:'}</h4>
+        <ul>
+          {card.whatYouGet.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <p class="format">
+          <strong>Format:</strong> {card.format}
+        </p>
+      </SectionContent>
+    ))}
   </SectionGrid>
 
-  <NoteBox icon="lightbulb">
-    <p>
-      <strong>Common Thread:</strong> All engagements focus on knowledge transfer,
-      not dependency. You keep the capabilities when I leave.
-    </p>
-  </NoteBox>
+  {note ? (
+    <NoteBox icon={note.icon ?? 'lightbulb'}>
+      <p>
+        {note.title ? <strong>{note.title}:</strong> : null} {note.text}
+      </p>
+    </NoteBox>
+  ) : null}
 
   <div class="engagement-cta">
-    <Button
-      href="https://cal.com/zentala"
-      text="Schedule discovery call to discuss your needs"
-      variant="primary"
-      target="_blank"
-      icon="calendar"
-    />
+    {cta ? (
+      <Button
+        href={cta.href}
+        text={cta.text}
+        variant={cta.variant ?? 'primary'}
+        target={cta.target}
+        icon={cta.icon}
+      />
+    ) : null}
   </div>
 </div>
