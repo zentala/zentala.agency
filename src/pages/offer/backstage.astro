@@ -128,14 +128,16 @@ const whyExternalConsultant = [
           {
             developmentServices.map((service) => (
               <CardContainer backgroundIcon={service.icon}>
-                <h3 class="font-regular mb-4 text-2xl text-white">
+                <h3 class="mb-6 text-2xl font-light text-white">
                   {service.name}
                 </h3>
                 <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-2">
+                <ul class="space-y-3">
                   {service.features.map((feature) => (
-                    <li class="flex items-center text-gray-300">
-                      <span class="mr-2 text-green-400">✓</span>
+                    <li class="group flex items-center text-gray-300">
+                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
+                        ✓
+                      </span>
                       {feature}
                     </li>
                   ))}
@@ -160,14 +162,16 @@ const whyExternalConsultant = [
           {
             consultingServices.map((service) => (
               <CardContainer backgroundIcon={service.icon}>
-                <h3 class="font-regular mb-4 text-2xl text-white">
+                <h3 class="mb-6 text-2xl font-light text-white">
                   {service.name}
                 </h3>
                 <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-2">
+                <ul class="space-y-3">
                   {service.features.map((feature) => (
-                    <li class="flex items-center text-gray-300">
-                      <span class="mr-2 text-green-400">✓</span>
+                    <li class="group flex items-center text-gray-300">
+                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
+                        ✓
+                      </span>
                       {feature}
                     </li>
                   ))}
@@ -190,7 +194,7 @@ const whyExternalConsultant = [
         />
         <div class="cards-grid border-t border-gray-800">
           <CardContainer>
-            <h3 class="mb-4 text-2xl font-semibold text-white">
+            <h3 class="mb-6 text-2xl font-light text-white">
               Extended Engagement
             </h3>
             <p class="mb-6 text-gray-300">
@@ -198,7 +202,7 @@ const whyExternalConsultant = [
               standups, architect solutions, implement complex features, and
               mentor your team throughout the journey.
             </p>
-            <ul class="space-y-2 text-gray-300">
+            <ul class="space-y-3 text-gray-300">
               <li>• Daily involvement in your project</li>
               <li>• Direct hands-on development</li>
               <li>• Architecture & strategic planning</li>
@@ -206,15 +210,13 @@ const whyExternalConsultant = [
             </ul>
           </CardContainer>
           <CardContainer>
-            <h3 class="mb-4 text-2xl font-semibold text-white">
-              Project Sprints
-            </h3>
+            <h3 class="mb-6 text-2xl font-light text-white">Project Sprints</h3>
             <p class="mb-6 text-gray-300">
               Intensive development sprints for specific features like custom
               plugins, AI integrations, or processor development with immediate
               impact and results.
             </p>
-            <ul class="space-y-2 text-gray-300">
+            <ul class="space-y-3 text-gray-300">
               <li>• 2-4 week focused sprints</li>
               <li>• Specific feature delivery</li>
               <li>• Team training included</li>
@@ -236,25 +238,19 @@ const whyExternalConsultant = [
         />
         <div class="cards-grid border-t border-gray-800">
           <CardContainer>
-            <h3 class="mb-2 text-xl font-semibold text-white">
-              Strategic Vision
-            </h3>
+            <h3 class="mb-4 text-xl font-light text-white">Strategic Vision</h3>
             <p class="text-gray-300">
               Architecture design, roadmap planning, and DevEx strategy
             </p>
           </CardContainer>
           <CardContainer>
-            <h3 class="mb-2 text-xl font-semibold text-white">
-              Hands-On Coding
-            </h3>
+            <h3 class="mb-4 text-xl font-light text-white">Hands-On Coding</h3>
             <p class="text-gray-300">
               Full-stack development, custom plugins, and complex integrations
             </p>
           </CardContainer>
           <CardContainer>
-            <h3 class="mb-2 text-xl font-semibold text-white">
-              Team Empowerment
-            </h3>
+            <h3 class="mb-4 text-xl font-light text-white">Team Empowerment</h3>
             <p class="text-gray-300">
               Knowledge transfer, best practices, and ongoing mentorship
             </p>
@@ -330,9 +326,7 @@ const whyExternalConsultant = [
             </p>
           </CardContainer>
           <CardContainer>
-            <h3 class="mb-4 text-2xl font-semibold text-white">
-              What I Deliver
-            </h3>
+            <h3 class="mb-4 text-2xl font-light text-white">What I Deliver</h3>
             <p class="mb-4 text-lg text-white">
               I design dev portals that teams actually want to use.
             </p>
@@ -342,21 +336,21 @@ const whyExternalConsultant = [
               that empowers your developers to succeed long-term.
             </p>
           </CardContainer>
-        </div>
-        <div class="mt-16">
-          <h3 class="font-regular mb-6 text-2xl text-white">
-            Why Hire an External Backstage Expert & DevEx Consultant?
-          </h3>
-          <ul class="space-y-4">
-            {
-              whyExternalConsultant.map((benefit) => (
-                <li class="flex items-start">
-                  <span class="mr-3 mt-1 text-blue-400">▶</span>
-                  <span class="text-gray-300">{benefit}</span>
-                </li>
-              ))
-            }
-          </ul>
+          <CardContainer>
+            <h3 class="mb-6 text-2xl font-light text-white">
+              Why Hire an External Backstage Expert & DevEx Consultant?
+            </h3>
+            <ul class="space-y-4">
+              {
+                whyExternalConsultant.map((benefit) => (
+                  <li class="flex items-start">
+                    <span class="mr-3 mt-1 text-gray-500">▶</span>
+                    <span class="text-gray-300">{benefit}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </CardContainer>
         </div>
       </div>
     </div>
