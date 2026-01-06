@@ -1,0 +1,76 @@
+---
+export interface Props {
+  quote: string
+  author?: string
+  variant?: 'default' | 'hero'
+  class?: string
+}
+
+const { quote, author, variant = 'default', class: className = '' } = Astro.props
+---
+
+<blockquote class:list={['blockquote', `blockquote--${variant}`, className]}>
+  <p class="blockquote__text">"{quote}"</p>
+  {author && <cite class="blockquote__author">— {author}</cite>}
+</blockquote>
+
+<style lang="scss">
+  @use '@/styles/variables' as *;
+
+  .blockquote {
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    &__text {
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    &__author {
+      display: block;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    // Default variant (for general use)
+    &--default {
+      .blockquote__text {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0.5rem;
+
+        @include mobile {
+          font-size: 1.125rem;
+        }
+      }
+
+      .blockquote__author {
+        font-size: 0.9375rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    // Hero variant (larger, blue accent)
+    &--hero {
+      margin-bottom: 2rem;
+
+      .blockquote__text {
+        font-size: 1.5rem;
+        color: #60a5fa;
+        margin-bottom: 0.5rem;
+
+        @include mobile {
+          font-size: 1.25rem;
+        }
+      }
+
+      .blockquote__author {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+</style>

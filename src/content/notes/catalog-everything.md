@@ -1,3 +1,7 @@
+---
+title: 'Catalog Everything'
+---
+
 ## catalog everything
 
 te rzecyz , sczegolnie zbudowanie katlogu i podczenie douentacji, moga wydawac sie nidne ale skatalogowanie wszytskie porzwdnie to zawsze pierwszy krok jaki rekomenduje klinetom w swojej strategii devex

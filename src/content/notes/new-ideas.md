@@ -1,3 +1,7 @@
+---
+title: 'Backstage as a Tool for Improving Developer Experience'
+---
+
 # Backstage as a Tool for Improving Developer Experience: How to Generate Ideas for New Features?
 
 Backstage is a powerful tool, but the number of ready-made solutions (plugins) for Backstage is limited because Backstage (dev portal) is designed to map organization-specific processes and data. The greatest value that can be generated with it lies in its customization - how well it maps real company structures and how effectively it enables developers to navigate across company infrastructure. Custom tools play a key role here, allowing for efficient debugging, problem-solving, and prevention thanks to the information gathered in Backstage. Backstage provides a backbone of data for various kinds of automation, from code development using LLMs to quality checks. Before we start implementing solutions, it is essential to identify key objects within the IT department and ensure they are mapped to Backstage, sometimes using custom solutions. The question of what new features to implement in Backstage doesn't have a simple answer, as it is not about blindly copying solutions but understanding what developer needs require fulfillment. The answer lies in the DevEx (Developer Experience) approach, which involves consciously designing developer experiences, similar to how UX focuses on designing user experiences.

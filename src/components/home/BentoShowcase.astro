@@ -1,0 +1,125 @@
+---
+/**
+ * BentoShowcase - Example bento grid layout
+ *
+ * Demonstrates the new Section Primitives system with:
+ * - Asymmetric bento grid layout
+ * - Mixed content types (text, images, quotes, CTAs)
+ * - Custom column/row spans
+ *
+ * This is a showcase example - adapt content as needed
+ */
+
+import Section from '../primitives/sections/Section.astro'
+import SectionHeader from '../primitives/sections/SectionHeader.astro'
+import SectionBento from '../primitives/sections/SectionBento.astro'
+import BentoCard from '../primitives/sections/BentoCard.astro'
+import SectionContent from '../primitives/sections/SectionContent.astro'
+import SectionImage from '../primitives/sections/SectionImage.astro'
+import SectionBlockQuote from '../primitives/sections/SectionBlockQuote.astro'
+import SectionCTA from '../primitives/sections/SectionCTA.astro'
+---
+
+<Section id="bento-showcase">
+  <SectionHeader
+    headline="Why Work With Me"
+    subhead="A unique combination of technical depth and business understanding"
+    interactive={true}
+  />
+
+  <SectionBento rowHeight="0.8fr">
+    <!-- Row 1-2: Col 1 - Avatar (1:2) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="none">
+      <SectionImage
+        src="https://cdn.zentala.io/images/avatar.jpg"
+        alt="Paweł Żentała"
+        aspectRatio="auto"
+        objectFit="cover"
+        hoverZoom={true}
+      />
+    </BentoCard>
+
+    <!-- Row 1: Col 2 - Years (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+      <SectionContent context="grid" prose={true}>
+        <h3>20+ Years</h3>
+        <p>Experience across startups and corporations.</p>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 1: Col 3 - Innovation (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+      <SectionContent context="grid" prose={true}>
+        <h3>Innovation</h3>
+        <p>Cutting-edge solutions for complex problems.</p>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 1-2: Col 4 - Business (1:2) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="sm">
+      <SectionContent context="grid" prose={true}>
+        <h3>Business Focus</h3>
+        <p>
+          Technical solutions that drive actual business results. Not just code,
+          but outcomes.
+        </p>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 2-3: Col 2-3 - Electronics (2:2) -->
+    <BentoCard colSpan={2} rowSpan={2} padding="none">
+      <SectionImage
+        src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop"
+        alt="Electronics and technology"
+        aspectRatio="auto"
+        objectFit="cover"
+        hoverZoom={true}
+      />
+    </BentoCard>
+
+    <!-- Row 3: Col 1 - Stack (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+      <SectionContent context="grid" prose={true}>
+        <h3>Complete Stack</h3>
+        <p>Frontend to backend, DevOps to IoT.</p>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 3-4: Col 4 - Workspace image (1:2) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="none">
+      <SectionImage
+        src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=600&fit=crop"
+        alt="Technology workspace"
+        aspectRatio="auto"
+        objectFit="cover"
+        hoverZoom={true}
+      />
+    </BentoCard>
+
+    <!-- Row 4: Col 1-2 - Quote (2:1) -->
+    <BentoCard colSpan={2} rowSpan={1} padding="sm">
+      <SectionBlockQuote
+        quote="Where you have nothing, I build everything."
+        author="Paweł Żentała"
+        role="Fractional CTO"
+        variant="minimal"
+      />
+    </BentoCard>
+
+    <!-- Row 4: Col 3 - Fast (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+      <SectionContent context="grid" prose={true}>
+        <h3>Fast Execution</h3>
+        <p>Weeks, not months.</p>
+      </SectionContent>
+    </BentoCard>
+  </SectionBento>
+
+  <SectionCTA
+    href="/portfolio"
+    text="View Complete Portfolio"
+    icon="folder"
+    variant="primary"
+    bgText="PORTFOLIO"
+  />
+</Section>

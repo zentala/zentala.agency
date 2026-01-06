@@ -1,0 +1,87 @@
+---
+/**
+ * SectionBento - Bento grid for asymmetric layouts
+ *
+ * Provides:
+ * - 4-column base grid (desktop)
+ * - Custom span support via BentoCard
+ * - Configurable row height (aspect ratio)
+ * - Border mechanics (transparent pattern)
+ * - Hover states
+ * - Responsive collapse (4→2→1)
+ *
+ * Usage:
+ * <SectionBento rowHeight="1fr">  <!-- square (default) -->
+ * <SectionBento rowHeight="60%">  <!-- 60% of column width -->
+ * <SectionBento rowHeight="200px"> <!-- fixed height -->
+ *   <BentoCard colSpan={2} rowSpan={2}>...</BentoCard>
+ *   <BentoCard colSpan={1} rowSpan={1}>...</BentoCard>
+ * </SectionBento>
+ */
+
+interface Props {
+  rowHeight?: string // e.g., "1fr" (square), "60%", "200px", "0.6fr"
+}
+
+const { rowHeight = '1fr' } = Astro.props
+---
+
+<div class="bento-grid" style={`grid-auto-rows: ${rowHeight};`}>
+  <slot />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: dense; // Fill gaps with smaller items
+    // grid-auto-rows set via inline style prop (default: 1fr = square)
+    border-top: 1px solid $border-color;
+
+    > :global(*) {
+      border: 1px solid transparent;
+      border-right-color: $border-color;
+      border-bottom-color: $border-color;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    > :global(*:hover) {
+      z-index: 10; // High z-index to show all borders above siblings
+      border-color: $border-color-hover;
+    }
+
+    // Remove right border from last column items
+    @include medium-up {
+      // This is tricky with spans - we'll handle in BentoCard if needed
+      // For now, rely on manual placement
+    }
+
+    // Tablet: 2 columns
+    @include tablet-up {
+      @include medium-only {
+        grid-template-columns: repeat(2, 1fr);
+
+        > :global(*) {
+          // Reset spans to fit 2-col grid
+          grid-column: span 1 !important;
+        }
+      }
+    }
+
+    // Mobile: 1 column
+    @include mobile {
+      grid-template-columns: 1fr;
+
+      > :global(*) {
+        border-right: none;
+        // Reset spans to single column
+        grid-column: span 1 !important;
+        grid-row: auto !important;
+      }
+    }
+  }
+</style>

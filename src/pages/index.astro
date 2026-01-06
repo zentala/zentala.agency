@@ -1,18 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Section from '../components/primitives/sections/Section.astro'
+import HeroWithVariations from '../components/home/HeroWithVariations.astro'
+import ServiceIoT from '../components/home/ServiceIoT.astro'
+import ServiceBackstage from '../components/home/ServiceBackstage.astro'
+import ServiceRapidDev from '../components/home/ServiceRapidDev.astro'
+import WhyWorkWithMe from '../components/home/WhyWorkWithMe.astro'
+import BentoShowcase from '../components/home/BentoShowcase.astro'
+import EngagementModels from '../components/home/EngagementModels.astro'
+import CTASection from '../components/home/CTASection.astro'
 ---
 
 <Layout
-  title="Home"
-  description="Żentała - Driving progress through cutting-edge technology solutions in software, IoT, and automation. Let's build the future, together."
+  title="Paweł Żentała - Hands-On CTO for Innovation Projects"
+  description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
-  <section class="section-grid">
-    <div class="container-bordered px-responsive-xl py-responsive-lg">
-      <div class="responsive-logo mx-auto">
-        <img src="./logo.ext.svg" alt="Żentała Innovation Agency" />
-      </div>
-    </div>
-  </section>
+  <Section id="hero">
+    <HeroWithVariations />
+  </Section>
 
-  <style></style>
+  <Section>
+    <ServiceIoT />
+  </Section>
+
+  <Section>
+    <ServiceBackstage />
+  </Section>
+
+  <Section>
+    <ServiceRapidDev />
+  </Section>
+
+  <Section id="why">
+    <WhyWorkWithMe />
+  </Section>
+
+  <!-- Bento Grid Showcase - NEW Section Primitives System -->
+  <BentoShowcase />
+
+  <Section id="engagement">
+    <EngagementModels />
+  </Section>
+
+  <Section id="cta">
+    <CTASection />
+  </Section>
 </Layout>

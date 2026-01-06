@@ -1,3 +1,7 @@
+---
+title: 'Developer Experience Purpose - Article Notes'
+---
+
 Chce napisac artykul po angl na bloga. 
 docelowo ma byc w markdown na razie nie
 bo praujcemy nad tekstem

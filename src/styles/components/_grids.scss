@@ -18,6 +18,7 @@
   // Grid system with selective borders - no overlapping margins
   .cards-grid {
     @include cards-grid;
+    border-top: 1px solid $border-color;
 
     // All children get full borders - but top/left are transparent by default
     > * {
@@ -26,6 +27,7 @@
       border-bottom-color: $border-color;
       position: relative;
       z-index: 1;
+      overflow: hidden;
     }
 
     // Hover effect - show all borders with hover color
@@ -98,6 +100,90 @@
         border-right: none;
       }
     }
+  }
+
+  // =======================================
+  // CONTENT GRID SYSTEM
+  // =======================================
+  // Flexible content grid using 16-column fractional units
+  // Supports text, images, and CTAs with vertical dividers
+  // Used in Hero sections and content blocks
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid $border-color;
+
+    // All children get full borders - top/left transparent by default
+    > * {
+      border: 1px solid transparent;
+      border-right-color: $border-color;
+      border-bottom-color: $border-color;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    // Hover effect - show all borders with hover color
+    > *:hover {
+      z-index: 2;
+      border-color: $border-color-hover;
+    }
+
+    // Desktop: 2 columns by default (halves)
+    @include medium-up {
+      grid-template-columns: 1fr 1fr;
+
+      // Remove right border from last column
+      > *:last-child {
+        border-right: none;
+      }
+    }
+
+    // Mobile: single column, no right border
+    @include mobile {
+      > * {
+        border-right: none;
+      }
+    }
+  }
+
+  // Modifier: 1/2 + 1/2 (equal halves) - DEFAULT
+  .content-grid--halves {
+    @include medium-up {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  // Modifier: 2/3 + 1/3 (10/16 + 6/16)
+  .content-grid--two-one {
+    @include medium-up {
+      grid-template-columns: 1.67fr 1fr;
+    }
+  }
+
+  // Modifier: 1/3 + 2/3 (6/16 + 10/16)
+  .content-grid--one-two {
+    @include medium-up {
+      grid-template-columns: 1fr 1.67fr;
+    }
+  }
+
+  // Content grid item with text - needs internal padding
+  .content-grid__text {
+    @include py-responsive('md');
+    @include px-responsive('md');
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  // Content grid item with image - no padding, full bleed
+  .content-grid__image {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   // Common card styles - borders handled by .cards-grid parent

@@ -1,0 +1,149 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  icon?: string // Lucide icon name (without 'lucide:' prefix)
+  title?: string
+  variant?: 'default' | 'info' | 'success' | 'warning'
+}
+
+const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
+---
+
+<div class={`note-box note-box--${variant}`}>
+  <Icon name={`lucide:${icon}`} class="note-box__icon" />
+  <div class="note-box__content">
+    {title && <strong class="note-box__title">{title}</strong>}
+    <slot />
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .note-box {
+    max-width: 900px;
+    margin: 3rem auto 2rem;
+    padding: 2rem;
+    background: rgba(31, 41, 55, 0.3);
+    border-left: 3px solid $border-color;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+
+    @include mobile {
+      flex-direction: column;
+      margin: 2rem auto 1.5rem;
+      padding: 1.5rem;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      color: #60a5fa;
+      width: 24px;
+      height: 24px;
+      stroke-width: 1;
+
+      @include mobile {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &__content {
+      flex: 1;
+      color: rgba(255, 255, 255, 0.9);
+
+      p {
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        text-align: left;
+
+        strong {
+          color: rgba(255, 255, 255, 1);
+        }
+
+        @include mobile {
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+    }
+
+    &__title {
+      display: block;
+      color: #60a5fa;
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    // Variants
+    &--info {
+      .note-box__icon {
+        color: #3b82f6; // blue-500
+      }
+
+      .note-box__content {
+        p {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        strong {
+          color: rgba(255, 255, 255, 1) !important;
+        }
+      }
+
+      .note-box__title {
+        color: #3b82f6;
+      }
+    }
+
+    &--success {
+      border-left-color: #10b981; // green-500
+
+      .note-box__icon {
+        color: #10b981;
+      }
+
+      .note-box__content {
+        p {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        strong {
+          color: rgba(255, 255, 255, 1) !important;
+        }
+      }
+
+      .note-box__title {
+        color: #10b981;
+      }
+    }
+
+    &--warning {
+      border-left-color: #f59e0b; // amber-500
+
+      .note-box__icon {
+        color: #f59e0b;
+      }
+
+      .note-box__content {
+        p {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        strong {
+          color: rgba(255, 255, 255, 1) !important;
+        }
+      }
+
+      .note-box__title {
+        color: #f59e0b;
+      }
+    }
+  }
+</style>

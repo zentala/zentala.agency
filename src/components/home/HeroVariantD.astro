@@ -1,0 +1,44 @@
+---
+import Logo from '../Logo.astro'
+import Button from '../Button.astro'
+import ImageCircle from '../primitives/ImageCircle.astro'
+---
+
+<div class="hero-variant hero-variant-d">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <Logo type="full" color="#ffffff" width="200px" height="auto" />
+    </div>
+
+    <div class="hero-photo">
+      <ImageCircle
+        src="https://cdn.zentala.io/images/avatar.jpg"
+        alt="Paweł Żentała"
+      />
+    </div>
+
+    <h1 class="hero-name">Paweł Żentała</h1>
+    <h2 class="hero-title">Builder of Complex Technology Solutions</h2>
+
+    <p class="hero-description">
+      I specialize in greenfield engineering projects - where there's no team,
+      no architecture, no prototype. From IoT products to developer platforms to
+      rapid web applications, I bring 20+ years of hands-on experience across
+      programming, robotics, DevOps, UX, and business strategy.
+    </p>
+
+    <p class="hero-tagline">
+      Your technical co-founder when you need to start from zero.
+    </p>
+
+    <div class="hero-cta">
+      <Button
+        href="https://cal.com/zentala"
+        text="Schedule Call"
+        variant="primary"
+        target="_blank"
+      />
+      <Button href="/portfolio" text="Portfolio" variant="secondary" />
+    </div>
+  </div>
+</div>

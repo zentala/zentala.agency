@@ -1,0 +1,55 @@
+---
+import Button from '../Button.astro'
+import SectionImage from '../primitives/sections/SectionImage.astro'
+import SectionBlockQuote from '../primitives/sections/SectionBlockQuote.astro'
+---
+
+<div class="content-grid content-grid--two-one">
+  <div class="content-grid__text">
+    <!-- Main Heading -->
+    <h1 class="hero-title">Hands-On CTO for Innovation Projects</h1>
+
+    <!-- Description -->
+    <p class="hero-description">
+      I build complex technology solutions from vision to working prototype -
+      and assemble teams to scale them. With 20+ years across full-stack
+      development, IoT, robotics, DevOps, management, and UX, I act as your
+      technical co-founder until you have a team.
+    </p>
+
+    <!-- Quote -->
+    <SectionBlockQuote
+      quote="Where you have nothing, I build everything."
+      author="Paweł Żentała"
+      role=""
+      variant="large"
+    />
+
+    <!-- CTA Buttons -->
+    <div class="hero-cta">
+      <Button
+        href="https://cal.com/zentala"
+        text="Schedule Discovery Call"
+        variant="primary"
+        target="_blank"
+        icon="calendar"
+      />
+      <Button
+        href="/portfolio"
+        text="View Portfolio"
+        variant="secondary"
+        icon="briefcase"
+      />
+    </div>
+  </div>
+
+  <!-- Professional Photo -->
+  <div class="content-grid__image">
+    <SectionImage
+      src="https://cdn.zentala.io/images/avatar.jpg"
+      alt="Paweł Żentała"
+      aspectRatio="square"
+      objectFit="cover"
+    />
+  </div>
+</div>

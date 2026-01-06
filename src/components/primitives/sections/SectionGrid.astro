@@ -1,0 +1,138 @@
+---
+/**
+ * SectionGrid - Flexible responsive grid (2-5 columns)
+ *
+ * Provides:
+ * - Customizable columns (2-5 on desktop)
+ * - Border mechanics (transparent pattern)
+ * - Hover states (z-index + border color)
+ * - Responsive collapse (desktop → 2 cols → 1 col)
+ *
+ * Usage:
+ * <SectionGrid columns={4}>
+ *   <SectionContent context="grid">...</SectionContent>
+ *   <SectionContent context="grid">...</SectionContent>
+ * </SectionGrid>
+ */
+
+interface Props {
+  columns?: 2 | 3 | 4 | 5
+  gap?: boolean // Use gap instead of borders
+}
+
+const { columns = 3, gap = false } = Astro.props
+---
+
+<div class={`section-grid-wrapper section-grid-cols-${columns} ${gap ? 'with-gap' : ''}`}>
+  <slot />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .section-grid-wrapper {
+    display: grid;
+    border-top: 1px solid $border-color;
+
+    // All children get border mechanics
+    > :global(*) {
+      border: 1px solid transparent;
+      border-right-color: $border-color;
+      border-bottom-color: $border-color;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    > :global(*:hover) {
+      z-index: 10; // High z-index to show all borders above siblings
+      border-color: $border-color-hover;
+    }
+  }
+
+  // Column variants - desktop
+  .section-grid-cols-2 {
+    @include medium-up {
+      grid-template-columns: repeat(2, 1fr);
+
+      > :global(*:nth-child(2n)) {
+        border-right: none;
+      }
+    }
+  }
+
+  .section-grid-cols-3 {
+    @include medium-up {
+      grid-template-columns: repeat(3, 1fr);
+
+      > :global(*:nth-child(3n)) {
+        border-right: none;
+      }
+    }
+  }
+
+  .section-grid-cols-4 {
+    @include medium-up {
+      grid-template-columns: repeat(4, 1fr);
+
+      > :global(*:nth-child(4n)) {
+        border-right: none;
+      }
+    }
+  }
+
+  .section-grid-cols-5 {
+    @include medium-up {
+      grid-template-columns: repeat(5, 1fr);
+
+      > :global(*:nth-child(5n)) {
+        border-right: none;
+      }
+    }
+  }
+
+  // Tablet: collapse to 2 columns (except 2-col stays 2)
+  @include medium-only {
+    .section-grid-cols-3,
+    .section-grid-cols-4,
+    .section-grid-cols-5 {
+      grid-template-columns: repeat(2, 1fr);
+
+      > :global(*:nth-child(2n)) {
+        border-right: none;
+      }
+
+      // Reset desktop nth-child rules
+      > :global(*:nth-child(3n)),
+      > :global(*:nth-child(4n)),
+      > :global(*:nth-child(5n)) {
+        border-right-color: $border-color;
+      }
+    }
+  }
+
+  // Mobile: always 1 column
+  @include mobile {
+    .section-grid-wrapper {
+      grid-template-columns: 1fr;
+
+      > :global(*) {
+        border-right: none;
+      }
+    }
+  }
+
+  // Optional: gap variant (no borders)
+  .with-gap {
+    gap: 1rem;
+    border-top: none;
+
+    > :global(*) {
+      border: none;
+    }
+
+    > :global(*:hover) {
+      border: none;
+    }
+  }
+</style>

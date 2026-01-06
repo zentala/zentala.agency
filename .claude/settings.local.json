@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Remove-Item \"c:\\code\\zentala.agency\\src\\components\\home\\EngagementCard.astro\" -Force)",
+      "Bash(Remove-Item \"c:\\code\\zentala.agency\\src\\components\\home\\CapabilityBlock.astro\" -Force)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

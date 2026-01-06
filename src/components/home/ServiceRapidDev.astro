@@ -1,0 +1,88 @@
+---
+import ServiceSection from './ServiceSection.astro'
+import FeaturedProjects from './FeaturedProjects.astro'
+import ProjectCard from './ProjectCard.astro'
+import SectionCTA from '../primitives/sections/SectionCTA.astro'
+---
+
+<ServiceSection
+  id="rapid-prototyping"
+  headline="Rapid Application Prototyping with AI"
+  subhead="Full-stack TypeScript applications from problem to working prototype"
+>
+  <div class="service-description">
+    <p>
+      I build functional web applications rapidly using AI-assisted development.
+      Not just "AI-powered apps" - but using AI to accelerate development of
+      full-stack solutions with UX awareness and business understanding. If you
+      have a problem, I'll find the solution through a custom application.
+    </p>
+  </div>
+
+  <div class="service-deliverables">
+    <h3 class="section-subheading">WHAT YOU GET</h3>
+    <ul>
+      <li>Full-stack TypeScript applications (React, Astro, Node.js)</li>
+      <li>
+        UX-aware development - interfaces designed for users, not just
+        functionality
+      </li>
+      <li>
+        Understanding client needs & translating problems into software
+        solutions
+      </li>
+      <li>Rapid iteration from concept to working prototype</li>
+      <li>Optional: Team assembly for scaling to production</li>
+    </ul>
+  </div>
+
+  <div class="service-tech">
+    <h3 class="section-subheading">TECH STACK</h3>
+    <p>
+      TypeScript, React, Astro, Supabase, Node.js, AI integrations where
+      appropriate
+    </p>
+  </div>
+
+  <div class="service-usecases">
+    <h3>Use cases:</h3>
+    <ul>
+      <li>Public service applications (interactive city services, transit displays)</li>
+      <li>Internal automation tools</li>
+      <li>Data platforms & aggregation systems</li>
+      <li>Specialized business applications</li>
+    </ul>
+  </div>
+
+  <FeaturedProjects>
+    <ProjectCard
+      title="Game Player Nick Finder (gPNF)"
+      description="Platform reconnecting RPG gaming communities through nickname search. Full-stack application with user profiles, direct messaging, and email notifications. Rapid prototype demonstrating concept viability."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=gPNF"
+      link="https://gpnf.zentala.io"
+      linkText="Visit gpnf.zentala.io →"
+    />
+
+    <ProjectCard
+      title="Infopill - News Aggregation Platform"
+      description="News aggregation system with email automation. Collects, processes, and distributes curated content to subscribers. Example of data pipeline + user-facing application."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Infopill"
+      link="/portfolio"
+    />
+
+    <ProjectCard
+      title="Interactive Transit Display"
+      description="Real-time public transport information system for city services. Interactive displays showing schedules, delays, and route information. Public-facing application with live data integration."
+      image="https://via.placeholder.com/400x300/1e293b/3b82f6?text=Transit"
+      link="/portfolio"
+    />
+  </FeaturedProjects>
+
+  <SectionCTA
+    href="https://cal.com/zentala"
+    text="Discuss rapid prototyping needs"
+    icon="message-circle"
+    variant="primary"
+  />
+</ServiceSection>
+

@@ -1,0 +1,133 @@
+---
+/**
+ * SectionBlockQuote - Quote block for sections
+ *
+ * Enhanced version of BlockQuote with:
+ * - Top/bottom borders for section integration
+ * - Margin -1px for border overlap
+ * - Hover states
+ * - Multiple variants
+ * - Optional role/title for author
+ *
+ * Usage:
+ * <SectionBlockQuote
+ *   quote="Great product!"
+ *   author="John Doe"
+ *   role="CEO, Company"
+ *   variant="default"
+ * />
+ */
+
+interface Props {
+  quote?: string
+  author?: string
+  role?: string
+  variant?: 'default' | 'large' | 'minimal'
+  class?: string
+}
+
+const { quote, author, role, variant = 'default', class: className = '' } = Astro.props
+---
+
+<div class={`section-blockquote section-blockquote--${variant} ${className}`}>
+  <blockquote>
+    {
+      quote ? (
+        <p class="quote-text">"{quote}"</p>
+      ) : (
+        <div class="quote-text">
+          <slot />
+        </div>
+      )
+    }
+  </blockquote>
+
+  {
+    (author || role) && (
+      <footer class="quote-footer">
+        {author && <cite class="quote-author">— {author}</cite>}
+        {role && <span class="quote-role">{role}</span>}
+      </footer>
+    )
+  }
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .section-blockquote {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    margin: -1px 0; // Overlap with adjacent borders
+    background: #000;
+    transition: background 200ms, border-color 200ms;
+    position: relative;
+    z-index: 1;
+
+    &:hover {
+      background: #111827;
+      border-color: $border-color-hover;
+      z-index: 10; // Lift above siblings to show all borders
+    }
+
+    blockquote {
+      margin: 0;
+    }
+
+    .quote-text {
+      @apply text-xl md:text-2xl font-light text-white/90 italic;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .quote-footer {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .quote-author {
+      @apply text-base text-white font-normal not-italic;
+    }
+
+    .quote-role {
+      @apply text-sm text-white/60;
+    }
+
+    // Variants
+    &--large {
+      .quote-text {
+        @apply text-2xl md:text-3xl;
+      }
+
+      .quote-author {
+        @apply text-lg;
+      }
+    }
+
+    &--minimal {
+      border-top: none;
+      border-bottom: none;
+      padding: 0;
+      margin: 0;
+
+      &:hover {
+        background: transparent;
+      }
+
+      .quote-text {
+        @apply text-lg md:text-xl;
+      }
+    }
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .section-blockquote {
+      transition: none !important;
+    }
+  }
+</style>
