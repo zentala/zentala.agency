@@ -46,8 +46,8 @@ interface Props {
   quote?: HeroQuote
   imageSrc?: string
   imageAlt?: string
-  imageAspectRatio?: string
-  imageObjectFit?: string
+  imageAspectRatio?: 'square' | '16/9' | '4/3' | 'auto'
+  imageObjectFit?: 'cover' | 'contain'
 }
 
 const {

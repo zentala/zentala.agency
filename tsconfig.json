@@ -3,7 +3,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "jsxImportSource": "solid-js",
     "paths": {
       "@/*": ["src/*"],
       "@/components/*": ["src/components/*"],

@@ -9,7 +9,7 @@ type EngagementCard = {
   title: string
   bestFor: string
   whatYouGetTitle?: string
-  whatYouGet: string[]
+  whatYouGet: readonly string[]
   format: string
 }
 
@@ -24,7 +24,7 @@ type CTAButton = {
 interface Props {
   headline: string
   subhead: string
-  cards: EngagementCard[]
+  cards: readonly EngagementCard[]
   note?: { icon?: string; title?: string; text: string }
   cta?: CTAButton
 }

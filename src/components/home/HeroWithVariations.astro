@@ -21,7 +21,7 @@ const { variants, defaultVariant = 'A' } = Astro.props
       data-variant={key}
       class={`hero-variant-wrapper ${key === defaultVariant ? 'hero-variant-active' : 'hero-variant-hidden'}`}
     >
-      <Hero {...config.componentProps} />
+      <Hero {...(config.componentProps as any)} />
     </div>
   ))}
 </div>

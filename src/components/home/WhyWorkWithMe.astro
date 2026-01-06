@@ -13,14 +13,14 @@ type Column = {
   title: string
   subtitle?: string
   headingAfterList?: string
-  list?: ListItem[]
-  paragraphs?: Array<{ strongLabel?: string; text: string; className?: string }>
+  list?: readonly ListItem[]
+  paragraphs?: ReadonlyArray<{ strongLabel?: string; text: string; className?: string }>
 }
 
 interface Props {
   headline: string
   subhead: string
-  columns: Column[]
+  columns: readonly Column[]
   cta?: {
     href: string
     text: string
