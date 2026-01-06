@@ -51,10 +51,10 @@ const actualContext = context === 'auto' ? 'full' : context
 
   // Full-width context: generous padding + max-width
   .section-content--full {
-    @include px-responsive('lg'); // 64→48→32→24→16px
-    @include py-responsive('lg'); // 96→72→48→36→24px
     max-width: 960px;
     margin: 0 auto;
+    @include px-responsive('lg'); // 64→48→32→24→16px
+    @include py-responsive('lg'); // 96→72→48→36→24px
   }
 
   // Grid context: compact padding, use available space

@@ -123,11 +123,11 @@
 
 .service-header {
   text-align: center;
-  @include py-responsive('md');
-  @include px-responsive('md');
   border: 1px solid transparent;
   border-bottom-color: $border-color;
   transition: border-color 0.2s ease;
+  @include py-responsive('md');
+  @include px-responsive('md');
 
   &:hover {
     border-color: $border-color-hover;
@@ -304,11 +304,11 @@
 }
 
 .project-content {
-  @include padding-responsive('md');
   display: flex;
   flex-direction: column;
   gap: 1rem;
   flex: 1;
+  @include padding-responsive('md');
 }
 
 .project-title {
@@ -345,8 +345,8 @@
 
 // Why Work With Me Section
 .why-section {
-  @include py-responsive('lg');
   background: rgba(31, 41, 55, 0.2); // gray-800 subtle
+  @include py-responsive('lg');
 }
 
 .why-container {
@@ -402,8 +402,8 @@
 // Capability Block
 .capability-block {
   background: #000;
-  @include padding-responsive('md');
   transition: all 200ms ease-in-out;
+  @include padding-responsive('md');
 
   &:hover {
     background: #111827; // gray-900
@@ -565,10 +565,10 @@
 // Engagement Card
 .engagement-card {
   background: #000;
-  @include padding-responsive('md');
   display: flex;
   flex-direction: column;
   transition: all 200ms ease-in-out;
+  @include padding-responsive('md');
 
   &:hover {
     background: #111827; // gray-900
@@ -667,9 +667,9 @@
 
 // CTA Section
 .cta-section {
-  @include py-responsive('lg');
   background: rgba(31, 41, 55, 0.2);
   text-align: center;
+  @include py-responsive('lg');
 }
 
 .cta-container {

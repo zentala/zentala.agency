@@ -64,8 +64,6 @@ const rel = external ? 'noopener noreferrer' : undefined
   @use '../../../styles/variables' as *;
 
   .section-cta {
-    @include px-responsive('md');
-    @include py-responsive('md');
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,6 +75,8 @@ const rel = external ? 'noopener noreferrer' : undefined
     position: relative;
     z-index: 2; // Higher than Section's z-index: 1
     overflow: hidden; // Clip background text
+    @include px-responsive('md');
+    @include py-responsive('md');
 
     @include mobile {
       min-height: 100px;
