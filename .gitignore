@@ -28,6 +28,9 @@ pnpm-debug.log*
 /playwright-report/
 /playwright/.cache/
 
+# Local caches
+/.cache/
+
 # Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
 .specstory/**
 .cursorindexingignore

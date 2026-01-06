@@ -4,8 +4,13 @@
   "version": "0.0.1",
   "license": "UNLICENSED",
   "scripts": {
+    "browserslist:update": "npx --yes update-browserslist-db@latest",
+    "browserslist:update:if-stale": "node ./scripts/browserslist-update-if-stale.mjs",
     "dev": "astro dev",
     "start": "astro dev",
+    "predev": "npm run browserslist:update:if-stale",
+    "prestart": "npm run browserslist:update:if-stale",
+    "prebuild": "npm run browserslist:update:if-stale",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",

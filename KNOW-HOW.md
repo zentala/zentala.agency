@@ -41,6 +41,18 @@ List of usefull links and technologies to use.
 - https://kokonutui.com/
 - https://reactbits.dev/
 
+## Maintenance
+
+### Browserslist DB (caniuse-lite)
+
+Astro/Vite may warn that `caniuse-lite` is outdated. We auto-update it **only when stale** (default: every 60 days).
+
+- **Manual**: `npm run browserslist:update`
+- **Auto (stale check)**: runs on `predev`, `prestart`, `prebuild` via `npm run browserslist:update:if-stale`
+- **Cache file**: `/.cache/browserslist-update.json` (gitignored)
+- **Disable locally**: set `SKIP_BROWSERSLIST_UPDATE=1`
+- **Force update**: set `FORCE_BROWSERSLIST_UPDATE=1`
+
 ## Components
 
 ### Cards
