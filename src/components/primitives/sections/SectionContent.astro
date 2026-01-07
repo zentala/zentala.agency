@@ -44,15 +44,22 @@ const actualContext = context === 'auto' ? 'full' : context
   @use '../../../styles/variables' as *;
 
   .section-content {
-    background: #000;
+    background: var(--section-content-bg, #000);
     transition: background 200ms;
     position: relative;
     z-index: 1;
 
     &:hover {
-      background: #111827;
       z-index: 10; // Lift above siblings
     }
+  }
+
+  :global(.bento-card) .section-content {
+    --section-content-bg: transparent;
+  }
+
+  :global(.bento-card:hover) .section-content {
+    z-index: 10; // keep highlight above neighbors
   }
 
   // Full-width context: generous padding + max-width
@@ -86,24 +93,46 @@ const actualContext = context === 'auto' ? 'full' : context
   .section-content--prose .section-content__body {
     max-width: 100%;
 
-    h3 {
-      @apply mb-4 mt-0 text-2xl font-light leading-tight;
+    :global(h1) {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 44px;
+      font-weight: 300;
+      line-height: 1.1;
       color: #f8fafc;
-      padding-bottom: 0.9rem;
-      border-bottom: 1px solid rgba(248, 250, 252, 0.3);
     }
 
-    h4 {
+    :global(h2) {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f8fafc;
+    }
+
+    :global(h3) {
+      // Keep this as plain CSS (not @apply) because Tailwind @apply can be flaky in .astro <style>.
+      // Requirement: all h3 headings inside the bento grid should be 24px.
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f8fafc;
+    }
+
+    :global(h4) {
       @apply mb-3 text-xl font-light;
       color: rgba(248, 250, 252, 0.95);
     }
 
-    h5 {
+    :global(h5) {
       @apply mb-2 text-lg font-light;
       color: rgba(248, 250, 252, 0.9);
     }
 
-    p {
+    :global(p) {
       @apply mb-4 text-base text-white/70 md:text-lg;
 
       &:last-child {
@@ -111,8 +140,8 @@ const actualContext = context === 'auto' ? 'full' : context
       }
     }
 
-    ul,
-    ol {
+    :global(ul),
+    :global(ol) {
       @apply mb-4 ml-6 text-base text-white/70 md:text-lg;
 
       li {
@@ -124,15 +153,15 @@ const actualContext = context === 'auto' ? 'full' : context
       }
     }
 
-    ul {
+    :global(ul) {
       list-style: disc;
     }
 
-    ol {
+    :global(ol) {
       list-style: decimal;
     }
 
-    strong {
+    :global(strong) {
       @apply font-normal text-white;
     }
 

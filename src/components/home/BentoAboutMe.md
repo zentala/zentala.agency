@@ -1,4 +1,4 @@
-# Bento Showcase / SectionBento
+# Bento About Me / SectionBento
 
 ## Solution Architecture
 - **Purpose:** This section is a living showcase of the Section Primitives system. It should demonstrate how the asymmetric bento grid can highlight personal story, credibility and business outcomes in a compact layout without editorial noise.
@@ -11,7 +11,7 @@
 - **Playwright setup:** Reuse the existing `playwright.config.ts` (runs against `npm run preview` at `http://localhost:4321`). We'll add a dedicated `tests/e2e/bento-showcase.spec.ts` that can live alongside the link tests and run in the usual suite.
 - **Test steps:**
   1. Launch Chromium (default Playwright project) and go to `/`.
-  2. Scroll or wait for the `#bento-showcase` section to appear (ensure the anchor renders in the DOM). 
+  2. Scroll or wait for the `#bento-about-me` section to appear (ensure the anchor renders in the DOM). 
   3. Assert each highlight card contains the expected heading (e.g., `h3` text for "20+ Years", "Innovation", "Business Focus", etc.) to lock the copy.
   4. Inspect the computed color for the text inside `SectionContent` headings and paragraphs; verify it matches the dark tone from the theme (e.g., `rgb(15,23,42)` or the same value returned from `getColor('body-text-dark')`). Capture the actual computed color so we can understand why switching to white fails.
   5. Confirm we can see at least two imagery cards (by checking for two `img` elements under BentoCards with `SectionImage` class).

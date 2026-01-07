@@ -1,37 +1,30 @@
 import { expect, test } from '@playwright/test'
 
-test.describe('Bento Showcase', () => {
-  test('renders the featured tiles and keeps the approved typography color', async ({ page }) => {
+test.describe('Homepage intro (vision.md)', () => {
+  test('shows Intro + Positioning + Current focus sections', async ({ page }) => {
     await page.goto('/')
-    const section = page.locator('#bento-showcase')
-    await expect(section).toBeVisible()
 
-    const expectedHeadlines = [
-      '20+ Years',
-      'Innovation',
-      'Business Focus',
-      'Complete Stack',
-      'Hands-On CTO for Innovation Projects',
-      'Fast Execution',
-    ]
+    const intro = page.locator('#intro')
+    await expect(intro).toBeVisible()
+    await expect(
+      intro.getByRole('heading', { name: 'Hands-On CTO for Innovation Projects' }),
+    ).toBeVisible()
 
-    for (const headline of expectedHeadlines) {
-      const heading = section.getByRole('heading', { name: headline, exact: true })
-      await expect(heading).toBeVisible()
-    }
+    const positioning = page.locator('#positioning')
+    await expect(positioning).toBeVisible()
+    await expect(
+      positioning.getByRole('heading', {
+        name: 'Not Just a Developer. Hands-On CTO With Business & UX Understanding.',
+      }),
+    ).toBeVisible()
 
-    await expect(section.locator('.section-image')).toHaveCount(3)
+    const focus = page.locator('#focus')
+    await expect(focus).toBeVisible()
+    await expect(focus.getByRole('heading', { name: 'Current focus' })).toBeVisible()
 
-    const headingColor = await section
-      .locator('.section-content__body h3')
-      .first()
-      .evaluate((el) => getComputedStyle(el).color)
-    expect(headingColor).toBe('rgb(248, 250, 252)')
-
-    const paragraphColor = await section
-      .locator('.section-content__body p')
-      .first()
-      .evaluate((el) => getComputedStyle(el).color)
-    expect(paragraphColor).toBe('rgb(248, 250, 252)')
+    // Only Backstage card is clickable for now
+    const backstageLink = focus.getByRole('link', { name: 'Explore Backstage offer' })
+    await expect(backstageLink).toBeVisible()
+    await expect(backstageLink).toHaveAttribute('href', '/offer/backstage')
   })
 })
