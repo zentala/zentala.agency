@@ -30,8 +30,14 @@ const { context = 'auto', prose = true } = Astro.props
 const actualContext = context === 'auto' ? 'full' : context
 ---
 
-<div class={`section-content section-content--${actualContext} ${prose ? 'prose' : ''}`}>
-  <slot />
+<div
+  class={`section-content section-content--${actualContext} ${prose ? 'section-content--prose' : ''}`}
+>
+  <div
+    class={`section-content__body ${prose ? 'section-content__body--prose' : ''}`}
+  >
+    <slot />
+  </div>
 </div>
 
 <style lang="scss">
@@ -72,24 +78,32 @@ const actualContext = context === 'auto' ? 'full' : context
   }
 
   // Prose styling for text content
-  .prose {
+  .section-content__body {
+    width: 100%;
+  }
+
+  .section-content--prose .section-content__body {
+    max-width: 100%;
+
     h3 {
-      @apply text-2xl font-light mb-4;
-      color: rgba(255, 255, 255, 0.95); // Brighter headings
+      @apply mb-4 mt-0 text-2xl font-light leading-tight;
+      color: #f8fafc;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(248, 250, 252, 0.3);
     }
 
     h4 {
-      @apply text-xl font-light mb-3;
-      color: rgba(255, 255, 255, 0.92);
+      @apply mb-3 text-xl font-light;
+      color: rgba(248, 250, 252, 0.95);
     }
 
     h5 {
-      @apply text-lg font-light mb-2;
-      color: rgba(255, 255, 255, 0.9);
+      @apply mb-2 text-lg font-light;
+      color: rgba(248, 250, 252, 0.9);
     }
 
     p {
-      @apply text-base md:text-lg text-white/80 mb-4;
+      @apply mb-4 text-base text-white/70 md:text-lg;
 
       &:last-child {
         margin-bottom: 0;
@@ -98,13 +112,13 @@ const actualContext = context === 'auto' ? 'full' : context
 
     ul,
     ol {
-      @apply text-base md:text-lg text-white/80 mb-4 ml-6;
+      @apply mb-4 ml-6 text-base text-white/70 md:text-lg;
 
       li {
         @apply mb-2;
 
         strong {
-          @apply text-white;
+          @apply text-white/90;
         }
       }
     }
@@ -118,11 +132,11 @@ const actualContext = context === 'auto' ? 'full' : context
     }
 
     strong {
-      @apply text-white font-normal;
+      @apply font-normal text-white;
     }
 
     .value-statement {
-      @apply text-white/70 italic mt-4;
+      @apply mt-4 italic text-white/70;
     }
 
     .mt-2 {

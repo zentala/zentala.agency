@@ -98,12 +98,15 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
 
     <!-- Row 4: Col 1-2 - Quote (2:1) -->
     <BentoCard colSpan={2} rowSpan={1} padding="sm">
-      <SectionBlockQuote
-        quote="Where you have nothing, I build everything."
-        author="Paweł Żentała"
-        role="Fractional CTO"
-        variant="minimal"
-      />
+      <SectionContent context="grid" prose={true}>
+        <h3>Hands-On CTO for Innovation Projects</h3>
+        <p>
+          I build complex technology solutions from vision to working prototype
+          - and assemble teams to scale them. With 20+ years across full-stack
+          development, IoT, robotics, DevOps, management, and UX, I act as your
+          technical co-founder until you have a team.
+        </p>
+      </SectionContent>
     </BentoCard>
 
     <!-- Row 4: Col 3 - Fast (1:1) -->
@@ -114,12 +117,12 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
       </SectionContent>
     </BentoCard>
   </SectionBento>
-
+  <!-- 
   <SectionCTA
     href="/portfolio"
     text="View Complete Portfolio"
     icon="folder"
     variant="primary"
     bgText="PORTFOLIO"
-  />
+  /> -->
 </Section>
