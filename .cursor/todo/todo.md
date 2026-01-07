@@ -25,6 +25,11 @@
 (B) Collect portfolio data in one place and develop further +Portfolio @content #collection
 (B) Create About page content - add large logo, personal description, CV link +About @content #pages
 (B) Update Home page - add DevX focus section, robotics/IoT background, project showcase +Home @content #pages
+(B) Restructure homepage sections per vision (intro grid → positioning → expertise → engagement → CTA) +Home @frontend #feature
+(B) Remove hero from homepage (keep component reusable; comment out in index.astro) +Home @frontend #ux
+(B) Add intro “Why work with me” grid without header/CTA, including hero copy split into 2 horizontal boxes +Home @frontend #ui
+(B) Replace homepage “Services” (3x ServiceSection) with “Areas of expertise” using EngagementModels component +Home @frontend #architecture
+(C) Decide what to do with BentoShowcase on homepage after restructure (keep vs remove vs move) +Home @ux #content
 (B) Finish and implement trusted me section +TrustedMe @content #section
 (C) Integrate devex.zentala.io posts into content +Content @integration #migration
 (C) Integrate agency-zentala-backstage into offer +Offer @integration #migration
