@@ -284,6 +284,7 @@ const whyWorkWithMe = {
     {
       title: 'From Vision to Working Team',
       subtitle: "I don't just consult. I build.",
+      preListParagraphs: [{ text: 'My process:', className: 'my-process' }],
       list: [
         {
           label: 'Vision & Architecture',
@@ -303,7 +304,6 @@ const whyWorkWithMe = {
         },
       ],
       paragraphs: [
-        { text: 'My process:' },
         {
           strongLabel: 'The result',
           text: 'You go from "nothing" to "working solution with team in place" to continue independently.',
@@ -553,8 +553,14 @@ const services: ServiceConfig[] = [
   title="Paweł Żentała - Hands-On CTO for Innovation Projects"
   description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
-  <Section id="hero">
+  <!-- <Section id="hero">
     <HeroWithVariations variants={heroVariants} defaultVariant="A" />
+  </Section> -->
+
+  <BentoShowcase />
+
+  <Section id="why">
+    <WhyWorkWithMe {...whyWorkWithMe} />
   </Section>
 
   {
@@ -639,12 +645,7 @@ const services: ServiceConfig[] = [
     ))
   }
 
-  <Section id="why">
-    <WhyWorkWithMe {...whyWorkWithMe} />
-  </Section>
-
   <!-- Bento Grid Showcase - NEW Section Primitives System -->
-  <BentoShowcase />
 
   <Section id="engagement">
     <EngagementModels {...engagementModels} />

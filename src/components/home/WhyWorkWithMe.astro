@@ -14,6 +14,7 @@ type Column = {
   subtitle?: string
   headingAfterList?: string
   list?: readonly ListItem[]
+  preListParagraphs?: ReadonlyArray<{ strongLabel?: string; text: string; className?: string }>
   paragraphs?: ReadonlyArray<{ strongLabel?: string; text: string; className?: string }>
 }
 
@@ -43,6 +44,14 @@ const { headline, subhead, columns, cta } = Astro.props
       <SectionContent context="grid">
         <h3>{col.title}</h3>
         {col.subtitle ? <h4>{col.subtitle}</h4> : null}
+
+        {col.preListParagraphs?.length
+          ? col.preListParagraphs.map(p => (
+              <p class={p.className}>
+                {p.strongLabel ? <strong>{p.strongLabel}:</strong> : null} {p.text}
+              </p>
+            ))
+          : null}
 
         {col.list?.length ? (
           <ul>
