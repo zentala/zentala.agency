@@ -11,7 +11,7 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
 1. **`all-links.spec.ts`** - Comprehensive link validation test
    - Validates ALL internal links in the application
    - Extracts links from:
-     - Banner files (`src/banners/*.astro`)
+     - Banner files (`src/sections/banners/*.astro`)
      - Header navigation (`src/components/Header.astro`)
      - Footer links (`src/components/Footer.astro`)
    - **Use this before deployment** to catch any broken internal links
@@ -54,6 +54,7 @@ npm run prepush
 ### CI/CD Pipeline
 
 Tests run automatically:
+
 - **On pull requests** to `main` branch
 - **Before deployment** - deployment workflow includes link validation
 - **On manual trigger** via GitHub Actions
@@ -61,6 +62,7 @@ Tests run automatically:
 ## Test Configuration
 
 Tests are configured in `playwright.config.ts`:
+
 - Base URL: `http://localhost:4321` (or `PLAYWRIGHT_TEST_BASE_URL` env var)
 - Browsers: Chromium, Firefox, WebKit
 - Retries: 2 on CI, 0 locally
@@ -93,6 +95,7 @@ Tests are configured in `playwright.config.ts`:
 To add validation for links from new components:
 
 1. Create extraction function in `all-links.spec.ts`:
+
 ```typescript
 async function extractMyComponentLinks(): Promise<AppLink[]> {
   const path = join(process.cwd(), 'src', 'components', 'MyComponent.astro')
@@ -103,6 +106,7 @@ async function extractMyComponentLinks(): Promise<AppLink[]> {
 ```
 
 2. Add to `extractAllLinks()`:
+
 ```typescript
 const myComponentLinks = await extractMyComponentLinks()
 allLinks.push(...myComponentLinks)
@@ -117,6 +121,7 @@ npm run prepush
 ```
 
 This will:
+
 1. Build the application
 2. Run comprehensive link validation tests
 3. Fail if any broken links are found
@@ -182,5 +187,3 @@ This will:
 - [ ] Add visual regression tests
 - [ ] Add performance tests
 - [ ] Add accessibility tests
-
-

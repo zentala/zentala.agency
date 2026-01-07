@@ -62,7 +62,9 @@ Poniżej znajduje się lista zidentyfikowanych problemów, błędów i sugestii 
 - **Problem:** Linki do zewnętrznych blogów w sekcji "Blogs" używają `http` i nie otwierają się w nowej karcie.
 - **Propozycja rozwiązania:** Zmień `http` na `https` i dodaj atrybuty `target="_blank"` oraz `rel="noopener noreferrer"` do linków zewnętrznych.
   ```html
-  <a href="https://ideas.zentala.io" target="_blank" rel="noopener noreferrer">Startup Ideas</a>
+  <a href="https://ideas.zentala.io" target="_blank" rel="noopener noreferrer"
+    >Startup Ideas</a
+  >
   ```
 - **Wartość:** Poprawa bezpieczeństwa i użyteczności (linki otwierają się w nowej karcie).
 
@@ -73,18 +75,21 @@ Poniżej znajduje się lista zidentyfikowanych problemów, błędów i sugestii 
 - **Plik:** `src/layouts/Layout.astro`
 - **Problem:** Meta tag `description` ma domyślną wartość "Astro description", co jest niekorzystne dla SEO.
 - **Propozycja rozwiązania:** Rozszerz interfejs `Props` w `Layout.astro`, aby przyjmował `description`, i przekazuj unikalny opis z każdej strony.
+
   ```typescript
   // src/layouts/Layout.astro
   export interface Props {
-    title: string;
-    description?: string;
+    title: string
+    description?: string
   }
 
-  const { title, description = 'Default description' } = Astro.props;
+  const { title, description = 'Default description' } = Astro.props
   ```
+
   ```html
-  <meta name="description" content={description} />
+  <meta name="description" content="{description}" />
   ```
+
 - **Wartość:** Lepsza optymalizacja pod kątem wyszukiwarek (SEO) i bardziej trafne opisy w wynikach wyszukiwania.
 
 ---
@@ -127,7 +132,7 @@ Poniżej znajduje się lista zidentyfikowanych problemów, błędów i sugestii 
 
 ### 11. Literówka w nazwie pliku banera
 
-- **Plik:** `src/banners/devex-categrory.astro`
+- **Plik:** `src/sections/banners/devex-categrory.astro`
 - **Problem:** Nazwa pliku `devex-categrory.astro` zawiera literówkę.
 - **Propozycja rozwiązania:** Zmień nazwę pliku na `devex-category.astro`.
-- **Wartość:** Poprawność i lepsza utrzymywalność kodu. 
+- **Wartość:** Poprawność i lepsza utrzymywalność kodu.

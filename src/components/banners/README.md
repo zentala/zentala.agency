@@ -12,7 +12,7 @@ src/
 │   ├── variants/
 │   │   └── Simple.astro      # Simple banner variant template
 │   └── README.md            # This file
-└── banners/
+└── sections/banners/
     ├── devex.astro           # DevEx banner (content + design)
     ├── devex-category.astro  # DevEx category banner
     └── ai-automation.astro   # AI Automation banner
@@ -22,11 +22,11 @@ src/
 
 ### Option 1: Using existing banner files (recommended)
 
-Each banner in `src/banners/` is a self-contained `.astro` file with its own content and can have custom design:
+Each banner in `src/sections/banners/` is a self-contained `.astro` file with its own content and can have custom design:
 
 ```astro
 ---
-// src/banners/devex.astro
+// src/sections/banners/devex.astro
 import Banner from '../components/banners/Banner.astro'
 ---
 
@@ -80,11 +80,11 @@ import Banner from '../components/banners/Banner.astro'
 
 ## Creating New Banners
 
-Create a new `.astro` file in `src/banners/`:
+Create a new `.astro` file in `src/sections/banners/`:
 
 ```astro
 ---
-// src/banners/your-banner.astro
+// src/sections/banners/your-banner.astro
 import Banner from '../components/banners/Banner.astro'
 ---
 
@@ -112,8 +112,8 @@ bannerEnd: 'your-banner'
 ## Creating New Variants
 
 1. Create new variant file in `variants/`:
+
    ```astro
-   <!-- src/components/banners/variants/SimpleWithImage.astro -->
    ---
    interface Props {
      title: string
@@ -123,43 +123,54 @@ bannerEnd: 'your-banner'
      image: string
      class?: string
    }
-   const { title, description, linkText, linkHref, image, class: className } = Astro.props
+   const {
+     title,
+     description,
+     linkText,
+     linkHref,
+     image,
+     class: className,
+   } = Astro.props
    ---
-   
+
+   <!-- src/components/banners/variants/SimpleWithImage.astro -->
    <a href={linkHref} class={`banner banner-with-image ${className}`}>
      <img src={image} alt={title} />
      <h3>{title}</h3>
      <p>{description}</p>
      <span class="banner-link">{linkText}</span>
    </a>
-   
+
    <style lang="scss">
      /* Your styles */
    </style>
    ```
 
 2. Update `types.ts`:
+
    ```typescript
    export type BannerVariant = 'simple' | 'simpleWithImage'
    ```
 
 3. Update `Banner.astro` to handle new variant:
    ```astro
-   {variant === 'simpleWithImage' && (
-     <SimpleWithImage
-       title={title}
-       description={description}
-       linkText={linkText}
-       linkHref={linkHref}
-       image={image!}
-       class={className}
-     />
-   )}
+   {
+     variant === 'simpleWithImage' && (
+       <SimpleWithImage
+         title={title}
+         description={description}
+         linkText={linkText}
+         linkHref={linkHref}
+         image={image!}
+         class={className}
+       />
+     )
+   }
    ```
 
 ## Design Principles
 
-- **Self-contained banners**: Each banner in `src/banners/` has its own content and can have custom design
+- **Self-contained banners**: Each banner in `src/sections/banners/` has its own content and can have custom design
 - **Reusable variants**: Variants in `src/components/banners/variants/` provide consistent templates
 - **Flexible**: You can write custom design directly in banner files, or extract to variants later
 - **Type-safe**: Full TypeScript support

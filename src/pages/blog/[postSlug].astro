@@ -35,8 +35,9 @@ const { Content } = await post.render()
 let Banner = null
 if (post.data.bannerEnd) {
   try {
-    Banner = (await import(`../../banners/${post.data.bannerEnd}.astro`))
-      .default
+    Banner = (
+      await import(`../../sections/banners/${post.data.bannerEnd}.astro`)
+    ).default
   } catch (error) {
     console.error('Banner loading error:', error)
   }

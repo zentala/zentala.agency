@@ -52,7 +52,7 @@ alwaysApply: true
 
 ## Documentation Structure
 
-W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzyszące im w tym samym folderze pliki `*.md` opisujące:
+W `src/{components, layouts, sections}/*.astro` tworzymy i rozwijamy towarzyszące im w tym samym folderze pliki `*.md` opisujące:
 - cel / oczekiwane zachowanie, 
 - co działa (a w szczególności należy zostawić i nie zmieniać), co nie działa i ew propozycje usprawnień na przyszłość
 
@@ -81,12 +81,11 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 * Using `git show`, `log` and `diff` MUST be with `--no-pager` flag
 * zakaz robienia commitow bez pozwolenia usera, tylko propzycje nazw dawaj i dodwaj do stash tylko to co zmieniles i sprawdzkj czy inne pliki nie zostaly dodnae do stasha co konliktuja 
 
+## Files structure and theirs roles
 
-## Sumbodules
-
-Mamy submoduly:
-- /chat/ - fork of https://github.com/FlowiseAI/FlowiseChatEmbed
-
-Pamietaj aby wykonywac commity dt zmian w nich, bedac w danym subkatlaogu. 
-Czyli commity dla `/chat/` wykonujesz bedac w tym filder (`cd chat` i sopiero robisz git commit`).
-Robiac commita `git add chat` dodwaj tez w tym smym commicie zbudowana wersje chata, a nie tylko aktualziacje refernecji. 
+- `/src/components/` - no texts here, only logic and styling
+- `/src/content/<content-type>/` - content
+- `/src/layouts/` - layouts
+- `/src/pages/` - static and dynamic (using `content`) pages
+- `/src/styles/` - SCSS styles
+- `/src/sections/` - components filled with texts and other props, to get reusable sections on the page (single source of truth for few occurrences of the same section on the website)

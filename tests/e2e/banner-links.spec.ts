@@ -4,10 +4,10 @@ import { join } from 'path'
 
 /**
  * Integration test for banner links
- * 
- * This test parses actual banner files from src/banners/*.astro
+ *
+ * This test parses actual banner files from src/sections/banners/*.astro
  * and verifies that all links in banners point to existing pages in the service.
- * 
+ *
  * This is a pre-deployment integration test that should be run in CI/CD pipeline
  * to catch broken internal links before deployment.
  */
@@ -22,7 +22,7 @@ interface BannerLink {
  * Parse banner files to extract linkHref values
  */
 async function extractBannerLinks(): Promise<BannerLink[]> {
-  const bannersDir = join(process.cwd(), 'src', 'banners')
+  const bannersDir = join(process.cwd(), 'src', 'sections', 'banners')
   const files = await readdir(bannersDir)
   const bannerFiles = files.filter((file) => file.endsWith('.astro'))
 
@@ -37,7 +37,7 @@ async function extractBannerLinks(): Promise<BannerLink[]> {
     const linkHrefMatch = content.match(/linkHref\s*=\s*["']([^"']+)["']/i)
     if (linkHrefMatch && linkHrefMatch[1]) {
       const href = linkHrefMatch[1]
-      
+
       // Skip external links (starting with http:// or https://)
       if (href.startsWith('http://') || href.startsWith('https://')) {
         continue
@@ -48,7 +48,7 @@ async function extractBannerLinks(): Promise<BannerLink[]> {
       const title = titleMatch ? titleMatch[1] : 'Banner'
 
       bannerLinks.push({
-        source: file,
+        source: `sections/banners/${file}`,
         href: href,
         description: `Link from ${file} (${title})`,
       })
@@ -70,7 +70,7 @@ test.describe('Banner Links Integration Test', () => {
   test.beforeAll(async () => {
     // Extract all banner links before running tests
     bannerLinks = await extractBannerLinks()
-    
+
     // Log found links for debugging
     console.log(`Found ${bannerLinks.length} banner links to test:`)
     bannerLinks.forEach((link) => {
@@ -148,15 +148,19 @@ test.describe('Banner Links Integration Test', () => {
         // Additional check: verify page doesn't show 404 in prominent position
         if (ok) {
           const title = await page.title()
-          const bodyText = await page.textContent('body') || ''
-          
+          const bodyText = (await page.textContent('body')) || ''
+
           // Check for error messages in headings
           const errorHeadings = page.locator('h1, h2, h3').filter({
             hasText: /404|Not Found|Page not found/i,
           })
           const errorHeadingCount = await errorHeadings.count()
-          
-          if (errorHeadingCount > 0 || title.includes('404') || title.includes('Not Found')) {
+
+          if (
+            errorHeadingCount > 0 ||
+            title.includes('404') ||
+            title.includes('Not Found')
+          ) {
             results.push({
               source: bannerLink.source,
               href: bannerLink.href,

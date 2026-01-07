@@ -4,18 +4,18 @@ import { join } from 'path'
 
 /**
  * Comprehensive link validation test for entire application
- * 
+ *
  * This test extracts and verifies ALL internal links from:
- * - Banner files (src/banners/*.astro)
+ * - Banner files (src/sections/banners/*.astro)
  * - Header navigation (src/components/Header.astro)
  * - Footer links (src/components/Footer.astro)
  * - Post cards (src/components/cards/PostCard.astro)
  * - Any other components with links
- * 
+ *
  * This is a pre-deployment integration test that should be run:
  * - Before every push (via pre-push hook or npm script)
  * - In CI/CD pipeline before deployment
- * 
+ *
  * It ensures no broken internal links are deployed to production.
  */
 
@@ -30,7 +30,7 @@ interface AppLink {
  * Extract links from banner files
  */
 async function extractBannerLinks(): Promise<AppLink[]> {
-  const bannersDir = join(process.cwd(), 'src', 'banners')
+  const bannersDir = join(process.cwd(), 'src', 'sections', 'banners')
   const files = await readdir(bannersDir)
   const bannerFiles = files.filter((file) => file.endsWith('.astro'))
   const links: AppLink[] = []
@@ -39,12 +39,12 @@ async function extractBannerLinks(): Promise<AppLink[]> {
     const filePath = join(bannersDir, file)
     const content = await readFile(filePath, 'utf-8')
     const linkHrefMatch = content.match(/linkHref\s*=\s*["']([^"']+)["']/i)
-    
+
     if (linkHrefMatch && linkHrefMatch[1]) {
       const href = linkHrefMatch[1]
       if (!href.startsWith('http://') && !href.startsWith('https://')) {
         links.push({
-          source: `banners/${file}`,
+          source: `sections/banners/${file}`,
           href,
           description: `Banner link from ${file}`,
           type: 'banner',
@@ -68,7 +68,11 @@ async function extractHeaderLinks(): Promise<AppLink[]> {
   const hrefMatches = content.matchAll(/href:\s*["']([^"']+)["']/gi)
   for (const match of hrefMatches) {
     const href = match[1]
-    if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:')) {
+    if (
+      !href.startsWith('http://') &&
+      !href.startsWith('https://') &&
+      !href.startsWith('mailto:')
+    ) {
       links.push({
         source: 'components/Header.astro',
         href,
@@ -150,10 +154,13 @@ test.describe('All Internal Links Validation', () => {
 
     // Log found links for debugging
     console.log(`\nFound ${allLinks.length} internal links to test:`)
-    const byType = allLinks.reduce((acc, link) => {
-      acc[link.type] = (acc[link.type] || 0) + 1
-      return acc
-    }, {} as Record<string, number>)
+    const byType = allLinks.reduce(
+      (acc, link) => {
+        acc[link.type] = (acc[link.type] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>,
+    )
     console.log('Links by type:', byType)
     allLinks.forEach((link) => {
       console.log(`  [${link.type}] ${link.source} → ${link.href}`)
@@ -194,7 +201,7 @@ test.describe('All Internal Links Validation', () => {
         // Additional check: verify page doesn't show 404
         if (ok) {
           const title = await page.title()
-          const bodyText = await page.textContent('body') || ''
+          const bodyText = (await page.textContent('body')) || ''
 
           // Check for error messages in headings
           const errorHeadings = page.locator('h1, h2, h3').filter({
@@ -240,18 +247,21 @@ test.describe('All Internal Links Validation', () => {
 
     // Log results for debugging
     console.log('\n=== Link Verification Results ===')
-    const byType = results.reduce((acc, r) => {
-      if (!acc[r.type]) {
-        acc[r.type] = { total: 0, ok: 0, failed: 0 }
-      }
-      acc[r.type].total++
-      if (r.ok) {
-        acc[r.type].ok++
-      } else {
-        acc[r.type].failed++
-      }
-      return acc
-    }, {} as Record<string, { total: number; ok: number; failed: number }>)
+    const byType = results.reduce(
+      (acc, r) => {
+        if (!acc[r.type]) {
+          acc[r.type] = { total: 0, ok: 0, failed: 0 }
+        }
+        acc[r.type].total++
+        if (r.ok) {
+          acc[r.type].ok++
+        } else {
+          acc[r.type].failed++
+        }
+        return acc
+      },
+      {} as Record<string, { total: number; ok: number; failed: number }>,
+    )
 
     console.log('\nSummary by type:')
     Object.entries(byType).forEach(([type, stats]) => {
@@ -306,5 +316,3 @@ test.describe('All Internal Links Validation', () => {
     // This is informational - external links are skipped, not an error
   })
 })
-
-
