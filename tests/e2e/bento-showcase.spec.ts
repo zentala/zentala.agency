@@ -26,12 +26,12 @@ test.describe('Bento Showcase', () => {
       .locator('.section-content__body h3')
       .first()
       .evaluate((el) => getComputedStyle(el).color)
-    expect(headingColor).toBe('rgb(17, 24, 39)')
+    expect(headingColor).toBe('rgb(248, 250, 252)')
 
     const paragraphColor = await section
       .locator('.section-content__body p')
       .first()
       .evaluate((el) => getComputedStyle(el).color)
-    expect(paragraphColor).toBe('rgb(17, 24, 39)')
+    expect(paragraphColor).toBe('rgb(248, 250, 252)')
   })
 })
