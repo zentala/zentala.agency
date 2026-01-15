@@ -18,6 +18,7 @@ import BentoCentralStage from '../../components/primitives/sections/bento/BentoC
 import BentoStageState from '../../components/primitives/sections/bento/BentoStageState.astro'
 import Logo from '../../components/Logo.astro'
 import TagGroup from '../../components/primitives/TagGroup.astro'
+import PhaseLabel from '../../components/primitives/PhaseLabel.astro'
 
 const bentoStates = {
   default: 'default',
@@ -41,25 +42,45 @@ const bentoStates = {
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
-          <h3 class="transition-colors group-hover:text-white">
-            Thinking about an Innovative Project?
-          </h3>
+          <div class="mb-2 flex items-baseline gap-2">
+            <h3 class="m-0 transition-colors group-hover:text-white">
+              Discovery & Strategy
+            </h3>
+            <PhaseLabel phase={1} />
+          </div>
           <p>
-            Need help with the <strong>beginning</strong>? We start with
-            workshops to ground your business and marketing strategy. Only then
-            do I translate that vision into technical architecture.
+            Let me help turn your vision into a strategy, and your idea into a
+            clear direction.
           </p>
           <p>
+            We start with focused discovery sessions and design-thinking
+            workshops to sharpen your idea: define target users, value
+            proposition, key user journeys, and success metrics.
+          </p>
+          <p>
+            You get a Product Strategy document with problem statement, MVP
+            scope, user personas, and roadmap — everything needed to start
+            building.
+          </p>
+          <!-- <p>
+            Than I will deliver and publish a production-ready MVP. Then I
+            translate that clarity into a coherent blueprint, designing the
+            entire system architecture with a holistic view of all project
+            aspects—from user flows to technology stacks, roles, data flows, and
+            analytics.
+          </p> -->
+
+          <!-- <p>
             I act as your <strong>all-in-one architect</strong>, designing the
             entire system with a holistic view of all project aspects—from user
-            roles to technology stacks.
-          </p>
-          <TagGroup
+            flows to technology stacks.
+          </p> -->
+          <!-- <TagGroup
             class="mt-6 gap-2 opacity-40 transition-opacity group-hover:opacity-100"
             tags={['Workshops', 'Architecture', 'Feasibility']}
             theme="pill"
             tagClass=""
-          />
+          /> -->
         </div>
       </SectionContent>
     </BentoCard>
@@ -76,19 +97,24 @@ const bentoStates = {
         class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
       >
       </div>
+      <!-- I research the best path
+            to validate your idea. -->
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
-          <h3>R&D & Prototyping</h3>
+          <div class="mb-1 flex items-baseline gap-2">
+            <h3 class="m-0">R&D & Prototyping</h3>
+            <PhaseLabel phase={2} />
+          </div>
           <p class="text-sm leading-relaxed">
-            I bridge the gap between abstract vision and reality through rapid
-            functional prototyping. I don't just build; I research the best path
-            to validate your idea.
+            I translate the Product Strategy into UX mockups and technical
+            specification, and build a rough-but-usable prototype — something
+            real to align on before we commit to the final build.
           </p>
         </div>
       </SectionContent>
     </BentoCard>
 
-    <!-- Row 1: Col 3 - Multi-Disciplinary View (1:1) -->
+    <!-- Row 1: Col 3 - Holistic Design (1:1) -->
     <BentoCard
       colSpan={1}
       rowSpan={1}
@@ -98,11 +124,12 @@ const bentoStates = {
       <!-- hoverState={bentoStates.logo} -->
       <div class="pointer-events-none"></div>
       <SectionContent context="grid" prose={true}>
-        <h3>Multi-Disciplinary View</h3>
+        <TagGroup class="mb-2" theme="label" tags={['Systems Thinking']} />
+        <h3>End-to-End Design</h3>
         <p>
-          20+ years in IoT, Robotics, UX, and Management are perspectives that
-          allow me to design solutions that work technically and thrive as a
-          business.
+          Not just the app — the whole system. User flows, data flows,
+          analytics, admin experience, and deployment — all aligned in one
+          coherent blueprint.
         </p>
       </SectionContent>
     </BentoCard>
@@ -121,6 +148,13 @@ const bentoStates = {
         <h2 class="m-0 text-2xl font-light text-white opacity-50">
           Paweł Żentała
         </h2>
+
+        <p class="font-light text-white opacity-50">
+          20+ years in IT — between marketing, UX, web design, software
+          development, through IoT, robotics, and management — perspectives that
+          allow me to design solutions that work technically and practically.
+          <!-- add: perrpkty pozowlily mi wiec i rozumiec szeroko, dzieki czemu moge... designs solutions that.... -->
+        </p>
       </SectionImage>
     </BentoCard>
 
@@ -312,8 +346,8 @@ const bentoStates = {
             >
               I don't do everything. I focus on
               <strong class="font-semibold text-white">prototyping</strong>,
-              providing the shortest path from strategy to successful
-              validation.
+              providing the shortest path from idea to minimal viable product
+              release.
             </p>
           </div>
         </div>
@@ -337,7 +371,7 @@ const bentoStates = {
         <div class="flex h-full flex-col justify-between">
           <div>
             <TagGroup
-              class="mb-2 inline-flex gap-2"
+              class="mb-4 inline-flex gap-2"
               theme="label"
               tags={['Product‑Minded']}
             />
@@ -347,7 +381,7 @@ const bentoStates = {
             </h2>
             <p>
               I act as your technical co-founder to kick-up your idea into
-              user-friendly application.
+              user-friendly live application.
             </p>
           </div>
           <div
@@ -403,13 +437,15 @@ const bentoStates = {
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10 max-w-[85%]">
-          <h3>Strategy to Execution</h3>
+          <div class="mb-2 flex items-baseline gap-2">
+            <h3 class="m-0">Execution & Delivery</h3>
+            <PhaseLabel phase={3} />
+          </div>
           <p>
-            I start with discovery sessions and design thinking workshops to
-            sharpen your idea. I then find the shortest path from that strategy
-            to a successful validation. By merging architecture and UX awareness
-            with business and client understanding, I ensure your project gets
-            its best shot at winning.
+            Once we align on the MVP scope and spec, I turn it into execution:
+            complete solution architecture, implementation, and deployment. You
+            get a production-ready first version online — ready to share with
+            users, gather feedback, and validate in the market.
           </p>
         </div>
       </SectionContent>

@@ -1,0 +1,24 @@
+---
+/**
+ * PhaseLabel
+ *
+ * Small uppercase label component for displaying phase numbers
+ * Used in BentoAboutMe section to indicate workflow phases
+ */
+
+interface Props {
+  phase: number
+  class?: string
+}
+
+const { phase, class: className } = Astro.props
+---
+
+<span
+  class:list={[
+    'ml-3 shrink-0 text-[10px] font-medium uppercase tracking-wider text-white/40',
+    className,
+  ]}
+>
+  Phase #{phase}
+</span>
