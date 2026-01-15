@@ -1,94 +1,60 @@
 ---
-import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
-import Button from '../../components/Button.astro'
-import { Icon } from 'astro-icon/components'
+/**
+ * CTASection - Homepage CTA with default values
+ *
+ * Uses the reusable CTA component with pre-configured
+ * defaults for the homepage. All props can be overridden.
+ */
 
-type CTAButton = {
-  href: string
-  text: string
-  variant?: 'primary' | 'secondary' | 'outline' | 'light'
-  target?: string
-  icon?: string
-}
+import CTA from '../../components/CTA.astro'
+import type { CTAButton, CTAFooterItem } from '../../components/CTA.astro'
 
 interface Props {
   headline?: string
   subhead?: string
   buttons?: readonly CTAButton[]
-  footerText?: string
+  footerItems?: readonly CTAFooterItem[]
 }
 
-const defaultCtaSection = {
-  headline: "Let's Turn Your Vision Into a Product",
-  subhead:
-    "From discovery session to production-ready MVP - let's start with a call.",
-  buttons: [
-    {
-      href: 'https://cal.com/zentala',
-      text: 'Schedule Discovery Call',
-      variant: 'light',
-      target: '_blank',
-      icon: 'calendar',
-    },
-    {
-      href: 'https://linkedin.com/in/zentala',
-      text: 'Connect on LinkedIn',
-      variant: 'secondary',
-      target: '_blank',
-      icon: 'linkedin',
-    },
-    // {
-    //   href: '/portfolio',
-    //   text: 'Explore Portfolio',
-    //   variant: 'outline',
-    //   icon: 'folder',
-    // },
-  ],
-  footerText: 'Based in Warsaw, Poland (CET timezone)',
-  // OLD:
-  // headline: "Let's Build Something From Scratch",
-  // subhead: "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
-  // footerText: 'Based in Warsaw, Poland – heart of European valley of software engineers',
-} as const
+const defaultButtons: readonly CTAButton[] = [
+  {
+    href: 'https://cal.com/zentala',
+    text: 'Schedule Discovery Call',
+    variant: 'light',
+    target: '_blank',
+    icon: 'calendar',
+  },
+  {
+    href: 'https://linkedin.com/in/zentala',
+    text: 'Connect on LinkedIn',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'linkedin',
+  },
+]
+
+const defaultFooterItems: readonly CTAFooterItem[] = [
+  {
+    icon: 'map-pin',
+    text: 'Based in Warsaw, Poland (CET timezone)',
+  },
+  {
+    icon: 'globe',
+    text: 'Working with clients worldwide',
+  },
+]
 
 const {
-  headline = defaultCtaSection.headline,
-  subhead = defaultCtaSection.subhead,
-  buttons = defaultCtaSection.buttons,
-  footerText = defaultCtaSection.footerText,
+  headline = "Let's Turn Your Vision Into a Product",
+  subhead = "From discovery session to production-ready MVP - let's start with a call.",
+  buttons = defaultButtons,
+  footerItems = defaultFooterItems,
 } = Astro.props
 ---
 
-<div class="cta-section">
-  <SectionHeader headline={headline} subhead={subhead} align="center" />
-
-  <div class="cta-buttons">
-    {
-      buttons.map((btn) => (
-        <Button
-          href={btn.href}
-          text={btn.text}
-          variant={btn.variant ?? 'primary'}
-          target={btn.target}
-          icon={btn.icon}
-        />
-      ))
-    }
-  </div>
-
-  {
-    footerText ? (
-      <p class="cta-footer">
-        <span class="inline-flex items-center">
-          <Icon name="lucide:map-pin" class="mr-2 h-4 w-4 text-zinc-300" />
-          <span>{footerText}</span>
-        </span>
-        <span class="mx-3 opacity-20">•</span>
-        <span class="inline-flex items-center">
-          <Icon name="lucide:globe" class="mr-2 h-4 w-4 text-zinc-300" />
-          <span>Working with clients worldwide</span>
-        </span>
-      </p>
-    ) : null
-  }
-</div>
+<CTA
+  headline={headline}
+  subhead={subhead}
+  buttons={buttons}
+  footerItems={footerItems}
+/>

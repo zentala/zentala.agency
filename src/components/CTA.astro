@@ -1,0 +1,162 @@
+---
+/**
+ * CTA - Reusable Call-to-Action Section Component
+ *
+ * A full-width CTA section with:
+ * - Headline and subhead
+ * - Multiple action buttons
+ * - Footer with multiple info items (icon + text)
+ *
+ * Usage:
+ * <CTA
+ *   headline="Let's Build Together"
+ *   subhead="Start with a discovery call"
+ *   buttons={[{ href: '/contact', text: 'Get Started', variant: 'primary' }]}
+ *   footerItems={[
+ *     { icon: 'map-pin', text: 'Warsaw, Poland' },
+ *     { text: 'Working worldwide' }
+ *   ]}
+ * />
+ */
+
+import SectionHeader from './primitives/sections/SectionHeader.astro'
+import Button from './Button.astro'
+import { Icon } from 'astro-icon/components'
+
+export type CTAButton = {
+  href: string
+  text: string
+  variant?: 'primary' | 'secondary' | 'outline' | 'light'
+  target?: string
+  icon?: string
+}
+
+export type CTAFooterItem = {
+  icon?: string // Lucide icon name (without 'lucide:' prefix)
+  text: string
+}
+
+interface Props {
+  headline?: string
+  subhead?: string
+  buttons?: readonly CTAButton[]
+  footerItems?: readonly CTAFooterItem[]
+  class?: string
+}
+
+const {
+  headline,
+  subhead,
+  buttons = [],
+  footerItems = [],
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['cta', className]}>
+  {headline && (
+    <SectionHeader headline={headline} subhead={subhead} align="center" />
+  )}
+
+  {buttons.length > 0 && (
+    <div class="cta__buttons">
+      {buttons.map((btn) => (
+        <Button
+          href={btn.href}
+          text={btn.text}
+          variant={btn.variant ?? 'primary'}
+          target={btn.target}
+          icon={btn.icon}
+        />
+      ))}
+    </div>
+  )}
+
+  {footerItems.length > 0 && (
+    <p class="cta__footer">
+      {footerItems.map((item, index) => (
+        <>
+          <span class="cta__footer-item">
+            {item.icon && (
+              <Icon name={`lucide:${item.icon}`} class="cta__footer-icon" />
+            )}
+            <span>{item.text}</span>
+          </span>
+          {index < footerItems.length - 1 && (
+            <span class="cta__footer-separator">•</span>
+          )}
+        </>
+      ))}
+    </p>
+  )}
+</div>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .cta {
+    background: rgba(255, 255, 255, 0.03);
+    text-align: center;
+    border: none !important;
+    @include py-responsive('lg');
+
+    // Remove border from section header in CTA
+    :global(.section-header) {
+      border-bottom: none !important;
+      padding-bottom: 2rem !important;
+    }
+  }
+
+  .cta__buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    border: none;
+
+    @include mobile {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  .cta__footer {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+
+    @include mobile {
+      font-size: 0.9375rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  .cta__footer-item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .cta__footer-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .cta__footer-separator {
+    margin: 0 0.75rem;
+    opacity: 0.2;
+
+    @include mobile {
+      display: none;
+    }
+  }
+</style>
