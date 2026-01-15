@@ -1,0 +1,305 @@
+---
+alwaysApply: false
+description: writing copy for the website
+---
+
+# Copywriting Rules
+
+## General Rules
+
+- Use simple and clear language, avoid complex words
+- Use active voice
+- Use positive language
+- Use short paragraphs sentences
+
+## Knowledge
+
+### About offer
+
+- **Focus**: Bootstrap complex products from zero to validation
+- **Scope**: Product strategy (lite) → spec → prototype → production MVP → handoff
+- **Not included**: Long-term maintenance, marketing, team scaling
+- **Deliverables by phase**:
+  - Discovery: target users, value proposition, problem statement, MVP scope, user journeys, success metrics
+  - R&D/Prototype: clickable prototype, refined flows, feasibility notes, draft spec
+  - Execution: solution architecture, implemented app, deployment, production-ready first version
+
+### About me
+
+- 20+ years in IT: online marketing → UX → web design → software development → IoT → Robotics → Management
+- Systems-thinking architect: design whole solutions, not just apps
+- Location: Warsaw, Poland (remote-friendly, EU timezone)
+- Works with AI agents under supervision for agency-speed delivery
+
+### Process (3 steps)
+
+1. **Discovery sessions** (with client): target users, value proposition, user journeys, success metrics
+2. **R&D & prototyping** (solo): clickable prototype, feasibility, draft spec → return to align
+3. **Execution** (AI-assisted): architecture, implementation, deployment → production-ready handoff
+
+## Proven Positioning Patterns (Zentala Agency)
+
+### Core promise (what we actually sell)
+
+- **Bootstrap a complex product from zero to validation**: product strategy (lite) → system/solution design → rapid prototyping → production-ready delivery → handoff.
+- **User-centered + systems thinking**: not “just an app”, but coherent end-to-end solution (UX flows + roles + data flows + analytics + architecture + delivery).
+
+### Avoid framing as “generalist of everything”
+
+- Prefer **process + proof** over labels like “all-in-one”.
+- Use phrases like **“systems-thinking solution architect”**, **“hands-on CTO”**, **“bootstrap partner”**, and immediately anchor them with outcomes/deliverables.
+
+### Three-step narrative (recommended for homepage / bento)
+
+1. **Discovery (with client)**: turn vision into strategy and idea into an MVP direction.
+2. **R&D + clickable prototype (solo)**: bridge abstract vision into something testable; iterate fast; return with a rough-but-clickable prototype to align and finalize the spec.
+3. **Execution (delivery)**: architecture → implementation → deployment; deliver production-ready first version online.
+
+### What to name explicitly (artifacts = credibility)
+
+- **Discovery outputs**: target users, value proposition, problem statement, MVP scope, key user journeys, success metrics.
+- **Prototype phase outputs**: clickable prototype, refined user flows, feasibility notes, draft technical approach, clarified requirements/spec.
+- **Execution outputs**: solution architecture, implemented application, deployment, production-ready first version.
+
+### Language style for this site
+
+- Keep sentences short and concrete.
+- Prefer **“clickable prototype”** / **“functional prototype”** over “mockups”.
+- Avoid negative comparisons like “not slides” unless you immediately say **what** you provide instead (clickable prototype + iteration).
+
+## Tone of Voice
+
+- **Professional but approachable** - expert, not arrogant
+- **Confident but humble** - show capability, avoid bragging
+- **Direct and clear** - no marketing fluff, no buzzwords without explanation
+- **Action-oriented** - focus on "what you get" not "what I do"
+- **Technical when needed** - don't dumb down, but explain if complex
+- **Human and honest** - acknowledge risks, realistic expectations
+
+## Target Audience
+
+### Primary
+- **Non-technical founders** with product vision, need technical partner to bootstrap
+- **Small companies** (5-50 people) needing rapid MVP or internal tool
+- **Startup CTOs** needing fractional support for complex technical decisions
+
+### Secondary
+- **Innovation departments** in larger companies
+- **Agencies** needing technical subcontractor for complex builds
+
+### What they care about:
+- Speed to market
+- Clear deliverables
+- Risk mitigation (what if it fails?)
+- Handoff clarity (can they take it over?)
+- Validation before big investment
+
+## Copy Examples
+
+### ❌ Bad (vague, no proof)
+- "I build amazing apps"
+- "Full-stack everything"
+- "I'll make your dream come true"
+- "Something from scratch" (vague, empty)
+
+### ✅ Good (specific, outcome-focused)
+- "From discovery to deployed MVP in 8-12 weeks"
+- "You get: Product Strategy doc, clickable prototype, production-ready code"
+- "I translate your vision into a testable MVP"
+- "Let's turn your vision into a product"
+
+### ❌ Bad (negative framing)
+- "Unlike other developers who just code..."
+- "I don't do maintenance"
+- "Even if we don't continue together" (suggests failure)
+
+### ✅ Good (positive framing, continuity)
+- "I specialize in bootstrapping — getting you from zero to validation"
+- "After delivery, you can maintain in-house or with a long-term partner"
+- "The foundation we build on in Phase 2"
+- "Everything needed to start building"
+
+## Key Phrases Library
+
+### Value propositions (use these!)
+- "Bootstrap partner"
+- "From vision to validation"
+- "From idea to MVP release"
+- "Systems-thinking approach"
+- "End-to-end design"
+- "Production-ready first version"
+- "Tangible deliverables"
+- "Agency speed, solo rates"
+- "Not just code — the whole system"
+- "I design the whole system, not just the app"
+- "User flows, data flows, analytics, admin experience, and deployment"
+
+### Process language
+- "Discovery sessions"
+- "Product Strategy document"
+- "Clickable prototype" / "rough-but-usable prototype"
+- "UX mockups and technical specification"
+- "AI-accelerated delivery"
+- "Something real to align on"
+- "I translate the Product Strategy into specification"
+- "I bridge vision and reality"
+
+### Outcomes
+- "Ready to share with users"
+- "Validate in the market"
+- "Everything needed to start building"
+- "Clear blueprint"
+- "The foundation for the next phase"
+- "Concrete deliverables"
+
+### About me
+- "20+ years in IT — perspectives that allow me to design solutions that work technically and practically"
+- "Systems-thinking architect"
+- "Hands-on CTO"
+- "Technical co-founder"
+- "I operate as an architect orchestrating a team of AI agents"
+
+## Phrases to Avoid
+- "Revolutionary" / "game-changing" / "disruptive"
+- "Cutting-edge" (unless explaining how)
+- "World-class" / "best in class"
+- "Full-stack ninja/rockstar/guru"
+- "Something from scratch" (too vague)
+- "Cheap" / "budget-friendly"
+- Exit strategy language ("even if we don't continue")
+
+## Competitive Positioning
+
+### vs Traditional Agencies
+- **They**: 6-12 month projects, large teams, process overhead
+- **Me**: 8-12 week sprints, solo+AI, direct communication
+- **Message**: "Agency speed, solo rates"
+
+### vs Freelance Developers
+- **They**: code only, no strategy/UX, narrow scope
+- **Me**: end-to-end (strategy → design → code → deploy)
+- **Message**: "Not just code — the whole system"
+
+### vs In-house Hiring
+- **They**: 3-6 months to hire, full-time salary, onboarding
+- **Me**: start immediately, project-based, expert from day 1
+- **Message**: "Faster than hiring, cheaper than agencies"
+
+### vs "Generalist of Everything"
+- **Problem**: Sounds like lack of depth, no clear specialization
+- **Solution**: Focus on **process + proof** (deliverables), not labels
+- Frame as: "Bootstrap specialist" with systems-thinking approach
+
+## How to Talk About Pricing
+
+### Never say:
+- "Cheap"
+- "Budget-friendly"
+- "Affordable for everyone"
+
+### Instead:
+- "Each phase is priced separately — pay as you validate"
+- "Fixed scope, fixed price per phase"
+- "Investment in validation, not just development"
+
+### Frame value:
+- "Product Strategy doc alone saves weeks of back-and-forth"
+- "Clickable prototype prevents costly rebuilds"
+- "Production-ready means no 'technical debt cleanup' phase"
+
+## Call-to-Action Patterns
+
+### Discovery CTAs (top of funnel)
+- "Schedule Discovery Call"
+- "Let's discuss your idea"
+- "Book 30-minute intro call"
+- "Let's turn your vision into a product"
+
+### Social CTAs
+- "Connect on LinkedIn"
+- "Follow progress"
+
+### Direct CTAs (bottom of funnel)
+- "Start with Phase 1"
+- "Get Product Strategy"
+- "Let's validate your MVP"
+
+### Avoid:
+- "Contact me" (too vague)
+- "Get started" (with what?)
+- "Learn more" (unless linking to specific content)
+- "Build something from scratch" (vague)
+
+## How to Show Experience
+
+### ✅ Good (concrete, verifiable)
+- "20+ years in IT"
+- "Experience across marketing, UX, development, IoT, robotics, and management"
+- "Worked on projects from IoT to internal tools"
+
+### ❌ Bad (vague, unverifiable)
+- "Hundreds of satisfied clients"
+- "Award-winning developer"
+- "Trusted by Fortune 500"
+
+### Format for case studies (when added):
+- Problem (1 sentence)
+- Approach (2-3 sentences)
+- Outcome (metrics if possible)
+
+## Phase-Based Messaging (Critical!)
+
+### Phase #1 - Discovery & Strategy
+**What happens**: Discovery sessions with client → define users, value prop, journeys, metrics
+**Deliverable**: Product Strategy document (problem statement, MVP scope, user personas, roadmap)
+**Key message**: "Everything needed to start building" — tangible, standalone value
+
+### Phase #2 - R&D & Prototyping
+**What happens**: Solo work → translate Product Strategy into spec + prototype
+**Deliverable**: UX mockups, technical specification, clickable prototype
+**Key message**: "Something real to align on before we commit to the final build"
+
+### Phase #3 - Execution & Delivery
+**What happens**: Build architecture, implement with AI assistance, deploy
+**Deliverable**: Production-ready first version online
+**Key message**: "Ready to share with users, gather feedback, and validate in the market"
+
+### Important framing:
+- Show **continuity** between phases ("I translate Product Strategy into specification")
+- Each phase has **standalone value** (can stop after any phase)
+- Focus on **outcomes**, not process ("you get X" not "I do Y")
+- Avoid suggesting failure/exit ("don't continue together" → "foundation for next phase")
+
+## Insights from Development Process
+
+### What works technically AND makes business sense
+- Multi-disciplinary background allows holistic design
+- Systems thinking = design whole solutions, not just apps
+- User flows + data flows + analytics + admin + deployment = coherent blueprint
+- Fast R&D with AI agents under human supervision
+- Rough-but-usable prototypes > perfect mockups (faster validation)
+
+### Value proposition clarity
+- **Not**: "All-in-one architect" (sounds like generalist)
+- **Yes**: "Bootstrap partner" with clear 3-phase process
+- **Not**: "I do everything" (no perceived depth)
+- **Yes**: "I design end-to-end solutions with systems-thinking approach"
+
+### Deliverables = credibility
+- Always name **concrete outputs** (docs, prototypes, deployed code)
+- Product Strategy document = justifies Phase 1 payment
+- Clickable prototype = proof of progress in Phase 2
+- Production-ready code = clear handoff point
+
+## Tags & Labels (for design use)
+
+- Hands‑On Builder
+- Product‑Minded
+- Prototype‑First
+- 0→1 Mindset / 0→1 Specialist
+- Pragmatic Innovator
+- Systems Thinker
+- Builder at Heart
+- Engineering + UX
+- Bootstrap Partner
+- Phase #1 / #2 / #3 (process clarity)

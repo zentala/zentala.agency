@@ -83,9 +83,9 @@ W `src/{components, layouts, sections}/*.astro` tworzymy i rozwijamy towarzyszą
 
 ## Files structure and theirs roles
 
-- `/src/components/` - no texts here, only logic and styling
+- `/src/components/` - reusable components with logic and styling only, no content here
 - `/src/content/<content-type>/` - content
 - `/src/layouts/` - layouts
 - `/src/pages/` - static and dynamic (using `content`) pages
 - `/src/styles/` - SCSS styles
-- `/src/sections/` - components filled with texts and other props, to get reusable sections on the page (single source of truth for few occurrences of the same section on the website)
+- `/src/sections/` - components filled with texts and other props, to get reusable sections on the page (single source of truth for few occurrences of the same section on the website) or split long pages into smaller sections and easily move them around
