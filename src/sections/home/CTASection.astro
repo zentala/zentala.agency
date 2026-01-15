@@ -19,9 +19,9 @@ interface Props {
 }
 
 const defaultCtaSection = {
-  headline: "Let's Build Something From Scratch",
+  headline: "Let's Turn Your Vision Into a Product",
   subhead:
-    "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
+    "From discovery session to production-ready MVP - let's start with a call.",
   buttons: [
     {
       href: 'https://cal.com/zentala',
@@ -44,8 +44,11 @@ const defaultCtaSection = {
     //   icon: 'folder',
     // },
   ],
-  footerText:
-    'Based in Warsaw, Poland – heart of European valley of software engineers',
+  footerText: 'Based in Warsaw, Poland (CET timezone)',
+  // OLD:
+  // headline: "Let's Build Something From Scratch",
+  // subhead: "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
+  // footerText: 'Based in Warsaw, Poland – heart of European valley of software engineers',
 } as const
 
 const {
@@ -83,7 +86,7 @@ const {
         <span class="mx-3 opacity-20">•</span>
         <span class="inline-flex items-center">
           <Icon name="lucide:globe" class="mr-2 h-4 w-4 text-zinc-300" />
-          <span>Available for projects worldwide</span>
+          <span>Working with clients worldwide</span>
         </span>
       </p>
     ) : null

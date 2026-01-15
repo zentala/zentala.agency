@@ -676,6 +676,7 @@
   // Using !important to override scoped styles from SectionHeader.astro
   .section-header {
     border-bottom: none !important;
+    padding-bottom: 2rem !important;
   }
 }
 
@@ -705,7 +706,7 @@
   font-size: 1.375rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 3rem 0;
+  margin: 0 0 0rem 0;
   font-weight: 300;
 
   @include mobile {
