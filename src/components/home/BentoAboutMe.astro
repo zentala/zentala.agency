@@ -10,13 +10,11 @@
  */
 
 import Section from '../primitives/sections/Section.astro'
-import SectionHeader from '../primitives/sections/SectionHeader.astro'
 import SectionBento from '../primitives/sections/SectionBento.astro'
 import BentoCard from '../primitives/sections/BentoCard.astro'
 import SectionContent from '../primitives/sections/SectionContent.astro'
 import SectionImage from '../primitives/sections/SectionImage.astro'
-import SectionBlockQuote from '../primitives/sections/SectionBlockQuote.astro'
-import SectionCTA from '../primitives/sections/SectionCTA.astro'
+import Logo from '../Logo.astro'
 ---
 
 <Section id="bento-about-me">
@@ -27,48 +25,116 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
   /> -->
 
   <SectionBento rowHeight="0.8fr">
-    <!-- Row 1-2: Col 1 - Business (1:2) (Was Col 4) -->
-    <BentoCard colSpan={1} rowSpan={2} padding="sm">
+    <!-- Row 1-2: Col 1 - Starting an Innovative Project? (1:2) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={2}
+      padding="sm"
+      class="group"
+      hoverState="prototyping"
+    >
+      <div
+        class="absolute inset-0 opacity-[0.03] transition-opacity group-hover:opacity-[0.07]"
+        style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"
+      >
+      </div>
       <SectionContent context="grid" prose={true}>
-        <h3>Focus</h3>
-        <p>Outcomes. Technical solutions that drive actual business results.</p>
-        <p>Innovation. Cutting-edge solutions for complex problems.</p>
-        <p>Fast Execution. Weeks, not months.</p>
+        <div class="relative z-10">
+          <h3 class="transition-colors group-hover:text-white">
+            Starting an Innovative Project?
+          </h3>
+          <p>
+            Need help with the <strong>beginning</strong>? We start with
+            workshops to ground your business and marketing strategy. Only then
+            do I translate that vision into technical architecture.
+          </p>
+          <p>
+            I act as your <strong>all-in-one architect</strong>, designing the
+            entire system with a holistic view of all project aspects—from user
+            roles to technology stacks.
+          </p>
+          <div
+            class="mt-6 flex flex-wrap gap-2 opacity-40 transition-opacity group-hover:opacity-100"
+          >
+            <span
+              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
+              >#Workshops</span
+            >
+            <span
+              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
+              >#Architecture</span
+            >
+            <span
+              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
+              >#Feasibility</span
+            >
+          </div>
+        </div>
       </SectionContent>
     </BentoCard>
 
-    <!-- Row 1: Col 2 - Innovation (1:1) (Was Col 3) -->
-    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+    <!-- Row 1: Col 2 - R&D & Prototyping (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      class="group overflow-hidden"
+      hoverState="prototyping"
+    >
+      <div
+        class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
+      >
+      </div>
       <SectionContent context="grid" prose={true}>
-        <h3>AI-powered development</h3>
-        <p>
-          Where others need specialized teams, I bring broad-horizon expertise
-          across the entire technical stack - plus business strategy and user
-          experience perspective.
-        </p>
+        <div class="relative z-10">
+          <div
+            class="mb-2 inline-block rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/50 transition-colors group-hover:bg-white group-hover:text-black"
+          >
+            Fast Track
+          </div>
+          <h3>R&D & Prototyping</h3>
+          <p class="text-sm leading-relaxed">
+            I bridge the gap between abstract vision and reality through rapid
+            functional prototyping. I don't just build; I research the best path
+            to validate your idea.
+          </p>
+        </div>
       </SectionContent>
     </BentoCard>
 
-    <!-- Row 1: Col 3 - Years (1:1) (Was Col 2) -->
-    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+    <!-- Row 1: Col 3 - Multi-Disciplinary View (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      hoverState="logo"
+      class="cursor-pointer transition-transform duration-300 hover:scale-[0.98]"
+    >
       <SectionContent context="grid" prose={true}>
-        <h3>20+ Years Experience</h3>
+        <h3>Multi-Disciplinary View</h3>
         <p>
-          Startups and corporations. Management. User Experience and WebDesign.
-          Marketing. Software Development. Robotics and Internet of Things.
+          20+ years in IoT, Robotics, UX, and Management are perspectives that
+          allow me to design solutions that work technically and thrive as a
+          business.
         </p>
       </SectionContent>
     </BentoCard>
 
     <!-- Row 1-2: Col 4 - Avatar (1:2) (Was Col 1) -->
-    <BentoCard colSpan={1} rowSpan={2} padding="none">
+    <BentoCard
+      colSpan={1}
+      rowSpan={2}
+      padding="none"
+      hoverState="avatar"
+      class="cursor-pointer"
+    >
       <SectionImage
         src="https://cdn.zentala.io/images/avatar.jpg"
         alt="Paweł Żentała"
         aspectRatio="auto"
         objectFit="cover"
         hoverZoom={true}
-        overlayPosition="bottom-right"
+        overlayPosition="bottom-left"
       >
         <h2 class="m-0 text-2xl font-light text-white opacity-50">
           Paweł Żentała
@@ -76,18 +142,194 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
       </SectionImage>
     </BentoCard>
 
-    <!-- Row 2-3: Col 2-3 - Electronics (2:2) -->
-    <BentoCard colSpan={2} rowSpan={2} padding="none">
-      <SectionImage
-        src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop"
-        alt="Electronics and technology"
-        aspectRatio="auto"
-        objectFit="cover"
-        hoverZoom={true}
-      />
+    <!-- Row 2-3: Col 2-3 - INTERACTIVE CENTER (2:2) -->
+    <BentoCard
+      colSpan={2}
+      rowSpan={2}
+      padding="none"
+      id="central-interactive-card"
+      hoverState="logo"
+      class="cursor-pointer"
+    >
+      <div
+        class="interactive-container group relative h-full w-full overflow-hidden"
+      >
+        <!-- Default: Sygnet -->
+        <div
+          class="state-content active flex h-full items-center justify-center bg-black transition-all duration-500"
+          data-state="default"
+        >
+          <div class="sygnet-wrapper transition-transform duration-700">
+            <Logo type="sygnet" width="220px" height="220px" color="#fff" />
+          </div>
+        </div>
+
+        <!-- State: Avatar -->
+        <div
+          class="state-content absolute inset-0 opacity-0 transition-all duration-500"
+          data-state="avatar"
+        >
+          <div class="relative h-full w-full">
+            <img
+              src="https://cdn.zentala.io/images/avatar.jpg"
+              alt="Paweł Żentała"
+              class="h-full w-full object-cover opacity-40 grayscale"
+            />
+            <div
+              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 md:p-10"
+            >
+              <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+                Paweł Żentała
+              </h3>
+              <p
+                class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm"
+              >
+                Architect, Engineer, and Technical Leader with business and
+                client understanding. I bridge the gap between abstract vision
+                and functional reality.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- State: Discovery/Prototyping (for Cards 1 & 2) -->
+        <div
+          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+          data-state="prototyping"
+        >
+          <h3 class="mb-4 text-2xl font-light text-white md:text-3xl">
+            Fast-Track MVP
+          </h3>
+          <div class="space-y-3 border-l border-white/20 pl-6 md:space-y-4">
+            <div>
+              <span
+                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+                >Step 01</span
+              >
+              <p class="text-base text-white/80 md:text-lg">
+                Business & Tech Workshops
+              </p>
+            </div>
+            <div>
+              <span
+                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+                >Step 02</span
+              >
+              <p class="text-base text-white/80 md:text-lg">
+                Rapid Functional Prototyping
+              </p>
+            </div>
+            <div>
+              <span
+                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+                >Step 03</span
+              >
+              <p class="text-base text-white/80 md:text-lg">
+                Market Validation & Scale
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- State: CTO (for Card 7) -->
+        <div
+          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+          data-state="cto"
+        >
+          <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+            Fractional CTO
+          </h3>
+          <p
+            class="max-w-md text-lg italic leading-relaxed text-white/60 md:text-xl"
+          >
+            "I don't just manage; I architect the future of your product while
+            building the team that will carry it forward."
+          </p>
+        </div>
+
+        <!-- State: AI (for Card 8) -->
+        <div
+          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+          data-state="ai"
+        >
+          <h3 class="mb-6 text-2xl font-light text-white md:text-3xl">
+            AI Orchestration
+          </h3>
+          <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+            <div class="rounded border border-white/10 p-3 md:p-4">
+              <p class="text-[10px] font-bold uppercase text-white/40">
+                Multi-Agent Systems
+              </p>
+              <p class="text-xs text-white/80 md:text-sm">
+                Automating complex workflows.
+              </p>
+            </div>
+            <div class="rounded border border-white/10 p-3 md:p-4">
+              <p class="text-[10px] font-bold uppercase text-white/40">
+                LLM Integration
+              </p>
+              <p class="text-xs text-white/80 md:text-sm">
+                Context-aware architectures.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- State: Logo/Agency (Hover info) -->
+        <div
+          class="state-content absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
+          data-state="logo"
+        >
+          <div class="flex w-full flex-col gap-6 md:flex-row md:gap-10">
+            <div class="flex w-full flex-col gap-3 md:w-[40%]">
+              <Logo
+                type="full"
+                color="#fff"
+                width="220px"
+                height="36px"
+                tagline="Innovation Agency"
+                taglineClass="mt-3 text-xs font-medium uppercase tracking-[0.3em] text-white/70"
+              />
+              <div
+                class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
+              >
+                EST. 2024 / WARSAW / REMOTE
+              </div>
+            </div>
+            <div class="w-full md:w-[60%]">
+              <p
+                class="text-base font-semibold leading-tight md:text-lg lg:text-xl"
+              >
+                The ultimate format for software prototyping and technological
+                bootstrapping.
+              </p>
+              <p
+                class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+              >
+                We don't do everything. We focus on
+                <strong class="text-white">technological processes</strong>,
+                providing the shortest path from strategy to successful
+                validation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-hidden">
+        <span
+          class="nav-font block translate-y-full transition-transform delay-100 duration-500"
+          >Innovation</span
+        >
+      </div>
+      <div class="overflow-hidden">
+        <span
+          class="nav-font block translate-y-full transition-transform delay-200 duration-500"
+          >Agency</span
+        >
+      </div>
     </BentoCard>
 
-    <!-- Row 3-4: Col 1 - Workspace image (1:2) (Was Col 4) -->
+    <!-- Row 3-4: Col 1 - Workspace image (1:2) -->
     <BentoCard colSpan={1} rowSpan={2} padding="none">
       <SectionImage
         src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=600&fit=crop"
@@ -98,35 +340,216 @@ import SectionCTA from '../primitives/sections/SectionCTA.astro'
       />
     </BentoCard>
 
-    <!-- Row 3: Col 4 - Stack (1:1) (Was Col 1) -->
-    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+    <!-- Row 3: Col 4 - Hands-On CTO (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      class="group"
+      hoverState="cto"
+    >
       <SectionContent context="grid" prose={true}>
-        <h1>Your Hands-On CTO for Innovation Projects</h1>
+        <div class="flex h-full flex-col justify-between">
+          <div>
+            <h3>Your Hands-On CTO</h3>
+            <p class="text-sm leading-relaxed">
+              I act as your technical co-founder until you have a team. No
+              corporate politics—just pure technical leadership focused on
+              bringing your innovation to life.
+            </p>
+          </div>
+          <div
+            class="mt-4 border-l-2 border-white/10 pl-3 transition-colors group-hover:border-white/30"
+          >
+            <p
+              class="text-[11px] italic text-white/40 transition-colors group-hover:text-white/60"
+            >
+              "Lead by code, scale by vision."
+            </p>
+          </div>
+        </div>
       </SectionContent>
     </BentoCard>
 
-    <!-- Row 4: Col 2 - Generalist/Fast (1:1) (Was Col 3) -->
-    <BentoCard colSpan={1} rowSpan={1} padding="sm">
+    <!-- Row 4: Col 2 - Orchestrating AI (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      class="group"
+      hoverState="ai"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:to-purple-500/5 group-hover:opacity-100"
+      >
+      </div>
       <SectionContent context="grid" prose={true}>
-        <h3>Generalist</h3>
-        <p>
-          Where others need specialized teams, I bring broad-horizon expertise
-          across the entire technical stack - plus business strategy and user
-          experience perspective.
-        </p>
+        <div class="relative z-10">
+          <h3>Orchestrating AI</h3>
+          <p class="text-sm leading-relaxed">
+            I operate as an architect leading a "team" of AI agents. This allows
+            me to build complex, production-ready prototypes with the speed and
+            efficiency of an entire agency.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span
+              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
+              >#AI-Agents</span
+            >
+            <span
+              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
+              >#LLMs</span
+            >
+            <span
+              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
+              >#Automation</span
+            >
+          </div>
+        </div>
       </SectionContent>
     </BentoCard>
 
-    <!-- Row 4: Col 3-4 - Quote (2:1) (Was Col 1-2) -->
-    <BentoCard colSpan={2} rowSpan={1} padding="sm">
+    <!-- Row 4: Col 3-4 - Strategy to Execution (2:1) -->
+    <BentoCard
+      colSpan={2}
+      rowSpan={1}
+      padding="sm"
+      class="group"
+      hoverState="logo"
+    >
+      <div
+        class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"
+      >
+        <svg
+          width="120"
+          height="120"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="0.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-white"
+          ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+        >
+      </div>
       <SectionContent context="grid" prose={true}>
-        <p>
-          I build complex technology solutions from vision to working prototype
-          - and assemble teams to scale them. With 20+ years across full-stack
-          development, IoT, robotics, DevOps, management, and UX, I act as your
-          technical co-founder until you have a team.
-        </p>
+        <div class="relative z-10 max-w-[85%]">
+          <h3>Strategy to Execution</h3>
+          <p>
+            We start with workshops to sharpen your idea. I then find the
+            shortest path from that strategy to a successful validation. By
+            merging architecture and UX awareness with business and client
+            understanding, I ensure your project gets its best shot at winning.
+          </p>
+        </div>
       </SectionContent>
     </BentoCard>
   </SectionBento>
 </Section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('[data-bento-hover]')
+    const states = document.querySelectorAll('.state-content')
+    const sygnetWrapper = document.querySelector(
+      '.sygnet-wrapper',
+    ) as HTMLElement
+
+    cards.forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        const targetState = card.getAttribute('data-bento-hover')
+
+        states.forEach((state) => {
+          const stateName = state.getAttribute('data-state')
+          if (stateName === targetState) {
+            state.classList.add('active')
+            state.classList.remove('opacity-0', 'pointer-events-none')
+            state.classList.add('opacity-100')
+          } else {
+            state.classList.remove('active', 'opacity-100')
+            state.classList.add('opacity-0', 'pointer-events-none')
+          }
+        })
+
+        // Special effect for logo zoom
+        if (targetState === 'logo' && sygnetWrapper) {
+          sygnetWrapper.style.transform = 'scale(20)'
+        }
+      })
+
+      card.addEventListener('mouseleave', () => {
+        states.forEach((state) => {
+          const stateName = state.getAttribute('data-state')
+          if (stateName === 'default') {
+            state.classList.add('active')
+            state.classList.remove('opacity-0', 'pointer-events-none')
+            state.classList.add('opacity-100')
+          } else {
+            state.classList.remove('active', 'opacity-100')
+            state.classList.add('opacity-0', 'pointer-events-none')
+          }
+        })
+
+        if (sygnetWrapper) {
+          sygnetWrapper.style.transform = 'scale(1)'
+        }
+      })
+    })
+  })
+</script>
+
+<style lang="scss">
+  .state-content {
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    pointer-events: none;
+
+    &.active {
+      pointer-events: auto;
+    }
+
+    &[data-state='logo'] {
+      transform: translateY(20px);
+      &.active {
+        transform: translateY(0);
+      }
+    }
+
+    &[data-state='avatar'] {
+      transform: scale(1.05);
+      &.active {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .nav-font {
+    @apply font-medium uppercase;
+    font-size: 1.5rem;
+    letter-spacing: 0.26rem;
+    line-height: 1.2;
+
+    @media (min-width: 768px) {
+      font-size: 2rem;
+    }
+    @media (min-width: 1024px) {
+      font-size: 2.5rem;
+    }
+  }
+
+  .logo-text-anim {
+    .active & {
+      .logo-part-wrapper,
+      span {
+        transform: translateY(0) !important;
+      }
+    }
+  }
+
+  .sygnet-wrapper {
+    will-change: transform;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

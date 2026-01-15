@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Section from '../components/primitives/sections/Section.astro'
+import SectionHeader from '../components/primitives/sections/SectionHeader.astro'
 import HeroWithVariations from '../components/home/HeroWithVariations.astro'
 import ServiceSection from '../components/home/ServiceSection.astro'
 import FeaturedProjects from '../components/home/FeaturedProjects.astro'
@@ -8,7 +9,7 @@ import ProjectCard from '../components/home/ProjectCard.astro'
 import SectionCTA from '../components/primitives/sections/SectionCTA.astro'
 import NoteBox from '../components/primitives/NoteBox.astro'
 import WhyWorkWithMe from '../components/home/WhyWorkWithMe.astro'
-import BentoShowcase from '../components/home/BentoShowcase.astro'
+import BentoAboutMe from '../components/home/BentoAboutMe.astro'
 import EngagementModels from '../components/home/EngagementModels.astro'
 import CTASection from '../components/home/CTASection.astro'
 
@@ -320,6 +321,16 @@ const whyWorkWithMe = {
   },
 } as const
 
+const intro = {
+  ...whyWorkWithMe,
+  showHeader: false,
+  showCta: false,
+  topBoxes: [
+    { title: 'Hands-On CTO for Innovation Projects', span: 1 },
+    { text: heroVariants.A.componentProps.description, span: 2 },
+  ],
+} as const
+
 const ctaSection = {
   headline: "Let's Build Something From Scratch",
   subhead:
@@ -346,7 +357,8 @@ const ctaSection = {
       icon: 'folder',
     },
   ],
-  footerText: 'Based in Warsaw, Poland • Available for projects worldwide',
+  footerText:
+    'Based in Warsaw, Poland – European heart of PRO software engineers',
 } as const
 
 type ServiceProject = {
@@ -547,109 +559,93 @@ const services: ServiceConfig[] = [
     },
   },
 ]
+
+const currentFocus = (() => {
+  const rapid = services.find((s) => s.id === 'rapid-prototyping')
+  const iot = services.find((s) => s.id === 'iot')
+  const backstage = services.find((s) => s.id === 'backstage')
+
+  if (!rapid || !iot || !backstage) {
+    throw new Error('Expected services: iot, backstage, rapid-prototyping')
+  }
+
+  return {
+    headline: 'Current focus',
+    subhead:
+      'Rapid prototyping, IoT engineering, and Backstage developer portals.',
+    cards: [
+      {
+        title: rapid.headline,
+        bestFor: rapid.subhead,
+        whatYouGet: rapid.deliverables,
+        format: 'Prototype sprints (weeks) with optional scale-up support',
+      },
+      {
+        title: iot.headline,
+        bestFor: iot.subhead,
+        whatYouGet: iot.deliverables,
+        format: 'From prototype to production-ready systems',
+      },
+      {
+        title: backstage.headline,
+        bestFor: backstage.subhead,
+        whatYouGet: backstage.deliverables,
+        format: 'Backstage implementation + custom plugins + DevEx enablement',
+        link: {
+          href: '/offer/backstage',
+          text: 'Explore Backstage offer',
+          variant: 'secondary',
+          icon: 'folder',
+        },
+      },
+    ],
+  } as const
+})()
 ---
 
 <Layout
   title="Paweł Żentała - Hands-On CTO for Innovation Projects"
   description="I build complex technology solutions from vision to working prototype - IoT products, Backstage developer portals, and rapid application prototypes. 20+ years of full-stack expertise."
 >
-  <!-- <Section id="hero">
-    <HeroWithVariations variants={heroVariants} defaultVariant="A" />
+  <BentoAboutMe />
+  {
+    /* vision.md: Intro first (WhyWorkWithMe grid without header/footer + 2 boxes) */
+  }
+  <!-- <Section id="intro">
+    <WhyWorkWithMe {...intro} />
   </Section> -->
 
-  <BentoShowcase />
-
-  <Section id="why">
-    <WhyWorkWithMe {...whyWorkWithMe} />
-  </Section>
+  {/* vision.md: Positioning as 2nd section */}
+  <!-- <Section id="positioning">
+    <SectionHeader
+      headline={whyWorkWithMe.headline}
+      subhead={whyWorkWithMe.subhead}
+    />
+  </Section> -->
 
   {
-    services.map((service) => (
-      <Section>
-        <ServiceSection
-          id={service.id}
-          headline={service.headline}
-          subhead={service.subhead}
-        >
-          <div class="service-description">
-            <p>{service.description}</p>
-          </div>
-
-          <div class="service-deliverables">
-            <h3 class="section-subheading">WHAT YOU GET</h3>
-            <ul>
-              {service.deliverables.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          {service.extraTitle ||
-          service.extraText ||
-          service.extraList?.length ? (
-            <div
-              class={
-                service.extraList?.length
-                  ? 'service-experience'
-                  : 'service-ideal'
-              }
-            >
-              {service.extraTitle ? (
-                <h3 class="section-subheading">{service.extraTitle}</h3>
-              ) : null}
-              {service.extraList?.length ? (
-                <ul class="experience-list">
-                  {service.extraList.map((item) => (
-                    <li>
-                      {item.label ? <strong>{item.label}</strong> : null}{' '}
-                      {item.text}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {service.extraText ? <p>{service.extraText}</p> : null}
-            </div>
-          ) : null}
-
-          <FeaturedProjects title="Featured Projects" columns={3}>
-            {service.projects.map((project) => (
-              <ProjectCard
-                title={project.title}
-                description={project.description}
-                image={project.image}
-                link={project.link}
-                linkText={project.linkText}
-              />
-            ))}
-          </FeaturedProjects>
-
-          <SectionCTA
-            href={service.cta.href}
-            text={service.cta.text}
-            icon={service.cta.icon}
-            variant={service.cta.variant ?? 'primary'}
-          />
-
-          {service.note ? (
-            <NoteBox icon={service.note.icon ?? 'info'}>
-              <p>
-                {service.note.htmlStrongLabel ? (
-                  <strong>{service.note.htmlStrongLabel}:</strong>
-                ) : null}{' '}
-                {service.note.text}
-              </p>
-            </NoteBox>
-          ) : null}
-        </ServiceSection>
-      </Section>
-    ))
+    /* vision.md: Current focus as 3rd section (Rapid/IoT non-clickable, Backstage links) */
   }
+  <!-- <Section id="focus">
+    <EngagementModels {...currentFocus} />
+  </Section> -->
 
-  <!-- Bento Grid Showcase - NEW Section Primitives System -->
+  {/* Removed from homepage per vision.md (kept for reuse) */}
 
-  <Section id="engagement">
+  <!-- {false && <HeroWithVariations variants={heroVariants} defaultVariant="A" />} -->
+  <!-- {
+    false && (
+      <div>
+        {services.map((service) => (
+          <div>{service.headline}</div>
+        ))}
+      </div>
+    )
+  } -->
+
+  <!-- <Section id="engagement">
     <EngagementModels {...engagementModels} />
-  </Section>
+  </Section> -->
 
   <Section id="cta">
     <CTASection {...ctaSection} />

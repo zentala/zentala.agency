@@ -18,28 +18,58 @@ type Column = {
   paragraphs?: ReadonlyArray<{ strongLabel?: string; text: string; className?: string }>
 }
 
+type TopBox = {
+  title?: string
+  text?: string
+  span?: 1 | 2
+}
+
 interface Props {
   headline: string
   subhead: string
   columns: readonly Column[]
+  topBoxes?: readonly TopBox[]
+  showHeader?: boolean
   cta?: {
     href: string
     text: string
     icon?: string
     variant?: 'primary' | 'secondary' | 'outline'
   }
+  showCta?: boolean
 }
 
-const { headline, subhead, columns, cta } = Astro.props
+const {
+  headline,
+  subhead,
+  columns,
+  topBoxes = [],
+  showHeader = true,
+  cta,
+  showCta = true,
+} = Astro.props
 ---
 
 <div class="why-section">
-  <SectionHeader
-    headline={headline}
-    subhead={subhead}
-  />
+  {showHeader ? (
+    <SectionHeader
+      headline={headline}
+      subhead={subhead}
+    />
+  ) : null}
 
   <SectionGrid columns={3}>
+    {topBoxes.length
+      ? topBoxes.map((box) => (
+          <div class={`why-top-box why-top-box--span-${box.span ?? 1}`}>
+            <SectionContent context="grid" prose={false}>
+              {box.title ? <h3 class="why-top-box__title">{box.title}</h3> : null}
+              {box.text ? <p class="why-top-box__text">{box.text}</p> : null}
+            </SectionContent>
+          </div>
+        ))
+      : null}
+
     {columns.map(col => (
       <SectionContent context="grid">
         <h3>{col.title}</h3>
@@ -76,7 +106,7 @@ const { headline, subhead, columns, cta } = Astro.props
     ))}
   </SectionGrid>
 
-  {cta ? (
+  {cta && showCta ? (
     <SectionCTA
       href={cta.href}
       text={cta.text}
@@ -85,3 +115,24 @@ const { headline, subhead, columns, cta } = Astro.props
     />
   ) : null}
 </div>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  /* Wrapper around `SectionContent` so we can control grid spanning */
+  .why-top-box {
+    @include medium-up {
+      &.why-top-box--span-2 {
+        grid-column: span 2;
+      }
+    }
+  }
+
+  :global(.why-top-box__title) {
+    @apply text-3xl md:text-4xl font-light text-white mb-3;
+  }
+
+  :global(.why-top-box__text) {
+    @apply text-base md:text-lg text-white/80;
+  }
+</style>

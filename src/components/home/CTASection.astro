@@ -1,6 +1,7 @@
 ---
 import SectionHeader from '../primitives/sections/SectionHeader.astro'
 import Button from '../Button.astro'
+import { Icon } from 'astro-icon/components'
 
 type CTAButton = {
   href: string
@@ -39,5 +40,17 @@ const { headline, subhead, buttons, footerText } = Astro.props
     ))}
   </div>
 
-  {footerText ? <p class="cta-footer">{footerText}</p> : null}
+  {footerText ? (
+    <p class="cta-footer">
+      <span class="inline-flex items-center">
+        <Icon name="lucide:map-pin" class="mr-2 h-4 w-4 text-blue-500" />
+        <span>{footerText}</span>
+      </span>
+      <span class="mx-3 opacity-20">•</span>
+      <span class="inline-flex items-center">
+        <Icon name="lucide:globe" class="mr-2 h-4 w-4 text-blue-500" />
+        <span>Available for projects worldwide</span>
+      </span>
+    </p>
+  ) : null}
 </div>

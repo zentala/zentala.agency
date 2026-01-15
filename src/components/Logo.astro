@@ -5,6 +5,9 @@ interface LogoProps {
   color?: string // Klasa CSS dla koloru
   width?: string
   height?: string
+  tagline?: string
+  taglineClass?: string
+  wrapperClass?: string
 }
 
 const defaultProps: LogoProps = {
@@ -81,22 +84,30 @@ const props: LogoProps = { ...defaultProps, ...Astro.props }
   </symbol>
 </svg>
 
-<div>
+<div class={props.wrapperClass}>
   {
     props.link ? (
-      <a href={props.link}>
+      <a href={props.link} class="inline-flex flex-col">
         <svg width={props.width} height={props.height}>
           <use
             href={`#${props.type === 'sygnet' ? 'logo-sygnet' : 'logo-full'}`}
           />
         </svg>
+        {props.tagline ? (
+          <span class={props.taglineClass}>{props.tagline}</span>
+        ) : null}
       </a>
     ) : (
-      <svg width={props.width} height={props.height}>
-        <use
-          href={`#${props.type === 'sygnet' ? 'logo-sygnet' : 'logo-full'}`}
-        />
-      </svg>
+      <div class="inline-flex flex-col">
+        <svg width={props.width} height={props.height}>
+          <use
+            href={`#${props.type === 'sygnet' ? 'logo-sygnet' : 'logo-full'}`}
+          />
+        </svg>
+        {props.tagline ? (
+          <span class={props.taglineClass}>{props.tagline}</span>
+        ) : null}
+      </div>
     )
   }
 </div>

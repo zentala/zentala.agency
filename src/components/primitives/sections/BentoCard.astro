@@ -19,21 +19,38 @@ interface Props {
   colSpan?: 1 | 2 | 3 | 4
   rowSpan?: 1 | 2 | 3
   padding?: 'none' | 'sm' | 'md' | 'lg'
+  hoverState?: string
+  class?: string
+  [key: string]: any
 }
 
-const { colSpan = 1, rowSpan = 1, padding = 'md' } = Astro.props
+const {
+  colSpan = 1,
+  rowSpan = 1,
+  padding = 'md',
+  hoverState,
+  class: className,
+  ...rest
+} = Astro.props
 const isDev = import.meta.env.DEV
 ---
 
 <div
-  class={`bento-card ${padding !== 'none' ? `bento-card--padding-${padding}` : ''}`}
+  class={`bento-card ${padding !== 'none' ? `bento-card--padding-${padding}` : ''} ${className || ''}`}
   style={`grid-column: span ${colSpan}; grid-row: span ${rowSpan};`}
+  data-bento-hover={hoverState}
+  {...rest}
 >
-  {isDev && (
-    <div class="bento-card__dev-label" title={`Column span: ${colSpan}, Row span: ${rowSpan}`}>
-      {colSpan}:{rowSpan}
-    </div>
-  )}
+  {
+    isDev && (
+      <div
+        class="bento-card__dev-label"
+        title={`Column span: ${colSpan}, Row span: ${rowSpan}`}
+      >
+        {colSpan}:{rowSpan}
+      </div>
+    )
+  }
   <slot />
 </div>
 
@@ -54,8 +71,9 @@ const isDev = import.meta.env.DEV
       position: absolute;
       top: 4px;
       right: 4px;
-      background: rgba(96, 165, 250, 0.9); // blue-400
-      color: #000;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 0.5;
       font-size: 10px;
       font-weight: 600;
       padding: 2px 6px;

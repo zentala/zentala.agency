@@ -669,7 +669,19 @@
 .cta-section {
   background: rgba(31, 41, 55, 0.2);
   text-align: center;
+  border: none !important; // Remove any borders from the section itself
   @include py-responsive('lg');
+
+  // Remove border from section header in CTA
+  // Using !important to override scoped styles from SectionHeader.astro
+  .section-header {
+    border-bottom: none !important;
+  }
+}
+
+#cta .container-bordered {
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .cta-container {
@@ -713,6 +725,7 @@
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 2rem;
+  border: none; // Remove any potential border
 
   @include mobile {
     flex-direction: column;

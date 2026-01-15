@@ -11,6 +11,7 @@ type EngagementCard = {
   whatYouGetTitle?: string
   whatYouGet: readonly string[]
   format: string
+  link?: CTAButton
 }
 
 type CTAButton = {
@@ -54,6 +55,18 @@ const { headline, subhead, cards, note, cta } = Astro.props
         <p class="format">
           <strong>Format:</strong> {card.format}
         </p>
+
+        {card.link ? (
+          <div class="card-link">
+            <Button
+              href={card.link.href}
+              text={card.link.text}
+              variant={card.link.variant ?? 'secondary'}
+              target={card.link.target}
+              icon={card.link.icon}
+            />
+          </div>
+        ) : null}
       </SectionContent>
     ))}
   </SectionGrid>
