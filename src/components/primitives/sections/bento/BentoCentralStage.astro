@@ -1,0 +1,32 @@
+---
+import BentoCard from './BentoCard.astro'
+---
+
+<BentoCard
+  colSpan={2}
+  rowSpan={2}
+  padding="none"
+  id="central-interactive-card"
+  hoverState="logo"
+  class="cursor-pointer"
+>
+  <div
+    class="interactive-container group relative h-full w-full overflow-hidden"
+  >
+    <slot />
+  </div>
+  <div class="overflow-hidden">
+    <span
+      class="nav-font block translate-y-full transition-transform delay-100 duration-500"
+    >
+      <slot name="label-primary" />
+    </span>
+  </div>
+  <div class="overflow-hidden">
+    <span
+      class="nav-font block translate-y-full transition-transform delay-200 duration-500"
+    >
+      <slot name="label-secondary" />
+    </span>
+  </div>
+</BentoCard>

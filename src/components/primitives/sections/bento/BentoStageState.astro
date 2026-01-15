@@ -1,0 +1,13 @@
+---
+interface Props {
+  state: string
+  class?: string
+}
+
+const { state, class: className = '' } = Astro.props
+const classes = ['state-content', className].filter(Boolean).join(' ')
+---
+
+<div class={classes} data-state={state}>
+  <slot />
+</div>

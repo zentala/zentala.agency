@@ -1,5 +1,5 @@
 ---
-import SectionHeader from '../primitives/sections/SectionHeader.astro'
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
 
 interface Props {
   id: string
@@ -14,3 +14,5 @@ const { id, headline, subhead } = Astro.props
   <SectionHeader headline={headline} subhead={subhead} />
   <slot />
 </div>
+
+

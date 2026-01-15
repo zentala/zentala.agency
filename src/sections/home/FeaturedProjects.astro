@@ -1,5 +1,5 @@
 ---
-import SectionGrid from '../primitives/sections/SectionGrid.astro'
+import SectionGrid from '../../components/primitives/sections/SectionGrid.astro'
 
 interface Props {
   title?: string
@@ -17,4 +17,6 @@ const { title = 'Featured Projects', columns = 3, hideTitle = false } =
     <slot />
   </SectionGrid>
 </div>
+
+
 

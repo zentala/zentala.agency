@@ -9,12 +9,23 @@
  *
  */
 
-import Section from '../primitives/sections/Section.astro'
-import SectionBento from '../primitives/sections/SectionBento.astro'
-import BentoCard from '../primitives/sections/BentoCard.astro'
-import SectionContent from '../primitives/sections/SectionContent.astro'
-import SectionImage from '../primitives/sections/SectionImage.astro'
-import Logo from '../Logo.astro'
+import Section from '../../components/primitives/sections/Section.astro'
+import SectionBento from '../../components/primitives/sections/SectionBento.astro'
+import BentoCard from '../../components/primitives/sections/bento/BentoCard.astro'
+import SectionContent from '../../components/primitives/sections/SectionContent.astro'
+import SectionImage from '../../components/primitives/sections/SectionImage.astro'
+import BentoCentralStage from '../../components/primitives/sections/bento/BentoCentralStage.astro'
+import BentoStageState from '../../components/primitives/sections/bento/BentoStageState.astro'
+import Logo from '../../components/Logo.astro'
+
+const bentoStates = {
+  default: 'default',
+  avatar: 'avatar',
+  prototyping: 'prototyping',
+  cto: 'cto',
+  ai: 'ai',
+  logo: 'logo',
+} as const
 ---
 
 <Section id="bento-about-me">
@@ -31,7 +42,7 @@ import Logo from '../Logo.astro'
       rowSpan={2}
       padding="sm"
       class="group"
-      hoverState="prototyping"
+      hoverState={bentoStates.prototyping}
     >
       <div
         class="absolute inset-0 opacity-[0.03] transition-opacity group-hover:opacity-[0.07]"
@@ -79,7 +90,7 @@ import Logo from '../Logo.astro'
       rowSpan={1}
       padding="sm"
       class="group overflow-hidden"
-      hoverState="prototyping"
+      hoverState={bentoStates.prototyping}
     >
       <div
         class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
@@ -107,7 +118,7 @@ import Logo from '../Logo.astro'
       colSpan={1}
       rowSpan={1}
       padding="sm"
-      hoverState="logo"
+      hoverState={bentoStates.logo}
       class="cursor-pointer transition-transform duration-300 hover:scale-[0.98]"
     >
       <SectionContent context="grid" prose={true}>
@@ -125,7 +136,7 @@ import Logo from '../Logo.astro'
       colSpan={1}
       rowSpan={2}
       padding="none"
-      hoverState="avatar"
+      hoverState={bentoStates.avatar}
       class="cursor-pointer"
     >
       <SectionImage
@@ -142,192 +153,171 @@ import Logo from '../Logo.astro'
       </SectionImage>
     </BentoCard>
 
-    <!-- Row 2-3: Col 2-3 - INTERACTIVE CENTER (2:2) -->
-    <BentoCard
-      colSpan={2}
-      rowSpan={2}
-      padding="none"
-      id="central-interactive-card"
-      hoverState="logo"
-      class="cursor-pointer"
-    >
-      <div
-        class="interactive-container group relative h-full w-full overflow-hidden"
+    <BentoCentralStage>
+      <!-- Default: Sygnet -->
+      <BentoStageState
+        state={bentoStates.default}
+        class="active flex h-full items-center justify-center bg-black transition-all duration-500"
       >
-        <!-- Default: Sygnet -->
-        <div
-          class="state-content active flex h-full items-center justify-center bg-black transition-all duration-500"
-          data-state="default"
-        >
-          <div class="sygnet-wrapper transition-transform duration-700">
-            <Logo type="sygnet" width="220px" height="220px" color="#fff" />
+        <div class="sygnet-wrapper transition-transform duration-700">
+          <Logo type="sygnet" width="220px" height="220px" color="#fff" />
+        </div>
+      </BentoStageState>
+
+      <!-- State: Avatar -->
+      <BentoStageState
+        state={bentoStates.avatar}
+        class="absolute inset-0 opacity-0 transition-all duration-500"
+      >
+        <div class="relative h-full w-full">
+          <img
+            src="https://cdn.zentala.io/images/avatar.jpg"
+            alt="Paweł Żentała"
+            class="h-full w-full object-cover opacity-40 grayscale"
+          />
+          <div
+            class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 md:p-10"
+          >
+            <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+              Paweł Żentała
+            </h3>
+            <p
+              class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm"
+            >
+              Architect, Engineer, and Technical Leader with business and client
+              understanding. I bridge the gap between abstract vision and
+              functional reality.
+            </p>
           </div>
         </div>
+      </BentoStageState>
 
-        <!-- State: Avatar -->
-        <div
-          class="state-content absolute inset-0 opacity-0 transition-all duration-500"
-          data-state="avatar"
+      <!-- State: Discovery/Prototyping (for Cards 1 & 2) -->
+      <BentoStageState
+        state={bentoStates.prototyping}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-4 text-2xl font-light text-white md:text-3xl">
+          Fast-Track MVP
+        </h3>
+        <div class="space-y-3 border-l border-white/20 pl-6 md:space-y-4">
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 01</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Business & Tech Workshops
+            </p>
+          </div>
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 02</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Rapid Functional Prototyping
+            </p>
+          </div>
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 03</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Market Validation & Scale
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+
+      <!-- State: CTO (for Card 7) -->
+      <BentoStageState
+        state={bentoStates.cto}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+          Fractional CTO
+        </h3>
+        <p
+          class="max-w-md text-lg italic leading-relaxed text-white/60 md:text-xl"
         >
-          <div class="relative h-full w-full">
-            <img
-              src="https://cdn.zentala.io/images/avatar.jpg"
-              alt="Paweł Żentała"
-              class="h-full w-full object-cover opacity-40 grayscale"
+          "I don't just manage; I architect the future of your product while
+          building the team that will carry it forward."
+        </p>
+      </BentoStageState>
+
+      <!-- State: AI (for Card 8) -->
+      <BentoStageState
+        state={bentoStates.ai}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-6 text-2xl font-light text-white md:text-3xl">
+          AI Orchestration
+        </h3>
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+          <div class="rounded border border-white/10 p-3 md:p-4">
+            <p class="text-[10px] font-bold uppercase text-white/40">
+              Multi-Agent Systems
+            </p>
+            <p class="text-xs text-white/80 md:text-sm">
+              Automating complex workflows.
+            </p>
+          </div>
+          <div class="rounded border border-white/10 p-3 md:p-4">
+            <p class="text-[10px] font-bold uppercase text-white/40">
+              LLM Integration
+            </p>
+            <p class="text-xs text-white/80 md:text-sm">
+              Context-aware architectures.
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+
+      <!-- State: Logo/Agency (Hover info) -->
+      <BentoStageState
+        state={bentoStates.logo}
+        class="absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
+      >
+        <div class="flex w-full flex-col gap-6 md:flex-row md:gap-10">
+          <div class="flex w-full flex-col gap-3 md:w-[40%]">
+            <Logo
+              type="full"
+              color="#fff"
+              width="220px"
+              height="36px"
+              tagline="Innovation Agency"
+              taglineClass="mt-3 text-xs font-medium uppercase tracking-[0.3em] text-white/70"
             />
             <div
-              class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 md:p-10"
+              class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
             >
-              <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
-                Paweł Żentała
-              </h3>
-              <p
-                class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm"
-              >
-                Architect, Engineer, and Technical Leader with business and
-                client understanding. I bridge the gap between abstract vision
-                and functional reality.
-              </p>
+              EST. 2024 / WARSAW / REMOTE
             </div>
           </div>
-        </div>
-
-        <!-- State: Discovery/Prototyping (for Cards 1 & 2) -->
-        <div
-          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
-          data-state="prototyping"
-        >
-          <h3 class="mb-4 text-2xl font-light text-white md:text-3xl">
-            Fast-Track MVP
-          </h3>
-          <div class="space-y-3 border-l border-white/20 pl-6 md:space-y-4">
-            <div>
-              <span
-                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
-                >Step 01</span
-              >
-              <p class="text-base text-white/80 md:text-lg">
-                Business & Tech Workshops
-              </p>
-            </div>
-            <div>
-              <span
-                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
-                >Step 02</span
-              >
-              <p class="text-base text-white/80 md:text-lg">
-                Rapid Functional Prototyping
-              </p>
-            </div>
-            <div>
-              <span
-                class="text-[9px] font-bold uppercase tracking-widest text-white/40"
-                >Step 03</span
-              >
-              <p class="text-base text-white/80 md:text-lg">
-                Market Validation & Scale
-              </p>
-            </div>
+          <div class="w-full md:w-[60%]">
+            <p
+              class="text-base font-semibold leading-tight md:text-lg lg:text-xl"
+            >
+              The ultimate format for software prototyping and technological
+              bootstrapping.
+            </p>
+            <p
+              class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+            >
+              We don't do everything. We focus on
+              <strong class="text-white">technological processes</strong>,
+              providing the shortest path from strategy to successful
+              validation.
+            </p>
           </div>
         </div>
+      </BentoStageState>
 
-        <!-- State: CTO (for Card 7) -->
-        <div
-          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
-          data-state="cto"
-        >
-          <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
-            Fractional CTO
-          </h3>
-          <p
-            class="max-w-md text-lg italic leading-relaxed text-white/60 md:text-xl"
-          >
-            "I don't just manage; I architect the future of your product while
-            building the team that will carry it forward."
-          </p>
-        </div>
-
-        <!-- State: AI (for Card 8) -->
-        <div
-          class="state-content absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
-          data-state="ai"
-        >
-          <h3 class="mb-6 text-2xl font-light text-white md:text-3xl">
-            AI Orchestration
-          </h3>
-          <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-            <div class="rounded border border-white/10 p-3 md:p-4">
-              <p class="text-[10px] font-bold uppercase text-white/40">
-                Multi-Agent Systems
-              </p>
-              <p class="text-xs text-white/80 md:text-sm">
-                Automating complex workflows.
-              </p>
-            </div>
-            <div class="rounded border border-white/10 p-3 md:p-4">
-              <p class="text-[10px] font-bold uppercase text-white/40">
-                LLM Integration
-              </p>
-              <p class="text-xs text-white/80 md:text-sm">
-                Context-aware architectures.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- State: Logo/Agency (Hover info) -->
-        <div
-          class="state-content absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
-          data-state="logo"
-        >
-          <div class="flex w-full flex-col gap-6 md:flex-row md:gap-10">
-            <div class="flex w-full flex-col gap-3 md:w-[40%]">
-              <Logo
-                type="full"
-                color="#fff"
-                width="220px"
-                height="36px"
-                tagline="Innovation Agency"
-                taglineClass="mt-3 text-xs font-medium uppercase tracking-[0.3em] text-white/70"
-              />
-              <div
-                class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
-              >
-                EST. 2024 / WARSAW / REMOTE
-              </div>
-            </div>
-            <div class="w-full md:w-[60%]">
-              <p
-                class="text-base font-semibold leading-tight md:text-lg lg:text-xl"
-              >
-                The ultimate format for software prototyping and technological
-                bootstrapping.
-              </p>
-              <p
-                class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
-              >
-                We don't do everything. We focus on
-                <strong class="text-white">technological processes</strong>,
-                providing the shortest path from strategy to successful
-                validation.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="overflow-hidden">
-        <span
-          class="nav-font block translate-y-full transition-transform delay-100 duration-500"
-          >Innovation</span
-        >
-      </div>
-      <div class="overflow-hidden">
-        <span
-          class="nav-font block translate-y-full transition-transform delay-200 duration-500"
-          >Agency</span
-        >
-      </div>
-    </BentoCard>
+      <span slot="label-primary">Innovation</span>
+      <span slot="label-secondary">Agency</span>
+    </BentoCentralStage>
 
     <!-- Row 3-4: Col 1 - Workspace image (1:2) -->
     <BentoCard colSpan={1} rowSpan={2} padding="none">
@@ -346,7 +336,7 @@ import Logo from '../Logo.astro'
       rowSpan={1}
       padding="sm"
       class="group"
-      hoverState="cto"
+      hoverState={bentoStates.cto}
     >
       <SectionContent context="grid" prose={true}>
         <div class="flex h-full flex-col justify-between">
@@ -377,7 +367,7 @@ import Logo from '../Logo.astro'
       rowSpan={1}
       padding="sm"
       class="group"
-      hoverState="ai"
+      hoverState={bentoStates.ai}
     >
       <div
         class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:to-purple-500/5 group-hover:opacity-100"
@@ -415,7 +405,7 @@ import Logo from '../Logo.astro'
       rowSpan={1}
       padding="sm"
       class="group"
-      hoverState="logo"
+      hoverState={bentoStates.logo}
     >
       <div
         class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"

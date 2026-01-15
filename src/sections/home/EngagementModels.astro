@@ -1,9 +1,9 @@
 ---
-import SectionHeader from '../primitives/sections/SectionHeader.astro'
-import SectionGrid from '../primitives/sections/SectionGrid.astro'
-import SectionContent from '../primitives/sections/SectionContent.astro'
-import Button from '../Button.astro'
-import NoteBox from '../primitives/NoteBox.astro'
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
+import SectionGrid from '../../components/primitives/sections/SectionGrid.astro'
+import SectionContent from '../../components/primitives/sections/SectionContent.astro'
+import Button from '../../components/Button.astro'
+import NoteBox from '../../components/primitives/NoteBox.astro'
 
 type EngagementCard = {
   title: string
@@ -91,3 +91,5 @@ const { headline, subhead, cards, note, cta } = Astro.props
     ) : null}
   </div>
 </div>
+
+
