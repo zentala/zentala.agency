@@ -3,24 +3,41 @@ export interface TagProps {
   text: string
   href?: string
   prefix?: string
+  theme?: 'pill' | 'simple' | 'label'
   class?: string
 }
 
-const { text, href, prefix = '#', class: className = '' } = Astro.props
+const {
+  text,
+  href,
+  prefix = '#',
+  theme = 'pill',
+  class: className = '',
+} = Astro.props as TagProps
 
-const baseClass =
-  'text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70'
+const themeClassMap = {
+  pill:
+    'rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white',
+  simple:
+    'text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70',
+  label:
+    'inline-block rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/50 transition-colors group-hover:bg-white group-hover:text-black',
+} as const
+
+const baseClass = themeClassMap[theme] ?? themeClassMap.pill
+
+const effectivePrefix = theme === 'label' ? '' : prefix
 ---
 
 {
   href ? (
     <a href={href} class={`${baseClass} ${className}`.trim()}>
-      {prefix}
+      {effectivePrefix}
       {text}
     </a>
   ) : (
     <span class={`${baseClass} ${className}`.trim()}>
-      {prefix}
+      {effectivePrefix}
       {text}
     </span>
   )

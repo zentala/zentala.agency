@@ -54,22 +54,12 @@ const bentoStates = {
             entire system with a holistic view of all project aspects—from user
             roles to technology stacks.
           </p>
-          <div
-            class="mt-6 flex flex-wrap gap-2 opacity-40 transition-opacity group-hover:opacity-100"
-          >
-            <span
-              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
-              >#Workshops</span
-            >
-            <span
-              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
-              >#Architecture</span
-            >
-            <span
-              class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white"
-              >#Feasibility</span
-            >
-          </div>
+          <TagGroup
+            class="mt-6 gap-2 opacity-40 transition-opacity group-hover:opacity-100"
+            tags={['Workshops', 'Architecture', 'Feasibility']}
+            theme="pill"
+            tagClass=""
+          />
         </div>
       </SectionContent>
     </BentoCard>
@@ -88,11 +78,6 @@ const bentoStates = {
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
-          <div
-            class="mb-2 inline-block rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/50 transition-colors group-hover:bg-white group-hover:text-black"
-          >
-            Fast Track
-          </div>
           <h3>R&D & Prototyping</h3>
           <p class="text-sm leading-relaxed">
             I bridge the gap between abstract vision and reality through rapid
@@ -351,6 +336,12 @@ const bentoStates = {
       <SectionContent context="grid" prose={true}>
         <div class="flex h-full flex-col justify-between">
           <div>
+            <TagGroup
+              class="mb-2 inline-flex gap-2"
+              theme="label"
+              tags={['Product‑Minded']}
+            />
+            <!-- 'Systems Thinker' -->
             <h2 style="font-size:28px;">
               Your Hands-On CTO for an innovative project
             </h2>
@@ -382,11 +373,11 @@ const bentoStates = {
             allows me to provide production-ready applications with the speed of
             an entire agency.
           </p>
-          <TagGroup
-            class="mt-4"
+          <!-- <TagGroup
+            class="mt-4 gap-2 opacity-40 transition-opacity group-hover:opacity-100"
             tags={['AI-Agents', 'LLMs', 'Automation']}
-            tagClass="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
-          />
+            tagClass=""
+          /> -->
         </div>
       </SectionContent>
     </BentoCard>

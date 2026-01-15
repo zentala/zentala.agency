@@ -5,6 +5,7 @@ export interface TagGroupProps {
   tags: string[]
   class?: string
   tagClass?: string
+  theme?: 'pill' | 'simple' | 'label'
   prefix?: string
   hrefPrefix?: string
 }
@@ -13,9 +14,10 @@ const {
   tags,
   class: className = '',
   tagClass = '',
+  theme = 'pill',
   prefix = '#',
   hrefPrefix,
-} = Astro.props
+} = Astro.props as TagGroupProps
 
 const wrapperClass = `flex flex-wrap gap-1.5 ${className}`.trim()
 ---
@@ -27,6 +29,7 @@ const wrapperClass = `flex flex-wrap gap-1.5 ${className}`.trim()
         text={tag}
         prefix={prefix}
         href={hrefPrefix ? `${hrefPrefix}${tag}` : undefined}
+        theme={theme}
         class={tagClass}
       />
     ))
