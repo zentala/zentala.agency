@@ -331,36 +331,6 @@ const intro = {
   ],
 } as const
 
-const ctaSection = {
-  headline: "Let's Build Something From Scratch",
-  subhead:
-    "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
-  buttons: [
-    {
-      href: CAL_URL,
-      text: 'Schedule Discovery Call',
-      variant: 'primary',
-      target: '_blank',
-      icon: 'calendar',
-    },
-    {
-      href: LINKEDIN_URL,
-      text: 'Connect on LinkedIn',
-      variant: 'secondary',
-      target: '_blank',
-      icon: 'linkedin',
-    },
-    {
-      href: '/portfolio',
-      text: 'Explore Portfolio',
-      variant: 'outline',
-      icon: 'folder',
-    },
-  ],
-  footerText:
-    'Based in Warsaw, Poland – European heart of PRO software engineers',
-} as const
-
 type ServiceProject = {
   title: string
   description: string
@@ -648,6 +618,6 @@ const currentFocus = (() => {
   </Section> -->
 
   <Section id="cta">
-    <CTASection {...ctaSection} />
+    <CTASection />
   </Section>
 </Layout>

@@ -1,0 +1,28 @@
+---
+export interface TagProps {
+  text: string
+  href?: string
+  prefix?: string
+  class?: string
+}
+
+const { text, href, prefix = '#', class: className = '' } = Astro.props
+
+const baseClass =
+  'text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70'
+---
+
+{
+  href ? (
+    <a href={href} class={`${baseClass} ${className}`.trim()}>
+      {prefix}
+      {text}
+    </a>
+  ) : (
+    <span class={`${baseClass} ${className}`.trim()}>
+      {prefix}
+      {text}
+    </span>
+  )
+}
+

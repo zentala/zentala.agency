@@ -6,53 +6,86 @@ import { Icon } from 'astro-icon/components'
 type CTAButton = {
   href: string
   text: string
-  variant?: 'primary' | 'secondary' | 'outline'
+  variant?: 'primary' | 'secondary' | 'outline' | 'light'
   target?: string
   icon?: string
 }
 
 interface Props {
-  headline: string
-  subhead: string
-  buttons: readonly CTAButton[]
+  headline?: string
+  subhead?: string
+  buttons?: readonly CTAButton[]
   footerText?: string
 }
 
-const { headline, subhead, buttons, footerText } = Astro.props
+const defaultCtaSection = {
+  headline: "Let's Build Something From Scratch",
+  subhead:
+    "Whether you're starting with just an idea or need specialized leadership for complex engineering - let's discuss how I can help.",
+  buttons: [
+    {
+      href: 'https://cal.com/zentala',
+      text: 'Schedule Discovery Call',
+      variant: 'light',
+      target: '_blank',
+      icon: 'calendar',
+    },
+    {
+      href: 'https://linkedin.com/in/zentala',
+      text: 'Connect on LinkedIn',
+      variant: 'secondary',
+      target: '_blank',
+      icon: 'linkedin',
+    },
+    // {
+    //   href: '/portfolio',
+    //   text: 'Explore Portfolio',
+    //   variant: 'outline',
+    //   icon: 'folder',
+    // },
+  ],
+  footerText:
+    'Based in Warsaw, Poland – heart of European valley of software engineers',
+} as const
+
+const {
+  headline = defaultCtaSection.headline,
+  subhead = defaultCtaSection.subhead,
+  buttons = defaultCtaSection.buttons,
+  footerText = defaultCtaSection.footerText,
+} = Astro.props
 ---
 
 <div class="cta-section">
-  <SectionHeader
-    headline={headline}
-    subhead={subhead}
-    align="center"
-  />
+  <SectionHeader headline={headline} subhead={subhead} align="center" />
 
   <div class="cta-buttons">
-    {buttons.map(btn => (
-      <Button
-        href={btn.href}
-        text={btn.text}
-        variant={btn.variant ?? 'primary'}
-        target={btn.target}
-        icon={btn.icon}
-      />
-    ))}
+    {
+      buttons.map((btn) => (
+        <Button
+          href={btn.href}
+          text={btn.text}
+          variant={btn.variant ?? 'primary'}
+          target={btn.target}
+          icon={btn.icon}
+        />
+      ))
+    }
   </div>
 
-  {footerText ? (
-    <p class="cta-footer">
-      <span class="inline-flex items-center">
-        <Icon name="lucide:map-pin" class="mr-2 h-4 w-4 text-blue-500" />
-        <span>{footerText}</span>
-      </span>
-      <span class="mx-3 opacity-20">•</span>
-      <span class="inline-flex items-center">
-        <Icon name="lucide:globe" class="mr-2 h-4 w-4 text-blue-500" />
-        <span>Available for projects worldwide</span>
-      </span>
-    </p>
-  ) : null}
+  {
+    footerText ? (
+      <p class="cta-footer">
+        <span class="inline-flex items-center">
+          <Icon name="lucide:map-pin" class="mr-2 h-4 w-4 text-zinc-300" />
+          <span>{footerText}</span>
+        </span>
+        <span class="mx-3 opacity-20">•</span>
+        <span class="inline-flex items-center">
+          <Icon name="lucide:globe" class="mr-2 h-4 w-4 text-zinc-300" />
+          <span>Available for projects worldwide</span>
+        </span>
+      </p>
+    ) : null
+  }
 </div>
-
-

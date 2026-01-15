@@ -1,0 +1,35 @@
+---
+import Tag from './Tag.astro'
+
+export interface TagGroupProps {
+  tags: string[]
+  class?: string
+  tagClass?: string
+  prefix?: string
+  hrefPrefix?: string
+}
+
+const {
+  tags,
+  class: className = '',
+  tagClass = '',
+  prefix = '#',
+  hrefPrefix,
+} = Astro.props
+
+const wrapperClass = `flex flex-wrap gap-1.5 ${className}`.trim()
+---
+
+<div class={wrapperClass}>
+  {
+    tags.map((tag: string) => (
+      <Tag
+        text={tag}
+        prefix={prefix}
+        href={hrefPrefix ? `${hrefPrefix}${tag}` : undefined}
+        class={tagClass}
+      />
+    ))
+  }
+</div>
+

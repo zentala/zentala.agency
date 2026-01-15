@@ -17,6 +17,7 @@ import SectionImage from '../../components/primitives/sections/SectionImage.astr
 import BentoCentralStage from '../../components/primitives/sections/bento/BentoCentralStage.astro'
 import BentoStageState from '../../components/primitives/sections/bento/BentoStageState.astro'
 import Logo from '../../components/Logo.astro'
+import TagGroup from '../../components/primitives/TagGroup.astro'
 
 const bentoStates = {
   default: 'default',
@@ -29,21 +30,10 @@ const bentoStates = {
 ---
 
 <Section id="bento-about-me">
-  <!-- <SectionHeader
-    headline="Why Work With Me"
-    subhead="A unique combination of technical depth and business understanding"
-    interactive={true}
-  /> -->
-
   <SectionBento rowHeight="0.8fr">
     <!-- Row 1-2: Col 1 - Starting an Innovative Project? (1:2) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={2}
-      padding="sm"
-      class="group"
-      hoverState={bentoStates.prototyping}
-    >
+    <BentoCard colSpan={1} rowSpan={2} padding="sm" class="group">
+      <!-- hoverState={bentoStates.prototyping} -->
       <div
         class="absolute inset-0 opacity-[0.03] transition-opacity group-hover:opacity-[0.07]"
         style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"
@@ -52,7 +42,7 @@ const bentoStates = {
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
           <h3 class="transition-colors group-hover:text-white">
-            Starting an Innovative Project?
+            Thinking about an Innovative Project?
           </h3>
           <p>
             Need help with the <strong>beginning</strong>? We start with
@@ -90,8 +80,8 @@ const bentoStates = {
       rowSpan={1}
       padding="sm"
       class="group overflow-hidden"
-      hoverState={bentoStates.prototyping}
     >
+      <!-- hoverState={bentoStates.prototyping} -->
       <div
         class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
       >
@@ -118,9 +108,10 @@ const bentoStates = {
       colSpan={1}
       rowSpan={1}
       padding="sm"
-      hoverState={bentoStates.logo}
-      class="cursor-pointer transition-transform duration-300 hover:scale-[0.98]"
+      class="group cursor-pointer overflow-hidden"
     >
+      <!-- hoverState={bentoStates.logo} -->
+      <div class="pointer-events-none"></div>
       <SectionContent context="grid" prose={true}>
         <h3>Multi-Disciplinary View</h3>
         <p>
@@ -132,13 +123,8 @@ const bentoStates = {
     </BentoCard>
 
     <!-- Row 1-2: Col 4 - Avatar (1:2) (Was Col 1) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={2}
-      padding="none"
-      hoverState={bentoStates.avatar}
-      class="cursor-pointer"
-    >
+    <BentoCard colSpan={1} rowSpan={2} padding="none" class="cursor-pointer">
+      <!-- hoverState={bentoStates.avatar} -->
       <SectionImage
         src="https://cdn.zentala.io/images/avatar.jpg"
         alt="Paweł Żentała"
@@ -325,19 +311,19 @@ const bentoStates = {
             height="72px"
             tagline="Innovation Agency"
           />
-          <div
+          <!-- <div
             class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
           >
             EST. 2024 / WARSAW, PL, EU
-          </div>
-          <div class="w-full px-16">
+          </div> -->
+          <div class="mt-10 w-full px-16">
             <p
               class="text-base font-normal leading-tight md:text-lg lg:text-xl"
             >
               The ultimate format for technological bootstrapping.
             </p>
             <p
-              class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+              class="mt-4 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
             >
               I don't do everything. I focus on
               <strong class="font-semibold text-white">prototyping</strong>,
@@ -361,82 +347,53 @@ const bentoStates = {
     </BentoCard>
 
     <!-- Row 3: Col 4 - Hands-On CTO (1:1) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={1}
-      padding="sm"
-      class="group"
-      hoverState={bentoStates.cto}
-    >
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
       <SectionContent context="grid" prose={true}>
         <div class="flex h-full flex-col justify-between">
           <div>
-            <h3>Your Hands-On CTO</h3>
-            <p class="text-sm leading-relaxed">
-              I act as your technical co-founder until you have a team. No
-              corporate politics—just pure technical leadership focused on
-              bringing your innovation to life.
+            <h2 style="font-size:28px;">
+              Your Hands-On CTO for an innovative project
+            </h2>
+            <p>
+              I act as your technical co-founder to kick-up your idea into
+              user-friendly application.
             </p>
           </div>
           <div
             class="mt-4 border-l-2 border-white/10 pl-3 transition-colors group-hover:border-white/30"
           >
-            <p
-              class="text-[11px] italic text-white/40 transition-colors group-hover:text-white/60"
-            >
-              "Lead by code, scale by vision."
-            </p>
           </div>
         </div>
       </SectionContent>
     </BentoCard>
 
     <!-- Row 4: Col 2 - Orchestrating AI (1:1) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={1}
-      padding="sm"
-      class="group"
-      hoverState={bentoStates.ai}
-    >
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
+      <!-- hoverState={bentoStates.ai} -->
       <div
         class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:to-purple-500/5 group-hover:opacity-100"
       >
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
-          <h3>Orchestrating AI</h3>
+          <h3>AI-Accelerated Delivery</h3>
           <p class="text-sm leading-relaxed">
-            I operate as an architect leading a "team" of AI agents. This allows
-            me to build complex, production-ready prototypes with the speed and
-            efficiency of an entire agency.
+            I operate as an architect orchestrating a "team" of AI agents. This
+            allows me to provide production-ready applications with the speed of
+            an entire agency.
           </p>
-          <div class="mt-4 flex flex-wrap gap-1.5">
-            <span
-              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
-              >#AI-Agents</span
-            >
-            <span
-              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
-              >#LLMs</span
-            >
-            <span
-              class="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
-              >#Automation</span
-            >
-          </div>
+          <TagGroup
+            class="mt-4"
+            tags={['AI-Agents', 'LLMs', 'Automation']}
+            tagClass="text-[9px] font-bold uppercase tracking-tighter text-white/30 transition-colors group-hover:text-white/70"
+          />
         </div>
       </SectionContent>
     </BentoCard>
 
     <!-- Row 4: Col 3-4 - Strategy to Execution (2:1) -->
-    <BentoCard
-      colSpan={2}
-      rowSpan={1}
-      padding="sm"
-      class="group"
-      hoverState={bentoStates.logo}
-    >
+    <BentoCard colSpan={2} rowSpan={1} padding="sm" class="group">
+      <!-- hoverState={bentoStates.logo} -->
       <div
         class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"
       >
@@ -457,10 +414,11 @@ const bentoStates = {
         <div class="relative z-10 max-w-[85%]">
           <h3>Strategy to Execution</h3>
           <p>
-            We start with workshops to sharpen your idea. I then find the
-            shortest path from that strategy to a successful validation. By
-            merging architecture and UX awareness with business and client
-            understanding, I ensure your project gets its best shot at winning.
+            I start with discovery sessions and design thinking workshops to
+            sharpen your idea. I then find the shortest path from that strategy
+            to a successful validation. By merging architecture and UX awareness
+            with business and client understanding, I ensure your project gets
+            its best shot at winning.
           </p>
         </div>
       </SectionContent>

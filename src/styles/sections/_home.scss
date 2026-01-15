@@ -667,7 +667,7 @@
 
 // CTA Section
 .cta-section {
-  background: rgba(31, 41, 55, 0.2);
+  background: rgba(255, 255, 255, 0.03);
   text-align: center;
   border: none !important; // Remove any borders from the section itself
   @include py-responsive('lg');
@@ -677,11 +677,6 @@
   .section-header {
     border-bottom: none !important;
   }
-}
-
-#cta .container-bordered {
-  border-left: none !important;
-  border-right: none !important;
 }
 
 .cta-container {
@@ -734,14 +729,14 @@
 }
 
 .cta-link {
-  color: #60a5fa;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 1.0625rem;
   font-weight: 400;
   transition: color 0.2s ease;
 
   &:hover {
-    color: #93c5fd;
+    color: rgba(255, 255, 255, 0.95);
     text-decoration: underline;
   }
 }
