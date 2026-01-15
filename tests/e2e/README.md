@@ -63,7 +63,7 @@ Tests run automatically:
 
 Tests are configured in `playwright.config.ts`:
 
-- Base URL: `http://localhost:4321` (or `PLAYWRIGHT_TEST_BASE_URL` env var)
+- Base URL: `http://localhost:4333` (or `PLAYWRIGHT_TEST_BASE_URL` env var)
 - Browsers: Chromium, Firefox, WebKit
 - Retries: 2 on CI, 0 locally
 - Screenshots: Only on failure
@@ -164,7 +164,7 @@ This will:
 
 ### Tests fail locally
 
-- Ensure dev server is running: `npm run dev`
+- Ensure preview server is running: `npm run preview -- --port 4333`
 - Check `PLAYWRIGHT_TEST_BASE_URL` environment variable
 - Verify all pages exist and are accessible
 

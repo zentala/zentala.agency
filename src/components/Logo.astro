@@ -18,6 +18,27 @@ const defaultProps: LogoProps = {
 }
 
 const props: LogoProps = { ...defaultProps, ...Astro.props }
+const hasFixedWidth = Boolean(props.width && props.width !== 'auto')
+const wrapperStyle = hasFixedWidth ? `width: ${props.width};` : undefined
+const svgWidth = hasFixedWidth ? '100%' : props.width
+
+// Tagline should auto-scale to the logo width everywhere this component is used.
+// We use container query units (cqw), so the wrapper must be a size container.
+// const taglineClass = [
+//   props.taglineClass,
+//   'block w-full whitespace-nowrap text-center justify-center ml-[0.35em] mt-3 flex', //
+//   'text-[1.5rem] font-thin uppercase tracking-[0.40em] text-white/70',
+//   'text-[clamp(13px,1.5cqw,6px)]',
+// ]
+
+const taglineClass = [
+  props.taglineClass,
+  'block w-full whitespace-nowrap text-center justify-center ml-[0.35em] mt-3 flex', //
+  'text-[1rem] font-normal uppercase tracking-[0.6em] text-white/70',
+  'text-[clamp(13px,1.5cqw,6px)]',
+]
+  .filter(Boolean)
+  .join(' ')
 ---
 
 <svg style="display: none;">
@@ -87,25 +108,32 @@ const props: LogoProps = { ...defaultProps, ...Astro.props }
 <div class={props.wrapperClass}>
   {
     props.link ? (
-      <a href={props.link} class="inline-flex flex-col">
-        <svg width={props.width} height={props.height}>
+      <a
+        href={props.link}
+        class="inline-flex flex-col [container-type:inline-size]"
+        style={wrapperStyle}
+      >
+        <svg width={svgWidth} height={props.height}>
           <use
             href={`#${props.type === 'sygnet' ? 'logo-sygnet' : 'logo-full'}`}
           />
         </svg>
         {props.tagline ? (
-          <span class={props.taglineClass}>{props.tagline}</span>
+          <span class={taglineClass}>{props.tagline}</span>
         ) : null}
       </a>
     ) : (
-      <div class="inline-flex flex-col">
-        <svg width={props.width} height={props.height}>
+      <div
+        class="inline-flex flex-col [container-type:inline-size]"
+        style={wrapperStyle}
+      >
+        <svg width={svgWidth} height={props.height}>
           <use
             href={`#${props.type === 'sygnet' ? 'logo-sygnet' : 'logo-full'}`}
           />
         </svg>
         {props.tagline ? (
-          <span class={props.taglineClass}>{props.tagline}</span>
+          <span class={taglineClass}>{props.tagline}</span>
         ) : null}
       </div>
     )

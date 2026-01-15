@@ -280,7 +280,9 @@ const bentoStates = {
         state={bentoStates.logo}
         class="absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
       >
-        <div class="flex w-full flex-col gap-6 md:flex-row md:gap-10">
+        <!-- <div
+          class="logo-state-content flex w-full flex-col gap-6 md:flex-row md:gap-10"
+        >
           <div class="flex w-full flex-col gap-3 md:w-[40%]">
             <Logo
               type="full"
@@ -312,11 +314,39 @@ const bentoStates = {
               validation.
             </p>
           </div>
+        </div> -->
+        <div
+          class="logo-state-content flex w-full flex-col items-center gap-3 text-center md:gap-4"
+        >
+          <Logo
+            type="full"
+            color="#fff"
+            width="400px"
+            height="72px"
+            tagline="Innovation Agency"
+          />
+          <div
+            class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
+          >
+            EST. 2024 / WARSAW, PL, EU
+          </div>
+          <div class="w-full px-16">
+            <p
+              class="text-base font-normal leading-tight md:text-lg lg:text-xl"
+            >
+              The ultimate format for technological bootstrapping.
+            </p>
+            <p
+              class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+            >
+              I don't do everything. I focus on
+              <strong class="font-semibold text-white">prototyping</strong>,
+              providing the shortest path from strategy to successful
+              validation.
+            </p>
+          </div>
         </div>
       </BentoStageState>
-
-      <span slot="label-primary">Innovation</span>
-      <span slot="label-secondary">Agency</span>
     </BentoCentralStage>
 
     <!-- Row 3-4: Col 1 - Workspace image (1:2) -->
@@ -436,110 +466,117 @@ const bentoStates = {
       </SectionContent>
     </BentoCard>
   </SectionBento>
-</Section>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('[data-bento-hover]')
-    const states = document.querySelectorAll('.state-content')
-    const sygnetWrapper = document.querySelector(
-      '.sygnet-wrapper',
-    ) as HTMLElement
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('[data-bento-hover]')
+      const states = document.querySelectorAll('.state-content')
+      const sygnetWrapper = document.querySelector(
+        '.sygnet-wrapper',
+      ) as HTMLElement
 
-    cards.forEach((card) => {
-      card.addEventListener('mouseenter', () => {
-        const targetState = card.getAttribute('data-bento-hover')
+      cards.forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          const targetState = card.getAttribute('data-bento-hover')
 
-        states.forEach((state) => {
-          const stateName = state.getAttribute('data-state')
-          if (stateName === targetState) {
-            state.classList.add('active')
-            state.classList.remove('opacity-0', 'pointer-events-none')
-            state.classList.add('opacity-100')
-          } else {
-            state.classList.remove('active', 'opacity-100')
-            state.classList.add('opacity-0', 'pointer-events-none')
+          states.forEach((state) => {
+            const stateName = state.getAttribute('data-state')
+            if (stateName === targetState) {
+              state.classList.add('active')
+              state.classList.remove('opacity-0', 'pointer-events-none')
+              state.classList.add('opacity-100')
+            } else {
+              state.classList.remove('active', 'opacity-100')
+              state.classList.add('opacity-0', 'pointer-events-none')
+            }
+          })
+
+          // Special effect for logo zoom
+          if (targetState === 'logo' && sygnetWrapper) {
+            sygnetWrapper.style.transform = 'scale(20)'
           }
         })
 
-        // Special effect for logo zoom
-        if (targetState === 'logo' && sygnetWrapper) {
-          sygnetWrapper.style.transform = 'scale(20)'
-        }
-      })
+        card.addEventListener('mouseleave', () => {
+          states.forEach((state) => {
+            const stateName = state.getAttribute('data-state')
+            if (stateName === 'default') {
+              state.classList.add('active')
+              state.classList.remove('opacity-0', 'pointer-events-none')
+              state.classList.add('opacity-100')
+            } else {
+              state.classList.remove('active', 'opacity-100')
+              state.classList.add('opacity-0', 'pointer-events-none')
+            }
+          })
 
-      card.addEventListener('mouseleave', () => {
-        states.forEach((state) => {
-          const stateName = state.getAttribute('data-state')
-          if (stateName === 'default') {
-            state.classList.add('active')
-            state.classList.remove('opacity-0', 'pointer-events-none')
-            state.classList.add('opacity-100')
-          } else {
-            state.classList.remove('active', 'opacity-100')
-            state.classList.add('opacity-0', 'pointer-events-none')
+          if (sygnetWrapper) {
+            sygnetWrapper.style.transform = 'scale(1)'
           }
         })
-
-        if (sygnetWrapper) {
-          sygnetWrapper.style.transform = 'scale(1)'
-        }
       })
     })
-  })
-</script>
+  </script>
 
-<style lang="scss">
-  .state-content {
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
-    pointer-events: none;
+  <style lang="scss">
+    .state-content {
+      transition:
+        opacity 0.5s ease,
+        transform 0.7s ease;
+      pointer-events: none;
 
-    &.active {
-      pointer-events: auto;
-    }
-
-    &[data-state='logo'] {
-      transform: translateY(20px);
       &.active {
-        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      &[data-state='logo'] {
+        .logo-state-content {
+          transform: scale(0.01);
+          transform-origin: center;
+          transition: transform 0.7s ease;
+        }
+
+        &.active {
+          .logo-state-content {
+            transform: scale(1);
+          }
+        }
+      }
+
+      &[data-state='avatar'] {
+        transform: scale(1.05);
+        &.active {
+          transform: scale(1);
+        }
       }
     }
 
-    &[data-state='avatar'] {
-      transform: scale(1.05);
-      &.active {
-        transform: scale(1);
+    .nav-font {
+      @apply font-medium uppercase;
+      font-size: 1.5rem;
+      letter-spacing: 0.26rem;
+      line-height: 1.2;
+
+      @media (min-width: 768px) {
+        font-size: 2rem;
+      }
+      @media (min-width: 1024px) {
+        font-size: 2.5rem;
       }
     }
-  }
 
-  .nav-font {
-    @apply font-medium uppercase;
-    font-size: 1.5rem;
-    letter-spacing: 0.26rem;
-    line-height: 1.2;
-
-    @media (min-width: 768px) {
-      font-size: 2rem;
-    }
-    @media (min-width: 1024px) {
-      font-size: 2.5rem;
-    }
-  }
-
-  .logo-text-anim {
-    .active & {
-      .logo-part-wrapper,
-      span {
-        transform: translateY(0) !important;
+    .logo-text-anim {
+      .active & {
+        .logo-part-wrapper,
+        span {
+          transform: translateY(0) !important;
+        }
       }
     }
-  }
 
-  .sygnet-wrapper {
-    will-change: transform;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-</style>
+    .sygnet-wrapper {
+      will-change: transform;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</Section>

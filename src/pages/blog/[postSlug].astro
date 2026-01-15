@@ -68,7 +68,7 @@ const contentBoxClass = 'py-responsive-md'
                 post.data.category && (
                   <>
                     <a
-                      href={`/category/${post.data.category}`}
+                      href={`/category/${post.data.category.toLowerCase()}`}
                       class="text-gray-500 hover:text-gray-300"
                     >
                       {post.data.category}

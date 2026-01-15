@@ -62,6 +62,14 @@ const isDev = import.meta.env.DEV
     transition: background 200ms;
     position: relative;
 
+    &.bento-card--transparent {
+      background: transparent;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
     &:hover {
       background: #111827;
     }
