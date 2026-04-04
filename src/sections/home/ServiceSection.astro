@@ -1,0 +1,18 @@
+---
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
+
+interface Props {
+  id: string
+  headline: string
+  subhead: string
+}
+
+const { id, headline, subhead } = Astro.props
+---
+
+<div id={id}>
+  <SectionHeader headline={headline} subhead={subhead} />
+  <slot />
+</div>
+
+

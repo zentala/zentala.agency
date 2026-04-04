@@ -46,6 +46,13 @@
   .container-bordered {
     @include container-base;
     @include container-borders;
+    
+    // Ensure vertical borders extend from top to bottom when inside section-full
+    // by making container fill the section height
+    :global(.section-full) > & {
+      min-height: 100%;
+      @include px-responsive();
+    }
   }
 
   .container-simple {
@@ -54,12 +61,12 @@
 
   .container-padded {
     @include container-base;
-    @include container-borders;
-
     // Keep padding values accessible as a CSS var so children (e.g. banners)
     // can align/bleed to the container borders without guessing spacing.
     --container-padded-padding: #{$spacing-desktop};
     padding: var(--container-padded-padding);
+
+    @include container-borders;
 
     @include large {
       --container-padded-padding: #{$spacing-large};

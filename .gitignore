@@ -13,6 +13,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# local build output logs
+build.log
+
 # environment variables
 .env
 .env.production
@@ -27,6 +30,9 @@ pnpm-debug.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Local caches
+/.cache/
 
 # Don't index SpecStory auto-save files, but allow explicit context inclusion via @ references
 .specstory/**

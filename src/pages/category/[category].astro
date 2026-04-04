@@ -8,18 +8,28 @@ export async function getStaticPaths() {
     (post: CollectionEntry<'blog'>) =>
       import.meta.env.DEV || post.data.published !== false,
   )
-  const categories = [
-    ...new Set(
-      posts.map((post: CollectionEntry<'blog'>) => post.data.category),
-    ),
-  ]
+  const categoryMap = new Map<
+    string,
+    { title: string; posts: CollectionEntry<'blog'>[] }
+  >()
 
-  return categories.map((category) => ({
+  posts.forEach((post) => {
+    const title = post.data.category
+    const slug = title.toLowerCase()
+    const existing = categoryMap.get(slug)
+
+    if (existing) {
+      existing.posts.push(post)
+    } else {
+      categoryMap.set(slug, { title, posts: [post] })
+    }
+  })
+
+  return Array.from(categoryMap.entries()).map(([category, data]) => ({
     params: { category },
     props: {
-      posts: posts.filter(
-        (post: CollectionEntry<'blog'>) => post.data.category === category,
-      ),
+      posts: data.posts,
+      displayTitle: data.title,
     },
   }))
 }
@@ -29,7 +39,10 @@ interface Props {
 }
 
 const { category } = Astro.params as { category: string }
-const { posts } = Astro.props
+const { posts, displayTitle } = Astro.props as {
+  posts: CollectionEntry<'blog'>[]
+  displayTitle: string
+}
 const authorsCollection = await getCollection('authors')
 const authors: any[] =
   authorsCollection && authorsCollection[0]
@@ -40,21 +53,24 @@ const authors: any[] =
 // @ts-expect-error - Astro content typing limitation for dynamic slug
 const categoryDescriptionEntry = (await getEntry(
   'category-descriptions',
-  category.toLowerCase(),
+  category,
 ).catch(() => null)) as any | null
 
 const Content = categoryDescriptionEntry
   ? (await categoryDescriptionEntry.render()).Content
   : null
 
-const displayTitle = categoryDescriptionEntry?.data?.title || category
+const resolvedTitle =
+  categoryDescriptionEntry?.data?.title || displayTitle || category
 ---
 
-<Layout title={`Category: ${displayTitle}`}>
+<Layout title={`Category: ${resolvedTitle}`}>
   <section class="section-full">
     <div class="container-bordered">
       <div class="padding-responsive-md border-b border-gray-800">
-        <h1 class="text-4xl font-light text-white">Category: {displayTitle}</h1>
+        <h1 class="text-4xl font-light text-white">
+          Category: {resolvedTitle}
+        </h1>
         {
           categoryDescriptionEntry ? (
             Content && (

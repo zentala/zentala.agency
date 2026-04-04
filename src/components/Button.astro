@@ -5,34 +5,39 @@ interface Props {
   href: string
   text: string
   target?: string
-  variant?: 'primary' | 'secondary' | 'outline' | 'filled'
+  variant?: 'primary' | 'secondary' | 'outline' | 'filled' | 'light'
   icon?: string // Lucide icon name from astro-icon (left icon)
   arrow?: boolean // Show arrow on right (default true)
 }
 
 const { href, text, target, variant = 'primary', icon, arrow = true } = Astro.props
 
-let buttonClasses = 'px-8 py-3 font-semibold text-white transition-colors'
+let buttonClasses = 'px-8 py-3 font-semibold transition-colors'
 
 // Base styles for all buttons (no rounded corners)
 buttonClasses += ' inline-flex items-center justify-center' // To center icon and text
 
 switch (variant) {
   case 'primary':
-    buttonClasses += ' bg-blue-600 hover:bg-blue-700'
+    buttonClasses += ' bg-blue-600 text-white hover:bg-blue-700'
     break
   case 'secondary':
-    buttonClasses += ' border border-gray-700 bg-gray-800 hover:bg-gray-700'
+    buttonClasses +=
+      ' border border-gray-700 bg-gray-800 text-white hover:bg-gray-700'
     break
   case 'outline':
     buttonClasses +=
-      ' border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+      ' border border-white/30 text-white/90 hover:border-white/60 hover:bg-white hover:text-black'
     break
   case 'filled':
-    buttonClasses += ' bg-gray-700 hover:bg-gray-600' // Example filled style
+    buttonClasses += ' bg-gray-700 text-white hover:bg-gray-600' // Example filled style
+    break
+  case 'light':
+    buttonClasses +=
+      ' bg-white text-black hover:bg-zinc-100 hover:text-black'
     break
   default: // Default to primary if variant is not recognized
-    buttonClasses += ' bg-blue-600 hover:bg-blue-700'
+    buttonClasses += ' bg-blue-600 text-white hover:bg-blue-700'
     break
 }
 ---

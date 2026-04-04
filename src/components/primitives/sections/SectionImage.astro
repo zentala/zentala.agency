@@ -27,6 +27,7 @@ interface Props {
   background?: boolean // Use as background image
   animateIn?: boolean
   hoverZoom?: boolean
+  overlayPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center'
 }
 
 const {
@@ -39,6 +40,7 @@ const {
   background = false,
   animateIn = false,
   hoverZoom = true,
+  overlayPosition = 'bottom-left',
 } = Astro.props
 
 const ratios = {
@@ -59,7 +61,9 @@ const ratios = {
       data-animate-in={String(animateIn)}
       data-hover-zoom={String(hoverZoom)}
     >
-      <slot />
+      <div class={`section-image__overlay section-image__overlay--${overlayPosition}`}>
+        <slot />
+      </div>
     </div>
   ) : (
     <div
@@ -75,17 +79,26 @@ const ratios = {
         class="section-image__img"
         style={`object-fit: ${objectFit};`}
       />
+      <div class={`section-image__overlay section-image__overlay--${overlayPosition}`}>
+        <slot />
+      </div>
     </div>
   )
 }
 
-<style>
+<style lang="scss">
+  @use "../../../styles/variables" as *;
+
   .section-image {
     width: 100%;
     height: 100%; /* Fill parent (BentoCard) completely */
     overflow: hidden;
     background: #000;
     position: relative;
+
+    &:hover .section-image__overlay {
+      opacity: 1;
+    }
   }
 
   .section-image__img {
@@ -100,6 +113,59 @@ const ratios = {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+  }
+
+  /* Overlay styles */
+  .section-image__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+    padding: 0.75rem 1rem; // Match bento md padding
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      transparent 100%
+    );
+
+    @include medium-up {
+      padding: 1rem 1.25rem;
+    }
+
+    &--top-left {
+      justify-content: flex-start;
+      align-items: flex-start;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+    }
+
+    &--top-right {
+      justify-content: flex-start;
+      align-items: flex-end;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+    }
+
+    &--bottom-left {
+      justify-content: flex-end;
+      align-items: flex-start;
+      /* default background is fine */
+    }
+
+    &--bottom-right {
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+
+    &--center {
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
   }
 
   /* Entrance animation */

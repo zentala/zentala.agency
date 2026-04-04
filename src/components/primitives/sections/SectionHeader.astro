@@ -38,9 +38,9 @@ const HeadingTag = tag
   @use '../../../styles/variables' as *;
 
   .section-header {
+    border-bottom: 1px solid $border-color;
     @include px-responsive('md');
     @include py-responsive('md');
-    border-bottom: 1px solid $border-color;
 
     &[data-align='center'] {
       text-align: center;

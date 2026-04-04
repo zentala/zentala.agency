@@ -25,7 +25,7 @@ interface Props {
   text: string
   icon?: string // Lucide icon name
   arrow?: boolean
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'outline'
   external?: boolean
   bgText?: string // Large background text (e.g., "PORTFOLIO")
   class?: string
@@ -64,8 +64,6 @@ const rel = external ? 'noopener noreferrer' : undefined
   @use '../../../styles/variables' as *;
 
   .section-cta {
-    @include px-responsive('md');
-    @include py-responsive('md');
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,6 +75,8 @@ const rel = external ? 'noopener noreferrer' : undefined
     position: relative;
     z-index: 2; // Higher than Section's z-index: 1
     overflow: hidden; // Clip background text
+    @include px-responsive('md');
+    @include py-responsive('md');
 
     @include mobile {
       min-height: 100px;
@@ -153,7 +153,8 @@ const rel = external ? 'noopener noreferrer' : undefined
   }
 
   // Variants
-  .section-cta--primary {
+  .section-cta--primary,
+  .section-cta--outline {
     .section-cta__text {
       @apply text-blue-400;
     }

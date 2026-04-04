@@ -52,7 +52,7 @@ alwaysApply: true
 
 ## Documentation Structure
 
-W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzyszące im w tym samym folderze pliki `*.md` opisujące:
+W `src/{components, layouts, sections}/*.astro` tworzymy i rozwijamy towarzyszące im w tym samym folderze pliki `*.md` opisujące:
 - cel / oczekiwane zachowanie, 
 - co działa (a w szczególności należy zostawić i nie zmieniać), co nie działa i ew propozycje usprawnień na przyszłość
 
@@ -62,18 +62,30 @@ W `src/{banners, components, layouts}/*.astro` tworzymy i rozwijamy towarzysząc
 2. Fix any build errors
 3. Commit
 
+## E2E Testing
+
+- E2E tests are located in `tests/e2e/` directory
+- Run tests with `npm run test:e2e` or `npx playwright test`
+- Always run e2e tests before pushing to ensure:
+  - All banner links point to existing pages
+  - All linked pages are accessible (status 200)
+  - Pages don't show 404 or error messages
+- When creating new banners or adding links, update `tests/e2e/banner-links.spec.ts` to include new links
+- Test files should follow the pattern: `tests/e2e/*.spec.ts`
+
 ## Git
 
+- conventional commit messages
 * Never commit but instead prepare stage (add there files) and propose to the user short English commit message.
 * Never push, user will.
 * Using `git show`, `log` and `diff` MUST be with `--no-pager` flag
 * zakaz robienia commitow bez pozwolenia usera, tylko propzycje nazw dawaj i dodwaj do stash tylko to co zmieniles i sprawdzkj czy inne pliki nie zostaly dodnae do stasha co konliktuja 
 
-## Sumbodules
+## Files structure and theirs roles
 
-Mamy submoduly:
-- /chat/ - fork of https://github.com/FlowiseAI/FlowiseChatEmbed
-
-Pamietaj aby wykonywac commity dt zmian w nich, bedac w danym subkatlaogu. 
-Czyli commity dla `/chat/` wykonujesz bedac w tym filder (`cd chat` i sopiero robisz git commit`).
-Robiac commita `git add chat` dodwaj tez w tym smym commicie zbudowana wersje chata, a nie tylko aktualziacje refernecji. 
+- `/src/components/` - reusable components with logic and styling only, no content here
+- `/src/content/<content-type>/` - content
+- `/src/layouts/` - layouts
+- `/src/pages/` - static and dynamic (using `content`) pages
+- `/src/styles/` - SCSS styles
+- `/src/sections/` - components filled with texts and other props, to get reusable sections on the page (single source of truth for few occurrences of the same section on the website) or split long pages into smaller sections and easily move them around

@@ -1,0 +1,22 @@
+---
+import SectionGrid from '../../components/primitives/sections/SectionGrid.astro'
+
+interface Props {
+  title?: string
+  columns?: 2 | 3 | 4
+  hideTitle?: boolean
+}
+
+const { title = 'Featured Projects', columns = 3, hideTitle = false } =
+  Astro.props
+---
+
+<div class="featured-projects">
+  {!hideTitle && title ? <h3 class="projects-title">{title}</h3> : null}
+  <SectionGrid columns={columns}>
+    <slot />
+  </SectionGrid>
+</div>
+
+
+

@@ -145,7 +145,7 @@ if (!author) {
       <time datetime={date} class="text-gray-700">{date}</time>
       ·
       <a
-        href={`/category/${category}`}
+        href={`/category/${category.toLowerCase()}`}
         class="relative z-10 rounded-full px-2 py-1 text-gray-600 hover:text-gray-500"
       >
         {category}

@@ -30,31 +30,44 @@ const { context = 'auto', prose = true } = Astro.props
 const actualContext = context === 'auto' ? 'full' : context
 ---
 
-<div class={`section-content section-content--${actualContext} ${prose ? 'prose' : ''}`}>
-  <slot />
+<div
+  class={`section-content section-content--${actualContext} ${prose ? 'section-content--prose' : ''}`}
+>
+  <div
+    class={`section-content__body ${prose ? 'section-content__body--prose' : ''}`}
+  >
+    <slot />
+  </div>
 </div>
 
 <style lang="scss">
   @use '../../../styles/variables' as *;
 
   .section-content {
-    background: #000;
+    background: var(--section-content-bg, #000);
     transition: background 200ms;
     position: relative;
     z-index: 1;
 
     &:hover {
-      background: #111827;
       z-index: 10; // Lift above siblings
     }
   }
 
+  :global(.bento-card) .section-content {
+    --section-content-bg: transparent;
+  }
+
+  :global(.bento-card:hover) .section-content {
+    z-index: 10; // keep highlight above neighbors
+  }
+
   // Full-width context: generous padding + max-width
   .section-content--full {
-    @include px-responsive('lg'); // 64→48→32→24→16px
-    @include py-responsive('lg'); // 96→72→48→36→24px
     max-width: 960px;
     margin: 0 auto;
+    @include px-responsive('lg'); // 64→48→32→24→16px
+    @include py-responsive('lg'); // 96→72→48→36→24px
   }
 
   // Grid context: compact padding, use available space
@@ -72,57 +85,88 @@ const actualContext = context === 'auto' ? 'full' : context
   }
 
   // Prose styling for text content
-  .prose {
-    h3 {
-      @apply text-2xl font-light mb-4;
-      color: rgba(255, 255, 255, 0.95); // Brighter headings
+  .section-content__body {
+    width: 100%;
+    color: #f8fafc;
+  }
+
+  .section-content--prose .section-content__body {
+    max-width: 100%;
+
+    :global(h1) {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 44px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f8fafc;
     }
 
-    h4 {
-      @apply text-xl font-light mb-3;
-      color: rgba(255, 255, 255, 0.92);
+    :global(h2) {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f8fafc;
     }
 
-    h5 {
-      @apply text-lg font-light mb-2;
-      color: rgba(255, 255, 255, 0.9);
+    :global(h3) {
+      // Keep this as plain CSS (not @apply) because Tailwind @apply can be flaky in .astro <style>.
+      // Requirement: all h3 headings inside the bento grid should be 24px.
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: #f8fafc;
     }
 
-    p {
-      @apply text-base md:text-lg text-white/80 mb-4;
+    :global(h4) {
+      @apply mb-3 text-xl font-light;
+      color: rgba(248, 250, 252, 0.95);
+    }
+
+    :global(h5) {
+      @apply mb-2 text-lg font-light;
+      color: rgba(248, 250, 252, 0.9);
+    }
+
+    :global(p) {
+      @apply mb-4 text-base text-white/70 md:text-lg;
 
       &:last-child {
         margin-bottom: 0;
       }
     }
 
-    ul,
-    ol {
-      @apply text-base md:text-lg text-white/80 mb-4 ml-6;
+    :global(ul),
+    :global(ol) {
+      @apply mb-4 ml-6 text-base text-white/70 md:text-lg;
 
       li {
         @apply mb-2;
 
         strong {
-          @apply text-white;
+          @apply text-white/90;
         }
       }
     }
 
-    ul {
+    :global(ul) {
       list-style: disc;
     }
 
-    ol {
+    :global(ol) {
       list-style: decimal;
     }
 
-    strong {
-      @apply text-white font-normal;
+    :global(strong) {
+      @apply font-normal text-white;
     }
 
     .value-statement {
-      @apply text-white/70 italic mt-4;
+      @apply mt-4 italic text-white/70;
     }
 
     .mt-2 {

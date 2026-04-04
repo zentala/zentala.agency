@@ -17,8 +17,8 @@
 @layer components {
   // Grid system with selective borders - no overlapping margins
   .cards-grid {
-    @include cards-grid;
     border-top: 1px solid $border-color;
+    @include cards-grid;
 
     // All children get full borders - but top/left are transparent by default
     > * {
@@ -171,11 +171,11 @@
 
   // Content grid item with text - needs internal padding
   .content-grid__text {
-    @include py-responsive('md');
-    @include px-responsive('md');
     display: flex;
     flex-direction: column;
     justify-content: center;
+    @include py-responsive('md');
+    @include px-responsive('md');
   }
 
   // Content grid item with image - no padding, full bleed

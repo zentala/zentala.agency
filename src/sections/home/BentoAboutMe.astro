@@ -1,0 +1,566 @@
+---
+/**
+ * BentoAboutMe
+ *
+ * Demonstrates the new Section Primitives system with:
+ * - Asymmetric bento grid layout
+ * - Mixed content types (text, images, quotes, CTAs)
+ * - Custom column/row spans
+ *
+ */
+
+import Section from '../../components/primitives/sections/Section.astro'
+import SectionBento from '../../components/primitives/sections/SectionBento.astro'
+import BentoCard from '../../components/primitives/sections/bento/BentoCard.astro'
+import SectionContent from '../../components/primitives/sections/SectionContent.astro'
+import SectionImage from '../../components/primitives/sections/SectionImage.astro'
+import BentoCentralStage from '../../components/primitives/sections/bento/BentoCentralStage.astro'
+import BentoStageState from '../../components/primitives/sections/bento/BentoStageState.astro'
+import Logo from '../../components/Logo.astro'
+import TagGroup from '../../components/primitives/TagGroup.astro'
+import PhaseLabel from '../../components/primitives/PhaseLabel.astro'
+
+const bentoStates = {
+  default: 'default',
+  avatar: 'avatar',
+  prototyping: 'prototyping',
+  cto: 'cto',
+  ai: 'ai',
+  logo: 'logo',
+} as const
+---
+
+<Section id="bento-about-me">
+  <SectionBento rowHeight="0.8fr">
+    <!-- Row 1-2: Col 1 - Starting an Innovative Project? (1:2) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="sm" class="group">
+      <!-- hoverState={bentoStates.prototyping} -->
+      <div
+        class="absolute inset-0 opacity-[0.03] transition-opacity group-hover:opacity-[0.07]"
+        style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"
+      >
+      </div>
+      <SectionContent context="grid" prose={true}>
+        <div class="relative z-10">
+          <div class="mb-2 flex items-baseline gap-2">
+            <h3 class="m-0 transition-colors group-hover:text-white">
+              Discovery & Strategy
+            </h3>
+            <PhaseLabel phase={1} />
+          </div>
+          <p>
+            Let me help turn your vision into a strategy, and your idea into a
+            clear direction.
+          </p>
+          <p>
+            We start with focused discovery sessions and design-thinking
+            workshops to sharpen your idea: define target users, value
+            proposition, key user journeys, and success metrics.
+          </p>
+          <p>
+            You get a Product Strategy document with problem statement, MVP
+            scope, user personas, and roadmap — everything needed to start
+            building.
+          </p>
+          <!-- <p>
+            Than I will deliver and publish a production-ready MVP. Then I
+            translate that clarity into a coherent blueprint, designing the
+            entire system architecture with a holistic view of all project
+            aspects—from user flows to technology stacks, roles, data flows, and
+            analytics.
+          </p> -->
+
+          <!-- <p>
+            I act as your <strong>all-in-one architect</strong>, designing the
+            entire system with a holistic view of all project aspects—from user
+            flows to technology stacks.
+          </p> -->
+          <!-- <TagGroup
+            class="mt-6 gap-2 opacity-40 transition-opacity group-hover:opacity-100"
+            tags={['Workshops', 'Architecture', 'Feasibility']}
+            theme="pill"
+            tagClass=""
+          /> -->
+        </div>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 1: Col 2 - R&D & Prototyping (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      class="group overflow-hidden"
+    >
+      <!-- hoverState={bentoStates.prototyping} -->
+      <div
+        class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
+      >
+      </div>
+      <!-- I research the best path
+            to validate your idea. -->
+      <SectionContent context="grid" prose={true}>
+        <div class="relative z-10">
+          <div class="mb-1 flex items-baseline gap-2">
+            <h3 class="m-0">R&D & Prototyping</h3>
+            <PhaseLabel phase={2} />
+          </div>
+          <p class="text-sm leading-relaxed">
+            I translate the Product Strategy into UX mockups and technical
+            specification, and build a rough-but-usable prototype — something
+            real to align on before we commit to the final build.
+          </p>
+        </div>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 1: Col 3 - Holistic Design (1:1) -->
+    <BentoCard
+      colSpan={1}
+      rowSpan={1}
+      padding="sm"
+      class="group overflow-hidden"
+    >
+      <!-- hoverState={bentoStates.logo} -->
+      <SectionContent context="grid" prose={true}>
+        <TagGroup class="mb-2" theme="label" tags={['Systems Thinking']} />
+        <h3>End-to-End Design</h3>
+        <p>
+          Not just the app — the whole system. User flows, data flows,
+          analytics, admin experience, and deployment — all aligned in one
+          coherent blueprint.
+        </p>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 1-2: Col 4 - Avatar (1:2) (Was Col 1) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="none">
+      <!-- hoverState={bentoStates.avatar} -->
+      <SectionImage
+        src="https://cdn.zentala.io/images/avatar.jpg"
+        alt="Paweł Żentała"
+        aspectRatio="auto"
+        objectFit="cover"
+        hoverZoom={true}
+        overlayPosition="bottom-left"
+      >
+        <h2 class="m-0 text-2xl font-light text-white opacity-50">
+          Paweł Żentała
+        </h2>
+
+        <p class="font-light text-white opacity-50">
+          20+ years in IT — between marketing, UX, web design, software
+          development, through IoT, robotics, and management — perspectives that
+          allow me to design solutions that work technically and practically.
+          <!-- add: perrpkty pozowlily mi wiec i rozumiec szeroko, dzieki czemu moge... designs solutions that.... -->
+        </p>
+      </SectionImage>
+    </BentoCard>
+
+    <BentoCentralStage>
+      <!-- Default: Sygnet -->
+      <BentoStageState
+        state={bentoStates.default}
+        class="active flex h-full items-center justify-center bg-black transition-all duration-500"
+      >
+        <div class="sygnet-wrapper transition-transform duration-700">
+          <Logo type="sygnet" width="220px" height="220px" color="#fff" />
+        </div>
+      </BentoStageState>
+
+      <!-- State: Avatar -->
+      <BentoStageState
+        state={bentoStates.avatar}
+        class="absolute inset-0 opacity-0 transition-all duration-500"
+      >
+        <div class="relative h-full w-full">
+          <img
+            src="https://cdn.zentala.io/images/avatar.jpg"
+            alt="Paweł Żentała"
+            class="h-full w-full object-cover opacity-40 grayscale"
+          />
+          <div
+            class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 md:p-10"
+          >
+            <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+              Paweł Żentała
+            </h3>
+            <p
+              class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm"
+            >
+              Architect, Engineer, and Technical Leader with business and client
+              understanding. I bridge the gap between abstract vision and
+              functional reality.
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+
+      <!-- State: Discovery/Prototyping (for Cards 1 & 2) -->
+      <BentoStageState
+        state={bentoStates.prototyping}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-4 text-2xl font-light text-white md:text-3xl">
+          Fast-Track MVP
+        </h3>
+        <div class="space-y-3 border-l border-white/20 pl-6 md:space-y-4">
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 01</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Business & Tech Workshops
+            </p>
+          </div>
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 02</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Rapid Functional Prototyping
+            </p>
+          </div>
+          <div>
+            <span
+              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              >Step 03</span
+            >
+            <p class="text-base text-white/80 md:text-lg">
+              Market Validation & Scale
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+
+      <!-- State: CTO (for Card 7) -->
+      <BentoStageState
+        state={bentoStates.cto}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+          Fractional CTO
+        </h3>
+        <p
+          class="max-w-md text-lg italic leading-relaxed text-white/60 md:text-xl"
+        >
+          "I don't just manage; I architect the future of your product while
+          building the team that will carry it forward."
+        </p>
+      </BentoStageState>
+
+      <!-- State: AI (for Card 8) -->
+      <BentoStageState
+        state={bentoStates.ai}
+        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+      >
+        <h3 class="mb-6 text-2xl font-light text-white md:text-3xl">
+          AI Orchestration
+        </h3>
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+          <div class="rounded border border-white/10 p-3 md:p-4">
+            <p class="text-[10px] font-bold uppercase text-white/40">
+              Multi-Agent Systems
+            </p>
+            <p class="text-xs text-white/80 md:text-sm">
+              Automating complex workflows.
+            </p>
+          </div>
+          <div class="rounded border border-white/10 p-3 md:p-4">
+            <p class="text-[10px] font-bold uppercase text-white/40">
+              LLM Integration
+            </p>
+            <p class="text-xs text-white/80 md:text-sm">
+              Context-aware architectures.
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+
+      <!-- State: Logo/Agency (Hover info) -->
+      <BentoStageState
+        state={bentoStates.logo}
+        class="absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
+      >
+        <!-- <div
+          class="logo-state-content flex w-full flex-col gap-6 md:flex-row md:gap-10"
+        >
+          <div class="flex w-full flex-col gap-3 md:w-[40%]">
+            <Logo
+              type="full"
+              color="#fff"
+              width="220px"
+              height="36px"
+              tagline="Innovation Agency"
+              taglineClass="mt-3 text-xs font-medium uppercase tracking-[0.3em] text-white/70"
+            />
+            <div
+              class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
+            >
+              EST. 2024 / WARSAW / REMOTE
+            </div>
+          </div>
+          <div class="w-full md:w-[60%]">
+            <p
+              class="text-base font-semibold leading-tight md:text-lg lg:text-xl"
+            >
+              The ultimate format for software prototyping and technological
+              bootstrapping.
+            </p>
+            <p
+              class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+            >
+              We don't do everything. We focus on
+              <strong class="text-white">technological processes</strong>,
+              providing the shortest path from strategy to successful
+              validation.
+            </p>
+          </div>
+        </div> -->
+        <div
+          class="logo-state-content flex w-full flex-col items-center gap-3 text-center md:gap-4"
+        >
+          <Logo
+            type="full"
+            color="#fff"
+            width="400px"
+            height="72px"
+            tagline="Innovation Agency"
+          />
+          <!-- <div
+            class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
+          >
+            EST. 2024 / WARSAW, PL, EU
+          </div> -->
+          <div class="mt-10 w-full px-16">
+            <p
+              class="text-base font-normal leading-tight md:text-lg lg:text-xl"
+            >
+              The ultimate format for technological bootstrapping.
+            </p>
+            <p
+              class="mt-4 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+            >
+              I don't do everything. I focus on
+              <strong class="font-semibold text-white">prototyping</strong>,
+              providing the shortest path from idea to minimal viable product
+              release.
+            </p>
+          </div>
+        </div>
+      </BentoStageState>
+    </BentoCentralStage>
+
+    <!-- Row 3-4: Col 1 - Workspace image (1:2) -->
+    <BentoCard colSpan={1} rowSpan={2} padding="none">
+      <SectionImage
+        src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=600&fit=crop"
+        alt="Technology workspace"
+        aspectRatio="auto"
+        objectFit="cover"
+        hoverZoom={true}
+      />
+    </BentoCard>
+
+    <!-- Row 3: Col 4 - Hands-On CTO (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
+      <SectionContent context="grid" prose={true}>
+        <div class="flex h-full flex-col justify-between">
+          <div>
+            <TagGroup
+              class="mb-4 inline-flex gap-2"
+              theme="label"
+              tags={['Product‑Minded']}
+            />
+            <!-- 'Systems Thinker' -->
+            <h2 style="font-size:28px;">
+              Your Hands-On CTO for an innovative project
+            </h2>
+            <p>
+              I act as your technical co-founder to kick-up your idea into
+              user-friendly live application.
+            </p>
+          </div>
+          <div
+            class="mt-4 border-l-2 border-white/10 pl-3 transition-colors group-hover:border-white/30"
+          >
+          </div>
+        </div>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 4: Col 2 - Orchestrating AI (1:1) -->
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
+      <!-- hoverState={bentoStates.ai} -->
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:to-purple-500/5 group-hover:opacity-100"
+      >
+      </div>
+      <SectionContent context="grid" prose={true}>
+        <div class="relative z-10">
+          <h3>AI-Accelerated Delivery</h3>
+          <p class="text-sm leading-relaxed">
+            I operate as an architect orchestrating a "team" of AI agents. This
+            allows me to provide production-ready applications with the speed of
+            an entire agency.
+          </p>
+          <!-- <TagGroup
+            class="mt-4 gap-2 opacity-40 transition-opacity group-hover:opacity-100"
+            tags={['AI-Agents', 'LLMs', 'Automation']}
+            tagClass=""
+          /> -->
+        </div>
+      </SectionContent>
+    </BentoCard>
+
+    <!-- Row 4: Col 3-4 - Strategy to Execution (2:1) -->
+    <BentoCard colSpan={2} rowSpan={1} padding="sm" class="group">
+      <!-- hoverState={bentoStates.logo} -->
+      <div
+        class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"
+      >
+        <svg
+          width="120"
+          height="120"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="0.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-white"
+          ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+        >
+      </div>
+      <SectionContent context="grid" prose={true}>
+        <div class="relative z-10 max-w-[85%]">
+          <div class="mb-2 flex items-baseline gap-2">
+            <h3 class="m-0">Execution & Delivery</h3>
+            <PhaseLabel phase={3} />
+          </div>
+          <p>
+            Once we align on the MVP scope and spec, I turn it into execution:
+            complete solution architecture, implementation, and deployment. You
+            get a production-ready first version online — ready to share with
+            users, gather feedback, and validate in the market.
+          </p>
+        </div>
+      </SectionContent>
+    </BentoCard>
+  </SectionBento>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('[data-bento-hover]')
+      const states = document.querySelectorAll('.state-content')
+      const sygnetWrapper = document.querySelector(
+        '.sygnet-wrapper',
+      ) as HTMLElement
+
+      cards.forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          const targetState = card.getAttribute('data-bento-hover')
+
+          states.forEach((state) => {
+            const stateName = state.getAttribute('data-state')
+            if (stateName === targetState) {
+              state.classList.add('active')
+              state.classList.remove('opacity-0', 'pointer-events-none')
+              state.classList.add('opacity-100')
+            } else {
+              state.classList.remove('active', 'opacity-100')
+              state.classList.add('opacity-0', 'pointer-events-none')
+            }
+          })
+
+          // Special effect for logo zoom
+          if (targetState === 'logo' && sygnetWrapper) {
+            sygnetWrapper.style.transform = 'scale(20)'
+          }
+        })
+
+        card.addEventListener('mouseleave', () => {
+          states.forEach((state) => {
+            const stateName = state.getAttribute('data-state')
+            if (stateName === 'default') {
+              state.classList.add('active')
+              state.classList.remove('opacity-0', 'pointer-events-none')
+              state.classList.add('opacity-100')
+            } else {
+              state.classList.remove('active', 'opacity-100')
+              state.classList.add('opacity-0', 'pointer-events-none')
+            }
+          })
+
+          if (sygnetWrapper) {
+            sygnetWrapper.style.transform = 'scale(1)'
+          }
+        })
+      })
+    })
+  </script>
+
+  <style lang="scss">
+    .state-content {
+      transition:
+        opacity 0.5s ease,
+        transform 0.7s ease;
+      pointer-events: none;
+
+      &.active {
+        pointer-events: auto;
+      }
+
+      &[data-state='logo'] {
+        .logo-state-content {
+          transform: scale(0.01);
+          transform-origin: center;
+          transition: transform 0.7s ease;
+        }
+
+        &.active {
+          .logo-state-content {
+            transform: scale(1);
+          }
+        }
+      }
+
+      &[data-state='avatar'] {
+        transform: scale(1.05);
+        &.active {
+          transform: scale(1);
+        }
+      }
+    }
+
+    .nav-font {
+      @apply font-medium uppercase;
+      font-size: 1.5rem;
+      letter-spacing: 0.26rem;
+      line-height: 1.2;
+
+      @media (min-width: 768px) {
+        font-size: 2rem;
+      }
+      @media (min-width: 1024px) {
+        font-size: 2.5rem;
+      }
+    }
+
+    .logo-text-anim {
+      .active & {
+        .logo-part-wrapper,
+        span {
+          transform: translateY(0) !important;
+        }
+      }
+    }
+
+    .sygnet-wrapper {
+      will-change: transform;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</Section>

@@ -11,7 +11,7 @@ Kiedy proszę Cię o dodanie czegoś do TODO to znaczy że chcę abyś dodał do
 - `.cursor/todo/todo.md` - Aktywne zadania i bieżący development (ŹRÓDŁO PRAWDY)
 - `.cursor/todo/someday.md` - Przyszłe pomysły i zadania niskiej priorytety  
 - `.cursor/todo/todo.archive.md` - Ukończone zadania (archiwum)
-- `src/{banners, components, layouts}/(*.)todo.md` (where `*` match to name of astro file, for which we want to make todo e.g. `BlogCard.todo.md` for `BlogCard.astro`, but we can also have general `todo.md` for whole folder)
+- `src/{sections, components, layouts}/(*.)todo.md` (where `*` match to name of astro file, for which we want to make todo e.g. `BlogCard.todo.md` for `BlogCard.astro`, but we can also have general `todo.md` for whole folder)
 
 ## Format zadań
 `(Priority) Task description +Project @context #tag {special:value}`

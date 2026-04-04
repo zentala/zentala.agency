@@ -1,0 +1,95 @@
+---
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
+import SectionGrid from '../../components/primitives/sections/SectionGrid.astro'
+import SectionContent from '../../components/primitives/sections/SectionContent.astro'
+import Button from '../../components/Button.astro'
+import NoteBox from '../../components/primitives/NoteBox.astro'
+
+type EngagementCard = {
+  title: string
+  bestFor: string
+  whatYouGetTitle?: string
+  whatYouGet: readonly string[]
+  format: string
+  link?: CTAButton
+}
+
+type CTAButton = {
+  href: string
+  text: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  target?: string
+  icon?: string
+}
+
+interface Props {
+  headline: string
+  subhead: string
+  cards: readonly EngagementCard[]
+  note?: { icon?: string; title?: string; text: string }
+  cta?: CTAButton
+}
+
+const { headline, subhead, cards, note, cta } = Astro.props
+---
+
+<div class="engagement-section">
+  <SectionHeader
+    headline={headline}
+    subhead={subhead}
+  />
+
+  <SectionGrid columns={3}>
+    {cards.map(card => (
+      <SectionContent context="grid">
+        <h3>{card.title}</h3>
+        <p>
+          <strong>Best for:</strong> {card.bestFor}
+        </p>
+        <h4>{card.whatYouGetTitle ?? 'What you get:'}</h4>
+        <ul>
+          {card.whatYouGet.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <p class="format">
+          <strong>Format:</strong> {card.format}
+        </p>
+
+        {card.link ? (
+          <div class="card-link">
+            <Button
+              href={card.link.href}
+              text={card.link.text}
+              variant={card.link.variant ?? 'secondary'}
+              target={card.link.target}
+              icon={card.link.icon}
+            />
+          </div>
+        ) : null}
+      </SectionContent>
+    ))}
+  </SectionGrid>
+
+  {note ? (
+    <NoteBox icon={note.icon ?? 'lightbulb'}>
+      <p>
+        {note.title ? <strong>{note.title}:</strong> : null} {note.text}
+      </p>
+    </NoteBox>
+  ) : null}
+
+  <div class="engagement-cta">
+    {cta ? (
+      <Button
+        href={cta.href}
+        text={cta.text}
+        variant={cta.variant ?? 'primary'}
+        target={cta.target}
+        icon={cta.icon}
+      />
+    ) : null}
+  </div>
+</div>
+
+

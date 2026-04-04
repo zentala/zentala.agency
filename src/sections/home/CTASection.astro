@@ -1,0 +1,60 @@
+---
+/**
+ * CTASection - Homepage CTA with default values
+ *
+ * Uses the reusable CTA component with pre-configured
+ * defaults for the homepage. All props can be overridden.
+ */
+
+import CTA from '../../components/CTA.astro'
+import type { CTAButton, CTAFooterItem } from '../../components/CTA.astro'
+
+interface Props {
+  headline?: string
+  subhead?: string
+  buttons?: readonly CTAButton[]
+  footerItems?: readonly CTAFooterItem[]
+}
+
+const defaultButtons: readonly CTAButton[] = [
+  {
+    href: 'https://cal.com/zentala',
+    text: 'Schedule Discovery Call',
+    variant: 'light',
+    target: '_blank',
+    icon: 'calendar',
+  },
+  {
+    href: 'https://linkedin.com/in/zentala',
+    text: 'Connect on LinkedIn',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'linkedin',
+  },
+]
+
+const defaultFooterItems: readonly CTAFooterItem[] = [
+  {
+    icon: 'map-pin',
+    text: 'Based in Warsaw, Poland (CET timezone)',
+  },
+  {
+    icon: 'globe',
+    text: 'Working with clients worldwide',
+  },
+]
+
+const {
+  headline = "Let's Turn Your Vision Into a Product",
+  subhead = "From discovery session to production-ready MVP - let's start with a call.",
+  buttons = defaultButtons,
+  footerItems = defaultFooterItems,
+} = Astro.props
+---
+
+<CTA
+  headline={headline}
+  subhead={subhead}
+  buttons={buttons}
+  footerItems={footerItems}
+/>

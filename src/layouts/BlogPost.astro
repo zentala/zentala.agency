@@ -5,7 +5,7 @@ let Banner = null
 const bannerEnd = frontmatter.bannerEnd
 
 if (bannerEnd) {
-  Banner = (await import(`../banners/${bannerEnd}.astro`)).default
+  Banner = (await import(`../sections/banners/${bannerEnd}.astro`)).default
 }
 ---
 

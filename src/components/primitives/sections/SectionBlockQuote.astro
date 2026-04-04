@@ -56,8 +56,6 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
   @use '../../../styles/variables' as *;
 
   .section-blockquote {
-    @include px-responsive('md');
-    @include py-responsive('md');
     border-top: 1px solid $border-color;
     border-bottom: 1px solid $border-color;
     margin: -1px 0; // Overlap with adjacent borders
@@ -65,6 +63,8 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
     transition: background 200ms, border-color 200ms;
     position: relative;
     z-index: 1;
+    @include px-responsive('md');
+    @include py-responsive('md');
 
     &:hover {
       background: #111827;
