@@ -1,28 +1,51 @@
 ---
 import Layout from '../../../layouts/Layout.astro'
 import Hero from '../../../components/Hero.astro'
-import CardContainer from '../../../components/cards/CardContainer.astro'
-import SectionHeader from '../../../components/SectionHeader.astro'
-import Button from '../../../components/Button.astro'
+import Section from '../../../components/primitives/sections/Section.astro'
+import SectionHeader from '../../../components/primitives/sections/SectionHeader.astro'
+import SectionGrid from '../../../components/primitives/sections/SectionGrid.astro'
+import SectionContent from '../../../components/primitives/sections/SectionContent.astro'
+import SectionCTA from '../../../components/primitives/sections/SectionCTA.astro'
+import CardBackgroundIcon from '../../../components/primitives/CardBackgroundIcon.astro'
+import CTA from '../../../components/CTA.astro'
+
+const CAL_URL = 'https://cal.com/zentala'
+const DEVSTAGE_URL = 'https://devstage.io'
+const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
 
 const heroProps = {
-  title: 'Backstage IDP Services',
-  subtitle: 'Bringing innovative solutions to your Developer Experience',
+  title: 'Extend Backstage. Ship What Your Team Can’t.',
+  subtitle:
+    'Custom plugins, processors, and strategic DevEx consulting for platform teams running Backstage at scale.',
 }
 
-// TODO make some hero with it
-// title: 'Extend Backstage. Upgrade Your Developer Experience.',
-// subtitle:
-//   'Custom plugins, processors, and strategic consulting to transform your developer portal into a productivity powerhouse.',
-
-// TODO can use in copy : Creative DevEx engineer & strategic consultant who brings innovative solutions to your developer experience
+const personas = [
+  {
+    name: 'Platform Leads',
+    icon: 'ph:user-focus-thin',
+    pain: 'Plugin requests pile up faster than your team can ship them.',
+    fix: 'I build the plugins that unblock your roadmap, then hand them to your team to maintain.',
+  },
+  {
+    name: 'CTOs scaling 50→200 devs',
+    icon: 'ph:strategy-thin',
+    pain: '"Works for my squad" never became "works for the org."',
+    fix: 'I audit the current setup, design the path to org-wide adoption, and execute the missing pieces.',
+  },
+  {
+    name: 'Engineering Managers',
+    icon: 'ph:graduation-cap-thin',
+    pain: 'Your team can run Backstage but can’t extend it.',
+    fix: 'I build the first 3–5 plugins alongside your devs, transferring the skill so they ship the next 20.',
+  },
+]
 
 const developmentServices = [
   {
     name: 'Custom Plugin Development',
     icon: 'ph:rocket-launch-thin',
     description:
-      'Bespoke plugins that solve your specific workflow challenges - from simple automations to complex full-stack features',
+      'Bespoke plugins that solve your specific workflow challenges — from simple automations to complex full-stack features.',
     features: [
       'API integrations with your tech stack',
       'Custom UI components & workflows',
@@ -34,7 +57,7 @@ const developmentServices = [
     name: 'Processors Engineering',
     icon: 'ph:gear-six-thin',
     description:
-      'Pre/post processors that transform how Backstage catalogs and processes your resources',
+      'Pre/post processors that transform how Backstage catalogs and processes your resources.',
     features: [
       'Custom entity processors',
       'Non-standard resource cataloging',
@@ -46,12 +69,12 @@ const developmentServices = [
     name: 'Theme & UI Customization',
     icon: 'ph:palette-thin',
     description:
-      'Transform Backstage into a branded experience that developers love to use',
+      'Transform Backstage into a branded experience that developers love to use.',
     features: [
       'Custom corporate theming',
-      'Portal branding - naming, logo, taglines',
+      'Portal branding — logo, naming, taglines',
       'Dark mode optimization',
-      'Optionally custom navigation',
+      'Custom navigation & layouts',
     ],
   },
 ]
@@ -61,21 +84,19 @@ const consultingServices = [
     name: 'Strategic DevEx Consulting',
     icon: 'ph:lightbulb-thin',
     description:
-      'Long-term strategic guidance to architect and implement your Backstage ecosystem',
+      'Long-term strategic guidance to architect and implement your Backstage ecosystem.',
     features: [
       'DevEx strategy & roadmaps',
       'Platform architecture design',
       'Integration strategy planning',
       'Team skill development planning',
-      'Innovation & best practices',
-      'Monthly progress reviews',
     ],
   },
   {
     name: 'AI-Powered DevEx',
     icon: 'ph:robot-thin',
     description:
-      'Integrate cutting-edge AI capabilities into your developer workflows',
+      'Integrate cutting-edge AI capabilities into your developer workflows.',
     features: [
       'AI chatbots with MCP & RAG',
       'LLM-powered automations',
@@ -85,14 +106,68 @@ const consultingServices = [
   },
   {
     name: 'Developer Education',
-    icon: 'ph:graduation-cap-thin',
+    icon: 'ph:chalkboard-teacher-thin',
     description:
-      'Empower your teams with knowledge and best practices for Backstage success',
+      'Empower your teams with knowledge and best practices for Backstage success.',
     features: [
       'Team workshops & training',
       'Plugin development courses',
       'Best practices mentoring',
-      'Documentation & guides',
+      'Documentation & runbooks',
+    ],
+  },
+]
+
+const processSteps = [
+  {
+    n: '01',
+    icon: 'ph:magnifying-glass-thin',
+    title: 'Discovery',
+    body: '60-min call to map your Backstage state, team size, and the top 3 friction points. Free, no commitment.',
+  },
+  {
+    n: '02',
+    icon: 'ph:list-checks-thin',
+    title: 'Audit & Roadmap',
+    body: '1–2 weeks. I audit your setup, prioritize fixes and feature opportunities, deliver a written roadmap.',
+  },
+  {
+    n: '03',
+    icon: 'ph:hammer-thin',
+    title: 'Build',
+    body: 'Sprints (2–4 weeks each) or extended engagement (months). Plugins, processors, integrations — coded alongside your team.',
+  },
+  {
+    n: '04',
+    icon: 'ph:handshake-thin',
+    title: 'Handover',
+    body: 'Documentation, recorded walkthroughs, paired sessions. Your team owns what we build.',
+  },
+]
+
+const engagementModels = [
+  {
+    name: 'Extended Engagement',
+    icon: 'ph:infinity-thin',
+    description:
+      'Become your dedicated DevEx engineer for months. I join your standups, architect solutions, ship complex features, and mentor your team throughout.',
+    features: [
+      'Daily involvement in your project',
+      'Direct hands-on development',
+      'Architecture & strategic planning',
+      'Continuous knowledge transfer',
+    ],
+  },
+  {
+    name: 'Project Sprints',
+    icon: 'ph:lightning-thin',
+    description:
+      'Intensive development sprints for specific features — custom plugins, AI integrations, processor development — with immediate, measurable impact.',
+    features: [
+      '2–4 week focused sprints',
+      'Specific feature delivery',
+      'Team training included',
+      'Documentation & handover',
     ],
   },
 ]
@@ -100,259 +175,534 @@ const consultingServices = [
 const whyExternalConsultant = [
   'Fresh perspective on your challenges',
   'Hands-on builder who codes alongside your team',
-  'Latest DevEx trends, Backstage solutions and AI innovations',
+  'Latest DevEx trends, Backstage solutions, and AI innovations',
   'Objective assessment of your needs',
   'No internal politics or bias',
-  'Focus on knowledge transfer, not dependency',
   'Knowledge transfer built into every engagement',
   'Accelerate your roadmap by months',
 ]
+
+const faqs = [
+  {
+    q: 'What’s the typical engagement length?',
+    a: 'Sprint engagements run 2–4 weeks per feature. Extended engagements run 3–6 months at 50–80% time, often renewed.',
+  },
+  {
+    q: 'Do you work onsite?',
+    a: 'Remote-first, CET timezone. Onsite kickoffs within the EU possible by arrangement.',
+  },
+  {
+    q: 'What does it cost?',
+    a: 'Sprint engagements start around €15k. Extended engagements are scoped per month. The discovery call is free — pricing follows from the audit.',
+  },
+  {
+    q: 'Can you sign an NDA?',
+    a: 'Yes. A standard mutual NDA is fine, custom forms reviewed quickly.',
+  },
+  {
+    q: 'Which Backstage versions?',
+    a: 'Current Backstage (1.x). I track upstream releases plus Spotify Portal, Roadie, and Red Hat Developer Hub variants where relevant.',
+  },
+  {
+    q: 'What if my team needs to keep building after you leave?',
+    a: 'That’s the whole point. Every engagement includes documented patterns, recorded walkthroughs, and paired sessions so your team owns the work.',
+  },
+]
+
+const finalCtaButtons = [
+  {
+    href: CAL_URL,
+    text: 'Schedule Discovery Call',
+    variant: 'light',
+    target: '_blank',
+    icon: 'calendar',
+  },
+  {
+    href: DEVSTAGE_URL,
+    text: 'Visit DevStage.io',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'external-link',
+  },
+  {
+    href: LINKEDIN_URL,
+    text: 'Connect on LinkedIn',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'linkedin',
+  },
+] as const
+
+const finalCtaFooter = [
+  { icon: 'map-pin', text: 'Warsaw, Poland · CET timezone' },
+  { icon: 'globe', text: 'Working with clients worldwide' },
+  { icon: 'calendar', text: 'Currently booking Q3–Q4 2026' },
+] as const
 ---
 
 <Layout
-  title="Backstage DevEx Consulting - Żentała Agency"
-  description="Creative DevEx engineer and strategic consultant specializing in Backstage implementation, AI integration, and developer experience transformation."
+  title="Backstage Consulting & Plugin Development — DevStage.io"
+  description="Custom Backstage plugins, processors, and strategic DevEx consulting for platform teams running Backstage at scale. Part of DevStage.io."
 >
+  <div class="page-tag">
+    <div class="container-bordered">
+      <span>DevStage.io · Backstage Specialists</span>
+    </div>
+  </div>
+
   <Hero {...heroProps} />
 
+  <!-- Who hires me -->
+  <Section id="audience">
+    <SectionHeader
+      headline="Who hires me"
+      subhead="Three types of teams — if you recognize one, we should talk."
+    />
+    <SectionGrid columns={3}>
+      {
+        personas.map((p) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={p.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{p.name}</h3>
+              <p class="bs-card__pain">"{p.pain}"</p>
+              <p class="bs-card__fix">{p.fix}</p>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
   <!-- Development Services -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Development Services"
-          subtitle="Innovative technical solutions and custom development"
-        />
-        <div class="cards-grid border-t border-gray-800">
-          {
-            developmentServices.map((service) => (
-              <CardContainer backgroundIcon={service.icon}>
-                <h3 class="mb-6 text-2xl font-light text-white">
-                  {service.name}
-                </h3>
-                <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-3">
-                  {service.features.map((feature) => (
-                    <li class="group flex items-center text-gray-300">
-                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContainer>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+  <Section id="development">
+    <SectionHeader
+      headline="What I build"
+      subhead="Hands-on engineering across the Backstage stack."
+    />
+    <SectionGrid columns={3}>
+      {
+        developmentServices.map((service) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={service.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{service.name}</h3>
+              <p class="bs-card__desc">{service.description}</p>
+              <ul class="bs-list">
+                {service.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
 
-  <!-- Consulting Services -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Strategic Consulting"
-          subtitle="Vision, strategy, and knowledge transfer for long-term success"
-        />
-        <div class="cards-grid border-t border-gray-800">
-          {
-            consultingServices.map((service) => (
-              <CardContainer backgroundIcon={service.icon}>
-                <h3 class="mb-6 text-2xl font-light text-white">
-                  {service.name}
-                </h3>
-                <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-3">
-                  {service.features.map((feature) => (
-                    <li class="group flex items-center text-gray-300">
-                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContainer>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Strategic Consulting -->
+  <Section id="consulting">
+    <SectionHeader
+      headline="What I advise on"
+      subhead="Strategy, education, and AI — turning Backstage into an org-wide platform."
+    />
+    <SectionGrid columns={3}>
+      {
+        consultingServices.map((service) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={service.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{service.name}</h3>
+              <p class="bs-card__desc">{service.description}</p>
+              <ul class="bs-list">
+                {service.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
 
-  <!-- Engagement Model -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Long-Term Partnership Model"
-          subtitle="Companies hire me as an external consultant for multi-month engagements. I integrate with your team, not just deliver workshops."
-        />
-        <div class="cards-grid border-t border-gray-800">
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">
-              Extended Engagement
-            </h3>
-            <p class="mb-6 text-gray-300">
-              Become your dedicated DevEx engineer for months. I join your daily
-              standups, architect solutions, implement complex features, and
-              mentor your team throughout the journey.
-            </p>
-            <ul class="space-y-3 text-gray-300">
-              <li>• Daily involvement in your project</li>
-              <li>• Direct hands-on development</li>
-              <li>• Architecture & strategic planning</li>
-              <li>• Continuous knowledge transfer</li>
-            </ul>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">Project Sprints</h3>
-            <p class="mb-6 text-gray-300">
-              Intensive development sprints for specific features like custom
-              plugins, AI integrations, or processor development with immediate
-              impact and results.
-            </p>
-            <ul class="space-y-3 text-gray-300">
-              <li>• 2-4 week focused sprints</li>
-              <li>• Specific feature delivery</li>
-              <li>• Team training included</li>
-              <li>• Documentation & handover</li>
-            </ul>
-          </CardContainer>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Value Proposition -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="I Don't Just Consult. I Build."
-          subtitle="While I provide strategic guidance and educate your teams, I also roll up my sleeves and code. I handle the most innovative and challenging development work, creating solutions your team can learn from and build upon."
-        />
-        <div class="cards-grid border-t border-gray-800">
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Strategic Vision</h3>
-            <p class="text-gray-300">
-              Architecture design, roadmap planning, and DevEx strategy
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Hands-On Coding</h3>
-            <p class="text-gray-300">
-              Full-stack development, custom plugins, and complex integrations
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Team Empowerment</h3>
-            <p class="text-gray-300">
-              Knowledge transfer, best practices, and ongoing mentorship
-            </p>
-          </CardContainer>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div
-        class="px-responsive-md py-responsive-md mx-auto max-w-4xl text-center"
-      >
-        <SectionHeader
-          title="Ready to Transform Your Backstage?"
-          subtitle="Let's discuss how I can join your team as a dedicated DevEx engineer. From strategic planning to hands-on development, I'll help you build a developer portal that accelerates your entire organization."
-        />
-        <div class="mb-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <Button
-            href="https://calendly.com/zentala"
-            text="Schedule Discovery Call"
-            target="_blank"
-            variant="primary"
-            icon="calendar"
-          />
-          <Button
-            href="https://linkedin.com/in/zentala"
-            text="Connect on LinkedIn"
-            target="_blank"
-            variant="secondary"
-            icon="linkedin"
-          />
-        </div>
-        <p class="text-sm text-gray-500">
-          Extending Backstage for innovative teams with powerful plugins and
-          custom development services.
+  <!-- DevStage.io banner -->
+  <Section id="devstage" class="bs-devstage">
+    <div class="bs-devstage__inner">
+      <CardBackgroundIcon icon="ph:plugs-connected-thin" />
+      <div class="bs-devstage__content">
+        <span class="bs-devstage__eyebrow">Our Backstage brand</span>
+        <h2 class="bs-devstage__title">
+          Backstage work lives at <span class="bs-devstage__brand">DevStage.io</span>
+        </h2>
+        <p class="bs-devstage__body">
+          DevStage.io is the dedicated home for our Backstage practice — public
+          plugin catalog, technical blog, and product offerings for platform
+          teams. The page you’re reading is the consulting front door;
+          DevStage.io is where the products live.
         </p>
       </div>
     </div>
-  </section>
+    <SectionCTA
+      href={DEVSTAGE_URL}
+      text="Visit DevStage.io"
+      icon="external-link"
+      variant="primary"
+      external={true}
+    />
+  </Section>
 
-  <!-- About Section -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <div class="cards-grid cards-grid--two-one">
-          <CardContainer>
-            <h2 class="mb-6 text-4xl font-light text-white">
-              Your Creative DevEx Partner
-            </h2>
-            <p class="mb-6 text-xl text-gray-400">
-              I'm Paweł Żentała, a creative DevEx engineer with 20+ years
-              bridging technology and human communication. From building robots
-              and IoT systems to crafting developer portals, I bring fresh ideas
-              and proven solutions to your team.
-            </p>
-            <p class="mb-8 text-lg text-gray-400">
-              Companies hire me as their <strong class="text-white"
-                >external DevEx consultant</strong
-              > for months-long engagements. I become part of your team, architecting
-              solutions, building complex features, and <strong
-                class="text-white"
-                >elevating your entire Developer Experience</strong
-              >.
-            </p>
-            <p class="text-lg text-gray-400">
-              My approach focuses on <strong class="text-white"
-                >inspiring and educating</strong
-              > your team while handling the most innovative and challenging development
-              work. I help you build capabilities, not dependencies.
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-2xl font-light text-white">What I Deliver</h3>
-            <p class="mb-4 text-lg text-white">
-              I design dev portals that teams actually want to use.
-            </p>
-            <p class="text-gray-300">
-              Transform your Developer Experience through strategic guidance,
-              innovative solutions, hands-on development, and knowledge transfer
-              that empowers your developers to succeed long-term.
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">
-              Why Hire an External Backstage Expert & DevEx Consultant?
-            </h3>
-            <ul class="space-y-4">
-              {
-                whyExternalConsultant.map((benefit) => (
-                  <li class="flex items-start">
-                    <span class="mr-3 mt-1 text-gray-500">▶</span>
-                    <span class="text-gray-300">{benefit}</span>
+  <!-- How we work -->
+  <Section id="process">
+    <SectionHeader
+      headline="How we work"
+      subhead="A predictable four-step path from first call to your team owning the work."
+    />
+    <SectionGrid columns={4}>
+      {
+        processSteps.map((step) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={step.icon} />
+            <div class="bs-card bs-card--step">
+              <span class="bs-card__step">{step.n}</span>
+              <h3 class="bs-card__title">{step.title}</h3>
+              <p class="bs-card__desc">{step.body}</p>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- Engagement Models -->
+  <Section id="engagement">
+    <SectionHeader
+      headline="Engagement models"
+      subhead="Two ways to work together — pick the rhythm that matches your need."
+    />
+    <SectionGrid columns={2}>
+      {
+        engagementModels.map((model) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={model.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{model.name}</h3>
+              <p class="bs-card__desc">{model.description}</p>
+              <ul class="bs-list">
+                {model.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
                   </li>
-                ))
-              }
-            </ul>
-          </CardContainer>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- About -->
+  <Section id="about">
+    <SectionHeader
+      headline="Your Backstage partner"
+      subhead="20+ years bridging technology and human communication — from robotics and IoT to developer portals."
+    />
+    <div class="cards-grid cards-grid--two-one">
+      <SectionContent context="grid" prose={false}>
+        <div class="bs-card">
+          <h3 class="bs-card__title bs-card__title--lg">
+            Creative DevEx engineer, hands-on builder
+          </h3>
+          <p class="bs-about__lead">
+            I’m Paweł Żentała. Companies hire me as their
+            <strong>external DevEx consultant</strong> for months-long engagements.
+            I become part of your team, architect solutions, build complex features,
+            and elevate the entire developer experience.
+          </p>
+          <p class="bs-about__body">
+            My approach focuses on <strong>inspiring and educating</strong> your
+            team while handling the most innovative and challenging development
+            work. I help you build capabilities, not dependencies.
+          </p>
         </div>
-      </div>
+      </SectionContent>
+      <SectionContent context="grid" prose={false}>
+        <div class="bs-card">
+          <h3 class="bs-card__title">What I deliver</h3>
+          <p class="bs-card__desc">
+            Developer portals teams actually want to use — strategic
+            guidance, innovative solutions, hands-on development, and knowledge
+            transfer that empowers your developers long after I’m gone.
+          </p>
+        </div>
+      </SectionContent>
+      <SectionContent context="grid" prose={false}>
+        <div class="bs-card bs-card--full">
+          <h3 class="bs-card__title">Why hire an external Backstage expert</h3>
+          <ul class="bs-list bs-list--two-col">
+            {
+              whyExternalConsultant.map((benefit) => (
+                <li>
+                  <span class="bs-list__check">✓</span>
+                  {benefit}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </SectionContent>
     </div>
-  </section>
+  </Section>
+
+  <!-- FAQ -->
+  <Section id="faq">
+    <SectionHeader
+      headline="Common questions"
+      subhead="The things every CTO asks before booking the call."
+    />
+    <SectionGrid columns={2}>
+      {
+        faqs.map((item) => (
+          <SectionContent context="grid" prose={false}>
+            <div class="bs-faq">
+              <h3 class="bs-faq__q">{item.q}</h3>
+              <p class="bs-faq__a">{item.a}</p>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- Final CTA -->
+  <Section id="cta">
+    <CTA
+      headline="Ready to extend your Backstage?"
+      subhead="Start with a free 60-min discovery call — no slides, no pitch, just your situation and what would unblock it."
+      buttons={finalCtaButtons}
+      footerItems={finalCtaFooter}
+    />
+  </Section>
 </Layout>
 
+<style lang="scss">
+  .page-tag {
+    background: #000;
+    border-bottom: 1px solid #1f2937;
+
+    > :global(.container-bordered) {
+      padding: 0.75rem 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    span {
+      color: #60a5fa;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
+
+  .bs-card {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bs-card--step {
+    gap: 0.5rem;
+  }
+
+  .bs-card--full {
+    width: 100%;
+  }
+
+  .bs-card__step {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .bs-card__title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-card__title--lg {
+    font-size: 2rem;
+  }
+
+  .bs-card__pain {
+    color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .bs-card__fix {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .bs-card__desc {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+
+  .bs-list--two-col {
+    @media (min-width: 770px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem 2rem;
+    }
+  }
+
+  .bs-list__check {
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 400;
+    flex-shrink: 0;
+    transition: color 200ms ease-in-out;
+  }
+
+  :global(.section-grid):hover .bs-list__check,
+  :global(.cards-grid) > *:hover .bs-list__check {
+    color: #fff;
+  }
+
+  .bs-about__lead {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-about__body {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .bs-faq {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bs-faq__q {
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .bs-faq__a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* DevStage.io banner */
+  .bs-devstage {
+    :global(.section-grid) {
+      background:
+        radial-gradient(
+          circle at 100% 50%,
+          rgba(96, 165, 250, 0.06),
+          transparent 60%
+        ),
+        #000;
+    }
+  }
+
+  .bs-devstage__inner {
+    position: relative;
+    overflow: hidden;
+    padding: 4rem;
+
+    @media (max-width: 1000px) {
+      padding: 3rem 2rem;
+    }
+
+    @media (max-width: 770px) {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  .bs-devstage__content {
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
+  }
+
+  .bs-devstage__eyebrow {
+    display: inline-block;
+    color: #60a5fa;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-devstage__title {
+    color: #fff;
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: 1000px) {
+      font-size: 2.75rem;
+    }
+  }
+
+  .bs-devstage__brand {
+    color: #60a5fa;
+    font-weight: 400;
+  }
+
+  .bs-devstage__body {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+</style>
