@@ -1,4 +1,6 @@
 ---
+import CardBackgroundIcon from '../primitives/CardBackgroundIcon.astro'
+
 export interface CardContainerProps {
   href?: string
   hasHover?: boolean
@@ -25,9 +27,7 @@ const Element = href ? 'a' : 'div'
       target={target}
       class={`card-container ${hasHover ? 'card-container--hover' : ''} ${className}`}
     >
-      {backgroundIcon && (
-        <div class="card-container__bg-icon">{backgroundIcon}</div>
-      )}
+      {backgroundIcon && <CardBackgroundIcon icon={backgroundIcon} />}
       <div class="card-container__content">
         <slot />
       </div>
@@ -36,9 +36,7 @@ const Element = href ? 'a' : 'div'
     <div
       class={`card-container ${hasHover ? 'card-container--hover' : ''} ${className}`}
     >
-      {backgroundIcon && (
-        <div class="card-container__bg-icon">{backgroundIcon}</div>
-      )}
+      {backgroundIcon && <CardBackgroundIcon icon={backgroundIcon} />}
       <div class="card-container__content">
         <slot />
       </div>
@@ -92,31 +90,6 @@ const Element = href ? 'a' : 'div'
   @media (max-width: 480px) {
     .card-container__content {
       padding: 1rem; /* Mobile: 16px */
-    }
-  }
-
-  .card-container__bg-icon {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    font-size: 3rem;
-    opacity: 0.1;
-    z-index: 0;
-  }
-
-  /* Responsive background icon */
-  @media (max-width: 770px) {
-    .card-container__bg-icon {
-      font-size: 2.5rem;
-      right: 0.75rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .card-container__bg-icon {
-      font-size: 2rem;
-      right: 0.5rem;
     }
   }
 </style>
