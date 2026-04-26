@@ -9,7 +9,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     mdx(),
-    icon({ include: { lucide: ['*'] } }),
+    icon({ include: { lucide: ['*'], ph: ['*'] } }),
     react({ include: ['src/components/react-stuff/**/*'] }),
   ],
   image: {
