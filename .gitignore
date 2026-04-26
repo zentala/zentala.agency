@@ -30,6 +30,10 @@ build.log
 /test-results/
 /playwright-report/
 /playwright/.cache/
+.playwright-mcp/
+
+# Ad-hoc screenshots in repo root
+/*.png
 
 # Local caches
 /.cache/
