@@ -277,6 +277,8 @@ const finalCtaFooter = [
   <!-- Development Services -->
   <Section id="development">
     <SectionHeader
+      eyebrow="Development services"
+      icon="ph:wrench-thin"
       headline="What I build"
       subhead="Hands-on engineering across the Backstage stack."
     />
@@ -306,6 +308,8 @@ const finalCtaFooter = [
   <!-- Strategic Consulting -->
   <Section id="consulting">
     <SectionHeader
+      eyebrow="Strategic consulting"
+      icon="ph:lightbulb-filament-thin"
       headline="What I advise on"
       subhead="Strategy, AI, security, and education — turning Backstage into an org-wide platform."
     />
@@ -389,6 +393,8 @@ const finalCtaFooter = [
   <!-- How we work -->
   <Section id="process">
     <SectionHeader
+      eyebrow="Engagement process"
+      icon="ph:flow-arrow-thin"
       headline="How we work"
       subhead="A predictable four-step path from first call to your team owning the work."
     />
@@ -411,6 +417,8 @@ const finalCtaFooter = [
   <!-- Engagement Models -->
   <Section id="engagement">
     <SectionHeader
+      eyebrow="Working together"
+      icon="ph:handshake-thin"
       headline="Engagement models"
       subhead="Three ways to work together — pick the format that matches your need."
     />
@@ -440,6 +448,8 @@ const finalCtaFooter = [
   <!-- About -->
   <Section id="about">
     <SectionHeader
+      eyebrow="About"
+      icon="ph:user-circle-thin"
       headline="Your Backstage partner"
       subhead="20+ years bridging technology and human communication — from robotics and IoT to developer portals."
     />
@@ -492,6 +502,8 @@ const finalCtaFooter = [
   <!-- FAQ -->
   <Section id="faq">
     <SectionHeader
+      eyebrow="FAQ"
+      icon="ph:question-thin"
       headline="Common questions"
       subhead="What teams typically ask before booking the consultation."
     />
@@ -903,26 +915,27 @@ const finalCtaFooter = [
     }
   }
 
-  /* Process steps — number as background watermark (OfferCard idiom) */
+  /* Process steps — number as background watermark (OfferCard idiom),
+     light weight, ~1/3 smaller than initial pass */
   .bs-step__num {
     position: absolute;
-    top: -1rem;
-    left: -0.5rem;
-    color: rgba(255, 255, 255, 0.05);
-    font-size: 11rem;
-    font-weight: 600;
+    top: -0.5rem;
+    left: 0;
+    color: rgba(255, 255, 255, 0.06);
+    font-size: 7.5rem;
+    font-weight: 200;
     line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     pointer-events: none;
     user-select: none;
     z-index: 0;
 
     @media (max-width: 1440px) {
-      font-size: 9rem;
+      font-size: 6rem;
     }
 
     @media (max-width: 770px) {
-      font-size: 7rem;
+      font-size: 4.75rem;
     }
   }
 

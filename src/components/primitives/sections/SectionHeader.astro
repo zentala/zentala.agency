@@ -17,19 +17,33 @@
  * />
  */
 
+import CardBackgroundIcon from '../CardBackgroundIcon.astro'
+
 interface Props {
   headline: string
   subhead?: string
+  eyebrow?: string
+  icon?: string
   tag?: 'h1' | 'h2' | 'h3'
   align?: 'left' | 'center'
   interactive?: boolean // Enable hover effects
 }
 
-const { headline, subhead, tag = 'h2', align = 'left', interactive = false } = Astro.props
+const {
+  headline,
+  subhead,
+  eyebrow,
+  icon,
+  tag = 'h2',
+  align = 'left',
+  interactive = false,
+} = Astro.props
 const HeadingTag = tag
 ---
 
 <div class="section-header" data-align={align} data-interactive={interactive}>
+  {icon && <CardBackgroundIcon icon={icon} />}
+  {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
   <HeadingTag class="section-headline">{headline}</HeadingTag>
   {subhead && <p class="section-subhead">{subhead}</p>}
 </div>
@@ -41,6 +55,25 @@ const HeadingTag = tag
     border-bottom: 1px solid $border-color;
     @include px-responsive('md');
     @include py-responsive('md');
+    position: relative;
+    overflow: hidden;
+
+    /* Feature header — taller, more breathing room when eyebrow/icon present */
+    &:has(.section-eyebrow),
+    &:has(:global(.card-background-icon)) {
+      padding-top: 5rem;
+      padding-bottom: 4rem;
+
+      @media (max-width: 1000px) {
+        padding-top: 3.5rem;
+        padding-bottom: 3rem;
+      }
+
+      @media (max-width: 770px) {
+        padding-top: 2.5rem;
+        padding-bottom: 2rem;
+      }
+    }
 
     &[data-align='center'] {
       text-align: center;
@@ -72,13 +105,29 @@ const HeadingTag = tag
     }
   }
 
+  .section-eyebrow {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
   .section-headline {
     @apply text-3xl md:text-4xl font-light text-white;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
 
   .section-subhead {
     @apply text-lg text-white/80 mt-4;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
   }
 </style>
