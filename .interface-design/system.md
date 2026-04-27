@@ -141,6 +141,36 @@ h1:      text-4xl → text-8xl responsive
 h2:      text-xl → text-4xl, text-white/85
 ```
 
+### SectionHeader feature variant (`src/components/primitives/sections/SectionHeader.astro`)
+
+When `eyebrow` or `icon` prop is passed, the component automatically gets `.section-header--feature` class with a banner-like presentation:
+
+```
+Padding: 7rem top, 5rem bottom (>1440)
+         6rem / 4rem (≤1440)
+         4.5rem / 3rem (≤1000)
+         3rem / 2rem (≤770)
+Eyebrow: 0.75rem uppercase tracking-wide, white/50, margin-bottom 1.5rem
+Headline: text-3xl md:text-4xl font-light
+Subhead: text-lg white/80
+Icon: CardBackgroundIcon top-right corner, 12rem (vs 8rem in content cards) — distinguishes header from content
+```
+
+Use case: section header that needs more visual weight (e.g. start of a major section). The default variant (no eyebrow/icon) stays at standard `py-responsive('md')` padding.
+
+### Border overlap rule — collapse adjacent borders
+
+When two elements with their own borders are stacked (e.g. `SectionHeader` border-bottom + `SectionGrid` border-top), CSS draws them as 2px stacked lines. To render as a single 1px line:
+
+```scss
+.section-grid-wrapper {
+  border-top: 1px solid $border-color;
+  margin-top: -1px;   /* overlap previous element's border-bottom */
+}
+```
+
+`margin-top: -1px` pulls the grid up so its top border physically overlaps the previous element's bottom border. Visually they merge into one line. Apply the same pattern any time two bordered elements stack.
+
 ---
 
 ## Section primitives — when to use
