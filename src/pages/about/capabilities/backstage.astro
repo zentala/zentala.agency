@@ -337,30 +337,13 @@ const finalCtaFooter = [
   </Section>
 
   <!-- DevStage.io banner -->
-  <Section id="devstage" class="bs-devstage">
-    <div class="bs-devstage__inner">
-      <CardBackgroundIcon icon="ph:plugs-connected-thin" />
-      <div class="bs-devstage__content">
-        <img
-          src="/devstage-logo-light.svg"
-          alt="DevStage logo"
-          class="bs-devstage__logo"
-          width="72"
-          height="66"
-        />
-        <span class="bs-devstage__eyebrow">Our Backstage practice</span>
-        <h2 class="bs-devstage__title">
-          Backstage Specialists at <span class="bs-devstage__brand"
-            >DevStage.io</span
-          >
-        </h2>
-        <p class="bs-devstage__body">
-          DevStage is our dedicated Backstage practice inside Żentała Innovation
-          Agency — fast implementations, data integrations, and consulting with
-          enterprise experience and no vendor lock-in.
-        </p>
-      </div>
-    </div>
+  <Section id="devstage">
+    <SectionHeader
+      eyebrow="Our Backstage practice"
+      icon="ph:plugs-connected-thin"
+      headline="Backstage Specialists at DevStage.io"
+      subhead="DevStage is our dedicated Backstage practice inside Żentała Innovation Agency — fast implementations, data integrations, and consulting with enterprise experience and no vendor lock-in."
+    />
     <ul class="bs-devstage__stats">
       <li>
         <span class="bs-devstage__stat-num">3</span>
@@ -778,75 +761,7 @@ const finalCtaFooter = [
     margin: 0;
   }
 
-  /* DevStage.io banner */
-  .bs-devstage {
-    :global(.section-grid) {
-      background: #000;
-    }
-  }
-
-  .bs-devstage__inner {
-    position: relative;
-    overflow: hidden;
-    padding: 4rem;
-
-    @media (max-width: 1000px) {
-      padding: 3rem 2rem;
-    }
-
-    @media (max-width: 770px) {
-      padding: 2rem 1.5rem;
-    }
-  }
-
-  .bs-devstage__content {
-    position: relative;
-    z-index: 1;
-    max-width: 56rem;
-  }
-
-  .bs-devstage__eyebrow {
-    display: inline-block;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 1.25rem;
-  }
-
-  .bs-devstage__title {
-    color: #fff;
-    font-size: 2.25rem;
-    font-weight: 300;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-
-    @media (min-width: 1000px) {
-      font-size: 2.75rem;
-    }
-  }
-
-  .bs-devstage__brand {
-    color: #fff;
-    font-weight: 400;
-  }
-
-  .bs-devstage__body {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.125rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-
-  .bs-devstage__logo {
-    display: block;
-    width: 72px;
-    height: auto;
-    margin-bottom: 1.5rem;
-    opacity: 0.95;
-  }
-
+  /* DevStage stats row (banner has standard SectionHeader above this) */
   .bs-devstage__stats {
     list-style: none;
     padding: 0;
