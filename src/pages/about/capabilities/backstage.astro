@@ -507,21 +507,21 @@ const finalCtaFooter = [
       headline="Common questions"
       subhead="What teams typically ask before booking the consultation."
     />
-    <SectionGrid columns={2}>
+    <ul class="bs-faq-list">
       {
         faqs.map((item, idx) => (
-          <SectionContent context="grid" prose={false}>
-            <div class="bs-faq">
-              <span class="bs-faq__num">
-                Q{String(idx + 1).padStart(2, '0')}
-              </span>
-              <h3 class="bs-faq__q">{item.q}</h3>
-              <p class="bs-faq__a">{item.a}</p>
+          <li class="bs-faq-item">
+            <span class="bs-faq-item__num">
+              Q{String(idx + 1).padStart(2, '0')}
+            </span>
+            <div class="bs-faq-item__body">
+              <h3 class="bs-faq-item__q">{item.q}</h3>
+              <p class="bs-faq-item__a">{item.a}</p>
             </div>
-          </SectionContent>
+          </li>
         ))
       }
-    </SectionGrid>
+    </ul>
   </Section>
 
   <!-- Final CTA -->
@@ -692,23 +692,92 @@ const finalCtaFooter = [
     margin: 0 0 1rem;
   }
 
-  .bs-faq {
+  /* FAQ — accordion-style single column list, always expanded */
+  .bs-faq-list {
+    list-style: none;
+    padding: 0;
+    margin: -1px 0 0; /* overlap previous element's bottom border */
+    border-top: 1px solid #1f2937;
+  }
+
+  .bs-faq-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2.25rem 4rem 2.25rem 4rem;
+    padding-right: 2rem; /* halved per user request */
+    background: #000;
+    border-bottom: 1px solid #1f2937;
     position: relative;
     z-index: 1;
+    transition: all 200ms ease-in-out;
+
+    @media (max-width: 1440px) {
+      padding: 2rem 1.5rem 2rem 3rem;
+      grid-template-columns: 5.5rem 1fr;
+    }
+
+    @media (max-width: 1000px) {
+      padding: 1.75rem 1rem 1.75rem 2rem;
+      grid-template-columns: 5rem 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 770px) {
+      padding: 1.5rem 0.75rem 1.5rem 1.5rem;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 1.25rem 0.5rem 1.25rem 1rem;
+      grid-template-columns: 3rem 1fr;
+      gap: 1rem;
+    }
+
+    &:hover {
+      z-index: 10;
+      background: #111827;
+      border-color: #374151;
+    }
   }
 
-  .bs-faq__q {
+  .bs-faq-item__num {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 2.75rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'wght' 100;
+
+    @media (max-width: 770px) {
+      font-size: 2rem;
+    }
+  }
+
+  .bs-faq-item__body {
+    min-width: 0; /* allow text wrapping inside grid */
+  }
+
+  .bs-faq-item__q {
     color: #fff;
-    font-size: 1.5rem; /* card-title-medium */
-    font-weight: 300;
-    line-height: 1.3;
-    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0 0 0.5rem;
+
+    @media (max-width: 770px) {
+      font-size: 1.125rem;
+    }
   }
 
-  .bs-faq__a {
+  .bs-faq-item__a {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 1rem; /* text-base */
+    font-size: 1rem;
     line-height: 1.6;
+    margin: 0;
+    max-width: 64rem;
   }
 
   /* DevStage.io banner */
@@ -796,11 +865,9 @@ const finalCtaFooter = [
 
     li {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 1rem;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 1.25rem;
       padding: 4rem;
       background: #000;
       position: relative;
@@ -857,8 +924,9 @@ const finalCtaFooter = [
     color: #fff;
     font-size: 4.5rem;
     font-weight: 200;
-    line-height: 1;
+    line-height: 0.85;
     letter-spacing: -0.02em;
+    flex-shrink: 0;
 
     @media (min-width: 1000px) {
       font-size: 5rem;
@@ -872,9 +940,10 @@ const finalCtaFooter = [
   .bs-devstage__stat-label {
     color: rgba(255, 255, 255, 0.55);
     font-size: 0.875rem;
-    line-height: 1.45;
+    line-height: 1.4;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    padding-bottom: 0.35rem;
   }
 
   .bs-devstage__cta {
