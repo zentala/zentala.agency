@@ -26,9 +26,10 @@ const DEVSTAGE_URL = 'https://devstage.io'
 const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
 
 const heroProps = {
+  eyebrow: 'DevStage by Żentała Innovation Agency',
   title: 'Extend Backstage. Ship What Your Team Can’t.',
   subtitle:
-    'Backstage and DevEx specialists. Fast implementations, data integrations, consulting. Enterprise experience, no vendor lock-in.',
+    'Backstage and DevEx specialists. Fast implementations, data integrations, consulting, contracting & body leasing. Enterprise experience, no vendor lock-in.',
 }
 
 const developmentServices = [
@@ -259,12 +260,6 @@ const finalCtaFooter = [
   title="Backstage Consulting & Plugin Development — DevStage.io"
   description="Custom Backstage plugins, processors, and strategic DevEx consulting for platform teams running Backstage at scale. Part of DevStage.io."
 >
-  <div class="page-tag">
-    <div class="container-bordered">
-      <span>DevStage by Żentała Innovation Agency</span>
-    </div>
-  </div>
-
   <Hero {...heroProps} />
 
   <!-- Tech Stack -->
@@ -385,7 +380,7 @@ const finalCtaFooter = [
         href={DEVSTAGE_URL}
         text="Visit DevStage.io"
         target="_blank"
-        variant="primary"
+        variant="secondary"
         icon="external-link"
       />
     </div>
@@ -531,23 +526,38 @@ const finalCtaFooter = [
 </Layout>
 
 <style lang="scss">
-  .page-tag {
-    background: #000;
-    border-bottom: 1px solid #1f2937;
+  /* Restore proper card padding (matches CardContainer used elsewhere on site) */
+  :global(.section-content--grid) {
+    padding: 4rem;
+  }
 
-    > :global(.container-bordered) {
-      padding: 0.75rem 0;
-      display: flex;
-      justify-content: center;
+  @media (max-width: 1440px) {
+    :global(.section-content--grid) {
+      padding: 3rem;
     }
+  }
 
-    span {
-      color: #60a5fa;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 500;
+  @media (max-width: 1000px) {
+    :global(.section-content--grid) {
+      padding: 2rem;
     }
+  }
+
+  @media (max-width: 770px) {
+    :global(.section-content--grid) {
+      padding: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    :global(.section-content--grid) {
+      padding: 1rem;
+    }
+  }
+
+  /* Fix hover double-border by pulling the hovered cell over neighbor borders */
+  :global(.section-grid-wrapper) > :global(*:hover) {
+    margin: -1px;
   }
 
   .bs-card {
@@ -661,7 +671,7 @@ const finalCtaFooter = [
   .bs-about__divider {
     width: 3rem;
     height: 1px;
-    background: rgba(96, 165, 250, 0.4);
+    background: #1f2937;
     margin: 2rem 0;
   }
 
@@ -695,13 +705,7 @@ const finalCtaFooter = [
   /* DevStage.io banner */
   .bs-devstage {
     :global(.section-grid) {
-      background:
-        radial-gradient(
-          circle at 100% 50%,
-          rgba(96, 165, 250, 0.06),
-          transparent 60%
-        ),
-        #000;
+      background: #000;
     }
   }
 
@@ -727,11 +731,11 @@ const finalCtaFooter = [
 
   .bs-devstage__eyebrow {
     display: inline-block;
-    color: #60a5fa;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 1.25rem;
   }
 
@@ -748,7 +752,7 @@ const finalCtaFooter = [
   }
 
   .bs-devstage__brand {
-    color: #60a5fa;
+    color: #fff;
     font-weight: 400;
   }
 
@@ -774,8 +778,8 @@ const finalCtaFooter = [
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    border-top: 1px solid rgba(96, 165, 250, 0.2);
-    border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+    border-top: 1px solid #1f2937;
+    border-bottom: 1px solid #1f2937;
 
     @media (min-width: 770px) {
       grid-template-columns: repeat(4, 1fr);
@@ -882,8 +886,8 @@ const finalCtaFooter = [
   }
 
   .bs-step__num {
-    color: #60a5fa;
-    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.18);
+    font-size: 3.5rem;
     font-weight: 200;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -901,11 +905,11 @@ const finalCtaFooter = [
   /* FAQ — Q numbering */
   .bs-faq__num {
     display: inline-block;
-    color: #60a5fa;
+    color: rgba(255, 255, 255, 0.4);
     font-size: 0.7rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 0.75rem;
   }
 </style>

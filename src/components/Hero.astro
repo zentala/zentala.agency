@@ -1,11 +1,19 @@
 ---
-const { title, subtitle } = Astro.props
+const { title, subtitle, eyebrow } = Astro.props
 ---
 
 <section class="section-grid text-center text-white">
   <div class="container-padded py-responsive-lg">
+    {
+      eyebrow && (
+        <p class="hero-eyebrow text-sm font-light tracking-wide text-white/55 sm:text-base">
+          {eyebrow}
+        </p>
+      )
+    }
     <h1
       class="text-4xl font-light leading-tight sm:text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl"
+      class:list={[eyebrow ? 'mt-3' : '']}
     >
       {title}
     </h1>
