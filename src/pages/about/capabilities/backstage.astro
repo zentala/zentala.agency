@@ -16,29 +16,8 @@ const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
 const heroProps = {
   title: 'Extend Backstage. Ship What Your Team Can’t.',
   subtitle:
-    'Custom plugins, processors, and strategic DevEx consulting for platform teams running Backstage at scale.',
+    'Backstage and DevEx specialists. Fast implementations, data integrations, consulting. Enterprise experience, no vendor lock-in.',
 }
-
-const personas = [
-  {
-    name: 'Platform Leads',
-    icon: 'ph:user-focus-thin',
-    pain: 'Plugin requests pile up faster than your team can ship them.',
-    fix: 'I build the plugins that unblock your roadmap, then hand them to your team to maintain.',
-  },
-  {
-    name: 'CTOs scaling 50→200 devs',
-    icon: 'ph:strategy-thin',
-    pain: '"Works for my squad" never became "works for the org."',
-    fix: 'I audit the current setup, design the path to org-wide adoption, and execute the missing pieces.',
-  },
-  {
-    name: 'Engineering Managers',
-    icon: 'ph:graduation-cap-thin',
-    pain: 'Your team can run Backstage but can’t extend it.',
-    fix: 'I build the first 3–5 plugins alongside your devs, transferring the skill so they ship the next 20.',
-  },
-]
 
 const developmentServices = [
   {
@@ -93,27 +72,39 @@ const consultingServices = [
     ],
   },
   {
-    name: 'AI-Powered DevEx',
+    name: 'AI Chat & MCP',
     icon: 'ph:robot-thin',
     description:
-      'Integrate cutting-edge AI capabilities into your developer workflows.',
+      'AI-powered chatbot integrated with Backstage data and actions. Embedded chat or MCP Server integration.',
     features: [
-      'AI chatbots with MCP & RAG',
-      'LLM-powered automations',
+      'Chat with catalog data',
+      'Trigger self-service actions',
+      'MCP Server integration',
       'Custom AI plugin development',
-      'Workflow intelligence',
+    ],
+  },
+  {
+    name: 'Security SLA',
+    icon: 'ph:shield-check-thin',
+    description:
+      'Keep your enterprise Backstage patched within 48 hours of every upstream security release.',
+    features: [
+      '48h security update SLA',
+      'Continuous upstream tracking',
+      'Entry audit of current configuration',
+      'Patch coordination with your team',
     ],
   },
   {
     name: 'Developer Education',
     icon: 'ph:chalkboard-teacher-thin',
     description:
-      'Empower your teams with knowledge and best practices for Backstage success.',
+      'Knowledge transfer built into every engagement — your team learns as we work.',
     features: [
       'Team workshops & training',
       'Plugin development courses',
-      'Best practices mentoring',
       'Documentation & runbooks',
+      'Paired coding sessions',
     ],
   },
 ]
@@ -122,26 +113,26 @@ const processSteps = [
   {
     n: '01',
     icon: 'ph:magnifying-glass-thin',
-    title: 'Discovery',
-    body: '60-min call to map your Backstage state, team size, and the top 3 friction points. Free, no commitment.',
+    title: 'Free Consultation',
+    body: '30-minute call to understand your Backstage needs and challenges. We assess fit and discuss potential approaches.',
   },
   {
     n: '02',
     icon: 'ph:list-checks-thin',
-    title: 'Audit & Roadmap',
-    body: '1–2 weeks. I audit your setup, prioritize fixes and feature opportunities, deliver a written roadmap.',
+    title: 'Technical Discovery',
+    body: 'We map your integration landscape, understand your organization, and define success metrics. Results in a clear engagement plan.',
   },
   {
     n: '03',
     icon: 'ph:hammer-thin',
-    title: 'Build',
-    body: 'Sprints (2–4 weeks each) or extended engagement (months). Plugins, processors, integrations — coded alongside your team.',
+    title: 'Delivery & Iteration',
+    body: 'Expert hours focused on your specific work. Pay for results, scale up or down as needed. Agile sprints with fast feedback loops.',
   },
   {
     n: '04',
     icon: 'ph:handshake-thin',
-    title: 'Handover',
-    body: 'Documentation, recorded walkthroughs, paired sessions. Your team owns what we build.',
+    title: 'Handover & Support',
+    body: 'You own everything we build. Full source code, documentation, knowledge transfer. Continue independently or with ongoing support.',
   },
 ]
 
@@ -184,28 +175,28 @@ const whyExternalConsultant = [
 
 const faqs = [
   {
-    q: 'What’s the typical engagement length?',
-    a: 'Sprint engagements run 2–4 weeks per feature. Extended engagements run 3–6 months at 50–80% time, often renewed.',
+    q: 'How do we start working together?',
+    a: 'A free 30-minute consultation. No commitment — just a conversation about your Backstage needs and challenges, and an honest assessment of fit.',
   },
   {
-    q: 'Do you work onsite?',
-    a: 'Remote-first, CET timezone. Onsite kickoffs within the EU possible by arrangement.',
+    q: 'Do I need to commit to a long-term contract?',
+    a: 'No. Pay for results, scale up or down as needed. Agile sprints with fast feedback loops, no minimum term.',
   },
   {
-    q: 'What does it cost?',
-    a: 'Sprint engagements start around €15k. Extended engagements are scoped per month. The discovery call is free — pricing follows from the audit.',
+    q: 'How is this different from Roadie or Port.io?',
+    a: 'Hosted services lock you into their stack. We deploy Backstage in your infrastructure — full source code, no vendor lock-in. You own everything.',
   },
   {
-    q: 'Can you sign an NDA?',
-    a: 'Yes. A standard mutual NDA is fine, custom forms reviewed quickly.',
+    q: 'What if we already have Backstage deployed?',
+    a: 'We come in to extend it: custom plugins, processors, data ingestion, security updates. An entry audit of your current configuration is included.',
   },
   {
-    q: 'Which Backstage versions?',
-    a: 'Current Backstage (1.x). I track upstream releases plus Spotify Portal, Roadie, and Red Hat Developer Hub variants where relevant.',
+    q: 'Can you help us build an internal DevEx team?',
+    a: 'Yes. Knowledge transfer is built into every engagement — your team learns as we work, and walks away owning what we built.',
   },
   {
-    q: 'What if my team needs to keep building after you leave?',
-    a: 'That’s the whole point. Every engagement includes documented patterns, recorded walkthroughs, and paired sessions so your team owns the work.',
+    q: 'Do you work remotely or onsite?',
+    a: 'Remote-first, CET timezone, working with clients worldwide. Onsite kickoffs within the EU possible by arrangement.',
   },
 ]
 
@@ -236,7 +227,6 @@ const finalCtaButtons = [
 const finalCtaFooter = [
   { icon: 'map-pin', text: 'Warsaw, Poland · CET timezone' },
   { icon: 'globe', text: 'Working with clients worldwide' },
-  { icon: 'calendar', text: 'Currently booking Q3–Q4 2026' },
 ] as const
 ---
 
@@ -246,33 +236,11 @@ const finalCtaFooter = [
 >
   <div class="page-tag">
     <div class="container-bordered">
-      <span>DevStage.io · Backstage Specialists</span>
+      <span>DevStage by Żentała Innovation Agency</span>
     </div>
   </div>
 
   <Hero {...heroProps} />
-
-  <!-- Who hires me -->
-  <Section id="audience">
-    <SectionHeader
-      headline="Who hires me"
-      subhead="Three types of teams — if you recognize one, we should talk."
-    />
-    <SectionGrid columns={3}>
-      {
-        personas.map((p) => (
-          <SectionContent context="grid" prose={false}>
-            <CardBackgroundIcon icon={p.icon} />
-            <div class="bs-card">
-              <h3 class="bs-card__title">{p.name}</h3>
-              <p class="bs-card__pain">"{p.pain}"</p>
-              <p class="bs-card__fix">{p.fix}</p>
-            </div>
-          </SectionContent>
-        ))
-      }
-    </SectionGrid>
-  </Section>
 
   <!-- Development Services -->
   <Section id="development">
@@ -307,9 +275,9 @@ const finalCtaFooter = [
   <Section id="consulting">
     <SectionHeader
       headline="What I advise on"
-      subhead="Strategy, education, and AI — turning Backstage into an org-wide platform."
+      subhead="Strategy, AI, security, and education — turning Backstage into an org-wide platform."
     />
-    <SectionGrid columns={3}>
+    <SectionGrid columns={2}>
       {
         consultingServices.map((service) => (
           <SectionContent context="grid" prose={false}>
@@ -337,16 +305,21 @@ const finalCtaFooter = [
     <div class="bs-devstage__inner">
       <CardBackgroundIcon icon="ph:plugs-connected-thin" />
       <div class="bs-devstage__content">
-        <span class="bs-devstage__eyebrow">Our Backstage brand</span>
+        <span class="bs-devstage__eyebrow">Our Backstage practice</span>
         <h2 class="bs-devstage__title">
-          Backstage work lives at <span class="bs-devstage__brand">DevStage.io</span>
+          Backstage Specialists at <span class="bs-devstage__brand">DevStage.io</span>
         </h2>
         <p class="bs-devstage__body">
-          DevStage.io is the dedicated home for our Backstage practice — public
-          plugin catalog, technical blog, and product offerings for platform
-          teams. The page you’re reading is the consulting front door;
-          DevStage.io is where the products live.
+          DevStage is our dedicated Backstage practice inside Żentała Innovation
+          Agency — fast implementations, data integrations, and consulting with
+          enterprise experience and no vendor lock-in.
         </p>
+        <ul class="bs-devstage__stats">
+          <li><strong>3 years</strong> in Backstage</li>
+          <li><strong>4</strong> enterprise IDP implementations</li>
+          <li><strong>1</strong> open source plugin released</li>
+          <li><strong>5</strong> specialists with various profiles</li>
+        </ul>
       </div>
     </div>
     <SectionCTA
@@ -704,5 +677,33 @@ const finalCtaFooter = [
     color: rgba(255, 255, 255, 0.8);
     font-size: 1.125rem;
     line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .bs-devstage__stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+
+    @media (min-width: 770px) {
+      grid-template-columns: repeat(4, auto);
+    }
+
+    li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    strong {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
   }
 </style>
