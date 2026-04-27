@@ -24,6 +24,8 @@ interface Props {
   subhead?: string
   eyebrow?: string
   icon?: string
+  logoSrc?: string
+  logoAlt?: string
   tag?: 'h1' | 'h2' | 'h3'
   align?: 'left' | 'center'
   interactive?: boolean // Enable hover effects
@@ -34,6 +36,8 @@ const {
   subhead,
   eyebrow,
   icon,
+  logoSrc,
+  logoAlt = '',
   tag = 'h2',
   align = 'left',
   interactive = false,
@@ -44,12 +48,13 @@ const HeadingTag = tag
 <div
   class:list={[
     'section-header',
-    (eyebrow || icon) && 'section-header--feature',
+    (eyebrow || icon || logoSrc) && 'section-header--feature',
   ]}
   data-align={align}
   data-interactive={interactive}
 >
   {icon && <CardBackgroundIcon icon={icon} />}
+  {logoSrc && <img src={logoSrc} alt={logoAlt} class="section-header__logo" />}
   {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
   <HeadingTag class="section-headline">{headline}</HeadingTag>
   {subhead && <p class="section-subhead">{subhead}</p>}
@@ -134,6 +139,16 @@ const HeadingTag = tag
         height: 9rem;
       }
     }
+  }
+
+  .section-header__logo {
+    display: block;
+    width: 36px;
+    height: auto;
+    opacity: 0.85;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
   }
 
   .section-eyebrow {
