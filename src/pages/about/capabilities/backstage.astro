@@ -8,6 +8,18 @@ import SectionContent from '../../../components/primitives/sections/SectionConte
 import SectionCTA from '../../../components/primitives/sections/SectionCTA.astro'
 import CardBackgroundIcon from '../../../components/primitives/CardBackgroundIcon.astro'
 import CTA from '../../../components/CTA.astro'
+import Button from '../../../components/Button.astro'
+
+const techStack = [
+  'Backstage',
+  'TypeScript',
+  'Node.js',
+  'React',
+  'MCP Server',
+  'Docker',
+  'Kubernetes',
+  'PostgreSQL',
+]
 
 const CAL_URL = 'https://cal.com/zentala'
 const DEVSTAGE_URL = 'https://devstage.io'
@@ -242,6 +254,18 @@ const finalCtaFooter = [
 
   <Hero {...heroProps} />
 
+  <!-- Tech Stack -->
+  <div class="tech-stack">
+    <div class="container-bordered">
+      <div class="tech-stack__inner">
+        <span class="tech-stack__label">Stack</span>
+        <ul class="tech-stack__list">
+          {techStack.map((tech) => <li>{tech}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- Development Services -->
   <Section id="development">
     <SectionHeader
@@ -305,30 +329,53 @@ const finalCtaFooter = [
     <div class="bs-devstage__inner">
       <CardBackgroundIcon icon="ph:plugs-connected-thin" />
       <div class="bs-devstage__content">
+        <img
+          src="/devstage-logo-light.svg"
+          alt="DevStage logo"
+          class="bs-devstage__logo"
+          width="72"
+          height="66"
+        />
         <span class="bs-devstage__eyebrow">Our Backstage practice</span>
         <h2 class="bs-devstage__title">
-          Backstage Specialists at <span class="bs-devstage__brand">DevStage.io</span>
+          Backstage Specialists at <span class="bs-devstage__brand"
+            >DevStage.io</span
+          >
         </h2>
         <p class="bs-devstage__body">
           DevStage is our dedicated Backstage practice inside Żentała Innovation
           Agency — fast implementations, data integrations, and consulting with
           enterprise experience and no vendor lock-in.
         </p>
-        <ul class="bs-devstage__stats">
-          <li><strong>3 years</strong> in Backstage</li>
-          <li><strong>4</strong> enterprise IDP implementations</li>
-          <li><strong>1</strong> open source plugin released</li>
-          <li><strong>5</strong> specialists with various profiles</li>
-        </ul>
       </div>
     </div>
-    <SectionCTA
-      href={DEVSTAGE_URL}
-      text="Visit DevStage.io"
-      icon="external-link"
-      variant="primary"
-      external={true}
-    />
+    <ul class="bs-devstage__stats">
+      <li>
+        <span class="bs-devstage__stat-num">3</span>
+        <span class="bs-devstage__stat-label">years in Backstage</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">4</span>
+        <span class="bs-devstage__stat-label">enterprise IDP implementations</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">1</span>
+        <span class="bs-devstage__stat-label">open source plugin released</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">5</span>
+        <span class="bs-devstage__stat-label">specialists with various profiles</span>
+      </li>
+    </ul>
+    <div class="bs-devstage__cta">
+      <Button
+        href={DEVSTAGE_URL}
+        text="Visit DevStage.io"
+        target="_blank"
+        variant="primary"
+        icon="external-link"
+      />
+    </div>
   </Section>
 
   <!-- How we work -->
@@ -337,14 +384,16 @@ const finalCtaFooter = [
       headline="How we work"
       subhead="A predictable four-step path from first call to your team owning the work."
     />
-    <SectionGrid columns={4}>
+    <SectionGrid columns={2}>
       {
         processSteps.map((step) => (
           <SectionContent context="grid" prose={false}>
             <CardBackgroundIcon icon={step.icon} />
             <div class="bs-card bs-card--step">
-              <span class="bs-card__step">{step.n}</span>
-              <h3 class="bs-card__title">{step.title}</h3>
+              <div class="bs-step__head">
+                <span class="bs-step__num">{step.n}</span>
+                <h3 class="bs-step__title">{step.title}</h3>
+              </div>
               <p class="bs-card__desc">{step.body}</p>
             </div>
           </SectionContent>
@@ -392,28 +441,30 @@ const finalCtaFooter = [
       <SectionContent context="grid" prose={false}>
         <div class="bs-card">
           <h3 class="bs-card__title bs-card__title--lg">
-            Creative DevEx engineer, hands-on builder
+            Led by a hands-on DevEx engineer
           </h3>
           <p class="bs-about__lead">
-            I’m Paweł Żentała. Companies hire me as their
-            <strong>external DevEx consultant</strong> for months-long engagements.
-            I become part of your team, architect solutions, build complex features,
-            and elevate the entire developer experience.
+            DevStage is led by <strong>Paweł Żentała</strong>, a creative DevEx
+            engineer who codes alongside the team. Companies bring us in as
+            their <strong>external Backstage practice</strong> for months-long
+            engagements — we become part of your team, architect solutions,
+            build complex features, and elevate the entire developer experience.
           </p>
           <p class="bs-about__body">
-            My approach focuses on <strong>inspiring and educating</strong> your
-            team while handling the most innovative and challenging development
-            work. I help you build capabilities, not dependencies.
+            Our approach focuses on
+            <strong>inspiring and educating</strong> your team while handling the
+            most innovative and challenging development work. We help you build
+            capabilities, not dependencies.
           </p>
         </div>
       </SectionContent>
       <SectionContent context="grid" prose={false}>
         <div class="bs-card">
-          <h3 class="bs-card__title">What I deliver</h3>
+          <h3 class="bs-card__title">What we deliver</h3>
           <p class="bs-card__desc">
-            Developer portals teams actually want to use — strategic
-            guidance, innovative solutions, hands-on development, and knowledge
-            transfer that empowers your developers long after I’m gone.
+            Developer portals teams actually want to use — strategic guidance,
+            innovative solutions, hands-on development, and knowledge transfer
+            that empowers your developers long after we’re gone.
           </p>
         </div>
       </SectionContent>
@@ -439,13 +490,16 @@ const finalCtaFooter = [
   <Section id="faq">
     <SectionHeader
       headline="Common questions"
-      subhead="The things every CTO asks before booking the call."
+      subhead="What teams typically ask before booking the consultation."
     />
     <SectionGrid columns={2}>
       {
-        faqs.map((item) => (
+        faqs.map((item, idx) => (
           <SectionContent context="grid" prose={false}>
             <div class="bs-faq">
+              <span class="bs-faq__num">
+                Q{String(idx + 1).padStart(2, '0')}
+              </span>
               <h3 class="bs-faq__q">{item.q}</h3>
               <p class="bs-faq__a">{item.a}</p>
             </div>
@@ -459,7 +513,7 @@ const finalCtaFooter = [
   <Section id="cta">
     <CTA
       headline="Ready to extend your Backstage?"
-      subhead="Start with a free 60-min discovery call — no slides, no pitch, just your situation and what would unblock it."
+      subhead="Start with a free 30-minute consultation — no slides, no pitch, just your situation and what would unblock it."
       buttons={finalCtaButtons}
       footerItems={finalCtaFooter}
     />
@@ -680,30 +734,153 @@ const finalCtaFooter = [
     margin-bottom: 2rem;
   }
 
+  .bs-devstage__logo {
+    display: block;
+    width: 72px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+  }
+
   .bs-devstage__stats {
     list-style: none;
-    padding: 0;
+    padding: 2.5rem 4rem;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem 2rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.95rem;
+    gap: 2rem;
+    border-top: 1px solid rgba(96, 165, 250, 0.2);
+    border-bottom: 1px solid rgba(96, 165, 250, 0.2);
 
     @media (min-width: 770px) {
-      grid-template-columns: repeat(4, auto);
+      grid-template-columns: repeat(4, 1fr);
+      padding: 3rem 4rem;
+    }
+
+    @media (max-width: 770px) {
+      padding: 2rem 1.5rem;
     }
 
     li {
       display: flex;
-      align-items: baseline;
+      flex-direction: column;
       gap: 0.5rem;
     }
+  }
 
-    strong {
-      color: #fff;
-      font-size: 1.5rem;
-      font-weight: 300;
+  .bs-devstage__stat-num {
+    color: #fff;
+    font-size: 3.25rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -0.02em;
+
+    @media (min-width: 1000px) {
+      font-size: 4rem;
     }
+  }
+
+  .bs-devstage__stat-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .bs-devstage__cta {
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 770px) {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* Tech stack row */
+  .tech-stack {
+    background: #000;
+    border-bottom: 1px solid #1f2937;
+
+    > :global(.container-bordered) {
+      padding: 1.25rem 2rem;
+    }
+
+    &__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem 2rem;
+      justify-content: center;
+    }
+
+    &__label {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+
+      li {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        position: relative;
+
+        &:not(:last-child)::after {
+          content: '·';
+          position: absolute;
+          right: -0.875rem;
+          color: rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+
+  /* Process steps — bigger numbers */
+  .bs-step__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .bs-step__num {
+    color: #60a5fa;
+    font-size: 2.5rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+
+  .bs-step__title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  /* FAQ — Q numbering */
+  .bs-faq__num {
+    display: inline-block;
+    color: #60a5fa;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
   }
 </style>
