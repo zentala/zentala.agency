@@ -150,10 +150,22 @@ const processSteps = [
 
 const engagementModels = [
   {
+    name: 'Project Sprints',
+    icon: 'ph:lightning-thin',
+    description:
+      'Intensive development sprints for specific features — custom plugins, AI integrations, processor development — with measurable impact and a fixed scope.',
+    features: [
+      'Fixed-scope, outcome-based',
+      'Specific feature delivery',
+      'Team training included',
+      'Documentation & handover',
+    ],
+  },
+  {
     name: 'Extended Engagement',
     icon: 'ph:infinity-thin',
     description:
-      'Become your dedicated DevEx engineer for months. I join your standups, architect solutions, ship complex features, and mentor your team throughout.',
+      'A dedicated DevEx team embedded in your project for months. We join your standups, architect solutions, ship complex features, and mentor your team throughout.',
     features: [
       'Daily involvement in your project',
       'Direct hands-on development',
@@ -162,23 +174,24 @@ const engagementModels = [
     ],
   },
   {
-    name: 'Project Sprints',
-    icon: 'ph:lightning-thin',
+    name: 'Contracting & Body Leasing',
+    icon: 'ph:users-three-thin',
     description:
-      'Intensive development sprints for specific features — custom plugins, AI integrations, processor development — with immediate, measurable impact.',
+      'Hire a Backstage contractor — or a full team — to plug into your project. You direct the work, we deliver hours. Paweł works contracting himself, and we have a vetted network of Backstage specialists ready to deploy.',
     features: [
-      '2–4 week focused sprints',
-      'Specific feature delivery',
-      'Team training included',
-      'Documentation & handover',
+      'Single contractor or full team',
+      'Vetted Backstage specialists from our network',
+      'Monthly retainer or hourly billing',
+      'You direct, we execute',
     ],
   },
 ]
 
 const whyExternalConsultant = [
   'Fresh perspective on your challenges',
-  'Hands-on builder who codes alongside your team',
+  'Hands-on builders who code alongside your team',
   'Latest DevEx trends, Backstage solutions, and AI innovations',
+  'Vetted contractor network for staff augmentation',
   'Objective assessment of your needs',
   'No internal politics or bias',
   'Knowledge transfer built into every engagement',
@@ -203,8 +216,8 @@ const faqs = [
     a: 'We come in to extend it: custom plugins, processors, data ingestion, security updates. An entry audit of your current configuration is included.',
   },
   {
-    q: 'Can you help us build an internal DevEx team?',
-    a: 'Yes. Knowledge transfer is built into every engagement — your team learns as we work, and walks away owning what we built.',
+    q: 'Can you provide contractors or help us build an internal DevEx team?',
+    a: 'Both. We can plug a contractor (or a full team) into your project as staff augmentation, or run a project that builds capabilities into your team — knowledge transfer is in every engagement.',
   },
   {
     q: 'Do you work remotely or onsite?',
@@ -406,9 +419,9 @@ const finalCtaFooter = [
   <Section id="engagement">
     <SectionHeader
       headline="Engagement models"
-      subhead="Two ways to work together — pick the rhythm that matches your need."
+      subhead="Three ways to work together — pick the format that matches your need."
     />
-    <SectionGrid columns={2}>
+    <SectionGrid columns={3}>
       {
         engagementModels.map((model) => (
           <SectionContent context="grid" prose={false}>
