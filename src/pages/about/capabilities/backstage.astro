@@ -566,10 +566,8 @@ const finalCtaFooter = [
     }
   }
 
-  /* Fix hover double-border by pulling the hovered cell over neighbor borders */
-  :global(.section-grid-wrapper > .section-content:hover) {
-    margin: -1px !important;
-  }
+  /* Hover behavior is handled by SectionGrid (z-index + border-color).
+     Do not add margin shifts here — they cause content to jump on hover. */
 
   .bs-card {
     position: relative;
@@ -921,11 +919,11 @@ const finalCtaFooter = [
     position: absolute;
     top: -0.5rem;
     left: 0;
-    color: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.07);
     font-size: 7.5rem;
-    font-weight: 200;
+    font-weight: 100;
     line-height: 0.9;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
     pointer-events: none;
     user-select: none;
     z-index: 0;
