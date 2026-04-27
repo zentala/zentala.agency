@@ -526,38 +526,39 @@ const finalCtaFooter = [
 </Layout>
 
 <style lang="scss">
-  /* Restore proper card padding (matches CardContainer used elsewhere on site) */
-  :global(.section-content--grid) {
-    padding: 4rem;
+  /* Restore proper card padding (matches CardContainer used elsewhere on site).
+     Need !important to beat SectionContent's own scoped styles. */
+  :global(.section-grid-wrapper > .section-content) {
+    padding: 4rem !important;
   }
 
   @media (max-width: 1440px) {
-    :global(.section-content--grid) {
-      padding: 3rem;
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 3rem !important;
     }
   }
 
   @media (max-width: 1000px) {
-    :global(.section-content--grid) {
-      padding: 2rem;
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 2rem !important;
     }
   }
 
   @media (max-width: 770px) {
-    :global(.section-content--grid) {
-      padding: 1.5rem;
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 1.5rem !important;
     }
   }
 
   @media (max-width: 480px) {
-    :global(.section-content--grid) {
-      padding: 1rem;
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 1rem !important;
     }
   }
 
   /* Fix hover double-border by pulling the hovered cell over neighbor borders */
-  :global(.section-grid-wrapper) > :global(*:hover) {
-    margin: -1px;
+  :global(.section-grid-wrapper > .section-content:hover) {
+    margin: -1px !important;
   }
 
   .bs-card {
