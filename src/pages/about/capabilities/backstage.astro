@@ -450,7 +450,7 @@ const finalCtaFooter = [
       headline="Your Backstage partner"
       subhead="20+ years bridging technology and human communication — from robotics and IoT to developer portals."
     />
-    <div class="cards-grid cards-grid--two-one">
+    <SectionGrid columns={2}>
       <SectionContent context="grid" prose={false}>
         <div class="bs-card">
           <h3 class="bs-card__title bs-card__title--lg">
@@ -469,12 +469,9 @@ const finalCtaFooter = [
             most innovative and challenging development work. We help you build
             capabilities, not dependencies.
           </p>
-        </div>
-      </SectionContent>
-      <SectionContent context="grid" prose={false}>
-        <div class="bs-card">
-          <h3 class="bs-card__title">What we deliver</h3>
-          <p class="bs-card__desc">
+          <div class="bs-about__divider"></div>
+          <h4 class="bs-about__subhead">What we deliver</h4>
+          <p class="bs-about__body">
             Developer portals teams actually want to use — strategic guidance,
             innovative solutions, hands-on development, and knowledge transfer
             that empowers your developers long after we’re gone.
@@ -482,9 +479,9 @@ const finalCtaFooter = [
         </div>
       </SectionContent>
       <SectionContent context="grid" prose={false}>
-        <div class="bs-card bs-card--full">
+        <div class="bs-card">
           <h3 class="bs-card__title">Why hire an external Backstage expert</h3>
-          <ul class="bs-list bs-list--two-col">
+          <ul class="bs-list">
             {
               whyExternalConsultant.map((benefit) => (
                 <li>
@@ -496,7 +493,7 @@ const finalCtaFooter = [
           </ul>
         </div>
       </SectionContent>
-    </div>
+    </SectionGrid>
   </Section>
 
   <!-- FAQ -->
@@ -659,6 +656,21 @@ const finalCtaFooter = [
     color: rgba(255, 255, 255, 0.7);
     font-size: 1rem;
     line-height: 1.6;
+  }
+
+  .bs-about__divider {
+    width: 3rem;
+    height: 1px;
+    background: rgba(96, 165, 250, 0.4);
+    margin: 2rem 0;
+  }
+
+  .bs-about__subhead {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0 0 1rem;
   }
 
   .bs-faq {
