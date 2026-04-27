@@ -218,7 +218,7 @@ const faqs = [
   },
   {
     q: 'Can you provide contractors or help us build an internal DevEx team?',
-    a: 'Both. We can plug a contractor (or a full team) into your project as staff augmentation, or run a project that builds capabilities into your team — knowledge transfer is in every engagement.',
+    a: 'Both. We can plug a contractor — or a full team — into your project as staff augmentation. Or run a project that builds capabilities into your team.',
   },
   {
     q: 'Do you work remotely or onsite?',
@@ -512,7 +512,7 @@ const finalCtaFooter = [
         faqs.map((item, idx) => (
           <li class="bs-faq-item">
             <span class="bs-faq-item__num">
-              Q{String(idx + 1).padStart(2, '0')}
+              Q.{String(idx + 1).padStart(2, '0')}
             </span>
             <div class="bs-faq-item__body">
               <h3 class="bs-faq-item__q">{item.q}</h3>
@@ -705,8 +705,7 @@ const finalCtaFooter = [
     grid-template-columns: 6rem 1fr;
     gap: 2rem;
     align-items: start;
-    padding: 2.25rem 4rem 2.25rem 4rem;
-    padding-right: 2rem; /* halved per user request */
+    padding: 2.25rem 1rem 2.25rem 4rem;
     background: #000;
     border-bottom: 1px solid #1f2937;
     position: relative;
@@ -714,18 +713,18 @@ const finalCtaFooter = [
     transition: all 200ms ease-in-out;
 
     @media (max-width: 1440px) {
-      padding: 2rem 1.5rem 2rem 3rem;
+      padding: 2rem 0.75rem 2rem 3rem;
       grid-template-columns: 5.5rem 1fr;
     }
 
     @media (max-width: 1000px) {
-      padding: 1.75rem 1rem 1.75rem 2rem;
+      padding: 1.75rem 0.5rem 1.75rem 2rem;
       grid-template-columns: 5rem 1fr;
       gap: 1.5rem;
     }
 
     @media (max-width: 770px) {
-      padding: 1.5rem 0.75rem 1.5rem 1.5rem;
+      padding: 1.5rem 0.5rem 1.5rem 1.5rem;
       grid-template-columns: 3.5rem 1fr;
       gap: 1.25rem;
     }
