@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import CardBackgroundIcon from '../components/primitives/CardBackgroundIcon.astro'
 // import ContactForm from '../components/ContactForm.astro'
 
 const heroProps = {
@@ -51,6 +52,7 @@ const heroProps = {
 
         <!-- Column 2: Schedule Meeting -->
         <div class="card-item relative overflow-hidden">
+          <CardBackgroundIcon icon="ph:calendar-blank-thin" />
           <div class="padding-responsive-md relative z-10 text-white">
             <h2 class="mb-4 text-4xl font-normal text-white">
               Schedule Meeting
@@ -66,16 +68,11 @@ const heroProps = {
               Book a Call
             </a>
           </div>
-          <!-- Calendar icon background -->
-          <div
-            class="absolute right-4 top-4 rotate-12 transform text-9xl text-gray-600 opacity-10"
-          >
-            📅
-          </div>
         </div>
 
         <!-- Column 3: Follow Me -->
         <div class="card-item relative overflow-hidden">
+          <CardBackgroundIcon icon="ph:briefcase-thin" />
           <div class="padding-responsive-md relative z-10 text-white">
             <h2 class="mb-4 text-4xl font-normal text-white">Follow Me</h2>
             <p class="mb-6 text-xl text-gray-300">
@@ -89,12 +86,6 @@ const heroProps = {
             >
               Add on LinkedIn
             </a>
-          </div>
-          <!-- LinkedIn icon background - rotated and cropped -->
-          <div
-            class="absolute -right-8 -top-8 rotate-12 transform text-9xl text-gray-600 opacity-10"
-          >
-            💼
           </div>
         </div>
       </div>
