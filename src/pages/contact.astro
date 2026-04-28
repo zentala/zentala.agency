@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import Button from '../components/Button.astro'
 import CardBackgroundIcon from '../components/primitives/CardBackgroundIcon.astro'
 // import ContactForm from '../components/ContactForm.astro'
 
@@ -60,13 +61,13 @@ const heroProps = {
             <p class="mb-6 text-xl text-gray-300">
               Let's discuss your needs in a 20-minute free consultation call.
             </p>
-            <a
+            <Button
               href="http://cal.com/zentala"
+              text="Book a Call"
               target="_blank"
-              class="inline-block border border-gray-800 p-4 px-8 text-lg font-normal transition-all duration-200 hover:border-blue-400 hover:bg-gray-900 hover:text-white"
-            >
-              Book a Call
-            </a>
+              variant="outline"
+              icon="calendar"
+            />
           </div>
         </div>
 
@@ -79,13 +80,13 @@ const heroProps = {
               Connect with me on LinkedIn to stay updated with my latest
               insights and projects.
             </p>
-            <a
+            <Button
               href="https://linkedin.com/in/zentala"
+              text="Add on LinkedIn"
               target="_blank"
-              class="inline-block border border-gray-800 p-4 px-8 text-lg font-normal transition-all duration-200 hover:border-blue-400 hover:bg-gray-900 hover:text-white"
-            >
-              Add on LinkedIn
-            </a>
+              variant="outline"
+              icon="linkedin"
+            />
           </div>
         </div>
       </div>
