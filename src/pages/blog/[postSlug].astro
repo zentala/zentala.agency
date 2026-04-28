@@ -29,7 +29,22 @@ if (!author) {
   throw new Error(`Author not found for slug: ${post.data.author}`)
 }
 
-const { Content } = await post.render()
+const { Content, headings } = await post.render()
+
+// TOC: only h2 + h3 — keeps it scannable
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3)
+
+// Reading time estimate (~200 wpm)
+const wordCount = post.body.trim().split(/\s+/).length
+const readingMinutes = Math.max(1, Math.round(wordCount / 200))
+
+// Share URLs — built against the live domain so they work in dev too.
+const SITE_URL = 'https://zentala.agency'
+const postUrl = `${SITE_URL}/blog/${post.slug}/`
+const shareTitle = post.data.title
+const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`
+const teamsShareUrl = `https://teams.microsoft.com/share?href=${encodeURIComponent(postUrl)}&msgText=${encodeURIComponent(shareTitle)}`
+const emailShareUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareTitle}\n\n${postUrl}`)}`
 
 // Import banner if exists
 let Banner = null
@@ -102,33 +117,158 @@ const contentBoxClass = 'py-responsive-md'
               )
             }
           </div>
-
-          <a
-            href="#post-content"
-            class="blog-hero__scroll-indicator"
-            aria-label="Scroll to article content"
-          >
-            <span class="blog-hero__chevron" aria-hidden="true">
-              <span class="blog-hero__chevron-left"></span>
-              <span class="blog-hero__chevron-right"></span>
-            </span>
-          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTENT BOX (article + banner) -->
+  <!-- CONTENT BOX (article + side rails + banner) -->
   <section class={`section-full ${Banner ? 'has-banner' : ''}`}>
     <div class="container-padded">
-      <div class={contentBoxClass}>
+      <div class={`${contentBoxClass} blog-article-layout`}>
+        <aside class="blog-aside blog-aside--left" aria-label="Article meta">
+          <a href="/blog" class="blog-aside__back">← All posts</a>
+          <p class="blog-aside__meta">{readingMinutes} min read</p>
+
+          <div class="blog-share" aria-label="Share this article">
+            <p class="blog-share__title">Share</p>
+            <div class="blog-share__buttons">
+              <a
+                class="blog-share__btn"
+                href={linkedinShareUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on LinkedIn"
+                title="Share on LinkedIn"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"
+                  ></path>
+                </svg>
+              </a>
+
+              <a
+                class="blog-share__btn"
+                href={teamsShareUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Microsoft Teams"
+                title="Share on Microsoft Teams"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.5 6.5h13a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-13A.5.5 0 0 1 2 17V7a.5.5 0 0 1 .5-.5zM12 9.5H4v1.4h3v5.6h2v-5.6h3z"
+                  ></path>
+                  <circle cx="18.5" cy="6" r="2"></circle>
+                  <path
+                    d="M21 9.5h-4.5V13a3 3 0 0 0 3 3h.25A2.25 2.25 0 0 0 22 13.75v-3.25a1 1 0 0 0-1-1z"
+                  ></path>
+                </svg>
+              </a>
+
+              <a
+                class="blog-share__btn"
+                href={emailShareUrl}
+                aria-label="Share via email"
+                title="Share via email"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                  <path d="M3 7l9 6 9-6"></path>
+                </svg>
+              </a>
+
+              <button
+                type="button"
+                class="blog-share__btn blog-share__btn--copy"
+                data-copy-url={postUrl}
+                aria-label="Copy link"
+                title="Copy link"
+              >
+                <svg
+                  class="blog-share__icon-default"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
+                  <path d="M15 7h2a5 5 0 0 1 0 10h-2"></path>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <svg
+                  class="blog-share__icon-copied"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
         <article
           id="post-content"
-          class="custom-markdown prose-blog prose mx-auto max-w-5xl text-white"
+          class="custom-markdown prose-blog prose w-full max-w-3xl text-white"
           style="scroll-margin-top: calc(var(--header-spacer-height) + 24px);"
         >
           <Content />
         </article>
+
+        <aside class="blog-aside blog-aside--right">
+          {
+            tocHeadings.length > 0 && (
+              <nav class="blog-toc" aria-label="Table of contents">
+                <p class="blog-toc__title">On this page</p>
+                <ol class="blog-toc__list">
+                  {tocHeadings.map((h) => (
+                    <li class={`blog-toc__item blog-toc__item--depth-${h.depth}`}>
+                      <a href={`#${h.slug}`} data-toc-link={h.slug}>
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+        </aside>
       </div>
 
       {
@@ -143,145 +283,250 @@ const contentBoxClass = 'py-responsive-md'
 </Layout>
 
 <script is:inline>
-  // Smooth-scroll to article content for the hero indicator
   document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.querySelector('.blog-hero__scroll-indicator')
-    const target = document.getElementById('post-content')
-    if (!trigger || !target) return
+    // TOC scroll-spy: highlights the heading currently in view
+    const article = document.getElementById('post-content')
+    const tocLinks = document.querySelectorAll('[data-toc-link]')
 
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault()
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (article && tocLinks.length) {
+      const itemBySlug = new Map()
+      tocLinks.forEach((link) => {
+        const slug = link.getAttribute('data-toc-link')
+        const item = link.closest('.blog-toc__item')
+        if (slug && item) itemBySlug.set(slug, item)
+      })
+
+      const headings = article.querySelectorAll('h2[id], h3[id]')
+      if (headings.length) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const item = itemBySlug.get(entry.target.id)
+              if (!item) return
+              if (entry.isIntersecting) {
+                document
+                  .querySelectorAll('.blog-toc__item.is-active')
+                  .forEach((el) => el.classList.remove('is-active'))
+                item.classList.add('is-active')
+              }
+            })
+          },
+          { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+        )
+        headings.forEach((h) => observer.observe(h))
+      }
+    }
+
+    // Copy-link share button: writes URL to clipboard, briefly toggles icon
+    document.querySelectorAll('[data-copy-url]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const url = btn.getAttribute('data-copy-url') || ''
+        try {
+          await navigator.clipboard.writeText(url)
+        } catch {
+          const ta = document.createElement('textarea')
+          ta.value = url
+          ta.style.position = 'fixed'
+          ta.style.opacity = '0'
+          document.body.appendChild(ta)
+          ta.select()
+          try {
+            document.execCommand('copy')
+          } catch {}
+          document.body.removeChild(ta)
+        }
+        btn.classList.add('is-copied')
+        setTimeout(() => btn.classList.remove('is-copied'), 1500)
+      })
     })
   })
 </script>
 
 <style lang="scss">
-  /* Hero section: full viewport height minus header */
-  .section-full:first-of-type {
-    /* Use max-height to prevent section from exceeding viewport */
-    max-height: calc(100dvh - var(--header-spacer-height, 0px));
-    max-height: calc(100svh - var(--header-spacer-height, 0px));
-    max-height: calc(100vh - var(--header-spacer-height, 0px));
-    min-height: calc(100dvh - var(--header-spacer-height, 0px));
-    min-height: calc(100svh - var(--header-spacer-height, 0px));
-    min-height: calc(100vh - var(--header-spacer-height, 0px));
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  /* Smooth in-page scrolling for TOC anchors (page-scoped via :global). */
+  :global(html) {
+    scroll-behavior: smooth;
   }
 
-  .section-full:first-of-type > .container-bordered {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Allow flexbox to shrink */
+  /* Respect users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
   }
 
-  .section-full:first-of-type > .container-bordered > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Allow flexbox to shrink */
-  }
-
-  .blog-hero {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Allow flexbox to shrink */
-  }
-
-  .blog-hero__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .blog-hero__scroll-indicator {
-    display: block;
-    width: min(200px, 50vw);
-    height: 18px;
-    margin: 2.5rem auto 0;
-    padding: 1rem 0 0.25rem;
-    opacity: 0.55;
-    transition:
-      opacity 450ms ease-in-out,
-      transform 450ms ease-in-out;
-    animation: blogHeroBreathe 1800ms ease-in-out infinite;
-  }
-
-  .blog-hero__scroll-indicator:hover {
-    opacity: 1;
-    animation: none;
-    transform: translateY(2px);
-  }
-
-  .blog-hero__chevron {
+  /* 3-column layout: left rail | article (centered, max 48rem) | right TOC.
+     Below xl breakpoint both side rails collapse and article goes full width. */
+  .blog-article-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  @media (min-width: 1280px) {
+    .blog-article-layout {
+      grid-template-columns: 11rem minmax(0, 48rem) 14rem;
+      column-gap: 3rem;
+      justify-content: center;
+      justify-items: stretch;
+    }
+  }
+
+  .blog-aside {
+    display: none;
+  }
+
+  @media (min-width: 1280px) {
+    .blog-aside {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-spacer-height, 0px) + 2.5rem);
+      align-self: start;
+      max-height: calc(100vh - var(--header-spacer-height, 0px) - 4rem);
+      overflow-y: auto;
+    }
+  }
+
+  /* Left rail — back link + reading time */
+  .blog-aside__back {
+    display: block;
+    color: rgb(156 163 175); /* gray-400 */
+    font-size: 0.875rem;
+    font-weight: 300;
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .blog-aside__back:hover {
+    color: white;
+  }
+
+  .blog-aside__meta {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    font-weight: 300;
+    color: rgb(107 114 128); /* gray-500 */
+  }
+
+  /* Share rail */
+  .blog-share {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(31 41 55); /* gray-800 */
+  }
+
+  .blog-share__title {
+    margin: 0 0 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(156 163 175); /* gray-400 */
+  }
+
+  .blog-share__buttons {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-share__btn {
+    display: inline-flex;
     align-items: center;
-    gap: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .blog-hero__chevron-left,
-  .blog-hero__chevron-right {
-    height: 0;
-    /* Use border-top for sharper rendering on thin lines */
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid rgb(31 41 55); /* gray-800 */
+    border-radius: 0.375rem;
+    background: transparent;
+    color: rgb(156 163 175); /* gray-400 */
+    cursor: pointer;
     transition:
-      border-top-color 450ms ease-in-out,
-      transform 450ms ease-in-out;
-    transform: translateZ(0);
-    will-change: transform;
-    /* Improve rendering sharpness */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+      color 200ms ease,
+      border-color 200ms ease,
+      background-color 200ms ease;
   }
 
-  .blog-hero__chevron-left {
-    transform-origin: right center;
-    transform: translateZ(0) rotate(4deg);
+  .blog-share__btn:hover {
+    color: white;
+    border-color: rgb(75 85 99); /* gray-600 */
+    background-color: rgb(17 24 39 / 0.6); /* gray-900/60 */
   }
 
-  .blog-hero__chevron-right {
-    transform-origin: left center;
-    transform: translateZ(0) rotate(-4deg);
+  .blog-share__btn:focus-visible {
+    outline: 2px solid rgb(96 165 250); /* blue-400 */
+    outline-offset: 2px;
   }
 
-  .blog-hero__scroll-indicator:hover .blog-hero__chevron-left,
-  .blog-hero__scroll-indicator:hover .blog-hero__chevron-right {
-    border-top-color: rgba(255, 255, 255, 0.95);
+  /* Copy button — show check icon while in copied state */
+  .blog-share__icon-copied {
+    display: none;
   }
 
-  .blog-hero__scroll-indicator:hover .blog-hero__chevron-left {
-    transform: translateZ(0) rotate(35deg);
+  .blog-share__btn.is-copied {
+    color: rgb(74 222 128); /* green-400 */
+    border-color: rgb(34 197 94 / 0.5); /* green-500/50 */
   }
 
-  .blog-hero__scroll-indicator:hover .blog-hero__chevron-right {
-    transform: translateZ(0) rotate(-35deg);
+  .blog-share__btn.is-copied .blog-share__icon-default {
+    display: none;
   }
 
-  .blog-hero__scroll-indicator:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.7);
-    outline-offset: 6px;
-    border-radius: 9999px;
-    opacity: 1;
-    animation: none;
+  .blog-share__btn.is-copied .blog-share__icon-copied {
+    display: block;
   }
 
-  @keyframes blogHeroBreathe {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(6px);
-    }
+  /* Right rail — TOC */
+  .blog-toc__title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(156 163 175); /* gray-400 */
+    margin: 0 0 0.875rem;
+  }
+
+  .blog-toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid rgb(31 41 55); /* gray-800 */
+  }
+
+  .blog-toc__item {
+    margin: 0;
+  }
+
+  .blog-toc__item a {
+    display: block;
+    margin-left: -1px;
+    padding: 0.375rem 0 0.375rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgb(156 163 175); /* gray-400 */
+    text-decoration: none;
+    border-left: 1px solid transparent;
+    transition:
+      color 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .blog-toc__item a:hover {
+    color: white;
+    border-left-color: rgb(75 85 99); /* gray-600 */
+  }
+
+  .blog-toc__item--depth-3 a {
+    padding-left: 1.625rem;
+    font-size: 0.8125rem;
+    color: rgb(107 114 128); /* gray-500 */
+  }
+
+  .blog-toc__item.is-active > a {
+    color: white;
+    border-left-color: white;
   }
 
   /* Remove padding-bottom from container-padded when banner is present */
@@ -291,18 +536,18 @@ const contentBoxClass = 'py-responsive-md'
 
   /* Banner wrapper: equal top spacing to match article top padding (py-responsive-md) */
   .blog-banner-wrapper {
-    margin-top: 4rem; /* 64px desktop - matches py-responsive-md padding-top */
+    margin-top: 4rem;
     @media (max-width: 1440px) {
-      margin-top: 3rem; /* 48px large */
+      margin-top: 3rem;
     }
     @media (max-width: 1000px) {
-      margin-top: 2rem; /* 32px medium */
+      margin-top: 2rem;
     }
     @media (max-width: 770px) {
-      margin-top: 1.5rem; /* 24px tablet */
+      margin-top: 1.5rem;
     }
     @media (max-width: 480px) {
-      margin-top: 1rem; /* 16px mobile */
+      margin-top: 1rem;
     }
   }
 </style>

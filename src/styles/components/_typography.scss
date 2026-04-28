@@ -98,34 +98,42 @@
     --tw-prose-th-borders: theme('colors.gray.800');
     --tw-prose-td-borders: theme('colors.gray.800');
 
-    /* Headings: bigger top spacing than bottom for better scanning rhythm */
+    /* Headings: clear hierarchy, light weights, more top than bottom margin.
+       scroll-margin-top keeps in-page anchors below the sticky header. */
+    h1,
+    h2,
+    h3,
+    h4 {
+      scroll-margin-top: calc(var(--header-spacer-height, 0px) + 1.5rem);
+    }
+
     h1 {
-      @apply mt-16 mb-8 text-5xl font-light leading-tight md:text-6xl;
+      @apply mt-14 mb-6 text-4xl font-light leading-tight md:text-5xl;
     }
 
     h2 {
-      @apply mt-20 mb-8 text-5xl font-light leading-tight md:text-6xl;
+      @apply mt-14 mb-5 text-3xl font-light leading-tight md:text-4xl;
     }
 
     h3 {
-      @apply mt-14 mb-7 text-4xl font-light leading-snug md:text-5xl;
+      @apply mt-12 mb-4 text-2xl font-light leading-snug md:text-3xl;
     }
 
     h4 {
-      @apply mt-12 mb-5 text-3xl font-light leading-snug md:text-4xl;
+      @apply mt-10 mb-3 text-xl font-light leading-snug md:text-2xl;
     }
 
     h5 {
-      @apply mt-8 mb-3 text-lg font-medium leading-snug;
+      @apply mt-8 mb-2 text-lg font-medium leading-snug;
     }
 
     h6 {
-      @apply mt-8 mb-3 text-base font-medium uppercase tracking-wide text-gray-300;
+      @apply mt-8 mb-2 text-sm font-medium uppercase tracking-wide text-gray-300;
     }
 
-    /* Paragraphs: comfortable reading size + line-height */
+    /* Paragraphs: comfortable reading size + line-height (~18-20px body) */
     p {
-      @apply mb-8 text-xl leading-9 md:text-2xl md:leading-10;
+      @apply mb-6 text-lg leading-relaxed md:text-xl;
     }
 
     /* Links: keep strong affordance on dark UI */
@@ -136,28 +144,28 @@
     /* Lists: consistent indentation + spacing, including nested lists */
     ul,
     ol {
-      @apply my-8 pl-7 md:pl-9;
+      @apply my-6 pl-6 md:pl-8;
     }
 
     li {
-      @apply my-3 text-xl leading-9 md:text-2xl md:leading-10;
+      @apply my-2 text-lg leading-relaxed md:text-xl;
     }
 
     li > p {
-      @apply my-2;
+      @apply my-1;
     }
 
     ul ul,
     ul ol,
     ol ul,
     ol ol {
-      @apply my-3;
+      @apply my-2;
     }
 
     /* Quotes: give them a container feel (not just italic text)
        NOTE: exclude Quote component (.quote-container), which has its own styling. */
     blockquote:not(.quote-container) {
-      @apply my-12 border-l-2 border-gray-700 bg-gray-900/20 py-6 pl-7 pr-6 text-2xl leading-10 text-gray-200 not-italic;
+      @apply my-10 border-l-2 border-gray-700 bg-gray-900/20 py-5 pl-6 pr-5 text-xl leading-relaxed text-gray-200 not-italic;
       border-top-right-radius: 0.5rem;
       border-bottom-right-radius: 0.5rem;
     }
@@ -172,7 +180,7 @@
     }
 
     pre {
-      @apply my-10 overflow-x-auto rounded-lg border border-gray-800 bg-gray-900 p-6;
+      @apply my-8 overflow-x-auto rounded-lg border border-gray-800 bg-gray-900 p-5;
     }
 
     pre code {
@@ -181,12 +189,12 @@
 
     /* Horizontal rule */
     hr {
-      @apply my-12 border-gray-800;
+      @apply my-10 border-gray-800;
     }
 
     /* Tables (when they appear in MDX/MD) */
     table {
-      @apply my-10 w-full;
+      @apply my-8 w-full;
     }
 
     thead th {
@@ -199,7 +207,7 @@
 
     /* Images */
     img {
-      @apply my-10 rounded-lg border border-gray-800;
+      @apply my-8 rounded-lg border border-gray-800;
     }
   }
 }
