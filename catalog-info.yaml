@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ''
+  description: 'TODO: Add description'
+  annotations:
+    github.com/project-slug: zentala/zentala.agency
+    backstage.io/source-location: url:https://github.com/zentala/zentala.agency/
+spec:
+  type: service  # TODO: pick one — service|library|website
+  lifecycle: experimental
+  owner: zentala
