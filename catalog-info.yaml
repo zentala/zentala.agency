@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ''
+  description: A digital showcase for innovation consulting and prototyping services.
+  annotations:
+    github.com/project-slug: zentala/zentala.agency
+    backstage.io/source-location: url:https://github.com/zentala/zentala.agency/
+  tags:
+    - agency
+    - design
+    - innovation
+    - prototyping
+    - services
+spec:
+  type: website
+  lifecycle: production
+  owner: zentala
