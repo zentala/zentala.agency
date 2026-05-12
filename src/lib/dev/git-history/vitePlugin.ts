@@ -55,8 +55,14 @@ async function handleHistory(
   const slug = validateSlug(slugRaw)
   if (!slug.ok) return json(res, 400, { error: slug.error })
   try {
-    const { entries, warnings } = await getHistory(collection.value, slug.value)
-    json(res, 200, { collection: collection.value, slug: slug.value, entries, warnings })
+    const { entries, warnings, repoUrl } = await getHistory(collection.value, slug.value)
+    json(res, 200, {
+      collection: collection.value,
+      slug: slug.value,
+      entries,
+      warnings,
+      repoUrl,
+    })
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err)
     if (message.includes('ENOENT')) {

@@ -1,7 +1,6 @@
 export { default as BlogVersionPanel } from './BlogVersionPanel'
-export { ModeSwitcher } from './ModeSwitcher'
 export { VersionTimeline } from './VersionTimeline'
 export { PanelChrome } from './PanelChrome'
 export { SnapshotView } from './SnapshotView'
-export { DiffView } from './DiffView'
+export { DiffDialog } from './DiffDialog'
 export type { PanelMode, HistoryEntry, VersionPayload } from './types'

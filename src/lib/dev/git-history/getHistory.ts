@@ -8,7 +8,18 @@ import type { ContentCollection } from './validators'
 const MAX_COMMITS = 500
 const cache = new Map<string, { headSha: string; entries: HistoryEntry[]; warnings: string[] }>()
 
-export type HistoryResult = { entries: HistoryEntry[]; warnings: string[] }
+export type HistoryResult = { entries: HistoryEntry[]; warnings: string[]; repoUrl: string | null }
+
+/** Converts a git remote URL into a canonical https://github.com/owner/repo form. */
+export function normalizeRepoUrl(remote: string | undefined | null): string | null {
+  if (!remote) return null
+  const trimmed = remote.trim()
+  const ssh = trimmed.match(/^git@([^:]+):(.+?)(?:\.git)?$/)
+  if (ssh) return `https://${ssh[1]}/${ssh[2]}`
+  const https = trimmed.match(/^https?:\/\/(.+?)(?:\.git)?$/)
+  if (https) return `https://${https[1]}`
+  return null
+}
 
 /**
  * Returns the full commit history for a content-collection entry, newest-first,
@@ -24,14 +35,21 @@ export async function getHistory(
   const headSha = (await git.revparse(['HEAD'])).trim()
   const cacheKey = `${collection}:${slug}`
   const cached = cache.get(cacheKey)
+  let repoUrl: string | null = null
+  try {
+    const remote = await git.raw(['remote', 'get-url', 'origin'])
+    repoUrl = normalizeRepoUrl(remote)
+  } catch {
+    repoUrl = null
+  }
   if (cached && cached.headSha === headSha) {
-    return { entries: cached.entries, warnings: cached.warnings }
+    return { entries: cached.entries, warnings: cached.warnings, repoUrl }
   }
 
   const warnings: string[] = []
   const currentPath = await resolveSlug(collection, slug, repoRoot)
   if (!currentPath) {
-    return { entries: [], warnings: ['file not found in HEAD'] }
+    return { entries: [], warnings: ['file not found in HEAD'], repoUrl }
   }
 
   const stdout = await git.raw([
@@ -51,7 +69,7 @@ export async function getHistory(
 
   const entries = await enrichWithPercent(git, truncated)
   cache.set(cacheKey, { headSha, entries, warnings })
-  return { entries, warnings }
+  return { entries, warnings, repoUrl }
 }
 
 async function enrichWithPercent(

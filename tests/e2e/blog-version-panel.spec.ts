@@ -20,6 +20,8 @@ test.describe('Blog Version Panel', () => {
 
   test('Ctrl+H toggles panel collapsed state', async ({ page }) => {
     await page.goto(POST_URL)
+    await page.evaluate(() => window.localStorage.removeItem('blog-version-panel:collapsed'))
+    await page.reload()
     const expanded = page.locator('[aria-label="Blog version history"]')
     await expect(expanded).toBeVisible({ timeout: 15_000 })
     await page.keyboard.press('Control+h')
@@ -29,32 +31,49 @@ test.describe('Blog Version Panel', () => {
     await expect(expanded).toBeVisible()
   })
 
-  test('clicking a SHA enters snapshot mode and writes URL hash', async ({ page }) => {
+  test('clicking a non-HEAD SHA enters snapshot mode and writes URL hash', async ({ page }) => {
     await page.goto(POST_URL)
-    const firstRow = page.locator('[role="listitem"][data-sha]').first()
-    await expect(firstRow).toBeVisible({ timeout: 20_000 })
-    const sha = await firstRow.getAttribute('data-sha')
+    const rows = page.locator('[role="listitem"][data-sha]')
+    await expect(rows.first()).toBeVisible({ timeout: 20_000 })
+    // Skip first row (HEAD = live restore); click second
+    const secondRow = rows.nth(1)
+    const sha = await secondRow.getAttribute('data-sha')
     expect(sha).toBeTruthy()
-    await firstRow.click()
+    await secondRow.click()
     const article = page.locator('#post-content')
     await expect(article).toHaveAttribute('data-snapshot-sha', sha!, { timeout: 15_000 })
     expect(page.url()).toContain(`#v=${sha}`)
   })
 
-  test('snapshot mode replaces article body, restores when switching to live', async ({ page }) => {
+  test('snapshot mode replaces article body, restores when clicking HEAD row', async ({ page }) => {
     await page.goto(POST_URL)
-    const firstRow = page.locator('[role="listitem"][data-sha]').first()
-    await expect(firstRow).toBeVisible({ timeout: 20_000 })
+    const rows = page.locator('[role="listitem"][data-sha]')
+    await expect(rows.first()).toBeVisible({ timeout: 20_000 })
     const originalText = await page.locator('#post-content').innerText()
-    await firstRow.click()
+    // Click a non-HEAD row (second one) to enter snapshot mode
+    await rows.nth(1).click()
     await expect(page.locator('#post-content')).toHaveAttribute('data-snapshot-sha', /.+/, {
       timeout: 15_000,
     })
-    const livePill = page.locator('[role="tab"]', { hasText: 'Live' })
-    await livePill.click()
+    // Click HEAD row to restore
+    await rows.first().click()
     await expect(page.locator('#post-content')).not.toHaveAttribute('data-snapshot-sha', /.+/)
     const restored = await page.locator('#post-content').innerText()
     expect(restored).toBe(originalText)
+  })
+
+  test('diff dialog opens with two-pick selection', async ({ page }) => {
+    await page.goto(POST_URL)
+    const rows = page.locator('[role="listitem"][data-sha]')
+    await expect(rows.first()).toBeVisible({ timeout: 20_000 })
+    await page.getByRole('button', { name: /Compare/ }).click()
+    await rows.nth(0).click()
+    await rows.nth(1).click()
+    const dialog = page.locator('dialog[open]')
+    await expect(dialog).toBeVisible({ timeout: 15_000 })
+    await expect(dialog.getByText('Open on GitHub')).toBeVisible()
+    await dialog.getByRole('button', { name: /Close/ }).click()
+    await expect(page.locator('dialog[open]')).toHaveCount(0)
   })
 
   test('history endpoint returns valid JSON in dev', async ({ request }) => {
