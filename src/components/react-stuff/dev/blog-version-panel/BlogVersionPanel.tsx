@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { PanelChrome } from './PanelChrome'
 import { ModeSwitcher } from './ModeSwitcher'
 import { VersionTimeline } from './VersionTimeline'
+import { SnapshotView } from './SnapshotView'
 import type { HistoryEntry, PanelMode } from './types'
 import styles from './BlogVersionPanel.module.scss'
 
@@ -39,9 +40,14 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
     return () => controller.abort()
   }, [collection, slug, retryToken])
 
+  function handleSelect(sha: string) {
+    setPrimarySha(sha)
+    if (mode === 'live') setMode('snapshot')
+  }
+
   return (
     <PanelChrome>
-      <ModeSwitcher mode={mode} onChange={setMode} enabledModes={['live']} />
+      <ModeSwitcher mode={mode} onChange={setMode} enabledModes={['live', 'snapshot']} />
       {state.kind === 'loading' && (
         <div className={styles.timeline} aria-busy="true" data-state="loading">
           {[0, 1, 2, 3].map((i) => (
@@ -62,11 +68,16 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
         </div>
       )}
       {state.kind === 'ready' && (
-        <VersionTimeline
-          entries={state.entries}
-          selectedSha={primarySha}
-          onSelect={setPrimarySha}
-        />
+        <>
+          <VersionTimeline
+            entries={state.entries}
+            selectedSha={primarySha}
+            onSelect={handleSelect}
+          />
+          {mode === 'snapshot' && primarySha && (
+            <SnapshotView collection={collection} slug={slug} sha={primarySha} />
+          )}
+        </>
       )}
     </PanelChrome>
   )
