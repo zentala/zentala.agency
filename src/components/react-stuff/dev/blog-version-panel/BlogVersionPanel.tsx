@@ -26,6 +26,44 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
   const [secondarySha, setSecondarySha] = useState<string | null>(null)
   const [retryToken, setRetryToken] = useState(0)
 
+  // Ctrl+H / Cmd+H toggles collapsed state via event bus.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'h') {
+        e.preventDefault()
+        window.dispatchEvent(new CustomEvent('blog-version-panel:toggle'))
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  // Restore mode + SHAs from URL hash on mount.
+  useEffect(() => {
+    const hash = window.location.hash
+    const vMatch = hash.match(/^#v=([a-f0-9]{4,40})$/)
+    const dMatch = hash.match(/^#diff=([a-f0-9]{4,40})\.\.([a-f0-9]{4,40})$/)
+    if (vMatch) {
+      setMode('snapshot')
+      setPrimarySha(vMatch[1])
+    } else if (dMatch) {
+      setMode('diff')
+      setPrimarySha(dMatch[1])
+      setSecondarySha(dMatch[2])
+    }
+  }, [])
+
+  // Sync mode + SHAs to URL hash.
+  useEffect(() => {
+    if (mode === 'snapshot' && primarySha) {
+      window.history.replaceState(null, '', `#v=${primarySha}`)
+    } else if (mode === 'diff' && primarySha && secondarySha) {
+      window.history.replaceState(null, '', `#diff=${primarySha}..${secondarySha}`)
+    } else if (mode === 'live') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
+  }, [mode, primarySha, secondarySha])
+
   useEffect(() => {
     const controller = new AbortController()
     setState({ kind: 'loading' })

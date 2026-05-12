@@ -18,6 +18,19 @@ export function PanelChrome({ children }: Props) {
     } catch {
       // ignore — localStorage may be blocked
     }
+    function onToggle() {
+      setCollapsed((prev) => {
+        const next = !prev
+        try {
+          window.localStorage.setItem(STORAGE_KEY, next ? '1' : '0')
+        } catch {
+          // ignore
+        }
+        return next
+      })
+    }
+    window.addEventListener('blog-version-panel:toggle', onToggle)
+    return () => window.removeEventListener('blog-version-panel:toggle', onToggle)
   }, [])
 
   function toggle() {

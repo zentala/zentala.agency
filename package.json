@@ -24,7 +24,8 @@
     "test:links:banners": "playwright test tests/e2e/banner-links.spec.ts",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "prepush": "npm run build && npm run test:links"
+    "audit:prod": "node scripts/audit-prod-bundle.mjs",
+    "prepush": "npm run build && npm run audit:prod && npm run test:links"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",

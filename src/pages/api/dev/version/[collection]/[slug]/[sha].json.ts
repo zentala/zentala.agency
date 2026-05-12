@@ -6,7 +6,13 @@ import {
   validateSlug,
 } from '@/lib/dev/git-history/validators'
 
-export const prerender = false
+/**
+ * Empty static paths → endpoint is NOT generated in prod build (output: 'static').
+ * In `astro dev`, the dev server still routes requests to this file.
+ */
+export function getStaticPaths() {
+  return []
+}
 
 /**
  * Dev-only endpoint: returns content of a content-collection entry at a given SHA.
