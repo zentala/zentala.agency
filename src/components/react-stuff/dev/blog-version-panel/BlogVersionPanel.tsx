@@ -169,6 +169,13 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
                   : 'Pick the first version.'}
             </div>
           )}
+          <div
+            className={styles.legend}
+            title="Major = ≥30% of file changed OR ≥50 lines added+removed"
+          >
+            <span className={`${styles.legendDot} ${styles.legendDotMajor}`}>major</span>
+            <span className={styles.legendDot}>minor</span>
+          </div>
           <VersionTimeline
             entries={state.entries}
             selectedSha={primarySha}

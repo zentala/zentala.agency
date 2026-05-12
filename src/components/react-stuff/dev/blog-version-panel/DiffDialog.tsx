@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPatch } from 'diff'
 import { html as diffHtml } from 'diff2html'
+import { ColorSchemeType } from 'diff2html/lib/types'
 import 'diff2html/bundles/css/diff2html.min.css'
 import type { HistoryEntry, VersionPayload } from './types'
 import { sanitizeSnapshot } from './sanitize'
@@ -98,6 +99,7 @@ export function DiffDialog({ open, collection, slug, a, b, repoUrl, onClose, onS
       drawFileList: false,
       outputFormat: 'side-by-side',
       matching: 'lines',
+      colorScheme: ColorSchemeType.DARK,
     })
     el.replaceChildren(...parseToNodes(sanitizeSnapshot(rawHtml)))
   }, [state, slug, a, b])
