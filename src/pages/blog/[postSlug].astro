@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
+import BlogVersionPanelMount from '@/components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
@@ -280,6 +281,7 @@ const contentBoxClass = 'py-responsive-md'
       }
     </div>
   </section>
+  <BlogVersionPanelMount collection="blog" slug={post.slug} />
 </Layout>
 
 <script is:inline>
