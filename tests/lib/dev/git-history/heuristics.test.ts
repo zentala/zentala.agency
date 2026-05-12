@@ -11,7 +11,8 @@ describe('clampPercent', () => {
 describe('computeIsMajor', () => {
   it('29.9% is not major', () => expect(computeIsMajor(29.9, 5, 5)).toBe(false))
   it('30% is major', () => expect(computeIsMajor(30, 5, 5)).toBe(true))
-  it('49 absolute lines is not major (below %)', () =>
-    expect(computeIsMajor(5, 25, 24)).toBe(false))
-  it('50 absolute lines is major', () => expect(computeIsMajor(5, 25, 25)).toBe(true))
+  it('large absolute change at low % is NOT major (blog-tuned)', () =>
+    expect(computeIsMajor(10, 100, 100)).toBe(false))
+  it('exactly 30% is major regardless of line count', () =>
+    expect(computeIsMajor(30, 1, 0)).toBe(true))
 })

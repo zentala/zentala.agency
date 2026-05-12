@@ -1,10 +1,10 @@
 /**
  * Heuristics for classifying commits as "major" changes.
- * Major = ≥30% of the file changed OR ≥50 lines added+removed.
+ * Blog-tuned: percent-only. Absolute-line threshold was dropped because
+ * 50-line additions to a 500-line post (10%) shouldn't flag as major.
  */
 
 export const MAJOR_PERCENT_THRESHOLD = 30
-export const MAJOR_ABSOLUTE_THRESHOLD = 50
 
 export function clampPercent(value: number): number {
   if (!Number.isFinite(value) || value < 0) return 0
@@ -14,10 +14,8 @@ export function clampPercent(value: number): number {
 
 export function computeIsMajor(
   percentChanged: number,
-  linesAdded: number,
-  linesRemoved: number,
+  _linesAdded: number,
+  _linesRemoved: number,
 ): boolean {
-  if (percentChanged >= MAJOR_PERCENT_THRESHOLD) return true
-  if (linesAdded + linesRemoved >= MAJOR_ABSOLUTE_THRESHOLD) return true
-  return false
+  return percentChanged >= MAJOR_PERCENT_THRESHOLD
 }

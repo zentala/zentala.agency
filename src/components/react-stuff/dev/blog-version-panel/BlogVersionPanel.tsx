@@ -181,6 +181,7 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
             selectedSha={primarySha}
             diffPickSha={diffPickSha}
             diffMode={diffMode}
+            repoUrl={state.repoUrl}
             onSelect={handleSelect}
             onDiffPick={handleDiffPick}
           />
