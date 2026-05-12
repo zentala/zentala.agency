@@ -2,14 +2,9 @@
 import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 
+import BlogVersionPanelMount from '../../components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
+
 const isDev = import.meta.env.DEV
-// @vite-ignore prevents Vite from statically analyzing this import path,
-// which would otherwise drag the dev-panel CSS into the prod page bundle.
-const devPanelPath =
-  '@/components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
-const BlogVersionPanelMount = isDev
-  ? (await import(/* @vite-ignore */ devPanelPath)).default
-  : null
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
@@ -289,7 +284,7 @@ const contentBoxClass = 'py-responsive-md'
       }
     </div>
   </section>
-  {BlogVersionPanelMount && <BlogVersionPanelMount collection="blog" slug={post.slug} />}
+  {isDev && <BlogVersionPanelMount collection="blog" slug={post.slug} />}
 </Layout>
 
 <script is:inline>

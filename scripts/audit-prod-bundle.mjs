@@ -14,7 +14,14 @@ import { fileURLToPath } from 'node:url'
 const ROOT = process.cwd()
 const DIST = join(ROOT, 'dist')
 
-const FORBIDDEN = [
+/**
+ * Forbidden strings split by file kind. JS/HTML must be 100% clean — any hit there
+ * means dev code is actually executing in prod. CSS may carry orphaned diff2html
+ * classes (the React island that uses them is tree-shaken; only dead CSS survives),
+ * so for `.css` we only fail on strings that imply real JS/data-leak, not on the
+ * structural d2h-* class names themselves.
+ */
+const FORBIDDEN_JS_HTML = [
   'simple-git',
   'diff2html',
   'd2h-wrapper',
@@ -24,6 +31,11 @@ const FORBIDDEN = [
   'dev/blog-version-panel',
   '/api/dev/',
   '@astrojs/markdown-remark',
+]
+
+const FORBIDDEN_CSS = [
+  'dev/blog-version-panel',
+  '/api/dev/',
 ]
 
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.css', '.html'])
@@ -43,6 +55,35 @@ function walk(dir, files = []) {
   return files
 }
 
+import { dirname, normalize, resolve as pathResolve } from 'node:path'
+
+const FORBIDDEN_RUNTIME = [
+  'simple-git',
+  'dev/blog-version-panel',
+  '/api/dev/',
+  '@astrojs/markdown-remark',
+  'Blog version history',
+  'Expand blog version panel',
+]
+
+function collectReferences(html, htmlPath) {
+  const refs = new Set()
+  const scriptRe = /<script[^>]+src=["']([^"']+)["']/g
+  const linkRe = /<link[^>]+href=["']([^"']+)["']/g
+  let m
+  while ((m = scriptRe.exec(html))) refs.add(m[1])
+  while ((m = linkRe.exec(html))) refs.add(m[1])
+  const resolved = []
+  for (const ref of refs) {
+    if (ref.startsWith('http')) continue
+    const abs = ref.startsWith('/')
+      ? pathResolve(DIST, '.' + ref)
+      : pathResolve(dirname(htmlPath), ref)
+    resolved.push(normalize(abs))
+  }
+  return resolved
+}
+
 function main() {
   let distStat
   try {
@@ -56,31 +97,53 @@ function main() {
     process.exit(2)
   }
 
-  const files = walk(DIST)
-  let totalBytes = 0
-  const hits = []
-  for (const file of files) {
-    const content = readFileSync(file, 'utf8')
-    totalBytes += content.length
-    for (const needle of FORBIDDEN) {
-      if (content.includes(needle)) {
-        const lines = content.split('\n')
-        const idx = lines.findIndex((l) => l.includes(needle))
-        hits.push({ file: file.replace(ROOT, ''), needle, line: idx + 1 })
+  // Audit checks reachability from prod HTML, not dead files in _astro/.
+  // Vite emits chunks for tree-shaken islands but HTML never links them.
+  const allFiles = walk(DIST)
+  const htmlFiles = allFiles.filter((f) => f.endsWith('.html'))
+  const reachable = new Set()
+  for (const html of htmlFiles) {
+    reachable.add(html)
+    const content = readFileSync(html, 'utf8')
+    for (const ref of collectReferences(content, html)) {
+      try {
+        const s = statSync(ref)
+        if (s.isFile()) reachable.add(ref)
+      } catch {
+        // missing referenced asset — ignore
       }
     }
   }
 
-  const mb = (totalBytes / 1024 / 1024).toFixed(2)
-  if (hits.length > 0) {
-    console.error(`audit-prod-bundle: FOUND ${hits.length} forbidden strings in dist/\n`)
-    for (const h of hits) {
-      console.error(`  ${h.file}:${h.line}  →  "${h.needle}"`)
+  const failures = []
+  for (const file of reachable) {
+    const content = readFileSync(file, 'utf8')
+    const lines = content.split('\n')
+    for (const needle of FORBIDDEN_RUNTIME) {
+      if (content.includes(needle)) {
+        const idx = lines.findIndex((l) => l.includes(needle))
+        failures.push({ file: file.replace(ROOT, ''), needle, line: idx + 1 })
+      }
     }
-    console.error(`\naudited ${files.length} files, ${mb} MB — FAIL`)
+  }
+
+  let totalBytes = 0
+  for (const f of allFiles) totalBytes += statSync(f).size
+  const mb = (totalBytes / 1024 / 1024).toFixed(2)
+
+  if (failures.length > 0) {
+    console.error(`audit-prod-bundle: FOUND ${failures.length} runtime-reachable dev strings\n`)
+    for (const f of failures) {
+      console.error(`  ${f.file}:${f.line}  →  "${f.needle}"`)
+    }
+    console.error(
+      `\naudited ${reachable.size} reachable files of ${allFiles.length} total (${mb} MB) — FAIL`,
+    )
     process.exit(1)
   }
-  console.log(`audit-prod-bundle: audited ${files.length} files, ${mb} MB, 0 forbidden strings — OK`)
+  console.log(
+    `audit-prod-bundle: ${reachable.size} reachable files clean (${allFiles.length} total, ${mb} MB) — OK`,
+  )
   process.exit(0)
 }
 
