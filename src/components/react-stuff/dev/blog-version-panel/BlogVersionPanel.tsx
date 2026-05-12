@@ -3,6 +3,7 @@ import { PanelChrome } from './PanelChrome'
 import { ModeSwitcher } from './ModeSwitcher'
 import { VersionTimeline } from './VersionTimeline'
 import { SnapshotView } from './SnapshotView'
+import { DiffView } from './DiffView'
 import type { HistoryEntry, PanelMode } from './types'
 import styles from './BlogVersionPanel.module.scss'
 
@@ -21,6 +22,7 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
   const [state, setState] = useState<FetchState>({ kind: 'loading' })
   const [mode, setMode] = useState<PanelMode>('live')
   const [primarySha, setPrimarySha] = useState<string | null>(null)
+  const [secondarySha, setSecondarySha] = useState<string | null>(null)
   const [retryToken, setRetryToken] = useState(0)
 
   useEffect(() => {
@@ -41,13 +43,35 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
   }, [collection, slug, retryToken])
 
   function handleSelect(sha: string) {
+    if (mode === 'diff') {
+      if (primarySha === null) {
+        setPrimarySha(sha)
+      } else if (sha === primarySha) {
+        setPrimarySha(null)
+      } else if (sha === secondarySha) {
+        setSecondarySha(null)
+      } else if (secondarySha === null) {
+        setSecondarySha(sha)
+      } else {
+        setPrimarySha(sha)
+        setSecondarySha(null)
+      }
+      return
+    }
     setPrimarySha(sha)
     if (mode === 'live') setMode('snapshot')
   }
 
+  function handleSwap() {
+    setPrimarySha(secondarySha)
+    setSecondarySha(primarySha)
+  }
+
+  const selectionForTimeline = mode === 'diff' ? primarySha : primarySha
+
   return (
     <PanelChrome>
-      <ModeSwitcher mode={mode} onChange={setMode} enabledModes={['live', 'snapshot']} />
+      <ModeSwitcher mode={mode} onChange={setMode} enabledModes={['live', 'snapshot', 'diff']} />
       {state.kind === 'loading' && (
         <div className={styles.timeline} aria-busy="true" data-state="loading">
           {[0, 1, 2, 3].map((i) => (
@@ -71,11 +95,21 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
         <>
           <VersionTimeline
             entries={state.entries}
-            selectedSha={primarySha}
+            selectedSha={selectionForTimeline}
             onSelect={handleSelect}
           />
           {mode === 'snapshot' && primarySha && (
             <SnapshotView collection={collection} slug={slug} sha={primarySha} />
+          )}
+          {mode === 'diff' && (
+            <DiffView
+              collection={collection}
+              slug={slug}
+              primarySha={primarySha}
+              secondarySha={secondarySha}
+              entries={state.entries}
+              onSwap={handleSwap}
+            />
           )}
         </>
       )}
