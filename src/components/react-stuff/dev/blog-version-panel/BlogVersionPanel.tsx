@@ -4,6 +4,7 @@ import { ModeSwitcher } from './ModeSwitcher'
 import { VersionTimeline } from './VersionTimeline'
 import { SnapshotView } from './SnapshotView'
 import { DiffView } from './DiffView'
+import { summarizeHistory } from './summarizeHistory'
 import type { HistoryEntry, PanelMode } from './types'
 import styles from './BlogVersionPanel.module.scss'
 
@@ -93,6 +94,9 @@ export default function BlogVersionPanel({ collection, slug }: Props) {
       )}
       {state.kind === 'ready' && (
         <>
+          <div className={styles.summary} data-testid="history-summary">
+            {summarizeHistory(state.entries)}
+          </div>
           <VersionTimeline
             entries={state.entries}
             selectedSha={selectionForTimeline}

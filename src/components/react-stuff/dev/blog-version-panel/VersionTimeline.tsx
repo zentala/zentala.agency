@@ -17,20 +17,33 @@ export function VersionTimeline({ entries, selectedSha, onSelect }: Props) {
     <div className={styles.timeline} role="list">
       {entries.map((e) => {
         const isSelected = e.sha === selectedSha
+        const indicatorTitle = e.isMajor
+          ? `Major change — ${e.percentChanged.toFixed(0)}% of lines changed (+${e.linesAdded} / -${e.linesRemoved})`
+          : `Minor change — ${e.percentChanged.toFixed(0)}% of lines changed (+${e.linesAdded} / -${e.linesRemoved})`
         return (
           <div
             key={e.sha}
             role="listitem"
+            tabIndex={0}
             data-sha={e.sha}
             data-selected={isSelected || undefined}
             data-major={e.isMajor || undefined}
-            className={`${styles.row} ${isSelected ? styles.rowSelected : ''}`}
+            className={`${styles.row} ${isSelected ? styles.rowSelected : ''} ${e.isMajor ? styles.rowMajor : ''}`}
             onClick={() => onSelect(e.sha)}
+            onKeyDown={(ev) => {
+              if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault()
+                onSelect(e.sha)
+              }
+            }}
             title={e.message}
           >
             <span
               className={`${styles.dot} ${e.isMajor ? styles.dotMajor : ''}`}
-              aria-label={e.isMajor ? 'major change' : 'minor change'}
+              role="img"
+              aria-label={indicatorTitle}
+              title={indicatorTitle}
+              tabIndex={0}
             />
             <span className={styles.rowMessage}>{e.message}</span>
             <span className={styles.rowMeta}>

@@ -1,5 +1,6 @@
 :root {
   --blog-version-panel-z: 9000;
+  --vh-major-accent: #f59e0b;
 }
 
 .panel {
@@ -131,8 +132,25 @@
 }
 
 .dotMajor {
-  background: #f59e0b;
-  border-color: #f59e0b;
+  background: var(--vh-major-accent);
+  border-color: var(--vh-major-accent);
+}
+
+.rowMajor .rowMessage {
+  font-weight: 600;
+}
+
+.rowMajor:hover {
+  border-left: 2px solid var(--vh-major-accent);
+  padding-left: 10px;
+}
+
+.summary {
+  padding: 6px 12px;
+  font-size: 11px;
+  border-bottom: 1px solid #1f2937;
+  opacity: 0.8;
+  background: #0a0a0a;
 }
 
 .rowMessage {
