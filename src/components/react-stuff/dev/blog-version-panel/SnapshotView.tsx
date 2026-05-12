@@ -18,19 +18,56 @@ type FetchState =
 
 const DEFAULT_TARGET = '#post-content'
 
+type Swap = { el: HTMLElement; original: string }
+
 function parseToNodes(sanitizedHtml: string): Node[] {
   const doc = new DOMParser().parseFromString(sanitizedHtml, 'text/html')
   return Array.from(doc.body.childNodes)
 }
 
+function captureBody(el: HTMLElement): { children: Node[]; sha: string | undefined } {
+  return {
+    children: Array.from(el.childNodes).map((n) => n.cloneNode(true)),
+    sha: el.dataset.snapshotSha,
+  }
+}
+
+function setText(selector: string, value: unknown, swaps: Swap[]): void {
+  if (typeof value !== 'string' || value.length === 0) return
+  const el = document.querySelector<HTMLElement>(selector)
+  if (!el) return
+  swaps.push({ el, original: el.textContent ?? '' })
+  el.textContent = value
+}
+
+function setTextFormatted(
+  selector: string,
+  raw: unknown,
+  format: (s: string) => string,
+  swaps: Swap[],
+): void {
+  if (typeof raw !== 'string' || raw.length === 0) return
+  const el = document.querySelector<HTMLElement>(selector)
+  if (!el) return
+  swaps.push({ el, original: el.textContent ?? '' })
+  el.textContent = format(raw)
+}
+
+function formatBlogDate(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
 /**
- * Swaps the live blog body with historical HTML at the given SHA.
- * On unmount or sha change, restores the original DOM captured on entry.
- * Uses DOMPurify + DOMParser.replaceChildren (no innerHTML assignment).
+ * Swaps the live blog body + header (title, excerpt, date) with the historical
+ * version. Restores everything on unmount or sha change. DOMPurify on body HTML;
+ * frontmatter strings injected via textContent (no HTML injection).
  */
 export function SnapshotView({ collection, slug, sha, targetSelector = DEFAULT_TARGET }: Props) {
   const [state, setState] = useState<FetchState>({ kind: 'idle' })
-  const originalChildrenRef = useRef<Node[] | null>(null)
+  const originalBodyRef = useRef<{ children: Node[]; sha: string | undefined } | null>(null)
+  const headerSwapsRef = useRef<Swap[]>([])
   const targetRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -55,21 +92,32 @@ export function SnapshotView({ collection, slug, sha, targetSelector = DEFAULT_T
     if (state.kind !== 'ready') return
     const el = document.querySelector<HTMLElement>(targetSelector)
     if (!el) return
-    if (originalChildrenRef.current === null) {
-      originalChildrenRef.current = Array.from(el.childNodes).map((n) => n.cloneNode(true))
-    }
+    if (originalBodyRef.current === null) originalBodyRef.current = captureBody(el)
     targetRef.current = el
     el.dataset.snapshotSha = state.payload.sha
     const sanitized = sanitizeSnapshot(state.payload.html)
     el.replaceChildren(...parseToNodes(sanitized))
+
+    // Header swap — frontmatter fields. Strings only, via textContent.
+    const swaps: Swap[] = []
+    const fm = state.payload.frontmatter
+    setText('[data-blog-title]', fm.title, swaps)
+    setText('[data-blog-excerpt]', fm.excerpt, swaps)
+    setTextFormatted('[data-blog-date]', fm.date, formatBlogDate, swaps)
+    headerSwapsRef.current = swaps
+
     return () => {
-      const original = originalChildrenRef.current
+      const original = originalBodyRef.current
       const target = targetRef.current
       if (target && original !== null) {
-        target.replaceChildren(...original)
+        target.replaceChildren(...original.children)
         delete target.dataset.snapshotSha
       }
-      originalChildrenRef.current = null
+      for (const { el: hEl, original: text } of headerSwapsRef.current) {
+        hEl.textContent = text
+      }
+      headerSwapsRef.current = []
+      originalBodyRef.current = null
       targetRef.current = null
     }
   }, [state, targetSelector])

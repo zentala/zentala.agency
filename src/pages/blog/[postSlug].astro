@@ -96,7 +96,11 @@ const contentBoxClass = 'py-responsive-md'
                   </>
                 )
               }
-              <time datetime={post.data.date} class="text-gray-500">
+              <time
+                datetime={post.data.date}
+                class="text-gray-500"
+                data-blog-date
+              >
                 {
                   new Date(post.data.date).toLocaleDateString('pl-PL', {
                     year: 'numeric',
@@ -109,13 +113,17 @@ const contentBoxClass = 'py-responsive-md'
 
             <h1
               class="mb-10 text-6xl font-light leading-tight text-white md:text-7xl"
+              data-blog-title
             >
               {post.data.title}
             </h1>
 
             {
               post.data.excerpt && (
-                <p class="mb-0 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl">
+                <p
+                  class="mb-0 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl"
+                  data-blog-excerpt
+                >
                   {post.data.excerpt}
                 </p>
               )

@@ -1,318 +1,99 @@
 ---
-title: 'Why Traditional Knowledge Transfer Is Failing Modern Software Development And How To Improve It With Continuous Onboarding'
-date: '2024-12-13'
+title: 'Continuous Async Onboarding: The DevEx Pattern AI Will Force on Every Engineering Org'
+date: '2026-05-12'
 category: 'DevEx'
 imageUrl: 'https://zentala.io/images/continuous-onboarding.jpg'
-excerpt: 'As software development accelerates and becomes more complex, traditional approaches to knowledge transfer and onboarding are breaking down. Learn why organizations need to shift towards continuous onboarding and how to implement it effectively with dedicated technical writing roles and systematic documentation processes.'
+excerpt: "DORA's 2025 report found that high-quality engineering platforms amplify AI's benefits — and low-quality ones get nothing. McKinsey measured GenAI doubling coding speed, but only when developers already knew the framework. The lesson: every developer (and every agent) is in continuous, asynchronous onboarding. Organizations that design for that win twice — once for the humans, once for the machines."
 authorRole: 'DevEx Consultant'
+bannerEnd: 'devex'
 published: false
 ---
 
-In today's fast-paced technological landscape, the traditional model of developer onboarding—often a one-time, synchronous event—is becoming increasingly obsolete.
+DORA's 2025 State of AI-Assisted Software Development report found that high-quality engineering platforms amplify AI's benefits across the board — and low-quality platforms get essentially nothing from AI investment. McKinsey, measuring developer productivity under GenAI, found coding speed roughly doubled on familiar tasks. On tasks where developers lacked familiarity with the necessary framework, the speedup collapsed to under 10%. The lesson is the same from both ends: every developer — and every AI agent — is in continuous, asynchronous onboarding. Organizations that design for that win twice. Once for the humans. Once for the machines.
 
-### The Reality of Modern Software Development
+## The myth we're still operating under
 
-In today's rapidly evolving software development landscape, we're operating under an outdated assumption: that onboarding is a one-time event occurring when someone joins a team or project. This traditional view significantly hampers effective knowledge transfer within organizations.
+We still treat onboarding as an event. Someone joins the team; they get a buddy, a checklist, two weeks of slow-paced exposure, and after a month or two they're considered "onboarded." After that, the assumption is: they know the system.
 
-[Onboarding actually happens continuously throughout a developer's journey. Every time we integrate with a next API, connecting Kafka broker, implementing internal translation system library, or setting up some kind of content delivery ropository for our project, we're essentially going through an onboarding process. We're constantly "onboarding" ourselves to new tools, services, and systems as our work evolves, as we move forward with our tasks and switch projects.](https://zentala.io/blog/async-continous-onboarding-on-demand)
+They don't. Nobody does. Every time a developer integrates a new internal API, wires up a Kafka broker they haven't touched before, picks up a translation library, pulls in a CDN configuration they didn't write — they are onboarding themselves to a new piece of the organization's surface area. The system never stops being partially unfamiliar. Software evolves continuously, team boundaries shift, the people who knew the original context move on. The "fully onboarded engineer" is a fiction.
 
-And in most cases noone cares about those processes. Therefore sometimes this kind of onboardinds can be time consuming.
+This was already true before AI. AI made it impossible to ignore.
 
-## The AI Factor
+## Why AI breaks the old model
 
-### The AI Revolution's Impact on Development Work
+Three things changed at once.
 
-The rise of AI chatbots and generative AI is fundamentally changing how software gets built. Code generation is becoming faster and cheaper, enabling organizations to create more complex systems and functionalities in less time. This acceleration has several important implications:
+Code creation got cheap. GitHub Copilot generates roughly 46% of code written by its users on average; for Java developers the figure is 61%. Pull request cycle time, in controlled measurements, dropped from 9.6 days to 2.4 days — a 75% reduction. Cheap code creation means more services, more libraries, more integration surface — *more onboarding events per engineer per quarter*, not fewer.
 
-1.  Developers will move between projects more frequently as development cycles shorten
-2.  Systems will grow increasingly complex as creating new microservices and web applications becomes more accessible
-3.  Teams will become more fluid and temporary, reducing opportunities for traditional person-to-person knowledge transfer
-4.  The existing problems with documentation and knowledge sharing will intensify as developers spend less time in each project
+Team boundaries got fluid. The Pragmatic Engineer's 2026 tooling roundup notes that 55% of professional developers now report regularly using AI agents, up from near-zero in early 2024. As agents take on more routine tasks, human engineers move between projects more often. The stable, multi-year team — the social structure that used to carry tribal knowledge — is becoming rarer.
 
-This shift presents a paradox: as AI makes it easier to write code, it becomes harder to maintain comprehensive knowledge about our systems. The traditional model of stable teams sharing knowledge through direct interaction is becoming less viable.
+The new audience for documentation isn't human. Agents read your docs too. They don't ask the senior engineer at the next desk; they read what is written, or they hallucinate. DORA's 2025 finding — "AI is only as good as the data it learns from; high-quality, accessible, unified internal data is the fuel for context-aware AI assistance" — is the polite version. The blunt version: if your docs are bad, you don't just frustrate humans, you actively degrade your AI investment.
 
-### AI tez potrzebuje dokumetacji
+## Diátaxis as the structural baseline
 
-rozwoj oprgoraowania zmierza do agentow programistow dzialanych na kodzie organizacji, aby mogli dzialac potrzebuja uporzakdowanej struktury wiedzy o firiemie, spojnej, wysokiej jakosci, bez bledow, rozwoj i poprawa jakosci oprgoamwonia moze byc krokiek w kierunku byudowy bazy danych wiedzy do RAG dla naszych agentow. pisze o tym w innym artykule jak developer portal typub backstage mozne pozwolic chatowac z danymi, w tym dokukemtajca
+Before tooling, before headcount, before strategy, there is a question of *what shape* documentation should take. The dominant answer in 2026 is Diátaxis, the framework Daniele Procida developed and which has been adopted by OpenAI, LangChain, Cloudflare, and several hundred other projects. The list of adopters has grown so long Procida no longer accepts new registrations.
 
-### future onboarding is anynchronyous
+The framework identifies four kinds of documentation, each serving a different user need:
 
-developers will not overapl perions when they work on prokject
-agents will not overplap with people working on project
-we need onboarding designed to by asynchronuous so it will be future proof
+- **Tutorials** — learning-oriented. You walk a newcomer through their first success. Read once, then archive in the back of the mind.
+- **How-to guides** — problem-oriented. The reader has a goal and needs the steps. Pragmatic, scoped, repeatable.
+- **Reference** — information-oriented. API surfaces, configuration schemas, exhaustive listings. Authoritative and dry.
+- **Explanation** — understanding-oriented. Why the system is shaped the way it is. The mental model.
 
-## Continuous Onboarding: A New Paradigm for Software Development Knowledge Transfer
+Most internal documentation in most organizations is an unintentional pile of these four modes mashed together, written by the same person in the same Markdown file. Splitting them out is the single highest-leverage refactor you can do. A new engineer arriving at your service should be able to find each mode in a predictable location.
 
-continuous onbording approach means that you realize that all youre employs on every level are particingaing in onboarding procesures , no matter we want it or not, they are still learning, ssystesm evlovles, it means onboarding is continous, even if we dont make direct actions to onboard, there is still aysnc onbording with our documetatnion, and redines of this docs to onboard async is measure of success for this continous onboarding. u can measure as success indcator success rate of achining goal for descrining operiation(applies to tutorials itd)
+## The cognitive load argument
 
-youi server onboarding srerices continously
-there are people eg technical writers and devex engziniers who monitor this continous async elarining process and omptimize it in time
-your syustem of onboarding is flexible so it allows to onboard on chunk of knowdlege
+If you want a framework to justify the investment to leadership, the rigorous one is DevEx as defined by Abi Noda and co-authors in ACM Queue. Three dimensions, all measurable: feedback loops, cognitive load, flow state. The DX Core 4, which unifies DORA, SPACE, and DevEx, has been tested across more than 300 organizations and consistently shows 3–12% efficiency gains and a 14% increase in the proportion of R&D time spent on feature work when these dimensions improve.
 
-## Understanding the Knowledge Transfer Challenge
+Documentation lives squarely in the cognitive load dimension. Every minute a developer spends reconstructing context — searching Slack, pinging the one person who knows, reading a stale wiki page — is a minute of cognitive overhead with zero output. The McKinsey study noted that GenAI's biggest perceived benefit, beyond raw speed, was *putting information at fingertips faster than searching online platforms*. The pattern is consistent: the bottleneck is finding and trusting context. Tools help. So does writing the context down once, in a discoverable place, with clear ownership.
 
-The current approach to documentation and knowledge sharing faces several fundamental challenges that stem from a misalignment of roles and expectations:
+## Why developers shouldn't (mostly) write the documentation
 
-### The Developer-Writer Disconnect
+The current default in most engineering orgs is "developers document their own code." This is roughly as sensible as "developers do their own legal review." Writing effective documentation requires a distinct skill stack: linguistic precision, instructional design sense, empathy for the reader's gap in knowledge, comfort with visual communication, the patience to revise. These are real skills, and they are not the skills most developers were hired for.
 
-Developers are skilled at creating software, but we incorrectly expect them to also be skilled technical writers and educators. This expectation ignores that writing effective documentation requires a distinct set of skills and predispositions entirely separate from software development expertise. Just as we wouldn't expect a novelist to write good code, we shouldn't expect developers to naturally create good documentation.
+The high-functioning pattern, visible at Stripe, Twilio, Spotify, Atlassian and a handful of others, treats technical writing as a specialized role on the DevEx team. The job description that works looks roughly like: junior-developer competence in at least one stack, high linguistic precision, formal training or significant practice in instructional design, and a temperament that gets satisfaction from making other people's expertise legible. Such a person is not a developer who failed at coding; they are a specialist with a different combination of strengths.
 
-### The Knowledge Scatter Effect
+The mode that works: the developer is responsible for accuracy and the technical writer is responsible for legibility. A short structured conversation produces a documented module faster than the developer would write it alone and at substantially higher quality. The developer's contribution shrinks to the minimum they can actually sustain.
 
-Without a centralized knowledge management approach, information becomes dispersed across various channels:
+## The tooling has caught up
 
-- Tribal knowledge held by specific individuals who become unofficial "knowledge points"
-- Hidden documentation in unexpected locations
-- Verbal knowledge transfer that isn't captured systematically
+A few years ago this kind of pipeline required custom infrastructure. In 2026 the platforms exist.
 
-This dispersion creates a significant drag on development efficiency, leading to:
+GitBook and Mintlify are the two converging defaults. GitBook is shared-ownership, visual-first, with a built-in AI Agent that connects to Slack and Intercom to *identify knowledge gaps* from the questions users actually ask, and proactively drafts updates. Mintlify is Git-first, dev-owned, docs-live-with-code, AI suggestions driven by changes in the source repo. The decision rule is almost mechanical: if developers want to own the artifact and engineers are the primary writers, Mintlify fits. If you want technical writers and product folks editing alongside engineers, GitBook fits.
 
-- Extended time spent searching for basic information
-- Developer frustration and burnout
-- Reduced coding time as developers hunt for answers
-- Inefficient use of experienced developers' time as they repeatedly answer the same questions
+For internal documentation tied to the developer portal, Backstage TechDocs remains the path of least resistance — Markdown alongside code, rendered inside the portal, owned by the team listed in `catalog-info.yaml`. The portal also provides Qeta-style Q&A plugins that make documentation gaps visible: every unanswered question is a missing how-to guide.
 
-## The Technical Writer Role: A Missing Piece
+Above all of this sits the RAG layer. Glean and its competitors index 100+ enterprise apps to provide a single retrieval surface over the organization's knowledge — the corporate equivalent of asking your docs in natural language. The shape of the future, already visible: a developer or an agent asks a question, retrieval pulls the right paragraphs from TechDocs / Confluence / Slack, the LLM synthesizes. The quality of the answer is bounded above by the quality of what was written. Garbage in, garbage out — at scale, in real time, in front of every engineer.
 
-The solution involves recognizing technical writing as a specialized role requiring a unique combination of skills:
+## GitLab as the existence proof
 
-### Core Competencies
+The standard objection at this point is: "this works for a startup, not at scale." GitLab is the response to that objection.
 
-- Software development background (minimum junior level)
-- High linguistic intelligence (precision in language use, strong definitional skills)
-- Understanding of technical writing, instructional design, and visual communication
-- Empathy and ability to see documentation from a learner's perspective
+GitLab runs a 2,700+ page public handbook that documents nearly every aspect of how the company operates. The cultural rule is "look it up in the handbook before asking." Meetings are optional by default; running one requires a documented agenda. New hires spend their first week reading the handbook, not doing the job. The case has been formally studied by INSEAD researcher Marco Minervini. The company itself runs as a 2,000-person all-remote engineering organization on the back of this artifact.
 
-### Integration with Developer Experience
+If async-first onboarding works at GitLab's scale, it works at yours. The question isn't whether the model is viable. The question is whether you are willing to make the investment that it takes.
 
-Technical writers should be part of the Developer Experience team, working as:
+## What good measurement looks like
 
-- Documentation on-demand consultants who guide developers through the documentation process
-- Educators who teach best practices for documentation
-- Maintainers of documentation quality and consistency
+The goal isn't to count pages produced. It is to count problems solved per unit of engineer time.
 
-This approach transforms documentation from a burden into a collaborative process where developers can focus on sharing their technical knowledge while technical writers ensure it's communicated effectively. zdejmuejmy z developerow ciezraa jakiego nie sa w stanie udrzignac i dlatego na npewnoe jest meczaocy i dajemuy go komus kto ma kompetencje aby go uniesc, a jedyne czego chcemy od developerow aby aby w okreslonych sytuacjach, kontaktowali sie z technical writerem i on juz wypyta uich o to co zrobili na przestrzei jakiegos czasu i udokomentuje im to.
+Useful signals: per-page feedback ratings (a thumbs-up/thumbs-down on every doc page), search success rate (queries that produced a click), search no-result rate (queries that returned nothing — these are your highest-priority gaps), median time-to-first-PR for new hires, the volume of recurring Slack questions answered by docs versus by humans, the percentage of catalog entities with current TechDocs. Backstage exposes most of these out of the box. The rest are a Datadog dashboard away.
 
-## Measuring Success
+Pair this with the DX Core 4 baseline — three to twelve percent efficiency gains are real and they show up in this data within a quarter or two of disciplined investment.
 
-[nier wiem czy sukces to dobre slowo, to sa jakies metryki, ale niekonicznie tylko sukcesu, ale tez bledow przeciez, brakujacych dsyahc, etc tpo nie sa metryki syukcesu, to sa metryki do dalszej analizy do wyciagania wnioskow]
+## What to do on Monday
 
-Effective measurement of documentation quality requires establishing multiple feedback channels:
+Three concrete moves, in priority order.
 
-### Direct Feedback Systems
+Audit your top-10 onboarding Slack threads of the last quarter. Every recurring question is a missing how-to guide. Address those ten first; you will eliminate a measurable chunk of your senior engineers' interrupt load within a week.
 
-- Per-page feedback forms with quality ratings
-- Direct communication channels to documentation owners
-- Integration with developer portals (e.g., Backstage)
-- Question-and-answer platforms (like Backstage's Qeta plugin) to identify knowledge gaps
+Pick one service. Restructure its docs along Diátaxis lines — tutorial, how-to, reference, explanation, in clearly labeled directories. Use it as the reference example to roll the pattern out elsewhere.
 
-### Analytics Metrics
+Hire or designate a technical writer with the DevEx team affiliation. Not as a documentation enforcer — as a partner who pulls developers' expertise into legible form. Measure their impact on the DX Core 4 metrics above.
 
-- Search success rates and keyword effectiveness
-- Page bounce rates
-- Most accessed documentation sections
-- Time spent finding information
-- Documentation usage patterns
-
-The goal isn't just to collect metrics but to identify which documentation improvements will be most cost-effective, focusing on:
-
-- Frequently accessed sections
-- Areas where poor documentation causes significant time loss
-- Documentation that, if improved, would reduce common errors
-
-## Implementing the Change
-
-Organizations can begin transitioning to this model through several practical steps:
-
-1.  Identify existing documentation talents within the organization (look for those who already write clear, effective documentation)
-2.  Let's start from allocateing dedicated time for documentation work (e.g., Documentation Fridays) to learn and design strategy. wewnetrzni ludzie najlepiej okresla cele jakie chcemy osiagnac i wyzwana jakie chcemy rozwiazac za pomoca dokumentajci, dlatego sugerowalbym zaczac prosto - od dania im jednego dnia-trzech dni tyogodniowo przez dobrych kilka mcy,3,6, wiecej, aby sie uczyli, konsultowali z innymi jesli trzeba, moze zrobili jakies szkoleniua, konsultowali ze stakhodlerami i prgoramistami, aby poprawili dokumentacje ktore sa waskimi gardlami, aby zaimoeleitwalu Implement basic docs feedback mechanisms and analitics etc i przygotowani jakas strategie dokumecji na ktora bedziecie sie zgadzac
-3.  Implement basic docs feedback mechanisms and analitics
-4.  Consider hiring a dedicated technical writer to work with internal subject matter experts and educator for internal potential technical writers
-5.  Build documentation improvement into the Developer Experience roadmap - co to ma byc>?
-
-The key is recognizing that effective documentation isn't a part-time hobby but a crucial professional function requiring dedicated time and expertise. As systems grow more complex and team structures more fluid, investing in this area becomes increasingly critical for maintaining development velocity and quality.
+The investment doesn't need leadership approval for a strategic transformation. It needs one person's attention and one quarter of patience. The compounding starts the day the first refactored doc ships.
 
 ---
 
-wiorze ze przyszlosc rozwoju oprogramowania to asynchroniczny ciagly (continous) onboarding
-
-## dlaczego continous?
-
-wierze ze wspolecznesnie blednie zaklasdamy ze onboarding to cos co dzieje sie raz i na poczaktku, ew ponownie przy zmianie zespolu lub projektu. uwazam to za bledne zaloznie, utdniajaca efektywny knowdlegr transfer w firmie.
-
-onbaordzing dzieje sie kiedy pracujac nad seriwsiem nad jakim pracowales integrsujesz sie z nowym rozwiazaniem, np integruejsz kafke albo kiedy integrujesz sie z syteeem translacji czy cdr. onaardujesz sie na kazdy service z jakim integrujesz swija prace, onbordujesz sie na nardzedzia
-
-## znaczenie contouns onboaridng w czasach programowania z AI
-
-w coraz bardziej dynamiczym srosiwoski rozwoju oprogramwoania onbaordingi beda coraz czestrsze
-
-dzieki ai bedziemy szybko pisac kod, czymm wiec bedzie wtedy praca devleorpa?
-bedzie
-
-# notatki z Miro
-
-na podstawiwe tego bedziemny pisali arta ale na poczatek moze
-
-postaraj je sobie infograficznie uprzakodwac najpierw i ja ew cos dodam, jakas lista , naglowkie, etc
-
-Topic: Knowledge Transfer
-"We can't solve problems by using the same kind of thinking we used when we created them." – Albert Einstein  
-"If you can't measure it, you can't manage it." – Peter Drucker  
-"If you can't measure it, you can't manage it." – Peter Drucker  
-How to Solve Knowledge Transfer Issues in your company  
-1
-3
-2
-4
-Common issues  
-Diagnoses & Insights  
-Paradigm shift  
-Practical solutions
-
-endingl  
-A
-
-OnBoarding OnDemand  
-OnBoarding  
-what can be missing?  
-desing async onboarding process with professionals  
-new team members  
-let's make list of onboarding & on demand skills, "courses" we want to provide  
-improve quality & speed-up onboarding  
-...is a future: https://learn.trakstar.com/blog/on-demand-is-the-future-of-online-learning  
-Examples: using Kaadu, DevOps, setting up for iOS or Android development, etc...  
-OnBoarding as a Service with eLearning On-Demand
-
-jak ustlic czego brakuje w dokuemtncji lub co jest zle  
-treat docs as online coure
-
-jak podejmowac decyzje w co inwestujemy czas, co poprawiamy  
-ways to collect feedback about docs quality from developers  
-use our consultations and skills to improve it  
-Reduce teaching upfront. Knowledge without context, is hard to remember. We need to provide knowledge on demand.  
-cos o procesie  
-pierwszym zadaniem powinno byc zbudowanie analityki  
-no time  
-no soft skills  
-no traits  
-no context  
-no knowdlege  
-they can be new too  
-central point where developer can request help, developer internal helpdesk, skills and education center  
-so we could track what knowdlege is needed and create educational materials about that  
-jak ustalic ekefektynosc dzialan  
-Some of the companies provide knowledge on demand. Eg car repair can be done by mechanical worker with mobile phone. He is using phone to diagnose issue, and phone provide him step by step instruction how to replace damaged part.  
-we can teach your team na dprovide suport and some skills  
-they know enough to do job, not to explain others  
-so we can reduce time of looking for the answer in organisation  
-team responsible for knowing technical things or knowing who to ask  
-jak zbudowc analityke sluzaca do zbierania tych danych  
-their onboarding was incomplete too  
-provide way to self-educate  
-knowdlege is not needed now so its not provided as part of team onborading
-
-teaching  
-patience  
-Subcect Matter Expert  
-no reason to teach upfront - without context  
-no task and no one validates if onbording was done  
-latwo utrzymac wysokiej jakosci dokumentacje b jest ktos kto to supportuje  
-not really need work  
-human memory isn't activated without context  
-workshops about how to track it in yoir company or some other produck, what?  
-what we are looking for  
-track it
-
-B
-
-what is missing  
-it can take days to find answers needed to perform task  
-co to za zmiana paraduygmatu?  
-...what affects  
-No central point responsible for documentation so there is no global documentation  
-to manage something you need to adjust responsibility  
-workshops about how to track it in yoir company or some other produck, what?
-
-time & effeciency  
-employee emotional costs, eg. frustration, motivation  
-long time to find answer about internal architecture & systems  
-it takes time to even find who knows  
-"If you can't measure it, you can't manage it." – Peter Drucker  
-requesting help, hard to find someone who knows specific topic and have time  
-reduce time developers spent on searching internal knowdlege  
-Developers are not teachers nor instructional writers  
-long time to receive technical help  
-Even if knowdlege exists employess don't know where to find it  
-soosbna struktura  
-you can't measure it = you can't measure it  
-writing  
-DX  
-instructional design
-
-fill the skills gap  
-UX  
-design
-
-trainings  
-developers document, not educate  
-maintaining knowledge on the top level, we closure under various documentations
-
-ensuring to provide continuity and integrity of the documentation  
-education requires separated whole bunch of knowledge and skills
-
-skills needed  
-team dedicated to develop and provide to others this kind of soft skills  
-skills needed
-
-good "documentation" should educate  
-C
-predyspozycje  
-continuous improvement  
-ackoff system thinking  
-dedicated roles / team  
-Quality  
-Avoid giving more responsibilities to developers  
-quality  
-Why should you build OnBoarding on Demand structure
-
-mysli jak obiorca  
-validity  
-uzytecznosc  
-in order to be efficient you have fucking right to consult whatever you want with someone who is high-class specialist  
-empatyczna  
-keeping documentation up to date  
-working with teams to improve their parts of docs  
-clarity  
-documentation review  
-Documentation Specialist / Instructional designer / eLearning designer  
-teach lead as a service  
-practices exclude themselves (eg names of apps or DBs in CF are not standardised)  
-improve quality, integrity & consistency of documentation  
-kompetencje z przekazywania wiedzy  
-zrozumialosc  
-provide internal services  
-We want to give solution; not generate new problems. We don't want to distract developers with new responsibilities related to maintaining documentation.  
-self-explenatory  
-Documentation review as a service  
-perfectly: documenting should be easier for devs & documentation quality improved
-
-you can document history for future researchers  
-for employees you need to educate  
-klarownosc
-
-evaluating (gathering feedback) and improving documentation quality with developers  
-latwosc  
-trainings  
-As developer you don't have to but you can request for documentation review by qualified, skilled person. As a developer you should get professional help with structuring and improving aby part of the documentation. This way developer is educated how to make documentation, learn good practices and we release him from him responsibility about how to make good documentation. Because this set of skills is specialisation. Mix of technical and soft skills. Verbal talent would be also useful. English proficiency...
-documents are formal, just transfer knowdlege  
-you want to decrease knowledge absorption cost  
-don't enforce documentation quality standardisation on developers; try to standardise it proving help, providing good practices examples  
-providing education, teaching about good practices  
-Knowledge provided in light, straightforward, organised, interesting way  
-usluga  
-documentation unit  
-co zrobic aby nie wyksztalcil sie silow  
-sami sie reviewsuecje, oznaczniecie co nie jesne, czego brak  
-ocz czego zacznym  
-ludzi wybieram  
-ludzi wybieram
+*This is the second piece in a three-part series. The first looked at how developer portals are becoming AI infrastructure. The next ties both threads together.*

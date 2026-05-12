@@ -1,0 +1,286 @@
+
+> prebuild
+> npm run browserslist:update:if-stale
+
+
+> browserslist:update:if-stale
+> node ./scripts/browserslist-update-if-stale.mjs
+
+
+> build
+> astro check && astro build
+
+Defining author collection
+13:41:06 [content] Syncing content
+13:41:06 [content] Synced content
+13:41:06 [types] Generated 305ms
+13:41:06 [check] Getting diagnostics for Astro files in C:\code\zentala.agency...
+[96msrc/components/banners/Banner.astro[0m:[93m2[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'BannerProps' is declared but its value is never read.
+
+[7m2[0m import type { BannerProps } from './types'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/banners/variants/Simple.astro[0m:[93m4[0m:[93m11[0m - [93mwarning[0m[90m ts(6196): [0m'SimpleBannerProps' is declared but never used.
+
+[7m4[0m interface SimpleBannerProps {
+[7m [0m [93m          ~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/banners/variants/Simple.astro[0m:[93m2[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'BannerProps' is declared but its value is never read.
+
+[7m2[0m import type { BannerProps } from '../types'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/banners/variants/SimpleWithImage.astro[0m:[93m2[0m:[93m11[0m - [93mwarning[0m[90m ts(6196): [0m'SimpleWithImageBannerProps' is declared but never used.
+
+[7m2[0m interface SimpleWithImageBannerProps {
+[7m [0m [93m          ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/index.astro[0m:[93m533[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'currentFocus' is declared but its value is never read.
+
+[7m533[0m const currentFocus = (() => {
+[7m   [0m [93m      ~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m324[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'intro' is declared but its value is never read.
+
+[7m324[0m const intro = {
+[7m   [0m [93m      ~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m157[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'engagementModels' is declared but its value is never read.
+
+[7m157[0m const engagementModels = {
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m17[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'LINKEDIN_URL' is declared but its value is never read.
+
+[7m17[0m const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
+[7m  [0m [93m      ~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m13[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'EngagementModels' is declared but its value is never read.
+
+[7m13[0m import EngagementModels from '../sections/home/EngagementModels.astro'
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m11[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'WhyWorkWithMe' is declared but its value is never read.
+
+[7m11[0m import WhyWorkWithMe from '../sections/home/WhyWorkWithMe.astro'
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m10[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'NoteBox' is declared but its value is never read.
+
+[7m10[0m import NoteBox from '../components/primitives/NoteBox.astro'
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m9[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SectionCTA' is declared but its value is never read.
+
+[7m9[0m import SectionCTA from '../components/primitives/sections/SectionCTA.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m8[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'ProjectCard' is declared but its value is never read.
+
+[7m8[0m import ProjectCard from '../sections/home/ProjectCard.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m7[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'FeaturedProjects' is declared but its value is never read.
+
+[7m7[0m import FeaturedProjects from '../sections/home/FeaturedProjects.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m6[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'ServiceSection' is declared but its value is never read.
+
+[7m6[0m import ServiceSection from '../sections/home/ServiceSection.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m5[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'HeroWithVariations' is declared but its value is never read.
+
+[7m5[0m import HeroWithVariations from '../sections/home/HeroWithVariations.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/index.astro[0m:[93m4[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SectionHeader' is declared but its value is never read.
+
+[7m4[0m import SectionHeader from '../components/primitives/sections/SectionHeader.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/about/capabilities/backstage.astro[0m:[93m8[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SectionCTA' is declared but its value is never read.
+
+[7m8[0m import SectionCTA from '../../../components/primitives/sections/SectionCTA.astro'
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/blog/[postSlug].astro[0m:[93m339[0m:[93m22[0m - [93mwarning[0m[90m ts(6387): [0mThe signature '(commandId: string, showUI?: boolean | undefined, value?: string | undefined): boolean' of 'document.execCommand' is deprecated.
+
+[7m339[0m             document.execCommand('copy')
+[7m   [0m [93m                     ~~~~~~~~~~~[0m
+
+[96msrc/pages/category/[category].astro[0m:[93m37[0m:[93m11[0m - [93mwarning[0m[90m ts(6196): [0m'Props' is declared but never used.
+
+[7m37[0m interface Props {
+[7m  [0m [93m          ~~~~~[0m
+
+Result (108 files): 
+- 0 errors
+- 0 warnings
+- 20 hints
+
+Defining author collection
+13:41:15 [content] Syncing content
+13:41:15 [content] Synced content
+13:41:15 [types] Generated 308ms
+13:41:15 [build] output: "static"
+13:41:15 [build] mode: "static"
+13:41:15 [build] directory: C:\code\zentala.agency\dist\
+13:41:15 [build] Collecting build info...
+13:41:15 [build] ✓ Completed in 404ms.
+13:41:15 [build] Building static entrypoints...
+DEPRECATION WARNING [mixed-decls]: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+    ┌──> src\components\primitives\sections\SectionHeader.astro
+8   │       position: relative;
+    │       ^^^^^^^^^^^^^^^^^^ declaration
+    ╵
+    ┌──> src\styles\variables.scss
+117 │ ┌   @media (max-width: #{$large-max}) {
+118 │ │     @content;
+119 │ │   }
+    │ └─── nested rule
+    ╵
+    src\components\primitives\sections\SectionHeader.astro 8:5  root stylesheet
+
+DEPRECATION WARNING [mixed-decls]: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+    ┌──> src\components\primitives\sections\SectionHeader.astro
+8   │       position: relative;
+    │       ^^^^^^^^^^^^^^^^^^ declaration
+    ╵
+    ┌──> src\styles\variables.scss
+111 │ ┌   @media (max-width: #{$medium-max}) {
+112 │ │     @content;
+113 │ │   }
+    │ └─── nested rule
+    ╵
+    src\components\primitives\sections\SectionHeader.astro 8:5  root stylesheet
+
+DEPRECATION WARNING [mixed-decls]: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+    ┌──> src\components\primitives\sections\SectionHeader.astro
+8   │       position: relative;
+    │       ^^^^^^^^^^^^^^^^^^ declaration
+    ╵
+    ┌──> src\styles\variables.scss
+105 │ ┌   @media (max-width: #{$tablet-max}) {
+106 │ │     @content;
+107 │ │   }
+    │ └─── nested rule
+    ╵
+    src\components\primitives\sections\SectionHeader.astro 8:5  root stylesheet
+
+DEPRECATION WARNING [mixed-decls]: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+    ┌──> src\components\primitives\sections\SectionHeader.astro
+8   │       position: relative;
+    │       ^^^^^^^^^^^^^^^^^^ declaration
+    ╵
+    ┌──> src\styles\variables.scss
+99  │ ┌   @media (max-width: #{$mobile-max}) {
+100 │ │     @content;
+101 │ │   }
+    │ └─── nested rule
+    ╵
+    src\components\primitives\sections\SectionHeader.astro 8:5  root stylesheet
+
+DEPRECATION WARNING [mixed-decls]: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+    ┌──> src\components\primitives\sections\SectionHeader.astro
+8   │       position: relative;
+    │       ^^^^^^^^^^^^^^^^^^ declaration
+    ╵
+    ┌──> src\styles\variables.scss
+117 │ ┌   @media (max-width: #{$large-max}) {
+118 │ │     @content;
+119 │ │   }
+    │ └─── nested rule
+    ╵
+    src\components\primitives\sections\SectionHeader.astro 8:5  root stylesheet
+
+WARNING: 11 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+13:41:23 [vite] [32m✓ built in 7.44s[39m
+13:41:23 [build] ✓ Completed in 7.48s.
+
+ building client (vite) 
+13:41:23 [vite] transforming...
+13:41:25 [vite] [32m✓[39m 96 modules transformed.
+13:41:25 [vite] rendering chunks...
+13:41:25 [vite] computing gzip size...
+13:41:25 [vite] [2mdist/[22m[35m_astro/_postSlug_.D1X6gHmQ.css          [39m[1m[2m 21.51 kB[22m[1m[22m[2m │ gzip:  3.82 kB[22m
+13:41:25 [vite] [2mdist/[22m[36m_astro/_postSlug_.c7c48c8d.CcGWBvut.js  [39m[1m[2m  1.29 kB[22m[1m[22m[2m │ gzip:  0.58 kB[22m
+13:41:25 [vite] [2mdist/[22m[36m_astro/index.BVOCwoKb.js                [39m[1m[2m  7.88 kB[22m[1m[22m[2m │ gzip:  3.05 kB[22m
+13:41:25 [vite] [2mdist/[22m[36m_astro/index.B1WFd2Cn.js                [39m[1m[2m 85.08 kB[22m[1m[22m[2m │ gzip: 27.56 kB[22m
+13:41:25 [vite] [2mdist/[22m[36m_astro/client.BPIbHqJh.js               [39m[1m[2m179.41 kB[22m[1m[22m[2m │ gzip: 56.60 kB[22m
+13:41:25 [vite] [32m✓ built in 2.17s[39m
+
+ generating static routes 
+13:41:25 ▶ src/pages/404.astro
+13:41:25   └─ /404.html (+15ms) 
+13:41:25 ▶ src/pages/about/capabilities/backstage.astro
+13:41:25   └─ /about/capabilities/backstage/index.html (+22ms) 
+13:41:25 ▶ src/pages/about/capabilities.astro
+13:41:25   └─ /about/capabilities/index.html (+38ms) 
+13:41:25 ▶ src/pages/about.astro
+13:41:25   └─ /about/index.html (+16ms) 
+13:41:26 ▶ src/pages/blog/index.old.astro
+13:41:26   └─ /blog/index.old/index.html (+30ms) 
+13:41:26 ▶ src/pages/blog/[postSlug].astro
+13:41:26   ├─ /blog/how-to-deal-with-resistance-when-implementing-dev-portal/index.html (+58ms) 
+13:41:26   ├─ /blog/future-of-agentic-ai-automation/index.html (+23ms) 
+13:41:26   ├─ /blog/devex-purpose/index.html (+19ms) 
+13:41:26   ├─ /blog/static-webistes-no-time/index.html (+19ms) 
+13:41:26   ├─ /blog/kickart-backstage-implementation/index.html (+23ms) 
+13:41:26   └─ /blog/ia/index.html (+31ms) 
+13:41:26 ▶ src/pages/blog/index.astro
+13:41:26   └─ /blog/index.html (+14ms) 
+13:41:26 ▶ src/pages/capabilities.astro
+13:41:26   └─ /capabilities/index.html (+9ms) 
+13:41:26 ▶ src/pages/case-studies/zntl-desk.astro
+13:41:26   └─ /case-studies/zntl-desk/index.html (+6ms) 
+13:41:26 ▶ src/pages/category/[category].astro
+13:41:26   ├─ /category/devex/index.html (+47ms) 
+13:41:26   ├─ /category/innovation/index.htmlEntry category-descriptions → innovation was not found.
+ (+12ms) 
+13:41:26   ├─ /category/webdev/index.htmlEntry category-descriptions → webdev was not found.
+ (+27ms) 
+13:41:26   └─ /category/ia/index.htmlEntry category-descriptions → ia was not found.
+ (+49ms) 
+13:41:26 ▶ src/pages/contact.astro
+13:41:26   └─ /contact/index.html (+14ms) 
+13:41:26 ▶ src/pages/demo.astro
+13:41:26   └─ /demo/index.html (+7ms) 
+13:41:26 ▶ src/pages/faq.astro
+13:41:26   └─ /faq/index.html (+9ms) 
+13:41:26 ▶ src/pages/mission.astro
+13:41:26   └─ /mission/index.html (+22ms) 
+13:41:26 ▶ src/pages/offer/backstage.astro
+13:41:26   └─ /offer/backstage/index.html (+11ms) 
+13:41:26 ▶ src/pages/offer.astro
+13:41:26   └─ /offer/index.html (+7ms) 
+13:41:26 ▶ src/pages/portfolio.astro
+13:41:26   └─ /portfolio/index.html (+17ms) 
+13:41:26 ▶ src/pages/privacy-policy.astro
+13:41:26   └─ /privacy-policy/index.html (+44ms) 
+13:41:26 ▶ src/pages/index.astro
+13:41:26   └─ /index.html (+29ms) 
+13:41:26 ✓ Completed in 1.20s.
+
+13:41:26 [build] 27 page(s) built in 11.42s
+13:41:26 [build] Complete!
