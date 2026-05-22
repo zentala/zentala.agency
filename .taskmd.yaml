@@ -1,0 +1,11 @@
+dir: .plan/epics
+
+# Skip non-task subdirs. taskmd auto-derives an `id` from filenames when
+# frontmatter lacks one (e.g. 2026-04-27-foo.md → id: 2026), so dated
+# research/vision/handoff files get falsely treated as tasks.
+ignore:
+  - reports
+  - investigations
+  - vision
+  - handoffs
+  - impro

@@ -1,10 +1,11 @@
 ---
 id: E001-T04
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 revised: 2026-05-12 (CEO review — snapshot uses pre-rendered HTML from endpoint, no markdown-it)
 branch: feat/E001-T04-snapshot-mode
+title: E001-T04 — Snapshot mode
 ---
 
 # E001-T04 — Snapshot mode

@@ -1,10 +1,11 @@
 ---
 id: E001-T02
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 revised: 2026-05-12 (CEO review — collection param + markdown-remark render + frontmatter rescue)
 branch: feat/E001-T02-version-endpoint
+title: E001-T02 — Version (single-SHA) API endpoint
 ---
 
 # E001-T02 — Version (single-SHA) API endpoint

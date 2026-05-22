@@ -1,9 +1,10 @@
 ---
 id: E001-T06
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 branch: feat/E001-T06-major-badge
+title: E001-T06 — Major-change visual badge
 ---
 
 # E001-T06 — Major-change visual badge

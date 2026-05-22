@@ -1,10 +1,11 @@
 ---
 id: E001-T03
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 revised: 2026-05-12 (CEO review — collection param + UI state coverage + TOC collision)
 branch: feat/E001-T03-panel-shell
+title: E001-T03 — Panel shell + version timeline (live mode only)
 ---
 
 # E001-T03 — Panel shell + version timeline (live mode only)

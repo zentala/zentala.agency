@@ -1,10 +1,11 @@
 ---
 id: E001-T07
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 revised: 2026-05-12 (CEO review — CI bundle audit step is mandatory, not optional)
 branch: feat/E001-T07-polish-and-audit
+title: E001-T07 — Keyboard shortcut, sanitization audit, prod bundle audit
 ---
 
 # E001-T07 — Keyboard shortcut, sanitization audit, prod bundle audit

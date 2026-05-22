@@ -1,10 +1,11 @@
 ---
 id: E001-T05
 epic: E001
-status: todo
+status: pending
 created: 2026-05-12
 revised: 2026-05-12 (CEO review — collection param, auto-order, abort handling)
 branch: feat/E001-T05-diff-mode
+title: E001-T05 — Diff mode
 ---
 
 # E001-T05 — Diff mode
