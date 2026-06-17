@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Motion Language Review Presentation</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root { --ink: #f7f7f2; --muted: #9ca3af; --line: #2b313a; --panel: #07090d; --accent: #60a5fa; --accent-2: #d6b56d; --motion-fast: 150ms; --motion-base: 240ms; --motion-slow: 700ms; --ease: cubic-bezier(0.2, 0.8, 0.2, 1); }
+      * { box-sizing: border-box; }
+      html { background: #000; color: var(--ink); font-family: "Aptos Display", "Segoe UI", sans-serif; }
+      body { margin: 0; min-height: 100svh; overflow: hidden; background: radial-gradient(circle at 15% 10%, #172033 0, transparent 36rem), #000; }
+      button { font: inherit; }
+      .deck { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
+      .topbar, .controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem clamp(1rem, 4vw, 4rem); border-color: var(--line); }
+      .topbar { border-bottom: 1px solid var(--line); background: rgb(0 0 0 / 0.78); backdrop-filter: blur(16px); }
+      .controls { border-top: 1px solid var(--line); background: rgb(0 0 0 / 0.7); }
+      .brand { display: flex; align-items: center; gap: 0.75rem; text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.78rem; color: var(--muted); }
+      .brand::before { content: ""; width: 2.5rem; height: 0.2rem; background: var(--accent); transform-origin: left; animation: rail-in var(--motion-slow) var(--ease) both; }
+      .progress { width: min(28rem, 40vw); height: 0.15rem; background: #1f2937; overflow: hidden; }
+      .progress span { display: block; height: 100%; width: var(--p); background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width var(--motion-base) var(--ease); }
+      .slide { display: none; padding: clamp(2rem, 5vw, 5rem); min-height: 0; }
+      .slide.is-active { display: grid; animation: slide-in var(--motion-slow) var(--ease) both; }
+      .grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+      .stack { display: grid; gap: 1.25rem; align-content: center; }
+      .eyebrow { color: var(--accent-2); letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.82rem; }
+      h1, h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-weight: 500; line-height: 0.95; letter-spacing: -0.05em; }
+      h1 { font-size: clamp(3.3rem, 9vw, 8.6rem); max-width: 12ch; }
+      h2 { font-size: clamp(2.4rem, 6vw, 6rem); max-width: 13ch; }
+      p { margin: 0; color: #d1d5db; font-size: clamp(1.05rem, 1.5vw, 1.35rem); line-height: 1.55; max-width: 58rem; }
+      strong { color: var(--ink); font-weight: 650; }
+      .large { font-size: clamp(1.3rem, 2.1vw, 2.2rem); line-height: 1.25; color: var(--ink); max-width: 34ch; }
+      .panel { border: 1px solid var(--line); background: rgb(7 9 13 / 0.82); min-height: 20rem; padding: clamp(1.25rem, 3vw, 2.2rem); position: relative; overflow: hidden; }
+      .panel::after { content: attr(data-label); position: absolute; right: -0.5rem; bottom: -1.4rem; font-size: clamp(4rem, 13vw, 12rem); color: rgb(255 255 255 / 0.035); font-family: Georgia, serif; line-height: 1; }
+      .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+      .card { background: #030508; padding: 1.25rem; min-height: 13rem; position: relative; overflow: hidden; }
+      .card::before { content: ""; position: absolute; inset: auto 0 0; height: 0.18rem; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--motion-base) var(--ease); }
+      .card:hover::before, .card:focus-within::before { transform: scaleX(1); }
+      .card h3 { margin: 0 0 0.8rem; font-size: 1.2rem; }
+      .card p { font-size: 0.95rem; color: var(--muted); }
+      .motion-map { display: grid; gap: 0.75rem; }
+      .row { display: grid; grid-template-columns: 9rem 1fr 8rem; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--line); align-items: center; }
+      .row span { color: var(--muted); }
+      .bar { height: 0.35rem; background: #1f2937; overflow: hidden; }
+      .bar i { display: block; height: 100%; width: var(--w); background: var(--accent); animation: grow var(--motion-slow) var(--ease) both; }
+      .shot { border: 1px solid var(--line); background: #05070a; aspect-ratio: 16 / 10; overflow: hidden; position: relative; }
+      .shot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.72; filter: grayscale(0.15) contrast(1.05); transition: transform var(--motion-slow) var(--ease), opacity var(--motion-base) var(--ease); }
+      .shot:hover img { transform: scale(1.04); opacity: 0.92; }
+      .shot .callout { position: absolute; left: 1rem; bottom: 1rem; right: 1rem; padding: 1rem; background: rgb(0 0 0 / 0.72); border-left: 0.2rem solid var(--accent); color: var(--ink); }
+      .demo-nav { display: flex; gap: 2rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); }
+      .demo-nav a { color: inherit; text-decoration: none; position: relative; padding-block: 0.5rem; }
+      .demo-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--motion-base) var(--ease); }
+      .demo-nav a:hover::after, .demo-nav a:first-child::after { transform: scaleX(1); }
+      .priority { display: inline-grid; place-items: center; min-width: 3rem; height: 3rem; border: 1px solid var(--line); color: var(--accent-2); }
+      .controls button { border: 1px solid var(--line); background: #05070a; color: var(--ink); padding: 0.7rem 1rem; cursor: pointer; transition: border-color var(--motion-base) var(--ease), transform var(--motion-fast) var(--ease); }
+      .controls button:hover { border-color: var(--accent); transform: translateY(-2px); }
+      .counter { color: var(--muted); font-variant-numeric: tabular-nums; }
+      @keyframes slide-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes rail-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @keyframes grow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+      @media (max-width: 900px) { body { overflow: auto; } .grid, .cards, .row { grid-template-columns: 1fr; } .slide { min-height: auto; } .progress { width: 32vw; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; transform: none !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <header class="topbar">
+        <div class="brand">Motion Language Review</div>
+        <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+      </header>
+      <section class="slide is-active">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Zentala Agency · 2026-05-26</div>
+            <h1>Make motion communicate.</h1>
+            <p class="large">The site has strong visual identity and selected good micro-interactions. The gap is not "no animation"; the gap is uneven meaning.</p>
+          </div>
+          <div class="panel" data-label="01">
+            <p><strong>Core finding:</strong> the center of the page feels alive, while orientation surfaces like navbar and footer feel static. Motion should help users understand route, state, priority, and intent.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Current State</div>
+            <h2>Alive in the middle, quiet at the edges.</h2>
+            <p>The bento and CTA areas already communicate exploration and forward movement. Header navigation, footer links, and blog cards mostly rely on color changes.</p>
+          </div>
+          <figure class="shot">
+            <img src="./evidence/animations-review-home.png" alt="Home page evidence screenshot" />
+            <figcaption class="callout">Home: strong bento motion personality, weaker global orientation cues.</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="stack">
+          <div class="eyebrow">What Motion Should Say</div>
+          <h2>Every movement needs a job.</h2>
+          <div class="cards">
+            <article class="card"><h3>Orient</h3><p>Nav and TOC motion should say: you are here, this is a route, this context changed.</p></article>
+            <article class="card"><h3>Invite</h3><p>Cards and images should say: inspect this, the whole surface is interactive, there is more behind it.</p></article>
+            <article class="card"><h3>Commit</h3><p>Primary CTAs should say: continue forward. Secondary and external CTAs need quieter, different signals.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">High Impact Finding</div>
+            <h2>Navbar needs route language.</h2>
+            <p>Current desktop nav only changes color. It does not communicate active route, destination confidence, or page transition intent.</p>
+          </div>
+          <div class="panel" data-label="NAV">
+            <nav class="demo-nav" aria-label="Demo navigation">
+              <a href="#">Home</a><a href="#">Capabilities</a><a href="#">Blog</a><a href="#">Contact</a>
+            </nav>
+            <p style="margin-top: 3rem">Recommendation: underline/rail scale on hover and focus. Keep active route visible. Do not change font weight because it creates layout jitter.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">High Impact Finding</div>
+            <h2>Footer links should not just appear alive.</h2>
+            <p>The footer hover mark is a good idea, but it appears abruptly because the pseudo-element is created only on hover.</p>
+          </div>
+          <div class="panel" data-label="FOOTER">
+            <p><span class="priority">P0</span></p>
+            <p><strong>Change:</strong> create the underline at rest with scaleX(0), then animate to scaleX(1). Social icons get a tiny lift, not bounce or brand-color fireworks.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Strong Existing Pattern</div>
+            <h2>CTAs already speak clearly.</h2>
+            <p>Arrow translation says "continue". Border changes say "selected". Active scale says "pressed". This should become the reference grammar.</p>
+          </div>
+          <div class="cards">
+            <article class="card"><h3>Primary</h3><p>Arrow shift + subtle sweep. Highest confidence and commitment.</p></article>
+            <article class="card"><h3>Secondary</h3><p>Border + arrow only. Exploration without over-selling.</p></article>
+            <article class="card"><h3>External</h3><p>Diagonal icon nudge. Communicates leaving current context.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Content Interaction</div>
+            <h2>Blog cards need an "open story" signal.</h2>
+            <p>Large clickable article surfaces should respond as surfaces, while metadata links stay secondary.</p>
+          </div>
+          <figure class="shot">
+            <img src="./evidence/animations-review-blog.png" alt="Blog index evidence screenshot" />
+            <figcaption class="callout">Recommendation: border sweep, title nudge, optional arrow reveal. No full-card scale.</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="stack">
+          <div class="eyebrow">Motion Grammar</div>
+          <h2>Different intensity, same family.</h2>
+          <div class="motion-map">
+            <div class="row"><strong>Header nav</strong><div class="bar"><i style="--w: 22%"></i></div><span>low · orient</span></div>
+            <div class="row"><strong>Footer links</strong><div class="bar"><i style="--w: 26%"></i></div><span>low · discover</span></div>
+            <div class="row"><strong>Blog cards</strong><div class="bar"><i style="--w: 52%"></i></div><span>medium · open</span></div>
+            <div class="row"><strong>Bento cards</strong><div class="bar"><i style="--w: 76%"></i></div><span>high · explore</span></div>
+            <div class="row"><strong>Primary CTA</strong><div class="bar"><i style="--w: 88%"></i></div><span>high · commit</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">System Recommendation</div>
+            <h2>Create motion tokens first.</h2>
+            <p>Without shared durations, easings, and distances, each component invents its own rhythm. Today values are scattered across 150ms, 200ms, 300ms, 500ms, 700ms, and 800ms.</p>
+          </div>
+          <div class="panel" data-label="TOKENS">
+            <p><strong>Use:</strong> --motion-fast, --motion-base, --motion-slow, --motion-intro, --ease-standard, --ease-enter, --motion-lift-sm, --motion-shift-sm.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="stack">
+          <div class="eyebrow">Implementation Order</div>
+          <h2>Ship the language in layers.</h2>
+          <div class="cards">
+            <article class="card"><h3>1 · Foundation</h3><p>Motion tokens, reduced-motion policy, nav active state, footer sweep.</p></article>
+            <article class="card"><h3>2 · Decisions</h3><p>CTA semantic variants, article-card affordance, external-link movement.</p></article>
+            <article class="card"><h3>3 · Atmosphere</h3><p>Bento calibration, page-entry sequencing, article TOC active marker.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Accessibility</div>
+            <h2>Motion is supportive, not required.</h2>
+            <p>Every hover animation needs keyboard focus parity. Reduced-motion users should keep state changes without non-essential transforms.</p>
+          </div>
+          <div class="panel" data-label="A11Y">
+            <p><strong>Acceptance criteria:</strong> focus-visible states, active route, no layout shift, no mandatory animation for comprehension, no transform-heavy reduced-motion path.</p>
+          </div>
+        </div>
+      </section>
+      <section class="slide">
+        <div class="grid">
+          <div class="stack">
+            <div class="eyebrow">Final Recommendation</div>
+            <h2>Do not add more animation. Add meaning.</h2>
+            <p class="large">Keep bento expressive. Make nav and footer oriented. Make CTAs semantic. Make blog cards invite reading. Standardize timing so the whole site feels authored.</p>
+          </div>
+          <figure class="shot">
+            <img src="./evidence/animations-review-backstage.png" alt="Backstage page evidence screenshot" />
+            <figcaption class="callout">Target feeling: technical, calm, responsive, intentional.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <footer class="controls">
+        <button id="prev" type="button">Previous</button>
+        <div class="counter"><span id="current">01</span> / <span id="total">12</span></div>
+        <button id="next" type="button">Next</button>
+      </footer>
+    </main>
+    <script>
+      const slides = [...document.querySelectorAll('.slide')]
+      const current = document.querySelector('#current'), total = document.querySelector('#total'), progress = document.querySelector('#progress')
+      let index = 0
+      total.textContent = String(slides.length).padStart(2, '0')
+      function show(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index))
+        current.textContent = String(index + 1).padStart(2, '0')
+        progress.style.setProperty('--p', `${((index + 1) / slides.length) * 100}%`)
+      }
+      document.querySelector('#prev').addEventListener('click', () => show(index - 1))
+      document.querySelector('#next').addEventListener('click', () => show(index + 1))
+      addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' || event.key === ' ') show(index + 1)
+        if (event.key === 'ArrowLeft') show(index - 1)
+      })
+      show(0)
+    </script>
+  </body>
+</html>
