@@ -7,6 +7,10 @@ Flip to `[x]` when fixed; cross-link the JOURNAL session that did it.
 
 ---
 
+## Indexes
+
+- [TASKS.md](./TASKS.md) — concrete actionable tasks outside any single epic.
+
 ## Reports
 
 - [Animations review](./animations-review/README.md) - motion-language audit and
