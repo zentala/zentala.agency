@@ -1,28 +1,43 @@
 ---
 import Layout from '../../../layouts/Layout.astro'
 import Hero from '../../../components/Hero.astro'
-import CardContainer from '../../../components/cards/CardContainer.astro'
-import SectionHeader from '../../../components/SectionHeader.astro'
+import Section from '../../../components/primitives/sections/Section.astro'
+import SectionHeader from '../../../components/primitives/sections/SectionHeader.astro'
+import SectionGrid from '../../../components/primitives/sections/SectionGrid.astro'
+import SectionContent from '../../../components/primitives/sections/SectionContent.astro'
+import SectionCTA from '../../../components/primitives/sections/SectionCTA.astro'
+import CardBackgroundIcon from '../../../components/primitives/CardBackgroundIcon.astro'
+import CTA from '../../../components/CTA.astro'
 import Button from '../../../components/Button.astro'
 
+const techStack = [
+  'Backstage',
+  'TypeScript',
+  'Node.js',
+  'React',
+  'MCP Server',
+  'Docker',
+  'Kubernetes',
+  'PostgreSQL',
+]
+
+const CAL_URL = 'https://cal.com/zentala'
+const DEVSTAGE_URL = 'https://devstage.io'
+const LINKEDIN_URL = 'https://linkedin.com/in/zentala'
+
 const heroProps = {
-  title: 'Backstage IDP Services',
-  subtitle: 'Bringing innovative solutions to your Developer Experience',
+  eyebrow: 'DevStage by Żentała Innovation Agency',
+  title: 'Extend Backstage. Ship What Your Team Can’t.',
+  subtitle:
+    'Backstage and DevEx specialists. Fast implementations, data integrations, consulting, contracting & body leasing. Enterprise experience, no vendor lock-in.',
 }
-
-// TODO make some hero with it
-// title: 'Extend Backstage. Upgrade Your Developer Experience.',
-// subtitle:
-//   'Custom plugins, processors, and strategic consulting to transform your developer portal into a productivity powerhouse.',
-
-// TODO can use in copy : Creative DevEx engineer & strategic consultant who brings innovative solutions to your developer experience
 
 const developmentServices = [
   {
     name: 'Custom Plugin Development',
-    icon: '🚀',
+    icon: 'ph:rocket-launch-thin',
     description:
-      'Bespoke plugins that solve your specific workflow challenges - from simple automations to complex full-stack features',
+      'Bespoke plugins that solve your specific workflow challenges — from simple automations to complex full-stack features.',
     features: [
       'API integrations with your tech stack',
       'Custom UI components & workflows',
@@ -32,9 +47,9 @@ const developmentServices = [
   },
   {
     name: 'Processors Engineering',
-    icon: '⚙️',
+    icon: 'ph:gear-six-thin',
     description:
-      'Pre/post processors that transform how Backstage catalogs and processes your resources',
+      'Pre/post processors that transform how Backstage catalogs and processes your resources.',
     features: [
       'Custom entity processors',
       'Non-standard resource cataloging',
@@ -44,14 +59,14 @@ const developmentServices = [
   },
   {
     name: 'Theme & UI Customization',
-    icon: '🎨',
+    icon: 'ph:palette-thin',
     description:
-      'Transform Backstage into a branded experience that developers love to use',
+      'Transform Backstage into a branded experience that developers love to use.',
     features: [
       'Custom corporate theming',
-      'Portal branding - naming, logo, taglines',
+      'Portal branding — logo, naming, taglines',
       'Dark mode optimization',
-      'Optionally custom navigation',
+      'Custom navigation & layouts',
     ],
   },
 ]
@@ -59,300 +74,889 @@ const developmentServices = [
 const consultingServices = [
   {
     name: 'Strategic DevEx Consulting',
-    icon: '💡',
+    icon: 'ph:lightbulb-thin',
     description:
-      'Long-term strategic guidance to architect and implement your Backstage ecosystem',
+      'Long-term strategic guidance to architect and implement your Backstage ecosystem.',
     features: [
       'DevEx strategy & roadmaps',
       'Platform architecture design',
       'Integration strategy planning',
       'Team skill development planning',
-      'Innovation & best practices',
-      'Monthly progress reviews',
     ],
   },
   {
-    name: 'AI-Powered DevEx',
-    icon: '🤖',
+    name: 'AI Chat & MCP',
+    icon: 'ph:robot-thin',
     description:
-      'Integrate cutting-edge AI capabilities into your developer workflows',
+      'AI-powered chatbot integrated with Backstage data and actions. Embedded chat or MCP Server integration.',
     features: [
-      'AI chatbots with MCP & RAG',
-      'LLM-powered automations',
+      'Chat with catalog data',
+      'Trigger self-service actions',
+      'MCP Server integration',
       'Custom AI plugin development',
-      'Workflow intelligence',
+    ],
+  },
+  {
+    name: 'Security SLA',
+    icon: 'ph:shield-check-thin',
+    description:
+      'Keep your enterprise Backstage patched within 48 hours of every upstream security release.',
+    features: [
+      '48h security update SLA',
+      'Continuous upstream tracking',
+      'Entry audit of current configuration',
+      'Patch coordination with your team',
     ],
   },
   {
     name: 'Developer Education',
-    icon: '🎓',
+    icon: 'ph:chalkboard-teacher-thin',
     description:
-      'Empower your teams with knowledge and best practices for Backstage success',
+      'Knowledge transfer built into every engagement — your team learns as we work.',
     features: [
       'Team workshops & training',
       'Plugin development courses',
-      'Best practices mentoring',
-      'Documentation & guides',
+      'Documentation & runbooks',
+      'Paired coding sessions',
+    ],
+  },
+]
+
+const processSteps = [
+  {
+    n: '01',
+    icon: 'ph:magnifying-glass-thin',
+    title: 'Free Consultation',
+    body: '30-minute call to understand your Backstage needs and challenges. We assess fit and discuss potential approaches.',
+  },
+  {
+    n: '02',
+    icon: 'ph:list-checks-thin',
+    title: 'Technical Discovery',
+    body: 'We map your integration landscape, understand your organization, and define success metrics. Results in a clear engagement plan.',
+  },
+  {
+    n: '03',
+    icon: 'ph:hammer-thin',
+    title: 'Delivery & Iteration',
+    body: 'Expert hours focused on your specific work. Pay for results, scale up or down as needed. Agile sprints with fast feedback loops.',
+  },
+  {
+    n: '04',
+    icon: 'ph:handshake-thin',
+    title: 'Handover & Support',
+    body: 'You own everything we build. Full source code, documentation, knowledge transfer. Continue independently or with ongoing support.',
+  },
+]
+
+const engagementModels = [
+  {
+    name: 'Project Sprints',
+    icon: 'ph:lightning-thin',
+    description:
+      'Intensive development sprints for specific features — custom plugins, AI integrations, processor development — with measurable impact and a fixed scope.',
+    features: [
+      'Fixed-scope, outcome-based',
+      'Specific feature delivery',
+      'Team training included',
+      'Documentation & handover',
+    ],
+  },
+  {
+    name: 'Extended Engagement',
+    icon: 'ph:infinity-thin',
+    description:
+      'A dedicated DevEx team embedded in your project for months. We join your standups, architect solutions, ship complex features, and mentor your team throughout.',
+    features: [
+      'Daily involvement in your project',
+      'Direct hands-on development',
+      'Architecture & strategic planning',
+      'Continuous knowledge transfer',
+    ],
+  },
+  {
+    name: 'Contracting & Body Leasing',
+    icon: 'ph:users-three-thin',
+    description:
+      'Hire a Backstage contractor — or a full team — to plug into your project. You direct the work, we deliver hours. Paweł works contracting himself, and we have a vetted network of Backstage specialists ready to deploy.',
+    features: [
+      'Single contractor or full team',
+      'Vetted Backstage specialists from our network',
+      'Monthly retainer or hourly billing',
+      'You direct, we execute',
     ],
   },
 ]
 
 const whyExternalConsultant = [
   'Fresh perspective on your challenges',
-  'Hands-on builder who codes alongside your team',
-  'Latest DevEx trends, Backstage solutions and AI innovations',
+  'Hands-on builders who code alongside your team',
+  'Latest DevEx trends, Backstage solutions, and AI innovations',
+  'Vetted contractor network for staff augmentation',
   'Objective assessment of your needs',
   'No internal politics or bias',
-  'Focus on knowledge transfer, not dependency',
   'Knowledge transfer built into every engagement',
   'Accelerate your roadmap by months',
 ]
+
+const faqs = [
+  {
+    q: 'How do we start working together?',
+    a: 'A free 30-minute consultation. No commitment — just a conversation about your Backstage needs and challenges, and an honest assessment of fit.',
+  },
+  {
+    q: 'Do I need to commit to a long-term contract?',
+    a: 'No. Pay for results, scale up or down as needed. Agile sprints with fast feedback loops, minimum one week.',
+  },
+  {
+    q: 'How is this different from Roadie or Port.io?',
+    a: 'Hosted services lock you into their stack. We deploy Backstage in your infrastructure — full source code, no vendor lock-in. You own everything.',
+  },
+  {
+    q: 'What if we already have Backstage deployed?',
+    a: 'We come in to extend it: custom plugins, processors, data ingestion, security updates. An entry audit of your current configuration is included.',
+  },
+  {
+    q: 'Can you provide contractors or help us build an internal DevEx team?',
+    a: 'Both. I can plug a contractor — or a full team — into your project as staff augmentation. Or run a project that builds capabilities into your team.',
+  },
+  {
+    q: 'Do you work remotely or onsite?',
+    a: 'Remote-first, CET timezone, working with clients worldwide. Onsite kickoffs within the EU possible by arrangement.',
+  },
+]
+
+const finalCtaButtons = [
+  {
+    href: CAL_URL,
+    text: 'Schedule Discovery Call',
+    variant: 'light',
+    target: '_blank',
+    icon: 'calendar',
+  },
+  {
+    href: DEVSTAGE_URL,
+    text: 'Visit DevStage.io',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'external-link',
+  },
+  {
+    href: LINKEDIN_URL,
+    text: 'Connect on LinkedIn',
+    variant: 'secondary',
+    target: '_blank',
+    icon: 'linkedin',
+  },
+] as const
+
+const finalCtaFooter = [
+  { icon: 'map-pin', text: 'Warsaw, Poland · CET timezone' },
+  { icon: 'globe', text: 'Working with clients worldwide' },
+] as const
 ---
 
 <Layout
-  title="Backstage DevEx Consulting - Żentała Agency"
-  description="Creative DevEx engineer and strategic consultant specializing in Backstage implementation, AI integration, and developer experience transformation."
+  title="Backstage Consulting & Plugin Development — DevStage.io"
+  description="Custom Backstage plugins, processors, and strategic DevEx consulting for platform teams running Backstage at scale. Part of DevStage.io."
 >
   <Hero {...heroProps} />
 
+  <!-- Tech Stack -->
+  <div class="tech-stack">
+    <div class="container-bordered">
+      <div class="tech-stack__inner">
+        <span class="tech-stack__label">Stack</span>
+        <ul class="tech-stack__list">
+          {techStack.map((tech) => <li>{tech}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- Development Services -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Development Services"
-          subtitle="Innovative technical solutions and custom development"
-        />
-        <div class="cards-grid border-t border-gray-800">
-          {
-            developmentServices.map((service) => (
-              <CardContainer backgroundIcon={service.icon}>
-                <h3 class="mb-6 text-2xl font-light text-white">
-                  {service.name}
-                </h3>
-                <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-3">
-                  {service.features.map((feature) => (
-                    <li class="group flex items-center text-gray-300">
-                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContainer>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Consulting Services -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Strategic Consulting"
-          subtitle="Vision, strategy, and knowledge transfer for long-term success"
-        />
-        <div class="cards-grid border-t border-gray-800">
-          {
-            consultingServices.map((service) => (
-              <CardContainer backgroundIcon={service.icon}>
-                <h3 class="mb-6 text-2xl font-light text-white">
-                  {service.name}
-                </h3>
-                <p class="mb-6 text-gray-300">{service.description}</p>
-                <ul class="space-y-3">
-                  {service.features.map((feature) => (
-                    <li class="group flex items-center text-gray-300">
-                      <span class="mr-3 text-white opacity-50 transition-opacity duration-200 group-hover:opacity-100">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContainer>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Engagement Model -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="Long-Term Partnership Model"
-          subtitle="Companies hire me as an external consultant for multi-month engagements. I integrate with your team, not just deliver workshops."
-        />
-        <div class="cards-grid border-t border-gray-800">
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">
-              Extended Engagement
-            </h3>
-            <p class="mb-6 text-gray-300">
-              Become your dedicated DevEx engineer for months. I join your daily
-              standups, architect solutions, implement complex features, and
-              mentor your team throughout the journey.
-            </p>
-            <ul class="space-y-3 text-gray-300">
-              <li>• Daily involvement in your project</li>
-              <li>• Direct hands-on development</li>
-              <li>• Architecture & strategic planning</li>
-              <li>• Continuous knowledge transfer</li>
-            </ul>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">Project Sprints</h3>
-            <p class="mb-6 text-gray-300">
-              Intensive development sprints for specific features like custom
-              plugins, AI integrations, or processor development with immediate
-              impact and results.
-            </p>
-            <ul class="space-y-3 text-gray-300">
-              <li>• 2-4 week focused sprints</li>
-              <li>• Specific feature delivery</li>
-              <li>• Team training included</li>
-              <li>• Documentation & handover</li>
-            </ul>
-          </CardContainer>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Value Proposition -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <SectionHeader
-          title="I Don't Just Consult. I Build."
-          subtitle="While I provide strategic guidance and educate your teams, I also roll up my sleeves and code. I handle the most innovative and challenging development work, creating solutions your team can learn from and build upon."
-        />
-        <div class="cards-grid border-t border-gray-800">
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Strategic Vision</h3>
-            <p class="text-gray-300">
-              Architecture design, roadmap planning, and DevEx strategy
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Hands-On Coding</h3>
-            <p class="text-gray-300">
-              Full-stack development, custom plugins, and complex integrations
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-xl font-light text-white">Team Empowerment</h3>
-            <p class="text-gray-300">
-              Knowledge transfer, best practices, and ongoing mentorship
-            </p>
-          </CardContainer>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div
-        class="px-responsive-md py-responsive-md mx-auto max-w-4xl text-center"
-      >
-        <SectionHeader
-          title="Ready to Transform Your Backstage?"
-          subtitle="Let's discuss how I can join your team as a dedicated DevEx engineer. From strategic planning to hands-on development, I'll help you build a developer portal that accelerates your entire organization."
-        />
-        <div class="mb-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <Button
-            href="https://calendly.com/zentala"
-            text="Schedule Discovery Call"
-            target="_blank"
-            variant="primary"
-            icon="calendar"
-          />
-          <Button
-            href="https://linkedin.com/in/zentala"
-            text="Connect on LinkedIn"
-            target="_blank"
-            variant="secondary"
-            icon="linkedin"
-          />
-        </div>
-        <p class="text-sm text-gray-500">
-          Extending Backstage for innovative teams with powerful plugins and
-          custom development services.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section class="section-full">
-    <div class="container-bordered">
-      <div class="mb-[-1px]">
-        <div class="cards-grid cards-grid--two-one">
-          <CardContainer>
-            <h2 class="mb-6 text-4xl font-light text-white">
-              Your Creative DevEx Partner
-            </h2>
-            <p class="mb-6 text-xl text-gray-400">
-              I'm Paweł Żentała, a creative DevEx engineer with 20+ years
-              bridging technology and human communication. From building robots
-              and IoT systems to crafting developer portals, I bring fresh ideas
-              and proven solutions to your team.
-            </p>
-            <p class="mb-8 text-lg text-gray-400">
-              Companies hire me as their <strong class="text-white"
-                >external DevEx consultant</strong
-              > for months-long engagements. I become part of your team, architecting
-              solutions, building complex features, and <strong
-                class="text-white"
-                >elevating your entire Developer Experience</strong
-              >.
-            </p>
-            <p class="text-lg text-gray-400">
-              My approach focuses on <strong class="text-white"
-                >inspiring and educating</strong
-              > your team while handling the most innovative and challenging development
-              work. I help you build capabilities, not dependencies.
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-4 text-2xl font-light text-white">What I Deliver</h3>
-            <p class="mb-4 text-lg text-white">
-              I design dev portals that teams actually want to use.
-            </p>
-            <p class="text-gray-300">
-              Transform your Developer Experience through strategic guidance,
-              innovative solutions, hands-on development, and knowledge transfer
-              that empowers your developers to succeed long-term.
-            </p>
-          </CardContainer>
-          <CardContainer>
-            <h3 class="mb-6 text-2xl font-light text-white">
-              Why Hire an External Backstage Expert & DevEx Consultant?
-            </h3>
-            <ul class="space-y-4">
-              {
-                whyExternalConsultant.map((benefit) => (
-                  <li class="flex items-start">
-                    <span class="mr-3 mt-1 text-gray-500">▶</span>
-                    <span class="text-gray-300">{benefit}</span>
+  <Section id="development">
+    <SectionHeader
+      eyebrow="Development services"
+      icon="ph:wrench-thin"
+      headline="What I build"
+      subhead="Hands-on engineering across the Backstage stack."
+    />
+    <SectionGrid columns={3}>
+      {
+        developmentServices.map((service) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={service.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{service.name}</h3>
+              <p class="bs-card__desc">{service.description}</p>
+              <ul class="bs-list">
+                {service.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
                   </li>
-                ))
-              }
-            </ul>
-          </CardContainer>
-        </div>
-      </div>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- Strategic Consulting -->
+  <Section id="consulting">
+    <SectionHeader
+      eyebrow="Strategic consulting"
+      icon="ph:lightbulb-filament-thin"
+      headline="What I advise on"
+      subhead="Strategy, AI, security, and education — turning Backstage into an org-wide platform."
+    />
+    <SectionGrid columns={2}>
+      {
+        consultingServices.map((service) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={service.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{service.name}</h3>
+              <p class="bs-card__desc">{service.description}</p>
+              <ul class="bs-list">
+                {service.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- DevStage.io banner -->
+  <Section id="devstage">
+    <SectionHeader
+      eyebrow="Our Backstage practice"
+      icon="ph:plugs-connected-thin"
+      headline="Backstage Specialists at DevStage.io"
+      subhead="DevStage is our dedicated Backstage practice inside Żentała Innovation Agency — fast implementations, data integrations, and consulting with enterprise experience and no vendor lock-in."
+    />
+    <ul class="bs-devstage__stats">
+      <li>
+        <span class="bs-devstage__stat-num">3</span>
+        <span class="bs-devstage__stat-label">years in Backstage</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">4</span>
+        <span class="bs-devstage__stat-label">enterprise IDP implementations</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">1</span>
+        <span class="bs-devstage__stat-label">open source plugin released</span>
+      </li>
+      <li>
+        <span class="bs-devstage__stat-num">5</span>
+        <span class="bs-devstage__stat-label">specialists with various profiles</span>
+      </li>
+    </ul>
+    <div class="bs-devstage__cta">
+      <Button
+        href={DEVSTAGE_URL}
+        text="Visit DevStage.io"
+        target="_blank"
+        variant="secondary"
+        icon="external-link"
+      />
     </div>
-  </section>
+  </Section>
+
+  <!-- How we work -->
+  <Section id="process">
+    <SectionHeader
+      eyebrow="Engagement process"
+      icon="ph:flow-arrow-thin"
+      headline="How we work"
+      subhead="A predictable four-step path from first call to your team owning the work."
+    />
+    <SectionGrid columns={2}>
+      {
+        processSteps.map((step) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={step.icon} />
+            <span class="bs-step__num">{step.n}</span>
+            <div class="bs-card bs-card--step">
+              <h3 class="bs-card__title">{step.title}</h3>
+              <p class="bs-card__desc">{step.body}</p>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- Engagement Models -->
+  <Section id="engagement">
+    <SectionHeader
+      eyebrow="Working together"
+      icon="ph:handshake-thin"
+      headline="Engagement models"
+      subhead="Three ways to work together — pick the format that matches your need."
+    />
+    <SectionGrid columns={3}>
+      {
+        engagementModels.map((model) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={model.icon} />
+            <div class="bs-card">
+              <h3 class="bs-card__title">{model.name}</h3>
+              <p class="bs-card__desc">{model.description}</p>
+              <ul class="bs-list">
+                {model.features.map((feature) => (
+                  <li>
+                    <span class="bs-list__check">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <!-- About -->
+  <Section id="about">
+    <SectionHeader
+      eyebrow="About"
+      icon="ph:user-circle-thin"
+      headline="Your Backstage partner"
+      subhead="20+ years bridging technology and human communication — from robotics and IoT to developer portals."
+    />
+    <SectionGrid columns={2}>
+      <SectionContent context="grid" prose={false}>
+        <div class="bs-card">
+          <h3 class="bs-card__title bs-card__title--lg">
+            Led by a hands-on DevEx engineer
+          </h3>
+          <p class="bs-about__lead">
+            DevStage is led by <strong>Paweł Żentała</strong>, a creative DevEx
+            engineer who codes alongside the team. Companies bring us in as
+            their <strong>external Backstage practice</strong> for months-long
+            engagements — we become part of your team, architect solutions,
+            build complex features, and elevate the entire developer experience.
+          </p>
+          <p class="bs-about__body">
+            Our approach focuses on
+            <strong>inspiring and educating</strong> your team while handling the
+            most innovative and challenging development work. We help you build
+            capabilities, not dependencies.
+          </p>
+          <div class="bs-about__divider"></div>
+          <h4 class="bs-about__subhead">What we deliver</h4>
+          <p class="bs-about__body">
+            Developer portals teams actually want to use — strategic guidance,
+            innovative solutions, hands-on development, and knowledge transfer
+            that empowers your developers long after we’re gone.
+          </p>
+        </div>
+      </SectionContent>
+      <SectionContent context="grid" prose={false}>
+        <div class="bs-card">
+          <h3 class="bs-card__title">Why hire an external Backstage expert</h3>
+          <ul class="bs-list">
+            {
+              whyExternalConsultant.map((benefit) => (
+                <li>
+                  <span class="bs-list__check">✓</span>
+                  {benefit}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </SectionContent>
+    </SectionGrid>
+  </Section>
+
+  <!-- FAQ -->
+  <Section id="faq">
+    <SectionHeader
+      eyebrow="FAQ"
+      icon="ph:question-thin"
+      headline="Common questions"
+      subhead="What teams typically ask before booking the consultation."
+    />
+    <ul class="bs-faq-list">
+      {
+        faqs.map((item, idx) => (
+          <li class="bs-faq-item">
+            <span class="bs-faq-item__num">
+              Q.{String(idx + 1).padStart(2, '0')}
+            </span>
+            <div class="bs-faq-item__body">
+              <h3 class="bs-faq-item__q">{item.q}</h3>
+              <p class="bs-faq-item__a">{item.a}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Final CTA -->
+  <Section id="cta">
+    <CTA
+      headline="Ready to extend your Backstage?"
+      subhead="Start with a free 30-minute consultation — no slides, no pitch, just your situation and what would unblock it."
+      buttons={finalCtaButtons}
+      footerItems={finalCtaFooter}
+    />
+  </Section>
 </Layout>
 
+<style lang="scss">
+  /* Restore proper card padding (matches CardContainer used elsewhere on site).
+     Need !important to beat SectionContent's own scoped styles. */
+  :global(.section-grid-wrapper > .section-content) {
+    padding: 4rem !important;
+  }
+
+  @media (max-width: 1440px) {
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 3rem !important;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 2rem !important;
+    }
+  }
+
+  @media (max-width: 770px) {
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 1.5rem !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    :global(.section-grid-wrapper > .section-content) {
+      padding: 1rem !important;
+    }
+  }
+
+  /* Hover behavior is handled by SectionGrid (z-index + border-color).
+     Do not add margin shifts here — they cause content to jump on hover. */
+
+  .bs-card {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bs-card--step {
+    gap: 0.5rem;
+  }
+
+  .bs-card--full {
+    width: 100%;
+  }
+
+  .bs-card__step {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .bs-card__title {
+    color: #fff;
+    font-size: 1.875rem; /* text-3xl — matches card-title-large */
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-card__title--lg {
+    font-size: 2rem;
+  }
+
+  .bs-card__pain {
+    color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .bs-card__fix {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .bs-card__desc {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.125rem; /* text-lg — matches card-content */
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .bs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1rem; /* text-base */
+      line-height: 1.5;
+    }
+  }
+
+  .bs-list--two-col {
+    @media (min-width: 770px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem 2rem;
+    }
+  }
+
+  .bs-list__check {
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 400;
+    flex-shrink: 0;
+    transition: color 200ms ease-in-out;
+  }
+
+  :global(.section-grid):hover .bs-list__check,
+  :global(.cards-grid) > *:hover .bs-list__check {
+    color: #fff;
+  }
+
+  .bs-about__lead {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .bs-about__body {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.125rem; /* text-lg */
+    line-height: 1.6;
+  }
+
+  .bs-about__divider {
+    width: 3rem;
+    height: 1px;
+    background: #1f2937;
+    margin: 2rem 0;
+  }
+
+  .bs-about__subhead {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+  }
+
+  /* FAQ — accordion-style single column list, always expanded */
+  .bs-faq-list {
+    list-style: none;
+    padding: 0;
+    margin: -1px 0 0; /* overlap previous element's bottom border */
+    border-top: 1px solid #1f2937;
+  }
+
+  .bs-faq-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2.25rem 1rem 2.25rem 4rem;
+    background: #000;
+    border-bottom: 1px solid #1f2937;
+    position: relative;
+    z-index: 1;
+    transition: all 200ms ease-in-out;
+
+    @media (max-width: 1440px) {
+      padding: 2rem 0.75rem 2rem 3rem;
+      grid-template-columns: 5.5rem 1fr;
+    }
+
+    @media (max-width: 1000px) {
+      padding: 1.75rem 0.5rem 1.75rem 2rem;
+      grid-template-columns: 5rem 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 770px) {
+      padding: 1.5rem 0.5rem 1.5rem 1.5rem;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 1.25rem 0.5rem 1.25rem 1rem;
+      grid-template-columns: 3rem 1fr;
+      gap: 1rem;
+    }
+
+    &:hover {
+      z-index: 10;
+      background: #111827;
+      border-color: #374151;
+    }
+  }
+
+  .bs-faq-item__num {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 2.75rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'wght' 100;
+
+    @media (max-width: 770px) {
+      font-size: 2rem;
+    }
+  }
+
+  .bs-faq-item__body {
+    min-width: 0; /* allow text wrapping inside grid */
+  }
+
+  .bs-faq-item__q {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0 0 0.5rem;
+
+    @media (max-width: 770px) {
+      font-size: 1.125rem;
+    }
+  }
+
+  .bs-faq-item__a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* DevStage stats row (banner has standard SectionHeader above this) */
+  .bs-devstage__stats {
+    list-style: none;
+    padding: 0;
+    margin: -1px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid #1f2937;
+    border-bottom: 1px solid #1f2937;
+
+    @media (min-width: 770px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 1.25rem;
+      padding: 4rem;
+      background: #000;
+      position: relative;
+      z-index: 1;
+      transition: all 200ms ease-in-out;
+
+      /* Transparent border pattern (matches SectionGrid cells):
+         only right border colored idle; on hover all 4 sides highlight */
+      border: 1px solid transparent;
+      border-right-color: #1f2937;
+
+      @media (max-width: 1440px) {
+        padding: 3rem;
+      }
+
+      @media (max-width: 1000px) {
+        padding: 2rem;
+        gap: 1.25rem;
+      }
+
+      @media (max-width: 770px) {
+        padding: 1.5rem;
+        gap: 1rem;
+      }
+
+      @media (max-width: 480px) {
+        padding: 1.25rem 1rem;
+      }
+
+      &:hover {
+        z-index: 10;
+        background: #111827;
+        border-color: #374151;
+      }
+    }
+
+    /* Mobile (2 cols): no right border on every 2nd item, border-bottom between rows */
+    @media (max-width: 770px) {
+      li:nth-child(2n) {
+        border-right-color: transparent;
+      }
+      li:nth-child(-n + 2) {
+        border-bottom-color: #1f2937;
+      }
+    }
+
+    /* Desktop (4 cols): no right border on last item */
+    li:last-child {
+      border-right-color: transparent;
+    }
+  }
+
+  .bs-devstage__stat-num {
+    color: #fff;
+    font-size: 4.5rem;
+    font-weight: 200;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+
+    @media (min-width: 1000px) {
+      font-size: 5rem;
+    }
+
+    @media (max-width: 770px) {
+      font-size: 3.5rem;
+    }
+  }
+
+  .bs-devstage__stat-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-bottom: 0.35rem;
+  }
+
+  .bs-devstage__cta {
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 770px) {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* Tech stack row */
+  .tech-stack {
+    background: #000;
+    border-bottom: 1px solid #1f2937;
+
+    > :global(.container-bordered) {
+      padding: 1.25rem 2rem;
+    }
+
+    &__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem 2rem;
+      justify-content: center;
+    }
+
+    &__label {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+
+      li {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        position: relative;
+
+        &:not(:last-child)::after {
+          content: '·';
+          position: absolute;
+          right: -0.875rem;
+          color: rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+
+  /* Process steps — number as background watermark (OfferCard idiom),
+     light weight, ~1/3 smaller than initial pass */
+  .bs-step__num {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    color: rgba(255, 255, 255, 0.06);
+    font-size: 5rem;
+    font-weight: 100;
+    line-height: 0.9;
+    letter-spacing: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    /* Variable font support — push weight even thinner if available */
+    font-variation-settings: 'wght' 50;
+
+    @media (max-width: 1440px) {
+      font-size: 4.25rem;
+      top: 1.25rem;
+      left: 1.5rem;
+    }
+
+    @media (max-width: 770px) {
+      font-size: 3.5rem;
+      top: 1rem;
+      left: 1.25rem;
+    }
+  }
+
+  /* FAQ — Q numbering */
+  .bs-faq__num {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+  }
+</style>

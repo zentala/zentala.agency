@@ -17,19 +17,45 @@
  * />
  */
 
+import CardBackgroundIcon from '../CardBackgroundIcon.astro'
+
 interface Props {
   headline: string
   subhead?: string
+  eyebrow?: string
+  icon?: string
+  logoSrc?: string
+  logoAlt?: string
   tag?: 'h1' | 'h2' | 'h3'
   align?: 'left' | 'center'
   interactive?: boolean // Enable hover effects
 }
 
-const { headline, subhead, tag = 'h2', align = 'left', interactive = false } = Astro.props
+const {
+  headline,
+  subhead,
+  eyebrow,
+  icon,
+  logoSrc,
+  logoAlt = '',
+  tag = 'h2',
+  align = 'left',
+  interactive = false,
+} = Astro.props
 const HeadingTag = tag
 ---
 
-<div class="section-header" data-align={align} data-interactive={interactive}>
+<div
+  class:list={[
+    'section-header',
+    (eyebrow || icon || logoSrc) && 'section-header--feature',
+  ]}
+  data-align={align}
+  data-interactive={interactive}
+>
+  {icon && <CardBackgroundIcon icon={icon} />}
+  {logoSrc && <img src={logoSrc} alt={logoAlt} class="section-header__logo" />}
+  {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
   <HeadingTag class="section-headline">{headline}</HeadingTag>
   {subhead && <p class="section-subhead">{subhead}</p>}
 </div>
@@ -41,12 +67,14 @@ const HeadingTag = tag
     border-bottom: 1px solid $border-color;
     @include px-responsive('md');
     @include py-responsive('md');
+    position: relative;
+    overflow: hidden;
 
     &[data-align='center'] {
       text-align: center;
     }
 
-    // Interactive variant - with hover effects
+    /* Interactive variant — with hover effects */
     &[data-interactive='true'] {
       transition: all 0.3s ease;
       cursor: pointer;
@@ -56,8 +84,8 @@ const HeadingTag = tag
 
       &:hover {
         transform: scale(1.1);
-        background-color: #111827; /* gray-900 - same as cards */
-        border-color: #60a5fa; /* blue-400 - same as cards */
+        background-color: #111827;
+        border-color: #60a5fa;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         z-index: 10;
 
@@ -72,13 +100,80 @@ const HeadingTag = tag
     }
   }
 
+  /* Feature variant — banner-feel padding when eyebrow/icon present */
+  .section-header--feature {
+    padding-top: 7rem;
+    padding-bottom: 5rem;
+
+    @media (max-width: 1440px) {
+      padding-top: 6rem;
+      padding-bottom: 4rem;
+    }
+
+    @media (max-width: 1000px) {
+      padding-top: 4.5rem;
+      padding-bottom: 3rem;
+    }
+
+    @media (max-width: 770px) {
+      padding-top: 3rem;
+      padding-bottom: 2rem;
+    }
+
+    /* Bigger icon than content cards (cards use 8rem; here ~12rem) */
+    :global(.card-background-icon) {
+      font-size: 12rem;
+    }
+
+    :global(.card-background-icon__svg) {
+      width: 12rem;
+      height: 12rem;
+    }
+
+    @media (max-width: 770px) {
+      :global(.card-background-icon) {
+        font-size: 9rem;
+      }
+      :global(.card-background-icon__svg) {
+        width: 9rem;
+        height: 9rem;
+      }
+    }
+  }
+
+  .section-header__logo {
+    display: block;
+    width: 36px;
+    height: auto;
+    opacity: 0.85;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-eyebrow {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
   .section-headline {
     @apply text-3xl md:text-4xl font-light text-white;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
 
   .section-subhead {
     @apply text-lg text-white/80 mt-4;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
   }
 </style>

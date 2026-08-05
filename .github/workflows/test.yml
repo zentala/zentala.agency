@@ -29,6 +29,12 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Verify dev modules absent from prod bundle
+        run: npm run audit:prod
+
+      - name: Run unit tests
+        run: npm run test:unit
+
       - name: Run E2E tests
         run: npm run test:e2e
         env:

@@ -1,0 +1,531 @@
+:root {
+  --blog-version-panel-z: 9000;
+  --vh-major-accent: #f59e0b;
+}
+
+.panel {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 360px;
+  max-height: 70vh;
+  background: #000;
+  color: #fff;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  z-index: var(--blog-version-panel-z);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.panelCollapsed {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #1f2937;
+  background: #0a0a0a;
+}
+
+.title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.headerActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.kbdHint {
+  opacity: 0.55;
+  cursor: help;
+  font-size: 11px;
+}
+
+.collapseBtn {
+  background: transparent;
+  border: 1px solid #1f2937;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.collapseBtn:hover {
+  background: #1f2937;
+}
+
+.modeSwitcher {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.modePill {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #1f2937;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.modePillActive {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.modePill[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.timeline {
+  flex: 1;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 12px 6px;
+  font-size: 10px;
+  opacity: 0.6;
+  border-bottom: 1px solid #0f1623;
+}
+
+.legend code {
+  font-size: 10px;
+}
+
+.legendDot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legendDot::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid #4b5563;
+  background: transparent;
+}
+
+.legendDotMajor::before {
+  background: var(--vh-major-accent);
+  border-color: var(--vh-major-accent);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #0f1623;
+}
+
+.row:focus {
+  outline: 1px solid var(--vh-major-accent);
+  outline-offset: -1px;
+}
+
+.ghIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  text-decoration: none;
+  padding: 2px;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.ghIcon:hover {
+  color: #fff;
+  background: #1f2937;
+}
+
+.row:hover {
+  background: #0a0a0a;
+}
+
+.rowSelected {
+  background: #111827;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #4b5563;
+  background: transparent;
+}
+
+.dotMajor {
+  background: var(--vh-major-accent);
+  border-color: var(--vh-major-accent);
+}
+
+.rowMajor .rowMessage {
+  font-weight: 600;
+}
+
+.rowMajor:hover {
+  border-left: 2px solid var(--vh-major-accent);
+  padding-left: 10px;
+}
+
+.summary {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid #1f2937;
+  background: #0a0a0a;
+}
+
+.diffToggle {
+  background: transparent;
+  border: 1px solid #1f2937;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.diffToggle:hover { background: #1f2937; }
+.diffToggleActive {
+  background: var(--vh-major-accent);
+  border-color: var(--vh-major-accent);
+  color: #000;
+  font-weight: 600;
+}
+
+.diffHint {
+  padding: 6px 12px;
+  font-size: 11px;
+  opacity: 0.75;
+  border-bottom: 1px solid #0f1623;
+  background: #0a0a0a;
+}
+
+.diffCheck {
+  font-size: 13px;
+  opacity: 0.6;
+}
+.diffCheck[data-checked='true'] {
+  opacity: 1;
+  color: var(--vh-major-accent);
+}
+
+.currentBadge {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #065f46;
+  color: #d1fae5;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.diffDialog {
+  padding: 0;
+  border: none;
+  background: #0a0a0a;
+  color: #fff;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  border-radius: 0;
+  margin: 0;
+}
+
+.diffDialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+.diffDialogInner {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.diffHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid #1f2937;
+  background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.diffShaPair {
+  margin-left: 12px;
+  opacity: 0.75;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px;
+}
+
+.diffHeaderActions {
+  display: flex;
+  gap: 8px;
+}
+
+.diffActionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid #374151;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.diffActionBtn:hover {
+  background: #1f2937;
+}
+
+.diffCloseBtn {
+  background: #7f1d1d;
+  border-color: #b91c1c;
+  color: #fee2e2;
+  font-weight: 600;
+}
+
+.diffCloseBtn:hover {
+  background: #b91c1c;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+.diffBody {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 16px;
+  background: #0a0a0a;
+
+  // Custom narrow dark scrollbars applied to ANY scrollable descendant
+  // (diff2html nests its own scroll containers — .d2h-file-side-diff,
+  // .d2h-files-diff, .d2h-code-wrapper). System scrollbars look out of place
+  // on the dark theme, so we override at every level.
+  &, *, &::-webkit-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #374151 #0a0a0a;
+  }
+  &::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  &::-webkit-scrollbar-thumb,
+  *::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+    border: 1px solid #0a0a0a;
+  }
+  &::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+  }
+  &::-webkit-scrollbar-corner,
+  *::-webkit-scrollbar-corner {
+    background: #0a0a0a;
+  }
+
+  // Dark-theme overrides for diff2html.
+  :global(.d2h-wrapper),
+  :global(.d2h-file-wrapper),
+  :global(.d2h-file-header),
+  :global(.d2h-files-diff),
+  :global(.d2h-file-side-diff),
+  :global(.d2h-code-side-line),
+  :global(.d2h-code-side-linenumber),
+  :global(.d2h-code-wrapper),
+  :global(.d2h-diff-table),
+  :global(.d2h-info) {
+    background: #0a0a0a !important;
+    color: #e5e7eb !important;
+    border-color: #1f2937 !important;
+  }
+  :global(.d2h-file-header) {
+    background: #111827 !important;
+    border-bottom: 1px solid #1f2937 !important;
+  }
+  :global(.d2h-code-side-linenumber) {
+    color: #6b7280 !important;
+    background: #050505 !important;
+    border-right: 1px solid #1f2937 !important;
+  }
+  :global(.d2h-ins),
+  :global(.d2h-ins .d2h-code-side-line),
+  :global(.d2h-ins.d2h-change) {
+    background: #052e1a !important;
+    color: #86efac !important;
+  }
+  :global(.d2h-ins .d2h-code-line-prefix),
+  :global(.d2h-ins .d2h-code-line-ctn) {
+    color: #86efac !important;
+  }
+  :global(.d2h-del),
+  :global(.d2h-del .d2h-code-side-line),
+  :global(.d2h-del.d2h-change) {
+    background: #3f1212 !important;
+    color: #fca5a5 !important;
+  }
+  :global(.d2h-del .d2h-code-line-prefix),
+  :global(.d2h-del .d2h-code-line-ctn) {
+    color: #fca5a5 !important;
+  }
+  :global(.d2h-cntx),
+  :global(.d2h-cntx .d2h-code-side-line) {
+    background: #0a0a0a !important;
+    color: #9ca3af !important;
+  }
+  :global(.d2h-emptyplaceholder) {
+    background: #050505 !important;
+    border-color: #1f2937 !important;
+  }
+  :global(.d2h-code-line-ctn ins),
+  :global(.d2h-code-line del) {
+    background: transparent !important;
+  }
+  :global(.d2h-code-line ins) {
+    background: #065f46 !important;
+    color: #d1fae5 !important;
+  }
+  :global(.d2h-code-line del) {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+  }
+
+}
+
+// Panel timeline scrollbar matches site theme too.
+.timeline {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+  }
+}
+
+.rowMessage {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowMeta {
+  display: flex;
+  gap: 6px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.linesAdd {
+  color: #34d399;
+}
+
+.linesRemove {
+  color: #f87171;
+}
+
+.state {
+  padding: 16px 12px;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.retryBtn {
+  margin-top: 8px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.skeletonRow {
+  height: 32px;
+  margin: 4px 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #0a0a0a, #111827, #0a0a0a);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 16px;
+  }
+}

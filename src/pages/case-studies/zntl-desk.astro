@@ -1,0 +1,310 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+
+const heroProps = {
+  title: 'Case Study',
+  subtitle: 'Changing Sedentary Habits Through Behavioral UX Design',
+}
+---
+
+<Layout
+  title="zntlDesk Case Study"
+  description="How behavioral UX design, gamification, and automatic detection can change sedentary habits at standing desks. A deep dive into the zntlDesk project."
+>
+  <Hero {...heroProps} />
+  <section class="section-full">
+    <div class="container-padded">
+      <article class="prose prose-blog mx-auto max-w-4xl">
+        <div class="mb-12 flex flex-wrap gap-3">
+          <span
+            class="rounded-full border border-gray-700 px-3 py-1 text-sm text-gray-300"
+            >Behavioral UX</span
+          >
+          <span
+            class="rounded-full border border-gray-700 px-3 py-1 text-sm text-gray-300"
+            >IoT / Hardware</span
+          >
+          <span
+            class="rounded-full border border-gray-700 px-3 py-1 text-sm text-gray-300"
+            >Rust + React</span
+          >
+          <span
+            class="rounded-full border border-gray-700 px-3 py-1 text-sm text-gray-300"
+            >Gamification</span
+          >
+          <span
+            class="rounded-full border border-gray-700 px-3 py-1 text-sm text-gray-300"
+            >Open Source</span
+          >
+        </div>
+
+        <!-- ===== THE PROBLEM ===== -->
+        <h2>The Problem</h2>
+
+        <p>
+          Standing desks are everywhere. They are in offices, home setups, and
+          coworking spaces. Yet the data tells a different story: the average
+          standing desk owner stands for less than 15% of their workday. The desk
+          goes up once in the morning, comes back down, and stays there.
+        </p>
+
+        <p>
+          This is the <strong>behavior gap</strong> — the distance between owning
+          a tool and actually using it. Standing desks are sold as health
+          solutions, but they are really just furniture. Without behavioral
+          intervention, nothing changes.
+        </p>
+
+        <blockquote>
+          The problem is not that people lack a standing desk. The problem is
+          that nothing tells them when to use it.
+        </blockquote>
+
+        <!-- Placeholder: illustration of behavior gap -->
+        <div
+          class="my-10 flex h-48 items-center justify-center rounded-lg border border-dashed border-gray-700 bg-gray-900/30"
+        >
+          <span class="text-sm text-gray-500"
+            >[Image: The Behavior Gap — ownership vs. usage over time]</span
+          >
+        </div>
+
+        <!-- ===== MY APPROACH ===== -->
+        <h2>My Approach</h2>
+
+        <p>
+          I started from the hypothesis that the problem is not awareness — it is
+          friction. People know they should stand more. They just do not act on
+          it because nothing in their environment prompts the change at the right
+          moment.
+        </p>
+
+        <p>The design principles that emerged:</p>
+
+        <ul>
+          <li>
+            <strong>Automatic detection, not manual tracking.</strong> A ToF laser
+            sensor mounted under the desk detects height changes instantly. The user
+            never logs anything.
+          </li>
+          <li>
+            <strong>Coach, not tracker.</strong> The app does not just show data —
+            it tells you <em>when</em> to change position, with escalating urgency.
+          </li>
+          <li>
+            <strong>Gamification with real consequences.</strong> Negative scores
+            are valid gameplay. If you ignore prompts, your score drops. Comeback
+            mechanics make recovery feel rewarding, not punishing.
+          </li>
+          <li>
+            <strong>Progressive escalation.</strong> Gentle visual cues first, then
+            stronger nudges, then direct notifications. The system never starts by
+            shouting.
+          </li>
+          <li>
+            <strong>Position changes over standing duration.</strong> The goal is
+            not to stand for hours — it is to change positions frequently. Two
+            minutes of standing counts as a valid position change. The metric that
+            matters is transitions per day, not total standing time.
+          </li>
+        </ul>
+
+        <!-- ===== THE SOLUTION ===== -->
+        <h2>The Solution: zntlDesk</h2>
+
+        <p>
+          zntlDesk is an open source desktop application built with Tauri (Rust
+          backend + React frontend). It pairs with a VL53L1X Time-of-Flight
+          sensor on an ESP32-C3 microcontroller to automatically detect desk
+          height and user posture.
+        </p>
+
+        <div class="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Hardware</h5>
+            <ul class="mt-2">
+              <li>VL53L1X ToF sensor (Class 1 eye-safe)</li>
+              <li>Seeed XIAO ESP32-C3 MCU</li>
+              <li>USB connection (no wireless complexity)</li>
+              <li>Under-desk mount, pointing to floor</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Software</h5>
+            <ul class="mt-2">
+              <li>Rust backend (Tauri 2) with native WinAPI overlay</li>
+              <li>React + TypeScript frontend</li>
+              <li>SQLite persistence via tauri-plugin-sql</li>
+              <li>Remote phone dashboard via WebSocket</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Placeholder: screenshot of the app -->
+        <div
+          class="my-10 flex h-64 items-center justify-center rounded-lg border border-dashed border-gray-700 bg-gray-900/30"
+        >
+          <span class="text-sm text-gray-500"
+            >[Screenshot: zntlDesk floating window with KPI dashboard and
+            session history]</span
+          >
+        </div>
+
+        <!-- ===== RESULTS ===== -->
+        <h2>Results</h2>
+
+        <p class="text-sm uppercase tracking-wide text-gray-400">
+          Placeholder data — real metrics collection in progress
+        </p>
+
+        <div class="my-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div
+            class="rounded-lg border border-gray-800 bg-gray-900/40 p-6 text-center"
+          >
+            <p class="mb-1 text-sm text-gray-400">Standing time / day</p>
+            <p class="text-3xl font-light text-white">
+              8% <span class="text-green-400">&rarr;</span> 22%
+            </p>
+          </div>
+          <div
+            class="rounded-lg border border-gray-800 bg-gray-900/40 p-6 text-center"
+          >
+            <p class="mb-1 text-sm text-gray-400">Position changes / day</p>
+            <p class="text-3xl font-light text-white">
+              1.2 <span class="text-green-400">&rarr;</span> 4.8
+            </p>
+          </div>
+          <div
+            class="rounded-lg border border-gray-800 bg-gray-900/40 p-6 text-center"
+          >
+            <p class="mb-1 text-sm text-gray-400">Longest sitting session</p>
+            <p class="text-3xl font-light text-white">
+              3.5h <span class="text-green-400">&rarr;</span> 52min
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== KEY UX INNOVATIONS ===== -->
+        <h2>Key UX Innovations</h2>
+
+        <h4>Overlay progress bar</h4>
+        <p>
+          A 4-pixel bar at the very top of the screen, rendered via native
+          WinAPI (not a web layer). It transitions from green through yellow to
+          red as a sitting session progresses. It is always visible but never
+          intrusive — peripheral vision registers the color shift without
+          conscious attention.
+        </p>
+
+        <!-- Placeholder: overlay bar screenshot -->
+        <div
+          class="my-10 flex h-24 items-center justify-center rounded-lg border border-dashed border-gray-700 bg-gray-900/30"
+        >
+          <span class="text-sm text-gray-500"
+            >[Screenshot: Overlay progress bar at different stages — green,
+            yellow, red]</span
+          >
+        </div>
+
+        <h4>Coach messaging with comeback mechanics</h4>
+        <p>
+          The system speaks like a coach, not a dashboard. When you ignore
+          alerts, your score drops — but when you finally stand up, the
+          comeback message acknowledges the recovery. Negative score is valid
+          gameplay: it creates tension that makes the comeback satisfying.
+        </p>
+
+        <h4>Widget temperature system</h4>
+        <p>
+          Visual urgency is communicated through color temperature across all UI
+          elements simultaneously — tray icon, overlay bar, popup progress, and
+          KPI badges all shift in sync. No text needed. The entire interface
+          "heats up" as you sit longer.
+        </p>
+
+        <h4>Position changes as the core metric</h4>
+        <p>
+          Most standing desk trackers optimize for standing duration. zntlDesk
+          optimizes for <em>transitions</em>. A 5-minute standing break is worth
+          more than a 2-hour standing marathon. This aligns with ergonomic
+          research: frequent changes matter more than total time in any single
+          position.
+        </p>
+
+        <!-- ===== TECHNICAL DEPTH ===== -->
+        <h2>Technical Depth</h2>
+
+        <div class="my-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Test coverage</h5>
+            <p class="mt-2 text-base text-gray-300">
+              356 Rust unit tests cover the session state machine, overlay
+              rendering logic, break credit calculations, alert firing rules,
+              and height calibration. 189 TypeScript tests cover React
+              components, hooks, and utilities. Integration tests simulate
+              full sensor-to-UI flows.
+            </p>
+          </div>
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Native overlay renderer</h5>
+            <p class="mt-2 text-base text-gray-300">
+              The progress bar is a native WinAPI window — not Electron, not a
+              WebView. It uses GDI rendering with
+              <code>UpdateLayeredWindow</code> for transparency. This keeps
+              memory under 250 MB and avoids the overhead of a second browser
+              process.
+            </p>
+          </div>
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Modular alert state machine</h5>
+            <p class="mt-2 text-base text-gray-300">
+              AlertManager is a pure function: current state in, list of
+              actions out. No side effects, no timers, no UI coupling. The
+              tray controller executes the actions. This makes the escalation
+              logic fully testable and easy to reconfigure.
+            </p>
+          </div>
+          <div class="rounded-lg border border-gray-800 bg-gray-900/40 p-6">
+            <h5>Open core model</h5>
+            <p class="mt-2 text-base text-gray-300">
+              The desktop app is open source (MIT/Apache). Cloud sync, AI
+              coaching, and smartwatch integration are closed/paid features.
+              This lets developers build on the platform while sustaining
+              development through SaaS revenue.
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== LINKS ===== -->
+        <h2>Links</h2>
+
+        <ul>
+          <li>
+            <strong>Product page:</strong>
+            <a href="https://desk.zentala.io">desk.zentala.io</a>
+          </li>
+          <li>
+            <strong>GitHub:</strong>
+            <a href="https://github.com/zentala/zntl-tray"
+              >github.com/zentala/zntl-tray</a
+            >
+          </li>
+          <li>
+            <strong>Research:</strong> Behavioral interventions for sedentary
+            reduction — review of the evidence base
+            <span class="text-sm text-gray-500">[link pending]</span>
+          </li>
+        </ul>
+
+        <hr />
+
+        <p class="text-center text-base text-gray-400">
+          This is a living project. The app is in active development and the
+          results section will be updated with real data as the measurement
+          infrastructure matures.
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>

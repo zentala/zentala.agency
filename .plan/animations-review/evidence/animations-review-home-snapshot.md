@@ -1,0 +1,106 @@
+- generic [active] [ref=e1] [box=0,0,1425,1994]:
+  - banner [ref=e3] [box=0,0,1425,87]:
+    - generic [ref=e4] [box=9,0,1408,86]:
+      - generic [ref=e5] [box=57,20,475,46]:
+        - link [ref=e7] [cursor=pointer] [box=57,20,200,40]:
+          - /url: /
+        - link "Innovation Agency" [ref=e10] [cursor=pointer] [box=257,31,275,24]:
+          - /url: /
+      - navigation [ref=e12] [box=719,31,650,24]:
+        - link "Home" [ref=e13] [cursor=pointer] [box=719,31,64,24]:
+          - /url: /
+        - link "Capabilities" [ref=e14] [cursor=pointer] [box=823,31,147,24]:
+          - /url: /about/capabilities
+        - link "Portfolio" [ref=e15] [cursor=pointer] [box=1009,31,122,24]:
+          - /url: /portfolio
+        - link "Blog" [ref=e16] [cursor=pointer] [box=1171,31,57,24]:
+          - /url: /blog
+        - link "Contact" [ref=e17] [cursor=pointer] [box=1268,31,100,24]:
+          - /url: /contact
+  - main [ref=e18] [box=0,81,1425,1466]:
+    - generic [ref=e21] [box=9,81,1408,1050]:
+      - generic [ref=e22] [box=9,82,352,524]:
+        - 'generic "Column span: 1, Row span: 2" [box=327,87,29,14]': 1:2
+        - generic [ref=e26] [box=38,107,294,474]
+      - generic [ref=e33] [box=361,82,352,262]:
+        - 'generic "Column span: 1, Row span: 1" [box=679,87,29,14]': 1:1
+        - generic [ref=e37] [box=390,107,294,214]
+      - generic [ref=e42] [box=713,82,352,262]:
+        - 'generic "Column span: 1, Row span: 1" [box=1031,87,29,14]': 1:1
+        - generic [ref=e44] [box=742,107,294,209]
+      - generic [ref=e49] [box=1065,82,352,524]:
+        - 'generic "Column span: 1, Row span: 2" [box=1383,87,29,14]': 1:2
+        - generic [ref=e50] [box=1066,83,350,522]
+      - generic [ref=e52] [cursor=pointer] [box=361,344,704,524]:
+        - 'generic "Column span: 2, Row span: 2" [box=1031,349,29,14]': 2:2
+        - generic [ref=e53] [box=362,345,702,522]
+      - generic [ref=e98] [box=9,606,352,524]:
+        - 'generic "Column span: 1, Row span: 2" [box=327,611,29,14]': 1:2
+        - img "Technology workspace" [ref=e100] [box=10,607,350,522]
+      - generic [ref=e101] [box=1065,606,352,262]:
+        - 'generic "Column span: 1, Row span: 1" [box=1383,611,29,14]': 1:1
+        - generic [ref=e105] [box=1094,631,294,202]
+      - generic [ref=e110] [box=361,869,352,262]:
+        - 'generic "Column span: 1, Row span: 1" [box=679,874,29,14]': 1:1
+        - generic [ref=e114] [box=390,894,294,182]
+      - generic [ref=e117] [box=713,869,704,262]:
+        - 'generic "Column span: 2, Row span: 1" [box=1383,874,29,14]': 2:1
+        - img [ref=e119] [box=1272,940,120,120]
+        - generic [ref=e123] [box=742,894,549,162]
+    - generic [ref=e130] [box=9,1132,1408,414]:
+      - generic [ref=e131] [box=9,1204,1408,164]:
+        - heading "Let's Turn Your Vision Into a Product" [level=2] [ref=e132] [box=57,1252,1312,40]
+        - paragraph [ref=e133] [box=57,1308,896,28]: From discovery session to production-ready MVP - let's start with a call.
+      - generic [ref=e134] [box=9,1368,1408,50]:
+        - link "Schedule Discovery Call" [ref=e135] [cursor=pointer] [box=427,1369,288,48]:
+          - /url: https://cal.com/zentala
+        - link "Connect on LinkedIn" [ref=e141] [cursor=pointer] [box=731,1368,267,50]:
+          - /url: https://linkedin.com/in/zentala
+      - paragraph [ref=e147] [box=9,1450,1408,24]:
+        - generic [ref=e148] [box=421,1450,308,24]
+        - generic [ref=e152] [box=741,1450,7,24]: •
+        - generic [ref=e153] [box=760,1450,244,24]
+  - contentinfo [ref=e157] [box=0,1547,1425,448]:
+    - generic [ref=e159] [box=57,1567,1312,50]:
+      - link [ref=e162] [cursor=pointer] [box=57,1570,240,44]:
+        - /url: /
+        - img [ref=e163] [box=57,1570,222,44]
+      - generic [ref=e199] [box=1243,1567,126,50]:
+        - link [ref=e200] [cursor=pointer] [box=1243,1567,29,50]:
+          - /url: https://www.linkedin.com/in/zentala/
+        - link [ref=e202] [cursor=pointer] [box=1288,1567,32,50]:
+          - /url: https://github.com/zentala
+        - link [ref=e204] [cursor=pointer] [box=1336,1567,33,50]:
+          - /url: mailto:zentala@gmail.com
+    - generic [ref=e167] [box=57,1685,1312,200]:
+      - generic [ref=e168] [box=57,1685,537,200]:
+        - heading "About" [level=2] [ref=e169] [box=57,1685,537,24]
+        - paragraph [ref=e170] [box=57,1733,537,120]: Żentała Innovation Agency specializes in R&D projects and innovative solutions in software, Developer Experience, IoT, automation, and robotics. We deliver advanced technologies through customized solutions, from needs analysis to Proof of Concept, enhancing your company's competitiveness.
+      - generic [ref=e172] [box=831,1685,316,200]:
+        - heading "Capabilities" [level=2] [ref=e173] [box=831,1685,316,24]
+        - list [ref=e174] [box=831,1733,316,152]
+      - generic [ref=e181] [box=1163,1685,205,200]:
+        - heading "Blogs" [level=2] [ref=e182] [box=1163,1685,205,24]
+        - list [ref=e183] [box=1163,1733,205,152]
+    - generic [ref=e196] [box=57,1954,325,20]:
+      - text: © 2025
+      - link "Żentała Innovation Agency" [ref=e197] [cursor=pointer] [box=107,1954,165,19]:
+        - /url: /
+      - text: ·
+      - link "Privacy Policy" [ref=e198] [cursor=pointer] [box=299,1954,83,19]:
+        - /url: /privacy-policy/
+  - generic [ref=e208] [box=626,1083,173,40]:
+    - button "Menu" [ref=e209] [box=626,1083,42,40]:
+      - img [ref=e211] [box=639,1093,20,20]
+      - generic [box=622,1002,54,27]: Menu
+    - button "Inspect" [ref=e215] [box=668,1083,44,40]:
+      - img [ref=e217] [box=680,1093,20,20]
+      - generic [box=659,1002,62,27]: Inspect
+    - button "Audit" [ref=e219] [box=712,1083,44,40]:
+      - generic [ref=e220] [box=724,1093,20,20]:
+        - img [ref=e221] [box=724,1093,20,20]
+        - img [ref=e224] [box=740,1089,10,10]
+      - generic [box=708,1002,51,27]: Audit
+    - button "Settings" [ref=e227] [box=757,1083,42,40]:
+      - img [ref=e229] [box=766,1093,20,20]
+      - generic [box=742,1002,68,27]: Settings

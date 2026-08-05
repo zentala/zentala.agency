@@ -3,13 +3,14 @@ import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 import react from '@astrojs/react'
+import { blogVersionHistoryDevPlugin } from './src/lib/dev/git-history/vitePlugin'
 
 export default defineConfig({
   output: 'static',
   integrations: [
     tailwind(),
     mdx(),
-    icon({ include: { lucide: ['*'] } }),
+    icon({ include: { lucide: ['*'], ph: ['*'] } }),
     react({ include: ['src/components/react-stuff/**/*'] }),
   ],
   image: {
@@ -18,6 +19,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [blogVersionHistoryDevPlugin()],
     resolve: {
       alias: {
         '@': '/src',
