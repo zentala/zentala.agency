@@ -4,14 +4,33 @@ import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 
 const posts = (await getCollection('blog')).filter(
-  (post) => import.meta.env.DEV || post.data.published !== false,
+  (post) =>
+    import.meta.env.DEV ||
+    import.meta.env.PUBLIC_PREVIEW === 'true' ||
+    post.data.published !== false,
 )
 const authors = (await getCollection('authors'))[0].data
+
+const seriesSlugs = [...new Set(posts.map((p) => p.data.series).filter(Boolean))]
 ---
 
 <Layout title="Blog">
   <section class="section-full">
     <div class="container-bordered">
+      {
+        seriesSlugs.length > 0 && (
+          <div class="padding-responsive-md border-b border-gray-800">
+            {seriesSlugs.map((series) => (
+              <a
+                href={`/series/${series}`}
+                class="text-sm text-gray-400 hover:text-white"
+              >
+                View series: {series} →
+              </a>
+            ))}
+          </div>
+        )
+      }
       <div class="cards-grid">
         {
           posts.map((post) => {

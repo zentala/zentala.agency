@@ -27,6 +27,9 @@ const blogCollection = defineCollection({
     authorRole: z.string().optional(),
     bannerEnd: z.string().optional(),
     published: z.boolean().optional(),
+    series: z.string().optional(),
+    part: z.number().optional(),
+    linkedinPost: z.string().optional(),
   }),
 })
 

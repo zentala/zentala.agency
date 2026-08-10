@@ -6,7 +6,9 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content'
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter(
     (post: CollectionEntry<'blog'>) =>
-      import.meta.env.DEV || post.data.published !== false,
+      import.meta.env.DEV ||
+      import.meta.env.PUBLIC_PREVIEW === 'true' ||
+      post.data.published !== false,
   )
   const categoryMap = new Map<
     string,

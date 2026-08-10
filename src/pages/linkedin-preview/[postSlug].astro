@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import LinkedInPostCard from '../../components/preview/LinkedInPostCard.astro'
+
+export async function getStaticPaths() {
+  const isPreview =
+    import.meta.env.DEV || import.meta.env.PUBLIC_PREVIEW === 'true'
+  if (!isPreview) return []
+
+  const posts = await getCollection('blog')
+  return posts
+    .filter((post) => Boolean(post.data.linkedinPost))
+    .map((post) => ({
+      params: { postSlug: post.slug },
+      props: { post },
+    }))
+}
+
+const { post } = Astro.props
+const authorData = (await getCollection('authors'))[0].data
+const author = authorData.find((a) => a.slug === post.data.author)
+---
+
+<Layout title={`LinkedIn preview: ${post.data.title}`}>
+  <section class="section-full">
+    <div class="container-bordered padding-responsive-md">
+      <p class="mb-6 text-sm text-gray-500">
+        LinkedIn draft preview — not a live post.
+      </p>
+      <LinkedInPostCard
+        title={post.data.title}
+        text={post.data.linkedinPost}
+        articleLink={`/blog/${post.slug}`}
+        authorName={author?.name ?? post.data.author}
+        authorAvatar={author?.avatar ?? ''}
+      />
+    </div>
+  </section>
+</Layout>
