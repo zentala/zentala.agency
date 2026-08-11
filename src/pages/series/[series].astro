@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import PostCard from '../../components/cards/PostCard.astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+
+const isPreview =
+  import.meta.env.DEV || import.meta.env.PUBLIC_PREVIEW === 'true'
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter(
+    (post: CollectionEntry<'blog'>) =>
+      post.data.series &&
+      (import.meta.env.DEV ||
+        import.meta.env.PUBLIC_PREVIEW === 'true' ||
+        post.data.published !== false),
+  )
+  const seriesMap = new Map<string, CollectionEntry<'blog'>[]>()
+
+  posts.forEach((post) => {
+    const series = post.data.series as string
+    const existing = seriesMap.get(series)
+    if (existing) {
+      existing.push(post)
+    } else {
+      seriesMap.set(series, [post])
+    }
+  })
+
+  return Array.from(seriesMap.entries()).map(([series, seriesPosts]) => ({
+    params: { series },
+    props: {
+      posts: seriesPosts.sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0)),
+    },
+  }))
+}
+
+interface Props {
+  posts: CollectionEntry<'blog'>[]
+}
+
+const { series } = Astro.params as { series: string }
+const { posts } = Astro.props as { posts: CollectionEntry<'blog'>[] }
+const authorsCollection = await getCollection('authors')
+const authors: any[] =
+  authorsCollection && authorsCollection[0]
+    ? (authorsCollection[0].data as any[])
+    : []
+---
+
+<Layout title={`Series: ${series}`}>
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="padding-responsive-md border-b border-gray-800">
+        <h1 class="text-4xl font-light text-white">Series: {series}</h1>
+        <p class="mt-4 max-w-none text-gray-300">
+          {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
+        </p>
+      </div>
+      <div class="cards-grid">
+        {
+          posts.map((post) => {
+            const author = authors.find(
+              (a: any) => a.slug === post.data.author,
+            )
+            const partLabel = post.data.part
+              ? `Part ${post.data.part}/${posts.length}`
+              : undefined
+            return (
+              <div class="relative">
+                <PostCard
+                  title={post.data.title}
+                  date={post.data.date}
+                  category={post.data.category}
+                  imageUrl={post.data.imageUrl}
+                  excerpt={post.data.excerpt}
+                  authorName={author?.name}
+                  authorAvatar={author?.avatar}
+                  authorRole={post.data.authorRole || author?.role}
+                  link={`/blog/${post.slug}`}
+                  partLabel={partLabel}
+                />
+                {isPreview && post.data.linkedinPost && (
+                  <a
+                    href={`/linkedin-preview/${post.slug}`}
+                    class="relative z-10 mt-2 inline-block rounded-full bg-blue-900/40 px-3 py-1 text-xs text-blue-300 hover:bg-blue-900/60"
+                  >
+                    LinkedIn draft →
+                  </a>
+                )}
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

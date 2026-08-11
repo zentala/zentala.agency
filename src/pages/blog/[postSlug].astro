@@ -9,7 +9,12 @@ const isDev = import.meta.env.DEV
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts
-    .filter((post) => import.meta.env.DEV || post.data.published !== false)
+    .filter(
+      (post) =>
+        import.meta.env.DEV ||
+        import.meta.env.PUBLIC_PREVIEW === 'true' ||
+        post.data.published !== false,
+    )
     .map((post) => ({
       params: { postSlug: post.slug },
     }))
@@ -18,7 +23,10 @@ export async function getStaticPaths() {
 const { postSlug } = Astro.params
 const post = (await getCollection('blog')).find(
   (p) =>
-    p.slug === postSlug && (import.meta.env.DEV || p.data.published !== false),
+    p.slug === postSlug &&
+    (import.meta.env.DEV ||
+      import.meta.env.PUBLIC_PREVIEW === 'true' ||
+      p.data.published !== false),
 )
 const authorData = (await getCollection('authors'))[0].data
 
@@ -34,6 +42,19 @@ if (!author) {
 }
 
 const { Content, headings } = await post.render()
+
+// Series siblings — only fetched when this post belongs to a series.
+const seriesPosts = post.data.series
+  ? (await getCollection('blog'))
+      .filter(
+        (p) =>
+          p.data.series === post.data.series &&
+          (import.meta.env.DEV ||
+            import.meta.env.PUBLIC_PREVIEW === 'true' ||
+            p.data.published !== false),
+      )
+      .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
+  : []
 
 // TOC: only h2 + h3 — keeps it scannable
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3)
@@ -141,6 +162,37 @@ const contentBoxClass = 'py-responsive-md'
         <aside class="blog-aside blog-aside--left" aria-label="Article meta">
           <a href="/blog" class="blog-aside__back">← All posts</a>
           <p class="blog-aside__meta">{readingMinutes} min read</p>
+
+          {
+            post.data.series && seriesPosts.length > 0 && (
+              <nav class="blog-series" aria-label="Series navigation">
+                <p class="blog-series__title">
+                  Series: {post.data.series}
+                </p>
+                <ol class="blog-series__list">
+                  {seriesPosts.map((seriesPost) => (
+                    <li
+                      class={
+                        seriesPost.slug === post.slug
+                          ? 'blog-series__item blog-series__item--current'
+                          : 'blog-series__item'
+                      }
+                    >
+                      {seriesPost.slug === post.slug ? (
+                        <span>
+                          Part {seriesPost.data.part}: {seriesPost.data.title}
+                        </span>
+                      ) : (
+                        <a href={`/blog/${seriesPost.slug}`}>
+                          Part {seriesPost.data.part}: {seriesPost.data.title}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
 
           <div class="blog-share" aria-label="Share this article">
             <p class="blog-share__title">Share</p>
@@ -419,6 +471,52 @@ const contentBoxClass = 'py-responsive-md'
     font-size: 0.8125rem;
     font-weight: 300;
     color: rgb(107 114 128); /* gray-500 */
+  }
+
+  /* Series rail */
+  .blog-series {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(31 41 55); /* gray-800 */
+  }
+
+  .blog-series__title {
+    margin: 0 0 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(156 163 175); /* gray-400 */
+  }
+
+  .blog-series__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .blog-series__item {
+    font-size: 0.8125rem;
+    font-weight: 300;
+    line-height: 1.4;
+  }
+
+  .blog-series__item a {
+    color: rgb(156 163 175); /* gray-400 */
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  .blog-series__item a:hover {
+    color: white;
+  }
+
+  .blog-series__item--current span {
+    color: white;
+    font-weight: 500;
   }
 
   /* Share rail */
