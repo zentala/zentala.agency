@@ -2,7 +2,7 @@
 title: 'The Future of Workflow Automation with AI Agents'
 date: '2024-12-27'
 category: 'Innovation'
-imageUrl: 'https://zentala.io/images/future-of-workflow-automation.jpg'
+imageUrl: 'https://cdn.zentala.agency/images/future-of-workflow-automation.jpg'
 excerpt: 'Explore cutting-edge applications of AI agents in workflow automation, from personalized content generation to interactive dashboards. Discover how agent-driven innovation is transforming industries.'
 authorRole: 'Innovation Activist'
 bannerEnd: 'ai-automation'

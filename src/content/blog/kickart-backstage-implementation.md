@@ -2,7 +2,7 @@
 title: '6 Practical Steps to Kickstart Your Backstage Implementation'
 date: '2024-12-02'
 category: 'DevEx'
-imageUrl: 'https://zentala.io/images/kickstart-backstage-implementation.jpg'
+imageUrl: 'https://cdn.zentala.agency/images/kickstart-backstage-implementation.jpg'
 excerpt: 'Kickstart your Backstage implementation with these practical steps to quickly prove value, build momentum, and secure support from both technical teams and management for the ongoing development of your developer portal, while managing limited resources effectively.'
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'

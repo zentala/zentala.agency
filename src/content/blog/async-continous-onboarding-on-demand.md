@@ -2,7 +2,7 @@
 title: 'Continuous Async Onboarding: The DevEx Pattern AI Will Force on Every Engineering Org'
 date: '2026-05-12'
 category: 'DevEx'
-imageUrl: 'https://zentala.io/images/continuous-onboarding.jpg'
+imageUrl: 'https://cdn.zentala.agency/images/continuous-onboarding.jpg'
 excerpt: "DORA's 2025 report found that high-quality engineering platforms amplify AI's benefits — and low-quality ones get nothing. McKinsey measured GenAI doubling coding speed, but only when developers already knew the framework. The lesson: every developer (and every agent) is in continuous, asynchronous onboarding. Organizations that design for that win twice — once for the humans, once for the machines."
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'

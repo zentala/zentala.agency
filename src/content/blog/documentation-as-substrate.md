@@ -2,7 +2,7 @@
 title: 'Documentation Is No Longer for Humans Alone'
 date: '2026-05-12'
 category: 'DevEx'
-imageUrl: 'https://zentala.io/images/documentation-as-substrate.jpg'
+imageUrl: 'https://cdn.zentala.agency/images/documentation-as-substrate.jpg'
 excerpt: "For thirty years we wrote documentation for the next developer. Now we write it for the next developer and the next agent. They want the same thing: structured, accurate, machine-readable knowledge with clear ownership. The investment that fixes onboarding is the same investment that makes AI agents productive in your codebase. This is the unifying design principle for the next decade of engineering organizations."
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
