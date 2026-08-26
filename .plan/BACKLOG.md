@@ -5,6 +5,13 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **`PostCard` declares an `imageUrl` prop it never renders** —
+  `src/components/cards/PostCard.astro:8` takes it, the template ignores it,
+  and two call sites still pass it (`src/pages/category/[category].astro:99`,
+  `src/pages/series/[series].astro:113`). Harmless today, but it is exactly
+  the prop someone will set expecting a cover to appear. Either render it or
+  delete it from all three files. Found 2026-08-26 while removing the covers.
+  (Low, 1)
 - [ ] **Every `*.zentala.io` link on the site is dead** — the domain was
   dropped. Verified 2026-08-26, all six answer nothing (curl exit 6, no DNS):
   `desk.`, `ihome.`, `gpnf.`, `ideas.`, `wifi.`, `dev.`. They are linked as
@@ -14,15 +21,6 @@ Bugs and small tasks found in passing. Entry format:
   `src/pages/case-studies/zntl-desk.astro:285`. Needs his call: do those apps
   have new addresses, or do the links come out? Not something an agent should
   guess. (High, 3)
-- [ ] **6 blog cover images are 404 on the new CDN** — the swap from the dead
-  `zentala.io/images/` to `cdn.zentala.agency/images/` is done in the source,
-  but only `avatar.jpg` actually exists there. Missing (checked 2026-08-26,
-  all 404): `documentation-as-substrate.jpg`, `continuous-onboarding.jpg`,
-  `understanding-developer-experience.jpg` (used twice),
-  `developer-portals-ai-bridge.jpg`, `kickstart-backstage-implementation.jpg`,
-  `future-of-workflow-automation.jpg`. Paweł said he is publishing the CDN
-  under `zentala.agency` — this closes itself once those files are uploaded.
-  (Medium, 1)
 - [ ] **`npm run build` fails: 276 `astro check` errors, all in `solid-chat`** —
   `src/components/solid-chat/**` and `src/components/preview/LinkedInPostCard.astro`
   cannot resolve `solid-js` / `solid-element` type declarations, so every JSX
@@ -63,6 +61,18 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Fixed
 
+- [x] **6 blog cover images never existed** — 9 posts carried an `imageUrl`
+  pointing at a file that is nowhere: not on disk, not in the git history of
+  any of the five repos (cdn.zentala.io, cdn.zentala.agency, zentala.agency,
+  DevStage.IO, zntl-portal), not in the R2 bucket dump
+  (`cdn.zentala.agency/assets/files.json`, 2026-07-14, 364 files, only
+  `avatar.jpg` under `images/`). Two of the nine pointed at `example.com`.
+  Not a CDN-migration regression — the covers were simply never made. Fixed
+  2026-08-26 on Pawel's call: the `imageUrl` frontmatter line is deleted from
+  all 9 posts, so `og:image` falls back to `/og-default.png` instead of
+  advertising a 404 to every crawler and every social-media unfurl. The
+  optional schema field and the `og:image` plumbing stay, so a real cover
+  works the day one is drawn. (Medium, 1)
 - [x] **`astro build` (and `npm run build`) shares `node_modules/.vite` with the
   `astro dev` PM3 service, so every build poisons the running dev server's
   pre-bundled `react/jsx-dev-runtime`** — root cause of `TypeError: jsxDEV is

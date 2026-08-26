@@ -2,7 +2,6 @@
 title: 'Your Internal Developer Portal Is the Missing Link for AI Agents'
 date: '2026-05-12'
 category: 'DevEx'
-imageUrl: 'https://cdn.zentala.agency/images/developer-portals-ai-bridge.jpg'
 excerpt: "Anthropic's Model Context Protocol grew from 1,200 to 9,400+ servers in twelve months. Roadie reports that AI agents now interact with their Backstage platform 100 times more often than humans do. The race isn't about building smarter agents anymore — it's about giving them the structured context to do real work. That context lives in your developer portal."
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'

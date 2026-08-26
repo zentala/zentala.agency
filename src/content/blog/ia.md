@@ -2,7 +2,6 @@
 title: 'Information Architecture: A Comprehensive Guide'
 date: '2025-01-16'
 category: 'IA'
-imageUrl: 'https://example.com/images/information-architecture-cover.jpg'
 excerpt: 'Dive into the fundamentals and advanced practices of organizing, structuring, and labeling content. This eBook explores core concepts like taxonomy, ontology, and metadata, along with practical insights on navigation design, content strategy, and user testing—everything you need to build scalable, user-centric information systems.'
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
