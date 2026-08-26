@@ -30,7 +30,7 @@ const author = authorData.find((a) => a.slug === post.data.author)
       </p>
       <LinkedInPostCard
         title={post.data.title}
-        text={post.data.linkedinPost}
+        text={post.data.linkedinPost ?? ''}
         articleLink={`/blog/${post.slug}`}
         authorName={author?.name ?? post.data.author}
         authorAvatar={author?.avatar ?? ''}

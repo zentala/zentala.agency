@@ -5,8 +5,23 @@ and cross-link the commit/session that closed it.
 
 ---
 
-### [ ] Fix pre-existing `astro check` failure — 274 errors from missing SolidJS deps
+### [x] Fix pre-existing `astro check` failure — 274 errors from missing SolidJS deps
 - **Importance:** Medium · **Points:** 5
+- **Zamknięte 2026-08-26 — ścieżka 2 (retire), przez archiwizację, nie kasowanie.**
+  `solid-chat/` i `Chatbot.astro` poszły `git mv` do `archive/` (poza
+  `tsconfig.json` `include: ["src"]`, więc Astro ich nie widzi); powód i sposób
+  przywrócenia: [`../archive/ARCHIVED.md`](../archive/ARCHIVED.md). Dowód, że to
+  martwy kod: `Chatbot.astro` nie był importowany przez żadną stronę, a `solid-js`
+  nie było w `package.json` w ogóle. Poza solid-chat zostały 2 prawdziwe błędy, oba
+  naprawione: `LinkedInPostCard.astro` deklarował `LinkedInPostProps` zamiast `Props`,
+  więc `Astro.props` było `any` — co maskowało drugi błąd
+  (`linkedin-preview/[postSlug].astro:33` podawał `string | undefined` do wymaganego
+  propa). `npm run build`: 0 błędów, 26 stron, widget czatu w 24 z 28 plików HTML
+  (pozostałe 4 to stuby przekierowań).
+- **Koszt milczenia:** przez ten błąd deploy na GitHub Pages był czerwony od
+  **2026-08-05** i nikt tego nie zauważył — trzy pushe (08-05, 08-17, 08-26) nie
+  trafiły na produkcję, strona żyła z builda z 2026-06-17. Lokalnie `npx astro build`
+  przechodził, więc wyglądało to zdrowo.
 - **Problem:** `npm run build` (`astro check && astro build`) fails with **274 errors**,
   almost all cascading from `src/components/solid-chat/**`: `Cannot find module 'solid-js'`
   and `'solid-element'`. Neither package is in `package.json`, so every SolidJS JSX type

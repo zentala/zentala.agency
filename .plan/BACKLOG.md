@@ -5,6 +5,15 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **Czerwony deploy nie daje żadnego sygnału — 21 dni produkcja stała w
+  miejscu i nikt tego nie wiedział** — `Deploy to GitHub Pages` padał od
+  2026-08-05 do 2026-08-26 (3 pushe), a jedynym sposobem, żeby to zobaczyć, było
+  ręczne `gh run list`. Kanał sukcesu i kanał awarii są tu tym samym kanałem:
+  ciszą. Do zrobienia: powiadomienie o czerwonym buildzie main (mail z GitHuba to
+  minimum, wpis w `inbox.internal` byłoby lepsze) **oraz** sprawdzenie, że
+  wdrożona wersja jest świeża — np. build stamp w HTML i cotygodniowe
+  porównanie z `HEAD`. Znalezione 2026-08-26 przy naprawie widgetu. (High, 3)
+
 - [x] **The chat widget is disabled site-wide until its host serves real JS** —
   `src/layouts/Layout.astro:96` was commented out. History: `hub.zentala.io`
   died with the domain (503 on every page load); migrated 2026-08-26 to
@@ -44,7 +53,18 @@ Bugs and small tasks found in passing. Entry format:
   `src/pages/case-studies/zntl-desk.astro:285`. Needs his call: do those apps
   have new addresses, or do the links come out? Not something an agent should
   guess. (High, 3)
-- [ ] **`npm run build` fails: 276 `astro check` errors, all in `solid-chat`** —
+- [x] **`npm run build` fails: 276 `astro check` errors, all in `solid-chat`** —
+  **Naprawione 2026-08-26.** `solid-chat/` + `Chatbot.astro` (martwy kod: nic ich
+  nie importowało, `solid-js` nie było w `package.json`) zarchiwizowane przez
+  `git mv` do `archive/` — poza `tsconfig.json` `include: ["src"]`, więc `astro
+  check` ich nie widzi; `archive/ARCHIVED.md` mówi, czym były i jak je wrócić.
+  Dwa prawdziwe błędy poza solid-chat naprawione w kodzie: `Props` zamiast
+  `LinkedInPostProps` w `LinkedInPostCard.astro` (przez to `Astro.props` było
+  `any`) i `?? ''` na opcjonalnym `linkedinPost`. `npm run build` → 0 błędów,
+  26 stron. **Ważniejsze niż sam błąd:** przez niego deploy na GitHub Pages był
+  czerwony od 2026-08-05 — trzy pushe nie trafiły na produkcję, a strona
+  serwowała build z 2026-06-17. Nikt nie dostał sygnału.
+  Poprzedni opis:
   `src/components/solid-chat/**` and `src/components/preview/LinkedInPostCard.astro`
   cannot resolve `solid-js` / `solid-element` type declarations, so every JSX
   element in them is typed against React's DOM types and fails. **Zero errors
