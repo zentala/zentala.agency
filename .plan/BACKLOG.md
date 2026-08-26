@@ -5,6 +5,14 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **The portfolio page has no images, and never did** — 5 of the 9
+  entries in `src/pages/portfolio.astro` carry an `image:` field
+  (`/images/portfolio/{rtls,smart-home,backstage,open-smart-desk,robot}.jpg`),
+  `public/images/portfolio/` does not exist, and `PortfolioItem.astro:30` has
+  the `<img>` commented out — which is the only reason the page does not show
+  five broken images. Same pattern as the blog covers: the fields were written
+  before the files. Either source the pictures and un-comment the tag, or drop
+  the `image:` fields. Found 2026-08-26 while writing task 007. (Medium, 3)
 - [ ] **`PostCard` declares an `imageUrl` prop it never renders** —
   `src/components/cards/PostCard.astro:8` takes it, the template ignores it,
   and two call sites still pass it (`src/pages/category/[category].astro:99`,
