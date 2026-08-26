@@ -438,6 +438,14 @@ const bentoStates = {
     <!-- Row 4: Col 3-4 - Strategy to Execution (2:1) -->
     <BentoCard colSpan={2} rowSpan={1} padding="sm" class="group">
       <!-- hoverState={bentoStates.logo} -->
+      <!-- The whole card books the call. Raised above the z-10 content block,
+           otherwise the text would swallow the click. -->
+      <a
+        href="https://cal.com/zentala"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="absolute inset-0 z-20"
+        aria-label="Book a call about execution and delivery"></a>
       <div
         class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"
       >
@@ -466,6 +474,11 @@ const bentoStates = {
             get a production-ready first version online — ready to share with
             users, gather feedback, and validate in the market.
           </p>
+          <span
+            class="mt-3 inline-block text-xs font-medium uppercase tracking-widest text-white/60 transition-colors group-hover:text-white"
+          >
+            Book a call →
+          </span>
         </div>
       </SectionContent>
     </BentoCard>
