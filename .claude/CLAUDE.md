@@ -101,6 +101,32 @@ Tasks follow structured organization documented in [.claude/CLAUDE.TASKS.md](.cl
 - After homepage: Light theme → Animations → SEO
 - Defer: Image placeholders, content strategy, technical debt
 
+## Blog content — two series, one split
+
+The blog runs **two article series**, and every new post belongs to one of them
+unless it plainly belongs to neither. The split is by question, not by topic:
+
+| Series | Slug | Answers | Holds |
+|---|---|---|---|
+| **Agent-Native Harness** | `agent-native-harness` | **how** | the machinery that already runs: agent registry, bang commands, PM3, the knowledge base, the feedback loop |
+| **Multi-Interface** | `multi-interface` | **why** | UX, DX and AX as one discipline: content negotiation, Markdown/MDX as the substrate, agent-native architecture (A2A + MCP + API at once), addressing, brokers |
+
+Harness links to Multi-Interface as its justification; Multi-Interface links to
+Harness as its proof. A post that explains a mechanism goes to Harness. A post
+that argues a position goes to Multi-Interface.
+
+Which blog gets an article at all is a global rule (`~/.claude/CLAUDE.md`):
+commercial topics — harness, agent-native, multi-interface, AI agency, DevEx —
+are written **here**, straight away. Everything else goes to `log.zentala.pl`
+(repo `zntl-portal`). That repo's `src/content/ideas/` is the workshop and stays
+the source: drafts may be **moved here as files, never summarized**.
+
+Frontmatter that makes a post part of a series: `series:` (the slug above) and
+`part:` (a number). A series page only materializes if at least one post carries
+its slug — `getStaticPaths` groups by posts, not by the description file.
+`published: false` keeps a post out of the production build while leaving it
+visible in `npm run dev`.
+
 ## Git & Commit Rules
 
 1. **ALWAYS `npm run build` before commit** (catches type errors)
