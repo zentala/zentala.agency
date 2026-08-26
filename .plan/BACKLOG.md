@@ -226,3 +226,34 @@ Bugs and small tasks found in passing. Entry format:
 
 - [ ] **Portfolio linkuje do trzech martwych domen `*.zentala.io`** — `src/pages/portfolio.astro:25,48,62` (`ihome.zentala.io`, `desk.zentala.io`, `gpnf.zentala.io`). Strefa `zentala.io` zniknęła z Cloudflare 2026-07-10, więc to martwe linki na żywej publicznej stronie. Znalezione podczas planowania migracji `zentala.io` → `zentala.agency` (repo `cloudflare`, epik E011, 2026-08-26). Decyzja do podjęcia per link: usunąć pozycję z portfolio albo odtworzyć podstronę pod `.agency`. (Importance: High, Points: 2)
 - [ ] **Sześć artykułów bloga ma `imageUrl` do okładek, których nigdy nie zrobiono.** Nie chodzi o migrację CDN — pliki nie istnieją ani na dysku, ani w historii gita, ani w zrzucie bucketu R2 (`cloudflare/cdn.zentala.agency/assets/files.json`, 2026-07-14: pod `images/` tylko `avatar.jpg`). Brakuje: `documentation-as-substrate.jpg`, `continuous-onboarding.jpg`, `understanding-developer-experience.jpg`, `developer-portals-ai-bridge.jpg`, `kickstart-backstage-implementation.jpg`, `future-of-workflow-automation.jpg`. Do decyzji: zrobić okładki i wgrać na `cdn.zentala.agency/images/`, albo usunąć `imageUrl` z frontmatteru i zostawić posty bez okładki. Ten sam zestaw jest linkowany także z `DevStage.IO` (tam pod `zentala.agency/images/...`). Znalezione podczas śledztwa E011 w repo `cloudflare`. (Medium, 3)
+
+- [ ] **Ukryte artykuły odblokowywane tokenem dla znajomych** — znajomy dostaje
+  link z tokenem, token ląduje w `localStorage`, dzięki temu widzi wpisy
+  oznaczone jako ukryte i może je oceniać. Twardy warunek, który przesądza o
+  architekturze: **ukryty artykuł nie może być w bundlu ani w żadnym
+  zbudowanym pliku** — nie wolno go pobrać bez tokena. Statyczny build na
+  GitHub Pages tego nie zrobi (wszystko, co Astro zbuduje, jest publiczne pod
+  jakimś URL-em, `noindex` niczego nie chroni), więc treść musi mieszkać poza
+  buildem i być dociągana po weryfikacji tokena — osobny endpoint, który
+  sprawdza token po stronie serwera i dopiero wtedy oddaje treść. Na liście
+  wpis ma być widoczny jako „ukryty", żeby znajomy wiedział, że coś tam jest.
+  Do rozstrzygnięcia w planie: gdzie stoi ten endpoint (Cloudflare Worker przy
+  `hub.zentala.agency`?), jak tokeny są wydawane i odwoływane, co widzi ktoś
+  bez tokena, i czy ocenianie zapisuje się gdziekolwiek poza `localStorage`.
+  Zlecone przez Pawła 2026-08-26 wprost jako wpis do backlogu, nie do
+  zrobienia teraz. (Importance: Medium, Points: 8)
+- [ ] **Kolejne artykuły serii Multi-Interface** — kierunek podyktowany przez
+  Pawła 2026-08-26: (a) **Markdown i MDX jako podstawa przekazywania wiedzy**
+  w multi-interfejsie; (b) **„Agent Native"** — architektura pluginu
+  wystawionego jednocześnie przez **A2A, MCP i API**. Seria niesie „dlaczego",
+  Harness niesie „jak". (Medium, 8)
+- [ ] **Zaciągnąć materiał z warsztatu `zntl-portal` do serii tutaj** —
+  `~/code/ws/zntl-portal/src/content/ideas/` ma gotowe szkice dokładnie na te
+  tematy, m.in. `multi-interface-jedna-tresc-dla-czlowieka-i-agenta.mdx`,
+  `polimorficzne-linki-graf-wiedzy-agent-native.mdx`,
+  `agent-native-jak-firma-przetwarza-dane-w-przyszlosci.mdx`,
+  `progressive-disclosure-komunikacja-bez-przeciazenia.mdx`,
+  `autogenerowanie-tresci-dla-agenta.mdx`, `point-dont-describe-deixis-mcp.md`
+  oraz katalog `agentic-harness/` (`cdlc.md`, `mcp-gw.md`,
+  `distributed-systems.md`). Przejrzeć, wybrać, przenieść — **kopiując pliki,
+  nie streszczając ich**. (Medium, 5)
