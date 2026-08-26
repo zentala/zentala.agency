@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
+import PostCta from '../../components/PostCta.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 
 const isPreview =
@@ -40,16 +41,62 @@ interface Props {
 
 const { series } = Astro.params as { series: string }
 const { posts } = Astro.props as { posts: CollectionEntry<'blog'>[] }
+
+const descriptions = await getCollection('series-descriptions')
+const description = descriptions.find((entry) => entry.slug === series)
+const { Content } = description
+  ? await description.render()
+  : { Content: undefined }
+
+const headline = description?.data.title ?? series
+
+const SITE_URL = 'https://zentala.agency'
+const seriesUrl = `${SITE_URL}/series/${series}/`
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: posts.map((post, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: post.data.title,
+    url: `${SITE_URL}/blog/${post.slug}/`,
+  })),
+}
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 2, name: headline, item: seriesUrl },
+  ],
+}
 ---
 
-<Layout title={`Series: ${series}`}>
+<Layout
+  title={headline}
+  canonical={seriesUrl}
+  jsonLd={[itemListJsonLd, breadcrumbJsonLd]}
+>
   <section class="section-full">
     <div class="container-bordered">
       <div class="padding-responsive-md border-b border-gray-800">
-        <h1 class="text-4xl font-light text-white">Series: {series}</h1>
-        <p class="mt-4 max-w-none text-gray-300">
-          {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
-        </p>
+        <h1 class="text-4xl font-light text-white">{headline}</h1>
+        {
+          description?.data.tagline && (
+            <p class="mt-2 text-lg text-gray-400">{description.data.tagline}</p>
+          )
+        }
+        {
+          Content ? (
+            <div class="mt-4 max-w-none text-gray-300">
+              <Content />
+            </div>
+          ) : (
+            <p class="mt-4 max-w-none text-gray-300">
+              {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
+            </p>
+          )
+        }
       </div>
       <div class="cards-grid">
         {
@@ -82,6 +129,11 @@ const { posts } = Astro.props as { posts: CollectionEntry<'blog'>[] }
           })
         }
       </div>
+    </div>
+  </section>
+  <section class="section-full">
+    <div class="container-bordered">
+      <PostCta variant={description?.data.ctaVariant} />
     </div>
   </section>
 </Layout>

@@ -3,7 +3,46 @@
 Target keywords, Schema.org implementation, and SEO guidelines for zentala.agency.
 
 **Created:** 2025-10-05
-**Last Updated:** 2025-10-05
+**Last Updated:** 2026-08-26
+
+---
+
+## What is actually implemented (2026-08-26, E005)
+
+Everything below this line is live in the build. The rest of this file is
+strategy — targets and templates, not a description of the code.
+
+**`Layout.astro` takes four optional SEO props** and emits the tags itself:
+
+| Prop | Effect |
+|---|---|
+| `canonical` | absolute `<link rel="canonical">`; defaults to `Astro.site` + current pathname |
+| `ogImage` | `og:image` + `twitter:image`; defaults to `/og-default.png` (1200×630, dark) |
+| `ogType` | `og:type`; pass `"article"` on blog posts |
+| `jsonLd` | one object or an array; each becomes its own `<script type="application/ld+json">` |
+
+Emitted on every page: `og:title/description/image/url/type/site_name` and
+`twitter:card/title/description/image`.
+
+**Structured data in use:** `Article` + `BreadcrumbList` on `/blog/<slug>`,
+`ItemList` + `BreadcrumbList` on `/series/<slug>`. The templates further down
+this file list more page types than are wired up — treat them as a plan.
+
+**Sitemap.** `@astrojs/sitemap`, with `site: 'https://zentala.agency'` set in
+`astro.config.mjs` (nothing works without it). A `filter` drops
+`/linkedin-preview/`. `public/robots.txt` points at `/sitemap-index.xml`.
+
+**The redirect trap — read before moving any URL.** Pages listed in
+`astro.config.mjs` under `redirects:` are excluded from the sitemap
+automatically. Pages that call `Astro.redirect()` inside the template are
+**not** — they land in the sitemap as indexable stubs with no OG tags. Put
+redirects in the config, never in a page body. Two pages still get this wrong
+(`capabilities.astro`, `offer/backstage.astro`) — filed in
+[`.plan/BACKLOG.md`](../.plan/BACKLOG.md).
+
+**Static hosting cannot issue a 301.** GitHub Pages serves a config redirect
+as a `noindex` meta-refresh page with an absolute canonical — the best a
+static host can do. A real 301 needs a host with a redirect layer.
 
 ---
 

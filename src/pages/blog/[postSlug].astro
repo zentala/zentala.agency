@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
+import PostCta from '../../components/PostCta.astro'
 
 import BlogVersionPanelMount from '../../components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
 
@@ -56,6 +57,14 @@ const seriesPosts = post.data.series
       .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
   : []
 
+// CTA copy variant — comes from the post's series, if it has one.
+const seriesDescription = post.data.series
+  ? (await getCollection('series-descriptions')).find(
+      (entry) => entry.slug === post.data.series,
+    )
+  : undefined
+const ctaVariant = seriesDescription?.data.ctaVariant
+
 // TOC: only h2 + h3 — keeps it scannable
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3)
 
@@ -70,6 +79,26 @@ const shareTitle = post.data.title
 const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`
 const teamsShareUrl = `https://teams.microsoft.com/share?href=${encodeURIComponent(postUrl)}&msgText=${encodeURIComponent(shareTitle)}`
 const emailShareUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareTitle}\n\n${postUrl}`)}`
+
+// SEO — canonical, OG image, and JSON-LD (Article + BreadcrumbList)
+const canonicalUrl = postUrl
+const ogImageUrl = post.data.imageUrl
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.excerpt,
+  ...(post.data.imageUrl ? { image: post.data.imageUrl } : {}),
+  datePublished: post.data.date,
+}
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 2, name: post.data.title, item: postUrl },
+  ],
+}
 
 // Import banner if exists
 let Banner = null
@@ -86,7 +115,14 @@ if (post.data.bannerEnd) {
 const contentBoxClass = 'py-responsive-md'
 ---
 
-<Layout title={post.data.title}>
+<Layout
+  title={post.data.title}
+  description={post.data.excerpt}
+  canonical={canonicalUrl}
+  ogImage={ogImageUrl}
+  ogType="article"
+  jsonLd={[articleJsonLd, breadcrumbJsonLd]}
+>
   <!-- HERO BOX (meta + title + excerpt) -->
   <section class="section-full">
     <div class="container-bordered">
@@ -345,6 +381,11 @@ const contentBoxClass = 'py-responsive-md'
     </div>
   </section>
   {isDev && <BlogVersionPanelMount collection="blog" slug={post.slug} />}
+  <section class="section-full">
+    <div class="container-bordered">
+      <PostCta variant={ctaVariant} />
+    </div>
+  </section>
 </Layout>
 
 <script is:inline>

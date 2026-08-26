@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+export interface SeriesCardProps {
+  title: string
+  slug: string
+  parts: CollectionEntry<'blog'>[]
+  newestSlug: string
+  isFresh: boolean
+}
+
+const { title, slug, parts, newestSlug, isFresh } = Astro.props as SeriesCardProps
+---
+
+<article class="card-link">
+  <div class="padding-responsive-md relative flex min-h-full flex-col items-start">
+    <div class="flex w-full items-center justify-between gap-x-2">
+      <h3 class="mt-3">{title}</h3>
+      {
+        isFresh && (
+          <span class="relative z-10 rounded-full bg-gray-800 px-2 py-1 text-xs text-gray-300">
+            New
+          </span>
+        )
+      }
+    </div>
+
+    <ul class="mt-5 w-full space-y-2">
+      {
+        parts.map((part) => (
+          <li class="flex items-center gap-x-2 text-sm leading-6">
+            {part.data.part && (
+              <span class="relative z-10 rounded-full bg-gray-800 px-2 py-1 text-xs text-gray-300">
+                Part {part.data.part}
+              </span>
+            )}
+            <a
+              href={`/blog/${part.slug}`}
+              class="relative z-10 text-gray-300 hover:text-white"
+              aria-current={part.slug === newestSlug ? 'true' : undefined}
+            >
+              {part.data.title}
+            </a>
+            <time datetime={part.data.date} class="ml-auto text-gray-700">
+              {part.data.date}
+            </time>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href={`/series/${slug}`}
+      class="relative z-10 mt-5 text-sm text-gray-400 hover:text-white"
+    >
+      View series →
+    </a>
+  </div>
+</article>

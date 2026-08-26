@@ -1,0 +1,49 @@
+---
+/**
+ * PostCta - CTA shown at the end of a blog post or series page.
+ *
+ * Thin wrapper over CTA.astro with copy aimed at a reader who just
+ * finished an article. The variant is picked by the series' `ctaVariant`
+ * field (see `series-descriptions` collection); posts without a series,
+ * or with an unrecognized variant, get the standalone default.
+ */
+
+import CTA from './CTA.astro'
+
+export interface Props {
+  /** `series-descriptions` entry's `ctaVariant`, if any. */
+  variant?: string
+}
+
+const CAL_URL = 'https://cal.com/zentala'
+
+const variants: Record<
+  string,
+  { headline: string; subhead: string; buttonText: string }
+> = {
+  harness: {
+    headline: 'Building this in your team, not just reading about it?',
+    subhead:
+      "This series documents the harness I run day to day. If you'd like it built inside your team, let's talk about your project.",
+    buttonText: "Let's talk about your project",
+  },
+}
+
+const DEFAULT_VARIANT = {
+  headline: 'Want help with something like this?',
+  subhead:
+    "I work as a contractor inside teams, on problems like the one above. Let's talk about your project.",
+  buttonText: "Let's talk about your project",
+}
+
+const { variant } = Astro.props as Props
+const copy = (variant && variants[variant]) || DEFAULT_VARIANT
+---
+
+<CTA
+  headline={copy.headline}
+  subhead={copy.subhead}
+  buttons={[
+    { href: CAL_URL, text: copy.buttonText, variant: 'primary', target: '_blank' },
+  ]}
+/>

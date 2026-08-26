@@ -2,51 +2,51 @@
 import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
+import SeriesCard from '../../components/cards/SeriesCard.astro'
+import { buildFeed } from '@/lib/blog/feed'
 
-const posts = (await getCollection('blog'))
-  .filter(
-    (post) =>
-      import.meta.env.DEV ||
-      import.meta.env.PUBLIC_PREVIEW === 'true' ||
-      post.data.published !== false,
-  )
-  .sort(
-    (a, b) =>
-      new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-  )
+const FRESH_DAYS = 14
 
-const seriesSlugs = [...new Set(posts.map((p) => p.data.series).filter(Boolean))]
+const posts = (await getCollection('blog')).filter(
+  (post) =>
+    import.meta.env.DEV ||
+    import.meta.env.PUBLIC_PREVIEW === 'true' ||
+    post.data.published !== false,
+)
+
+const seriesDescriptions = await getCollection('series-descriptions')
+const seriesTitleBySlug = new Map(
+  seriesDescriptions.map((entry) => [entry.slug, entry.data.title]),
+)
+
+const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
 ---
 
 <Layout title="Blog">
   <section class="section-full">
     <div class="container-bordered">
-      {
-        seriesSlugs.length > 0 && (
-          <div class="padding-responsive-md border-b border-gray-800">
-            {seriesSlugs.map((series) => (
-              <a
-                href={`/series/${series}`}
-                class="text-sm text-gray-400 hover:text-white"
-              >
-                View series: {series} →
-              </a>
-            ))}
-          </div>
-        )
-      }
-      <div class="cards-grid">
+      <div class="cards-grid cards-grid--top-aligned">
         {
-          posts.map((post) => (
-            <PostCard
-              title={post.data.title}
-              date={post.data.date}
-              category={post.data.category}
-              excerpt={post.data.excerpt}
-              authorVersion={post.data.author}
-              link={`/blog/${post.slug}`}
-            />
-          ))
+          feed.map((entry) =>
+            entry.kind === 'post' ? (
+              <PostCard
+                title={entry.post.data.title}
+                date={entry.post.data.date}
+                category={entry.post.data.category}
+                excerpt={entry.post.data.excerpt}
+                authorVersion={entry.post.data.author}
+                link={`/blog/${entry.post.slug}`}
+              />
+            ) : (
+              <SeriesCard
+                title={seriesTitleBySlug.get(entry.slug) ?? entry.slug}
+                slug={entry.slug}
+                parts={entry.parts}
+                newestSlug={entry.newestSlug}
+                isFresh={entry.isFresh}
+              />
+            ),
+          )
         }
       </div>
     </div>

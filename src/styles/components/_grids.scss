@@ -79,6 +79,15 @@
     }
   }
 
+  // Modifier for grids that mix a tall card (e.g. SeriesCard) with square
+  // cards (PostCard's `aspect-ratio: 1 / 1`). Default `align-items: stretch`
+  // makes a tall row-mate stretch its square neighbours to match its height;
+  // `start` keeps every card at its own natural height instead, leaving
+  // whitespace under the shorter cards in that row.
+  .cards-grid--top-aligned {
+    align-items: start;
+  }
+
   // Modifier for a 2/3 + 1/3 layout on desktop.
   // Expects exactly two direct children.
   .cards-grid--two-one {

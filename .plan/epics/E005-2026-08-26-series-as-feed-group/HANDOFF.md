@@ -7,16 +7,57 @@ T9 starts; W4 is cleanup and must come last because it deletes a route.
 Read [PLAN.md](./PLAN.md) first. Every task states the files it touches, the
 test that must fail before and pass after, and its points.
 
-| Wave | Tasks | Points left | Parallel with |
+| Wave | Tasks | State | Points left |
 |---|---|---|---|
-| W1 — series as a feed group | T1-T4 | 15 | W2 |
-| W2 — SEO floor | T5-T7 | 7 | W1 |
-| W3 — conversion | T8-T9 | 8 | after W1 |
-| W4 — redirects & cleanup | T10-T12 | 2 | done except the map + ADR |
+| W1 — series as a feed group | T1-T4 | DONE 2026-08-26 | 0 |
+| W2 — SEO floor | T5-T7 | DONE 2026-08-26 | 0 |
+| W3 — conversion | T8-T9 | DONE 2026-08-26 | 0 |
+| W4 — redirects & cleanup | T10-T12 | DONE 2026-08-26 | 0 |
 
-**29 points left of 36.** W4's fixes and `site` were done on 2026-08-26 ahead
-of the epic, at Paweł's request. T9 is unblocked — the service copy is in the
-task.
+**All 36 points landed on 2026-08-26**, executed by three `ts-dev` agents in
+one orchestrated run, then walked in a real browser by the `browser` agent.
+T12 closed the same day:
+[ADR-001](../../ADR/001-series-as-a-feed-group.md) written,
+[`.claude/CLAUDE.META.md`](../../../.claude/CLAUDE.META.md) refreshed with
+what is actually wired up (the four `Layout.astro` SEO props, the JSON-LD
+types in use, and the redirect trap — config `redirects:` are dropped from the
+sitemap, inline `Astro.redirect()` pages are not).
+
+Two defects the browser walk found, both fixed the same day: the tall series
+card stretched its two row-mates from 469×470 to 469×738 under the grid's
+default `align-items: stretch` (fixed with a scoped `.cards-grid--top-aligned`
+modifier, so no other page that reuses `.cards-grid` changes), and a
+`jsxDEV is not a function` crash in the dev-only blog version panel.
+
+One defect found by reading the code rather than the page: `buildFeed` ranked
+a series by its highest-numbered part instead of its most recently dated one.
+Part 8 is dated a day before parts 3-7, so the card sat lower in the feed than
+it should and freshness was measured from the wrong date — breaking acceptance
+criterion 2, the reason the card exists. Fixed, with a regression test
+confirmed to fail on the reverted fix.
+
+## What landed, and what it is NOT
+
+Built and unit-tested, **and walked in a real browser** — see the verdict
+recorded in `.plan/BACKLOG.md` and the session notes. Do not re-verify from
+scratch; do re-verify anything you change.
+
+Carried forward, deliberately not done:
+
+- **`Footer.astro:68` says "education"** in site-wide agency boilerplate. The
+  offer page's forbidden-word grep trips on it. It is not offer copy and
+  changing the agency's own description needs Paweł's call — filed in
+  `.plan/BACKLOG.md`.
+- **`src/layouts/BlogPost.astro` is dead code** — no page imports it. The real
+  blog render path is `src/pages/blog/[postSlug].astro`. Delete or revive it,
+  but do not add to it.
+- **`src/pages/capabilities.astro` and `src/pages/offer/backstage.astro`** use
+  inline `Astro.redirect()`, so unlike the `redirects:`-config pages they DO
+  land in the sitemap and carry no OG tags. Same class of bug as the `/offer`
+  page that was deleted today.
+- **Whether short consultations are a separate product or a way into the
+  contract** stays unresolved in the copy, on purpose. Paweł has not decided.
+
 
 ---
 
@@ -271,7 +312,13 @@ page. That is the task already filed in `.plan/TASKS.md`. Use
 
 ---
 
-### T12 — ADR + docs (1 pt)
+### T12 — ADR + docs (1 pt) — DONE 2026-08-26
+
+Landed: [ADR-001](../../ADR/001-series-as-a-feed-group.md) (linked from
+`PLAN.md` and `.plan/BACKLOG.md`), and a "What is actually implemented"
+section at the top of
+[`.claude/CLAUDE.META.md`](../../../.claude/CLAUDE.META.md) separating the
+wired-up SEO surface from the strategy targets that fill the rest of that file.
 
 **Do:** write `.plan/ADR/001-series-as-a-feed-group.md` (this repo's first
 ADR — create the directory): the decision, the alternative of leaving parts

@@ -6,12 +6,30 @@ import Header from '../components/Header.astro'
 interface Props {
   title: string
   description?: string
+  /** Absolute canonical URL. Defaults to Astro.site + the current path. */
+  canonical?: string
+  /** Absolute or site-relative OG/Twitter image. Defaults to the site's OG image. */
+  ogImage?: string
+  /** OpenGraph type, e.g. "article" for blog posts. Defaults to "website". */
+  ogType?: string
+  /** One or more JSON-LD objects to emit as <script type="application/ld+json"> tags. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
+
+const DEFAULT_OG_IMAGE = '/og-default.png'
 
 const {
   title,
   description = 'Żentała Innovation Agency provides 360° services in implementing cutting-edge technologies, from IoT and automation to bespoke software solutions.',
+  canonical,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  jsonLd,
 } = Astro.props
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString()
+const ogImageUrl = new URL(ogImage, Astro.site).toString()
+const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 ---
 
 <!doctype html>
@@ -21,6 +39,27 @@ const {
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Żentała Innovation Agency" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {
+      jsonLdEntries.map((entry) => (
+        <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+      ))
+    }
 
     <!-- Preload critical resources -->
     <link

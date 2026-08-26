@@ -1,6 +1,6 @@
 # E005 — Series as one feed entry on the blog + SEO base + conversion CTA
 
-**Status:** in progress — W4 fixes + `site` landed 2026-08-26; W1-W3 open (29 pts)
+**Status:** done — all 4 waves (T1-T12, 36/36 pts) landed 2026-08-26, uncommitted in working tree
 **Created:** 2026-08-26
 **Owner:** zentala
 **Tasks:** see [HANDOFF.md](./HANDOFF.md)
@@ -143,10 +143,11 @@ data structure (`FeedEntry`) that becomes the blog's canonical read model,
 and a change to what a blog "entry" means. That last one is worth recording,
 so this epic creates the repo's first ADR:
 
-- `.plan/ADR/001-series-as-a-feed-group.md` — why a series collapses into a
-  single feed entry instead of appearing as N cards, and what that costs
-  (a series' individual parts lose their standalone slot in the feed and are
-  discoverable through the card, the series page, and search only).
+- [`.plan/ADR/001-series-as-a-feed-group.md`](../../ADR/001-series-as-a-feed-group.md)
+  — written 2026-08-26. Why a series collapses into a single feed entry
+  instead of appearing as N cards, and what that costs (a series' individual
+  parts lose their standalone slot in the feed and are discoverable through
+  the card, the series page, and search only).
 
 No new service, no new integration, no new deploy target — so no
 `.arch/ARCHITECTURE.md` is created here.

@@ -1,0 +1,213 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import Section from '../../components/primitives/sections/Section.astro'
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
+import SectionGrid from '../../components/primitives/sections/SectionGrid.astro'
+import SectionContent from '../../components/primitives/sections/SectionContent.astro'
+import CardBackgroundIcon from '../../components/primitives/CardBackgroundIcon.astro'
+import CTA from '../../components/CTA.astro'
+
+const CAL_URL = 'https://cal.com/zentala'
+const SERIES_URL = '/series/agent-native-harness'
+
+const heroProps = {
+  eyebrow: 'Harness Engineering Architecture',
+  title: 'An outside architect for your team, on the ground.',
+  subtitle:
+    'A contract engagement: I join your team for a period, work alongside your developers, and help you build the architecture that lets them — and their agents — move fast.',
+}
+
+const insideTheEngagement = [
+  {
+    icon: 'ph:buildings-thin',
+    title: 'I come to the office',
+    description:
+      'I sit with your developers, look at your actual system, and talk through what is slowing it down.',
+  },
+  {
+    icon: 'ph:blueprint-thin',
+    title: 'We do the architecture together',
+    description:
+      'I help design and improve the structure your team works in — not a slide deck, the real thing you ship.',
+  },
+  {
+    icon: 'ph:eye-thin',
+    title: 'I review and give feedback',
+    description:
+      'Your solutions get a second, outside pair of eyes — direct feedback on what works and what will bite you later.',
+  },
+  {
+    icon: 'ph:users-three-thin',
+    title: 'We run working sessions',
+    description:
+      'Your team shows me what they built. We design and improve it together, in the room, on the real system.',
+  },
+  {
+    icon: 'ph:wrench-thin',
+    title: 'I show developers how to solve it',
+    description:
+      'Specific problems, specific fixes — including how to automate parts of their own work.',
+  },
+]
+
+const shortConsultations = [
+  'Booked by the hour, or in a 15-minute slot',
+  'Fixed per session, or billed hourly',
+  'A focused conversation on one problem, or the first step into a longer engagement',
+]
+
+const finalCtaButtons = [
+  { href: CAL_URL, text: "Let's talk about your project", variant: 'light', target: '_blank', icon: 'calendar' },
+] as const
+---
+
+<Layout
+  title="Harness Engineering Architecture — Żentała Innovation Agency"
+  description="A contract engagement: an outside architect who joins your team, reviews your architecture, and works alongside your developers."
+>
+  <Hero {...heroProps} />
+
+  <Section id="what-i-do">
+    <SectionHeader
+      eyebrow="What the engagement looks like"
+      icon="ph:handshake-thin"
+      headline="Inside the engagement"
+      subhead="A company hires me as a contractor for a period. Concretely, what that means:"
+    />
+    <SectionGrid columns={3}>
+      {
+        insideTheEngagement.map((item) => (
+          <SectionContent context="grid" prose={false}>
+            <CardBackgroundIcon icon={item.icon} />
+            <div class="hea-card">
+              <h3 class="hea-card__title">{item.title}</h3>
+              <p class="hea-card__desc">{item.description}</p>
+            </div>
+          </SectionContent>
+        ))
+      }
+    </SectionGrid>
+  </Section>
+
+  <Section id="who-i-am">
+    <SectionHeader
+      eyebrow="Who this is"
+      icon="ph:compass-thin"
+      headline="An outside architect, working inside your team"
+      subhead="A practitioner in the room with your developers — not lecturing them."
+    />
+    <SectionContent context="full">
+      <p>
+        The role is an <strong>outside architect</strong>, an
+        <strong>architect-consultant</strong>, sometimes called a
+        <strong>Harness Architecture Evangelist</strong> — someone who comes in
+        and helps. It is hands-on work, on your system, with your team.
+      </p>
+    </SectionContent>
+  </Section>
+
+  <Section id="series">
+    <SectionHeader
+      eyebrow="See it, don't just read about it"
+      icon="ph:play-circle-thin"
+      headline="The blog series is the demonstration"
+      subhead="A running record of the architecture, built in public."
+    />
+    <SectionContent context="full">
+      <p>
+        The <a href={SERIES_URL}>Agent-Native Harness series</a> shows me building
+        the kind of architecture I am hired to build — the real system, the real
+        decisions, the real failures included.
+      </p>
+    </SectionContent>
+  </Section>
+
+  <Section id="ways-in">
+    <SectionHeader
+      eyebrow="Two ways in"
+      icon="ph:door-open-thin"
+      headline="Start with a conversation, or a short session"
+      subhead="Neither commits you to the other — read them however fits your situation."
+    />
+    <SectionGrid columns={2}>
+      <SectionContent context="grid" prose={false}>
+        <CardBackgroundIcon icon="ph:chat-circle-thin" />
+        <div class="hea-card">
+          <h3 class="hea-card__title">Let's talk about your project</h3>
+          <p class="hea-card__desc">
+            The primary way in. A conversation about your project, your team, and
+            where an outside architect would actually help.
+          </p>
+        </div>
+      </SectionContent>
+      <SectionContent context="grid" prose={false}>
+        <CardBackgroundIcon icon="ph:clock-thin" />
+        <div class="hea-card">
+          <h3 class="hea-card__title">Short paid consultations</h3>
+          <p class="hea-card__desc">A focused way to get help on something specific:</p>
+          <ul class="hea-list">
+            {shortConsultations.map((line) => (
+              <li>
+                <span class="hea-list__check">✓</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </SectionContent>
+    </SectionGrid>
+  </Section>
+
+  <Section id="cta">
+    <CTA
+      headline="Let's talk about your project"
+      subhead="30 minutes, no slides — your system, and where an outside architect would help."
+      buttons={finalCtaButtons}
+    />
+  </Section>
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/components/cards' as *;
+
+  .hea-card {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hea-card__title {
+    @extend %card-title-large;
+  }
+
+  .hea-card__desc {
+    @extend %card-content;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .hea-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+
+  .hea-list__check {
+    color: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+  }
+</style>

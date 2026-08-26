@@ -7,9 +7,24 @@ const bannerEnd = frontmatter.bannerEnd
 if (bannerEnd) {
   Banner = (await import(`../sections/banners/${bannerEnd}.astro`)).default
 }
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: frontmatter.title,
+  description: frontmatter.excerpt,
+  ...(frontmatter.imageUrl ? { image: frontmatter.imageUrl } : {}),
+  ...(frontmatter.date ? { datePublished: frontmatter.date } : {}),
+}
 ---
 
-<Layout title={frontmatter.title} description={frontmatter.excerpt}>
+<Layout
+  title={frontmatter.title}
+  description={frontmatter.excerpt}
+  ogImage={frontmatter.imageUrl}
+  ogType="article"
+  jsonLd={articleJsonLd}
+>
   <section class="section-full">
     <div class="container-padded">
       <article class="prose text-white">
