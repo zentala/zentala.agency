@@ -1,0 +1,80 @@
+---
+import { Icon } from 'astro-icon/components'
+import { SHOW_DRAFTS } from '@/config/blog'
+
+/**
+ * The single place a blog post's meta line gets built: part-in-series →
+ * date → category, each with a lucide icon. Used by PostCard, the series
+ * page, and the post hero, so the format only lives in one place.
+ */
+export interface PostMetaProps {
+  date: string
+  category?: string
+  part?: number
+  partsTotal?: number
+  isDraft?: boolean
+  size?: 'sm' | 'md'
+}
+
+const {
+  date,
+  category,
+  part,
+  partsTotal,
+  isDraft = false,
+  size = 'sm',
+} = Astro.props as PostMetaProps
+
+const textSize = size === 'md' ? 'text-base' : 'text-sm'
+const iconSize = size === 'md' ? 'h-4 w-4' : 'h-3.5 w-3.5'
+
+const formattedDate = new Date(date).toLocaleDateString('pl-PL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+---
+
+<div
+  class={`flex flex-wrap items-center gap-x-3 gap-y-1 text-gray-500 ${textSize}`}
+>
+  {
+    part && partsTotal && (
+      <span class="flex items-center gap-x-1">
+        <Icon
+          name="lucide:layers"
+          class={iconSize}
+          style="stroke-width: 1.5;"
+        />
+        {part}/{partsTotal}
+      </span>
+    )
+  }
+  <span class="flex items-center gap-x-1">
+    <Icon name="lucide:calendar" class={iconSize} style="stroke-width: 1.5;" />
+    <time datetime={date} data-blog-date>{formattedDate}</time>
+  </span>
+  {
+    category && (
+      <a
+        href={`/category/${category.toLowerCase()}`}
+        class="pointer-events-auto relative z-10 flex items-center gap-x-1 hover:text-gray-300"
+      >
+        <Icon name="lucide:tag" class={iconSize} style="stroke-width: 1.5;" />
+        {category}
+      </a>
+    )
+  }
+  {
+    isDraft && SHOW_DRAFTS && (
+      <span class="flex items-center gap-x-1 text-amber-500">
+        <Icon
+          name="lucide:pencil-line"
+          class={iconSize}
+          style="stroke-width: 1.5;"
+        />
+        DRAFT
+      </span>
+    )
+  }
+</div>

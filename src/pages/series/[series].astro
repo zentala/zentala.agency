@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 import PostCta from '../../components/PostCta.astro'
+import { Icon } from 'astro-icon/components'
 import { getCollection, type CollectionEntry } from 'astro:content'
 
 const isPreview =
@@ -30,7 +31,9 @@ export async function getStaticPaths() {
   return Array.from(seriesMap.entries()).map(([series, seriesPosts]) => ({
     params: { series },
     props: {
-      posts: seriesPosts.sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0)),
+      posts: seriesPosts.sort(
+        (a, b) => (a.data.part ?? 0) - (b.data.part ?? 0),
+      ),
     },
   }))
 }
@@ -66,7 +69,12 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Blog', item: `${SITE_URL}/blog` },
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Blog',
+      item: `${SITE_URL}/blog`,
+    },
     { '@type': 'ListItem', position: 2, name: headline, item: seriesUrl },
   ],
 }
@@ -80,7 +88,17 @@ const breadcrumbJsonLd = {
   <section class="section-full">
     <div class="container-bordered">
       <div class="padding-responsive-md border-b border-gray-800">
-        <h1 class="text-4xl font-light text-white">{headline}</h1>
+        <div
+          class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-gray-500"
+        >
+          <Icon
+            name="lucide:layers"
+            class="h-3.5 w-3.5"
+            style="stroke-width: 1.5;"
+          />
+          <span>Series</span>
+        </div>
+        <h1 class="mt-2 text-4xl font-light text-white">{headline}</h1>
         {
           description?.data.tagline && (
             <p class="mt-2 text-lg text-gray-400">{description.data.tagline}</p>
@@ -100,33 +118,30 @@ const breadcrumbJsonLd = {
       </div>
       <div class="cards-grid">
         {
-          posts.map((post) => {
-            const partLabel = post.data.part
-              ? `Part ${post.data.part}/${posts.length}`
-              : undefined
-            return (
-              <div class="relative">
-                <PostCard
-                  title={post.data.title}
-                  date={post.data.date}
-                  category={post.data.category}
-                  imageUrl={post.data.imageUrl}
-                  excerpt={post.data.excerpt}
-                  authorVersion={post.data.author}
-                  link={`/blog/${post.slug}`}
-                  partLabel={partLabel}
-                />
-                {isPreview && post.data.linkedinPost && (
-                  <a
-                    href={`/linkedin-preview/${post.slug}`}
-                    class="relative z-10 mt-2 inline-block rounded-full bg-blue-900/40 px-3 py-1 text-xs text-blue-300 hover:bg-blue-900/60"
-                  >
-                    LinkedIn draft →
-                  </a>
-                )}
-              </div>
-            )
-          })
+          posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              date={post.data.date}
+              category={post.data.category}
+              imageUrl={post.data.imageUrl}
+              excerpt={post.data.excerpt}
+              authorVersion={post.data.author}
+              link={`/blog/${post.slug}`}
+              part={post.data.part}
+              partsTotal={posts.length}
+              isDraft={post.data.published === false}
+            >
+              {isPreview && post.data.linkedinPost && (
+                <a
+                  slot="footer"
+                  href={`/linkedin-preview/${post.slug}`}
+                  class="inline-block rounded-full bg-blue-900/40 px-3 py-1 text-xs text-blue-300 hover:bg-blue-900/60"
+                >
+                  LinkedIn draft →
+                </a>
+              )}
+            </PostCard>
+          ))
         }
       </div>
     </div>

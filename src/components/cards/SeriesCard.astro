@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
+import { SHOW_DRAFTS } from '@/config/blog'
 
 export interface SeriesCardProps {
   title: string
@@ -9,51 +11,114 @@ export interface SeriesCardProps {
   isFresh: boolean
 }
 
-const { title, slug, parts, newestSlug, isFresh } = Astro.props as SeriesCardProps
+const { title, slug, parts, newestSlug, isFresh } =
+  Astro.props as SeriesCardProps
+
+const VISIBLE_EDGE_COUNT = 3
+const isCollapsed = parts.length > 6
+const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
 ---
 
 <article class="card-link">
-  <div class="padding-responsive-md relative flex min-h-full flex-col items-start">
-    <div class="flex w-full items-center justify-between gap-x-2">
-      <h3 class="mt-3">{title}</h3>
-      {
-        isFresh && (
-          <span class="relative z-10 rounded-full bg-gray-800 px-2 py-1 text-xs text-gray-300">
-            New
-          </span>
-        )
-      }
+  <div
+    class="padding-responsive-md relative flex min-h-full flex-col items-start"
+  >
+    <a href={`/series/${slug}`} class="absolute inset-0 z-0" aria-label={title}
+    ></a>
+
+    <div class="card-content-wrapper flex w-full flex-col">
+      <div
+        class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-gray-500"
+      >
+        <Icon
+          name="lucide:layers"
+          class="h-3.5 w-3.5"
+          style="stroke-width: 1.5;"
+        />
+        <span>Series</span>
+        {
+          isFresh && (
+            <span class="relative z-10 ml-auto rounded-full bg-gray-800 px-2 py-1 text-xs normal-case tracking-normal text-gray-300">
+              New
+            </span>
+          )
+        }
+      </div>
+      <h3 class="mt-2">{title}</h3>
     </div>
 
-    <ul class="mt-5 w-full space-y-2">
+    <ul class="mt-5 w-full space-y-1">
       {
-        parts.map((part) => (
-          <li class="flex items-center gap-x-2 text-sm leading-6">
-            {part.data.part && (
-              <span class="relative z-10 rounded-full bg-gray-800 px-2 py-1 text-xs text-gray-300">
-                Part {part.data.part}
-              </span>
+        parts.map((part, index) => {
+          const isHidden =
+            isCollapsed &&
+            index >= VISIBLE_EDGE_COUNT &&
+            index < parts.length - VISIBLE_EDGE_COUNT
+          const isDraft = part.data.published === false
+          // The toggle sits where the gap actually is — right before the first
+          // collapsed row — so the card reads 1 2 3 ··· 6 7 8.
+          const isFirstHidden = isCollapsed && index === VISIBLE_EDGE_COUNT
+          return (
+            <>
+            {isFirstHidden && (
+              <li class="relative z-10">
+                <button
+                  type="button"
+                  class="-mx-2 flex w-full items-center gap-x-2 rounded px-2 py-1 text-xs text-gray-500 hover:bg-gray-800 hover:text-white"
+                  data-series-expand
+                >
+                  ··· +{hiddenCount} more
+                </button>
+              </li>
             )}
-            <a
-              href={`/blog/${part.slug}`}
-              class="relative z-10 text-gray-300 hover:text-white"
-              aria-current={part.slug === newestSlug ? 'true' : undefined}
-            >
-              {part.data.title}
-            </a>
-            <time datetime={part.data.date} class="ml-auto text-gray-700">
-              {part.data.date}
-            </time>
-          </li>
-        ))
+            <li class={isHidden ? 'hidden' : undefined} data-series-part>
+              <a
+                href={`/blog/${part.slug}`}
+                class="relative z-10 -mx-2 flex items-center gap-x-2 rounded px-2 py-1 text-sm hover:bg-gray-800 hover:text-white"
+                aria-current={part.slug === newestSlug ? 'true' : undefined}
+              >
+                <span class="w-4 shrink-0 text-right text-xs tabular-nums text-gray-600">
+                  {index + 1}
+                </span>
+                <span class="flex-1 truncate text-gray-300">
+                  {part.data.title}
+                </span>
+                {isDraft && SHOW_DRAFTS && (
+                  <span class="shrink-0 text-xs text-amber-500">DRAFT</span>
+                )}
+                <span class="flex shrink-0 items-center gap-x-1 text-gray-600">
+                  <Icon
+                    name="lucide:calendar"
+                    class="h-3.5 w-3.5"
+                    style="stroke-width: 1.5;"
+                  />
+                  {part.data.date}
+                </span>
+              </a>
+            </li>
+            </>
+          )
+        })
       }
     </ul>
-
-    <a
-      href={`/series/${slug}`}
-      class="relative z-10 mt-5 text-sm text-gray-400 hover:text-white"
-    >
-      View series →
-    </a>
   </div>
 </article>
+
+<script is:inline>
+  // This script is emitted once per SeriesCard instance, so multiple
+  // collapsed series on one page would each register their own document-wide
+  // listener. Bind exactly one delegated listener, guarded by a global flag.
+  if (!window.__seriesExpandBound) {
+    window.__seriesExpandBound = true
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-series-expand]')
+      if (!btn) return
+      const list = btn.closest('ul')
+      if (!list) return
+      list.querySelectorAll('[data-series-part].hidden').forEach((li) => {
+        li.classList.remove('hidden')
+      })
+      btn.closest('li')?.remove()
+    })
+  }
+</script>

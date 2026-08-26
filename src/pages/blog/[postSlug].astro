@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import PostCta from '../../components/PostCta.astro'
+import PostMeta from '../../components/blog/PostMeta.astro'
+import { SHOW_AUTHOR, SHOW_DRAFTS } from '@/config/blog'
 
 import BlogVersionPanelMount from '../../components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
 
@@ -95,7 +97,12 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Blog', item: `${SITE_URL}/blog` },
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Blog',
+      item: `${SITE_URL}/blog`,
+    },
     { '@type': 'ListItem', position: 2, name: post.data.title, item: postUrl },
   ],
 }
@@ -129,56 +136,44 @@ const contentBoxClass = 'py-responsive-md'
       <div class="px-responsive py-responsive-lg">
         <div class="blog-hero mx-auto flex max-w-6xl flex-col">
           <div class="blog-hero__content">
-            <div class="mb-10 flex items-center gap-x-4 pt-2 text-xl">
-              <img
-                class="h-10 w-10 rounded-full"
-                src={author.avatar}
-                alt={`Avatar of ${author.name}`}
-              />
-              <span class="text-white">
-                <span class="font-semibold">{author.name}</span>
-                <span class="ml-2 text-gray-400">{authorRole}</span>
-              </span>
-              <span class="text-gray-600">·</span>
-              {
-                post.data.category && (
-                  <>
-                    <a
-                      href={`/category/${post.data.category.toLowerCase()}`}
-                      class="text-gray-500 hover:text-gray-300"
-                    >
-                      {post.data.category}
-                    </a>
-                    <span class="text-gray-600">·</span>
-                  </>
-                )
-              }
-              <time
-                datetime={post.data.date}
-                class="text-gray-500"
-                data-blog-date
-              >
-                {
-                  new Date(post.data.date).toLocaleDateString('pl-PL', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })
-                }
-              </time>
-            </div>
+            {
+              SHOW_AUTHOR && (
+                <div class="mb-6 flex items-center gap-x-3 text-lg">
+                  <img
+                    class="h-10 w-10 rounded-full"
+                    src={author.avatar}
+                    alt={`Avatar of ${author.name}`}
+                  />
+                  <span class="text-white">
+                    <span class="font-semibold">{author.name}</span>
+                    <span class="ml-2 text-gray-400">{authorRole}</span>
+                  </span>
+                </div>
+              )
+            }
 
             <h1
-              class="mb-10 text-6xl font-light leading-tight text-white md:text-7xl"
+              class="text-6xl font-light leading-tight text-white md:text-7xl"
               data-blog-title
             >
               {post.data.title}
             </h1>
 
+            <hr class="my-6 border-t border-gray-800" />
+
+            <PostMeta
+              date={post.data.date}
+              category={post.data.category}
+              part={post.data.part}
+              partsTotal={seriesPosts.length || undefined}
+              isDraft={post.data.published === false}
+              size="md"
+            />
+
             {
               post.data.excerpt && (
                 <p
-                  class="mb-0 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl"
+                  class="mt-6 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl"
                   data-blog-excerpt
                 >
                   {post.data.excerpt}
@@ -196,15 +191,34 @@ const contentBoxClass = 'py-responsive-md'
     <div class="container-padded">
       <div class={`${contentBoxClass} blog-article-layout`}>
         <aside class="blog-aside blog-aside--left" aria-label="Article meta">
-          <a href="/blog" class="blog-aside__back">← All posts</a>
+          {
+            post.data.series ? (
+              <>
+                <a
+                  href={`/series/${post.data.series}`}
+                  class="blog-aside__back"
+                >
+                  ← All in series
+                </a>
+                <a
+                  href="/blog"
+                  class="blog-aside__back blog-aside__back--secondary"
+                >
+                  ← All posts
+                </a>
+              </>
+            ) : (
+              <a href="/blog" class="blog-aside__back">
+                ← All posts
+              </a>
+            )
+          }
           <p class="blog-aside__meta">{readingMinutes} min read</p>
 
           {
             post.data.series && seriesPosts.length > 0 && (
               <nav class="blog-series" aria-label="Series navigation">
-                <p class="blog-series__title">
-                  Series: {post.data.series}
-                </p>
+                <p class="blog-series__title">Series: {post.data.series}</p>
                 <ol class="blog-series__list">
                   {seriesPosts.map((seriesPost) => (
                     <li
@@ -217,10 +231,18 @@ const contentBoxClass = 'py-responsive-md'
                       {seriesPost.slug === post.slug ? (
                         <span>
                           Part {seriesPost.data.part}: {seriesPost.data.title}
+                          {seriesPost.data.published === false &&
+                            SHOW_DRAFTS && (
+                              <span class="blog-series__draft">DRAFT</span>
+                            )}
                         </span>
                       ) : (
                         <a href={`/blog/${seriesPost.slug}`}>
                           Part {seriesPost.data.part}: {seriesPost.data.title}
+                          {seriesPost.data.published === false &&
+                            SHOW_DRAFTS && (
+                              <span class="blog-series__draft">DRAFT</span>
+                            )}
                         </a>
                       )}
                     </li>
@@ -358,7 +380,9 @@ const contentBoxClass = 'py-responsive-md'
                 <p class="blog-toc__title">On this page</p>
                 <ol class="blog-toc__list">
                   {tocHeadings.map((h) => (
-                    <li class={`blog-toc__item blog-toc__item--depth-${h.depth}`}>
+                    <li
+                      class={`blog-toc__item blog-toc__item--depth-${h.depth}`}
+                    >
                       <a href={`#${h.slug}`} data-toc-link={h.slug}>
                         {h.text}
                       </a>
@@ -507,6 +531,12 @@ const contentBoxClass = 'py-responsive-md'
     color: white;
   }
 
+  .blog-aside__back--secondary {
+    margin-top: 0.375rem;
+    color: rgb(107 114 128); /* gray-500 */
+    font-size: 0.8125rem;
+  }
+
   .blog-aside__meta {
     margin: 0.75rem 0 0;
     font-size: 0.8125rem;
@@ -558,6 +588,14 @@ const contentBoxClass = 'py-responsive-md'
   .blog-series__item--current span {
     color: white;
     font-weight: 500;
+  }
+
+  .blog-series__draft {
+    margin-left: 0.375rem;
+    color: rgb(245 158 11); /* amber-500 */
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   /* Share rail */
