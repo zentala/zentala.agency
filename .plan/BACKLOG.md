@@ -5,17 +5,21 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
-- [ ] **The chat widget is disabled site-wide until its host serves real JS** —
-  `src/layouts/Layout.astro:96` is commented out. History: `hub.zentala.io`
+- [x] **The chat widget is disabled site-wide until its host serves real JS** —
+  `src/layouts/Layout.astro:96` was commented out. History: `hub.zentala.io`
   died with the domain (503 on every page load); migrated 2026-08-26 to
-  `hub.zentala.agency`, which answers **200 but with
+  `hub.zentala.agency`, which answered **200 but with
   `content-type: text/html`** — an SPA index.html fallback on every path. That
   is worse than the 503: the browser parses HTML as JavaScript and throws
-  `SyntaxError` on every page, for every visitor. Commented out rather than
-  deleted, with restore instructions in place. Closes when the host serves
-  `widget.js` as `application/javascript` — check with
-  `curl -I https://hub.zentala.agency/widget.js?site=zentala.agency`.
-  (Medium, 2)
+  `SyntaxError` on every page, for every visitor.
+  **Closed 2026-08-26.** Two separate bugs in the `cloudflare` repo, both
+  fixed and deployed (`hub-worker-production` `2dc0d91c`): (1) the worker
+  proxied `/widget.js` to the deleted `bot.zentala.io` host and laundered its
+  `error code: 1016` into `200 application/javascript`; (2) the Cloudflare
+  route pattern `hub.zentala.agency/widget.js` had no trailing `*`, so the
+  `?site=` URL used here never reached the worker at all. `curl -I` now
+  returns `application/javascript`, and a browser agent held a real Polish
+  conversation in the widget. Embed uncommented. (Medium, 2)
 - [ ] **The portfolio page has no images, and never did** — 5 of the 9
   entries in `src/pages/portfolio.astro` carry an `image:` field
   (`/images/portfolio/{rtls,smart-home,backstage,open-smart-desk,robot}.jpg`),

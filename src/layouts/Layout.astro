@@ -93,16 +93,16 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
     </main>
     <Footer />
 
-    <!-- Zentala Chat Widget — DISABLED 2026-08-26.
-         The host answers 200 but with `content-type: text/html` (SPA
-         index.html fallback), so the browser parses HTML as JavaScript and
-         throws SyntaxError on every page of the site. The old
-         hub.zentala.io address was dead outright.
-         To restore: make hub.zentala.agency actually serve widget.js as
-         application/javascript, verify with
-         `curl -I https://hub.zentala.agency/widget.js?site=zentala.agency`,
-         then uncomment. -->
-    <!-- <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"
-    ></script> -->
+    <!-- Chat huba — RESTORED 2026-08-26.
+         Was disabled the same day: the host answered 200 with
+         `content-type: text/html` (the SPA fallback), so the browser parsed
+         HTML as JavaScript and threw SyntaxError on every page. Two causes,
+         both fixed in the cloudflare repo: the worker proxied to the deleted
+         bot.zentala.io host, and the Cloudflare route pattern lacked a
+         trailing `*` so the `?site=` URL below never reached the worker at
+         all. Verified in a real browser: the chat answers in Polish.
+         If it breaks again, check the content-type FIRST, never the status. -->
+    <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"
+    ></script>
   </body>
 </html>
