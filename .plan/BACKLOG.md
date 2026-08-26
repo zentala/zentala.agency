@@ -5,6 +5,47 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **Strona autora `/about/me` nie istnieje — każdy link z nazwiskiem prowadzi
+  w 404** — `src/content/authors/zentala.yaml` miał `profileUrl: /about/me`,
+  a w `src/pages/` są tylko `/about` i `/about/capabilities`. Doraźnie
+  przekierowane na `/about` (task 008, reguła „martwy link zamieniasz na nowy").
+  Do decyzji: zbudować prawdziwą stronę autora, czy trwale wyciąć linkowanie
+  nazwiska (dziś i tak ukryte przez `SHOW_AUTHOR = false` w `src/config/blog.ts`).
+  Znalezione 2026-08-26 przy przebudowie meta bloga. (Medium, 3)
+
+- [ ] **Share-bar na stronie posta ma ręczne inline SVG zamiast `astro-icon`** —
+  `src/pages/blog/[postSlug].astro:244-341` rysuje ikony X/LinkedIn/Facebook/link
+  wklejonym `<svg>`, mimo że repo ma `astro-icon` + `@iconify-json/lucide` i `ph`
+  skonfigurowane w `astro.config.mjs`. Dwie konwencje ikon w jednym pliku;
+  stroke-width i rozmiary nie zgadzają się z resztą strony. Do ujednolicenia po
+  przyjęciu line-iconów w blogu. Znalezione 2026-08-26. (Low, 2)
+
+- [ ] **`PostCard` deklaruje nieużywany prop `imageUrl`** —
+  `src/components/cards/PostCard.astro` przyjmuje `imageUrl?`, ale nigdzie go nie
+  renderuje (okładki postów nigdy nie istniały, patrz wpis w `## Fixed`). Martwy
+  interfejs sugeruje kolejnym agentom, że karta obsługuje obrazek. Usunąć prop
+  albo faktycznie go użyć. Znalezione 2026-08-26. (Low, 1)
+
+- [ ] **Line icons jako kierunek dla całej strony, nie tylko bloga** — Paweł,
+  2026-08-26: „Trzeba zapisać sobie, generalnie, że implementujemy je mocno na
+  tej stronie, żeby była infograficzna." Blog dostał `PostMeta` z ikonami lucide
+  (data, kategoria, część serii) w tasku 008; reszta strony — usługi, portfolio,
+  homepage, stopka — dalej jest samym tekstem. Do przejrzenia sekcja po sekcji.
+  (Medium, 5)
+
+- [ ] **E2E na CI: 50 testów failed, przebieg trwa 40 minut** — run
+  [`32970968295`](https://github.com/zentala/zentala.agency/actions/runs/32970968295)
+  (commit `4ead727`, 2026-08-26) skończył się `failure` po ~40 min, `50 failed`.
+  Trzy skupiska, wszystkie wyglądają na realne, nie na infrastrukturę:
+  (1) `expect(intro).toBeVisible()` — `tests/e2e/*:8`; (2) wysokość hero poza
+  tolerancją ±2 px — `:36-37` i `:52`; (3) `scrollIndicator` niewidoczny — `:61`;
+  do tego seria `Test timeout of 30000ms exceeded` na `locator.evaluate`.
+  Osobno leci błąd konsoli podnoszony do CRITICAL:
+  `Origin http://localhost:4321 is not allowed by Access-Control-Allow-Origin.
+  Status code: 200` — trzeba ustalić, który zasób go zwraca (podejrzenie: coś
+  z huba albo z zewnętrznego CDN-u ładowanego na stronie).
+  Suita jest czerwona od dawna — dopóki jest, CI nie mówi nic o żadnej nowej
+  zmianie. (Importance: High, Points: 8)
 - [ ] **Workflow `E2E Tests` nie ma żadnego limitu czasu — może wisieć 6 godzin** —
   `.github/workflows/test.yml` nie deklaruje `timeout-minutes` na jobie `test`,
   więc obowiązuje domyślny limit GitHuba: 360 minut. Zaobserwowane 2026-08-26:
