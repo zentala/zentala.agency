@@ -257,3 +257,15 @@ Bugs and small tasks found in passing. Entry format:
   oraz katalog `agentic-harness/` (`cdlc.md`, `mcp-gw.md`,
   `distributed-systems.md`). Przejrzeć, wybrać, przenieść — **kopiując pliki,
   nie streszczając ich**. (Medium, 5)
+- [ ] **Sześć przeniesionych szkiców ma polską treść pod angielskim nagłówkiem** —
+  `markdown-and-mdx-as-the-substrate.md`,
+  `agent-native-how-a-company-processes-data.md`,
+  `point-dont-describe-deixis.md`, `polymorphic-links-knowledge-graph.md`
+  (nowe, seria `multi-interface`) oraz uzupełnione zaślepki
+  `autogenerowanie-tresci-dla-agenta.md` i
+  `progressive-disclosure-komunikacja-bez-przeciazenia.md` (seria
+  `agent-native-harness`). Treść przeniesiona **dosłownie z warsztatu**
+  (`zntl-portal/src/content/ideas/`), więc jest po polsku, a strona jest
+  angielska. Wszystkie mają `published: false`, więc na produkcję nic nie
+  wyciekło. Przed publikacją: przetłumaczyć i wyciąć draftowe nagłówki
+  („## Why", „## Teza"), które są językiem szkicu, nie artykułu. (Medium, 8)
