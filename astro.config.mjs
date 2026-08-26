@@ -6,7 +6,12 @@ import react from '@astrojs/react'
 import { blogVersionHistoryDevPlugin } from './src/lib/dev/git-history/vitePlugin'
 
 export default defineConfig({
+  site: 'https://zentala.agency',
   output: 'static',
+  redirects: {
+    '/offer': '/about/capabilities',
+    '/blog/index.old': '/blog',
+  },
   integrations: [
     tailwind(),
     mdx(),
@@ -32,6 +37,7 @@ export default defineConfig({
       hmr: {
         overlay: false,
       },
+      allowedHosts: ['zentala.internal', 'localhost'],
     },
     css: {
       preprocessorOptions: {

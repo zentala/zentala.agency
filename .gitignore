@@ -53,3 +53,6 @@ nul
 
 # Git worktrees (parallel branch checkouts, not branch content)
 .claude/worktrees/
+
+# kb session logs — per-session noise, not project history
+.plan/sessions/

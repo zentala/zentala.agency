@@ -3,13 +3,17 @@ import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 
-const posts = (await getCollection('blog')).filter(
-  (post) =>
-    import.meta.env.DEV ||
-    import.meta.env.PUBLIC_PREVIEW === 'true' ||
-    post.data.published !== false,
-)
-const authors = (await getCollection('authors'))[0].data
+const posts = (await getCollection('blog'))
+  .filter(
+    (post) =>
+      import.meta.env.DEV ||
+      import.meta.env.PUBLIC_PREVIEW === 'true' ||
+      post.data.published !== false,
+  )
+  .sort(
+    (a, b) =>
+      new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+  )
 
 const seriesSlugs = [...new Set(posts.map((p) => p.data.series).filter(Boolean))]
 ---
@@ -33,21 +37,16 @@ const seriesSlugs = [...new Set(posts.map((p) => p.data.series).filter(Boolean))
       }
       <div class="cards-grid">
         {
-          posts.map((post) => {
-            const author = authors.find((a) => a.slug === post.data.author)
-            return (
-              <PostCard
-                title={post.data.title}
-                date={post.data.date}
-                category={post.data.category}
-                excerpt={post.data.excerpt}
-                authorName={author?.name}
-                authorAvatar={author?.avatar}
-                authorRole={post.data.authorRole || author?.role}
-                link={`/blog/${post.slug}`}
-              />
-            )
-          })
+          posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              date={post.data.date}
+              category={post.data.category}
+              excerpt={post.data.excerpt}
+              authorVersion={post.data.author}
+              link={`/blog/${post.slug}`}
+            />
+          ))
         }
       </div>
     </div>

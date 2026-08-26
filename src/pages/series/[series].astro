@@ -40,11 +40,6 @@ interface Props {
 
 const { series } = Astro.params as { series: string }
 const { posts } = Astro.props as { posts: CollectionEntry<'blog'>[] }
-const authorsCollection = await getCollection('authors')
-const authors: any[] =
-  authorsCollection && authorsCollection[0]
-    ? (authorsCollection[0].data as any[])
-    : []
 ---
 
 <Layout title={`Series: ${series}`}>
@@ -59,9 +54,6 @@ const authors: any[] =
       <div class="cards-grid">
         {
           posts.map((post) => {
-            const author = authors.find(
-              (a: any) => a.slug === post.data.author,
-            )
             const partLabel = post.data.part
               ? `Part ${post.data.part}/${posts.length}`
               : undefined
@@ -73,9 +65,7 @@ const authors: any[] =
                   category={post.data.category}
                   imageUrl={post.data.imageUrl}
                   excerpt={post.data.excerpt}
-                  authorName={author?.name}
-                  authorAvatar={author?.avatar}
-                  authorRole={post.data.authorRole || author?.role}
+                  authorVersion={post.data.author}
                   link={`/blog/${post.slug}`}
                   partLabel={partLabel}
                 />
