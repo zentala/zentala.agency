@@ -5,6 +5,17 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **The chat widget is disabled site-wide until its host serves real JS** —
+  `src/layouts/Layout.astro:96` is commented out. History: `hub.zentala.io`
+  died with the domain (503 on every page load); migrated 2026-08-26 to
+  `hub.zentala.agency`, which answers **200 but with
+  `content-type: text/html`** — an SPA index.html fallback on every path. That
+  is worse than the 503: the browser parses HTML as JavaScript and throws
+  `SyntaxError` on every page, for every visitor. Commented out rather than
+  deleted, with restore instructions in place. Closes when the host serves
+  `widget.js` as `application/javascript` — check with
+  `curl -I https://hub.zentala.agency/widget.js?site=zentala.agency`.
+  (Medium, 2)
 - [ ] **The portfolio page has no images, and never did** — 5 of the 9
   entries in `src/pages/portfolio.astro` carry an `image:` field
   (`/images/portfolio/{rtls,smart-home,backstage,open-smart-desk,robot}.jpg`),
@@ -56,11 +67,6 @@ Bugs and small tasks found in passing. Entry format:
   appear in the sitemap and carry no OG tags, so Google indexes two redirect
   stubs. Same bug class as the `/offer` page deleted today; same fix (move them
   into `astro.config.mjs` `redirects`). Found 2026-08-26. (Medium, 2)
-- [ ] **`hub.zentala.io/widget.js` returns 503 on every page load** — a
-  third-party script embedded site-wide answers 503; every other request (66 of
-  67) is 200. Found 2026-08-26 by the browser agent on `zentala.internal`, but
-  the script tag is not dev-only, so production is loading a dead widget too.
-  Decide: fix the host, or drop the embed. (Medium, 2)
 - [ ] **No real 301 is possible on GitHub Pages** — static hosting cannot
   issue redirect status codes, so `/offer` ships a `noindex` + canonical
   meta-refresh page (the best a static host can do). A true 301 needs a host
