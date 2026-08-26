@@ -5,6 +5,16 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **Workflow `E2E Tests` nie ma żadnego limitu czasu — może wisieć 6 godzin** —
+  `.github/workflows/test.yml` nie deklaruje `timeout-minutes` na jobie `test`,
+  więc obowiązuje domyślny limit GitHuba: 360 minut. Zaobserwowane 2026-08-26:
+  przebieg `32970968295` (commit `f51bf57`) chodził ponad 25 minut przy typowym
+  czasie kilku minut, i nie dało się odróżnić „wolno" od „zawiesiło się" — logi
+  GitHub udostępnia dopiero po zakończeniu przebiegu. Ta sama rodzina co wpis
+  niżej: brak sygnału wygląda tak samo jak zdrowie. Do zrobienia:
+  `timeout-minutes: 20` na jobie (i osobno na kroku `Run E2E tests`), plus
+  ustalenie, co ten przebieg tak długo robi. (Medium, 2)
+
 - [ ] **Czerwony deploy nie daje żadnego sygnału — 21 dni produkcja stała w
   miejscu i nikt tego nie wiedział** — `Deploy to GitHub Pages` padał od
   2026-08-05 do 2026-08-26 (3 pushe), a jedynym sposobem, żeby to zobaczyć, było
