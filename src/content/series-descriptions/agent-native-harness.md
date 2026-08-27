@@ -11,5 +11,5 @@ keeps parallel sessions from colliding, the feedback loop that lets tooling
 fix itself, the zero-token commands that skip the model entirely, and the
 knowledge base that survives context loss.
 
-Eight parts, one running system. Each part is a piece of the harness I
+Nine parts, one running system. Each part is a piece of the harness I
 actually run, not a proposal — the wins and the failures are both in here.
