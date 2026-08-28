@@ -4,7 +4,7 @@ date: '2026-08-27'
 category: 'DevEx'
 excerpt: "Programmers know self-documenting code. The agent-native equivalent is a repository whose structure already tells the agent what to do. I write BACKLOG.md and the agent knows the format, the audience, the lifecycle and the routing rule — without me writing any of it down twice."
 authorRole: 'DevEx Consultant'
-published: false
+published: true
 series: 'agent-native-harness'
 part: 9
 ---
@@ -124,3 +124,31 @@ the behaviour.
 
 What you should not do is explain it again in the next prompt. That is the version that
 never stops costing.
+
+## The convention has to be loaded before the plan
+
+There is one more step than a good filename: the agent has to see the convention
+*before* it chooses an implementation. My `how-we-build` skill is the small gate
+for that moment. Before every planning or design decision it asks for two things:
+the proven shape that may already solve the problem, and the settled conventions
+the new work must respect. It is packaged with the rest of my reusable agent
+tooling in [the skills repository](https://github.com/zentala/skills).
+
+This changes planning from "invent, then check" to "load, then decide". The
+benefit is not that every project looks cosmetically similar. It is that recurring
+decisions stop being reconsidered: where a local service is exposed, which process
+manager owns it, where a plan lives, and which document speaks to which reader.
+
+Take repository documentation. `README.md` is a decision page for the least
+technical plausible person who is considering the product. It explains the value,
+capabilities, limits and current availability before it asks the reader to do any
+work. `CONTRIBUTING.md` is a runbook for a developer or agent: prerequisites,
+development mode, build commands and exceptional local constraints. Mixing them
+turns the first page into a wall of commands for people who only wanted to know
+whether the thing is useful, and hides the operational details from the people
+who actually need them.
+
+That distinction is deliberately written once in `how-we-build`, then inherited
+by every repository. A new project does not need a fresh debate about whether a
+Windows security exception belongs in an end-user installation guide. The answer
+is already available before the first plan is written.
