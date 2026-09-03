@@ -269,3 +269,30 @@ Bugs and small tasks found in passing. Entry format:
   angielska. Wszystkie mają `published: false`, więc na produkcję nic nie
   wyciekło. Przed publikacją: przetłumaczyć i wyciąć draftowe nagłówki
   („## Why", „## Teza"), które są językiem szkicu, nie artykułu. (Medium, 8)
+
+- [ ] **Strategic cross-linking to DevStage** — before any technical agent-harness series is published here, evaluate linking to a DevStage technical series instead of hosting it on Zentala Agency. Agency should focus on strategy, business and technology application; migration remains editorial review, not an automatic copy. (Medium, 3)
+- [ ] **Port `drabina-waskich-gardel.mdx` as the `agent-native-harness` series backbone** —
+  workshop source:
+  `zntl-portal/src/content/ideas/drabina-waskich-gardel.mdx`
+  (`int://mATX.lan/C:/code/ws/zntl-portal/src/content/ideas/drabina-waskich-gardel.mdx`).
+  It carries a `> **Docelowo:**` marker naming this series; parts 2-9 already
+  published here (`published: false`) are its evidence, and this essay is the
+  "why" that retrofits them into a spine. Target: `src/content/blog/`,
+  `series: 'agent-native-harness'`.
+  Publish as **episodes with `part:`**, not one page — the essay has five
+  rungs (Szczebel 1-5) plus a hinge section ("Zawias — kto to sprzeda?"), and
+  the split into parts happens at port time, not in the workshop original.
+  **Requires translation to English** — the workshop is Polish, the agency
+  blog is English; treat translation as its own editorial pass, not a
+  copy-paste addendum.
+  Each rung already links to one specific existing part of the series
+  (Szczebel 3 → parts 6 and 7; Szczebel 4 → parts 2, 3, 5; Szczebel 5 → parts
+  4, 8, 9) — the port must remap every one of those links to the internal
+  blog URL of the matching part, not leave the workshop's relative `.mdx`
+  links or the placeholder `zentala.agency/blog/...` URLs already inlined in
+  the source.
+  After the port, the workshop original gets its marker flipped from
+  `> **Docelowo:**` to `> **Ported:**`.
+  Since this essay retrofits the spine under parts 2-9, consider adding a
+  back-link to it from those parts too. Found 2026-09-03, E008 T7 in
+  `zntl-portal`. (Importance: Medium, Points: 5)
