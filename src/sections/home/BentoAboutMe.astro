@@ -19,6 +19,7 @@ import BentoStageState from '../../components/primitives/sections/bento/BentoSta
 import Logo from '../../components/Logo.astro'
 import TagGroup from '../../components/primitives/TagGroup.astro'
 import PhaseLabel from '../../components/primitives/PhaseLabel.astro'
+import CardIconMosaic from '../../components/primitives/CardIconMosaic.astro'
 
 const bentoStates = {
   default: 'default',
@@ -359,24 +360,29 @@ const bentoStates = {
         href="/portfolio"
         class="group relative block h-full w-full overflow-hidden"
       >
-        <img
-          src="/images/portfolio/zentala-eu.png"
-          alt="EU Reform Vision — one of Paweł's shipped projects"
-          class="h-full w-full object-cover opacity-40 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+        <CardIconMosaic
+          icons={[
+            'lucide:radar',
+            'lucide:bot',
+            'lucide:layout-grid',
+            'lucide:house',
+          ]}
         />
         <div
-          class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 opacity-0 transition-opacity duration-700 group-hover:opacity-100 md:p-10"
+          class="absolute inset-0 flex flex-col justify-end p-6 md:p-10"
         >
           <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
             Portfolio
           </h3>
-          <p class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm">
+          <p
+            class="max-w-md text-xs leading-relaxed text-gray-300 opacity-0 transition-opacity duration-700 group-hover:opacity-100 md:text-sm"
+          >
             Twenty years of shipped work — indoor location systems for
             retail, a socially-aware humanoid robot, Backstage portals for
             enterprises, and a smart home built into my own walls.
           </p>
           <span
-            class="mt-3 text-xs font-medium uppercase tracking-widest text-white/80"
+            class="mt-3 text-xs font-medium uppercase tracking-widest text-white/50 transition-colors duration-500 group-hover:text-white/80"
           >
             See the portfolio →
           </span>
