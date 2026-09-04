@@ -5,6 +5,8 @@ category: 'DevEx'
 excerpt: 'Kickstart your Backstage implementation with these practical steps to quickly prove value, build momentum, and secure support from both technical teams and management for the ongoing development of your developer portal, while managing limited resources effectively.'
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
+series: 'developer-experience'
+part: 3
 ---
 
 Starting a developer portal implementation can be both exciting and overwhelming, especially with a tool as customizable and full of possibilities as Backstage. It often begins as a hackathon project, a Community of Practice initiative, or a Proof of Concept under time pressure, and the challenge is to deliver impactful results quickly while using limited resources. As a technical manager or a proactive developer, you are working with limited resources, aiming to prove the value of Backstage within your organization and secure support from stakeholders.

@@ -6,6 +6,8 @@ excerpt: "Anthropic's Model Context Protocol grew from 1,200 to 9,400+ servers i
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 published: false
+series: 'developer-experience'
+part: 4
 ---
 
 Anthropic's Model Context Protocol grew from 1,200 to 9,400+ servers in twelve months. Roadie reports that AI agents now interact with their Backstage platform 100 times more often than humans do. The race isn't about building smarter agents anymore — it's about giving them the structured context to do real work. That context lives in your developer portal.

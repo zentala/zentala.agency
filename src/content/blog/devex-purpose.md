@@ -5,6 +5,8 @@ category: 'DevEx'
 excerpt: 'Explore why Developer Experience matters in modern software development, how it impacts productivity and well-being, and what strategies can improve it. Learn how leading companies like Spotify and Amazon have leveraged DevEx to solve complex development challenges.'
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
+series: 'developer-experience'
+part: 1
 ---
 
 ## Introduction

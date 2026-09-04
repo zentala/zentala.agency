@@ -6,6 +6,8 @@ excerpt: "DORA's 2025 report found that high-quality engineering platforms ampli
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 published: false
+series: 'information-architecture'
+part: 3
 ---
 
 DORA's 2025 State of AI-Assisted Software Development report found that high-quality engineering platforms amplify AI's benefits across the board — and low-quality platforms get essentially nothing from AI investment. McKinsey, measuring developer productivity under GenAI, found coding speed roughly doubled on familiar tasks. On tasks where developers lacked familiarity with the necessary framework, the speedup collapsed to under 10%. The lesson is the same from both ends: every developer — and every AI agent — is in continuous, asynchronous onboarding. Organizations that design for that win twice. Once for the humans. Once for the machines.

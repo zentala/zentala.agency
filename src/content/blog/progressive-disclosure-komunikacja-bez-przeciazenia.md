@@ -6,10 +6,10 @@ excerpt: "An agent that dumps a wall of text on me is worse than one that says l
 authorRole: 'DevEx Consultant'
 published: false
 series: 'agent-native-harness'
-part: 7
+part: 6
 ---
 
-## Part 7 of the agent-native harness series
+## Part 6 of the agent-native harness series
 
 ## Why
 

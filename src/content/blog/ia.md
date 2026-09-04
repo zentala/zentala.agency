@@ -5,6 +5,8 @@ category: 'IA'
 excerpt: 'Dive into the fundamentals and advanced practices of organizing, structuring, and labeling content. This eBook explores core concepts like taxonomy, ontology, and metadata, along with practical insights on navigation design, content strategy, and user testing—everything you need to build scalable, user-centric information systems.'
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
+series: 'information-architecture'
+part: 1
 ---
 
 # **INFORMATION ARCHITECTURE: A COMPREHENSIVE GUIDE**

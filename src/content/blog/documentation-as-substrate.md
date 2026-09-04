@@ -6,6 +6,8 @@ excerpt: "For thirty years we wrote documentation for the next developer. Now we
 authorRole: 'DevEx Consultant'
 bannerEnd: 'devex'
 published: false
+series: 'information-architecture'
+part: 2
 ---
 
 For thirty years we wrote documentation for the next developer. Now we write it for the next developer and the next agent. The good news is that they want the same thing: structured, accurate, machine-readable knowledge with clear ownership. The investment that fixes onboarding is the same investment that makes AI agents productive in your codebase. This is the unifying design principle for the next decade of engineering organizations.
