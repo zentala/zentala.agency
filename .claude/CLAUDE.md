@@ -127,6 +127,26 @@ its slug — `getStaticPaths` groups by posts, not by the description file.
 `published: false` keeps a post out of the production build while leaving it
 visible in `npm run dev`.
 
+## Local dev runs as `zentala.internal`, under PM3 — never `localhost:PORT`
+
+Three rules, one after the other. They are not suggestions (Paweł, 2026-08-26).
+
+1. **The local site is `http://zentala.internal`.** That is the address of the
+   development copy of zentala.agency on this machine. Registered in the
+   `internal-domains` registry, proxied by Caddy on port 2080, resolved through
+   the PAC file. `astro.config.mjs` already allows the host
+   (`vite.server.allowedHosts`).
+2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev`
+   (`npm run dev -- --port 4300 --host`, health check on 4300). Start it with
+   `pm3 start zentala-agency/dev`, never with a loose `npm run dev` in a shell —
+   an unsupervised dev server dies with its terminal and nothing notices.
+3. **[CRITICAL] Every link handed to Paweł is `http://zentala.internal`** — in
+   chat, in a report, in a task file. Never `localhost:4321`, never
+   `localhost:4300`, never `127.0.0.1:PORT`. A raw `host:port` is for the
+   agent's own `curl` diagnostics and nothing else. Astro's own startup banner
+   prints `localhost` — do not copy it. If the dev server picked a different
+   port because 4300 was taken, that is a bug to fix, not a link to paste.
+
 ## Git & Commit Rules
 
 1. **ALWAYS `npm run build` before commit** (catches type errors)
