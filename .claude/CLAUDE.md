@@ -162,8 +162,55 @@ the source: drafts may be **moved here as files, never summarized**.
 | `published` | no | `false` keeps a post out of the production build while leaving it visible in `npm run dev` — draft posts stay `false` until reviewed |
 | `series` | no | One of the four slugs above; a series page only materializes if at least one post carries its slug (`getStaticPaths` groups by posts, not by the description file) |
 | `part` | no | A number, only meaningful alongside `series` |
-| `linkedinPost` | no | The LinkedIn companion text — its own shape per the `authorship` skill's "LinkedIn companion" format, never the article truncated |
+| `linkedinPost` | no | **Legacy.** Older posts still carry the LinkedIn companion inline as an escaped string. New posts use the sidecar file below instead — see "Surface sidecars" |
 | `imageUrl` / `bannerEnd` | no | Optional visual fields |
+
+### Surface sidecars — one topic, several surfaces, kept close together
+
+A post's LinkedIn (or Reddit, or any other surface) companion is its own
+**file**, not a frontmatter string. Paweł, on why: *"Ja chcę, żeby LinkedIn
+był jako osobne pliki i to musi być łatwe do czytania dla mnie do edycji. Ja
+chcę to zobaczyć tak, jakbym to widział na LinkedInie, a nie tak, że to jest
+[frontmatter]."* A LinkedIn post can also exist with no article at all, and
+one topic can carry several posts over time — the sidecar model has to allow
+both.
+
+**Naming**: `_<slug>.li.md`, living in `src/content/blog/` next to
+`<slug>.md`. The leading underscore is Astro's own content-collection
+exclusion convention (files/dirs starting with `_` are skipped by every
+collection loader) — without it, `blogCollection`'s schema (title, date,
+category, excerpt all required) would reject the sidecar at build time. The
+suffix names the surface: `.li.md` today; `.reddit.md` would follow the same
+pattern the day a post gets a Reddit companion. **No frontmatter, no
+escaping** — the file's body is exactly the text posted to that surface, so
+opening it in an editor shows what a reader would see there.
+
+Wired through a second, minimal content collection (`linkedin` in
+`src/content/config.ts`, an `astro/loaders` `glob()` loader scoped to
+`_*.li.md`, empty schema) — not a new top-level `src/content/` directory.
+`src/pages/linkedin-preview/[postSlug].astro` reads the sidecar by slug
+(falling back to the legacy `linkedinPost` field for posts not yet
+migrated) and feeds it to `LinkedInPostCard.astro` unchanged; that component
+already treats the text as newline-separated paragraphs, so real markdown
+line breaks work exactly like the old escaped `\n\n` did.
+
+**LinkedIn's own constraints** (derived from the five `linkedinPost` bodies
+already written for this blog — `bang-commands-zero-token-cli-dla-agenta.md`,
+`the-lease-one-writer-at-a-time.md`, `the-personal-knowledge-base-system.md`,
+`trzasanie-drzewem-pomyslow-agenta-pytaniami.md`, and the sidecar for
+`file-based-lease-for-parallel-agents.md` — not invented):
+
+- No headings, no tables — every one of the five is plain paragraphs plus,
+  at most, a numbered or dashed list.
+- Opens with the sharpest concrete claim in the piece ("Run two coding
+  agents against one checkout and you don't get a crash. You get something
+  worse…"), never a summary sentence ("New post about…").
+- Short paragraphs, blank line between them — LinkedIn's reading pattern is
+  vertical scanning, not paragraph blocks.
+- Closes by pointing at the full piece ("Full article on the blog, link in
+  the first comment." / "Part 7 (closing) of the agent-native harness
+  series.") rather than restating it.
+- No emoji, no hashtags in any of the five — do not add them by reflex.
 
 ## Local dev runs as `zentala.internal`, under PM3 — never `localhost:PORT`
 

@@ -7,7 +7,6 @@ authorRole: 'DevEx Consultant'
 published: false
 series: 'agent-native-harness'
 part: 15
-linkedinPost: "Three coding agents, one repo, one main checkout: the second write wins and nobody gets an error.\n\nThe fix is not a framework. It is three things:\n\n1. A holder file inside .git — who holds main, since when, TTL.\n2. A PreToolUse hook — reads the file before every Edit, Write and Bash; exit 2 refuses and the agent sees why.\n3. One settings.json entry that wires the hook to those tools.\n\nRules the hook enforces:\n- main checkout is merge-only; worktrees are exempt\n- no lease, no write; someone else's lease, no write\n- cannot read the file → refuse, with a logged, 15-minute bypass as the only way through\n\nMeasured cost per call: p99 under 0.45 ms. That number is what earned it the right to refuse instead of warn.\n\nThree traps that made ours honest are in the article — a detector that counted => as a write, a resolver that never saw ~ paths, one log word for two failures.\n\nFull wiring, holder-file schema and the messages the agent gets: on the blog, link in the first comment."
 ---
 
 Running several coding agents against one repository is how you get more done without switching context: one checkout, one set of tabs, three tasks moving at once. It is also how one agent's staged file rides along in another's commit, a `git checkout -- <file>` discards a neighbour's uncommitted lines, and the second write to a shared path wins with no error for either side.
@@ -90,12 +89,25 @@ Exclusive create closes the race between two agents acquiring in the same millis
 
 ## Part 3: the hook
 
-Your agent runtime's `settings.json`, under `hooks.PreToolUse`:
+Your agent runtime's `settings.json` — both entries in one block: the guard
+on `PreToolUse`, the renewal from Part 2 on `PostToolUse`.
 
 ```json
 {
-  "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
-  "hooks": [{ "type": "command", "command": "node \"$HOME/hooks/lease-guard.mjs\"" }]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [{ "type": "command", "command": "node \"$HOME/hooks/lease-guard.mjs\"" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [{ "type": "command", "command": "node \"$HOME/hooks/lease-renew.mjs\"" }]
+      }
+    ]
+  }
 }
 ```
 
@@ -185,13 +197,9 @@ The lease answers "may I write here". A second, cheaper layer answers "who else 
 
 None of it needs the lease. A command that touches everything is wrong regardless of who holds main.
 
-## Fail closed, and the rescue that keeps it switched on
+## Cheap enough to refuse
 
-When the hook cannot read the holder file, the answer is *unknown*, and unknown is never *allowed*. It refuses.
-
-The counterweight is as real: a guard whose failure mode is "nobody can work" gets switched off within a week, and then it guards nothing. So the rescue path is part of the design, not an afterthought. It has a name (`bypass`), it is logged with a reason, it expires on its own, and every call it lets through prints the warning above. A silent override would be worse than no guard.
-
-What earned the gate the right to refuse rather than warn was measuring it: **p99 of 0.342–0.422 ms per call** over three runs of 1000 calls each, 10–13× under a 5 ms budget. A gate that cheap gives nobody a reason to disable it.
+When the hook cannot read the holder file, the answer is *unknown*, and unknown is never *allowed* — it refuses, with `bypass` as the one named, logged, self-expiring way through (a daemon-backed lease has this same question in a harder form, when the daemon itself goes silent; a file has no daemon to go silent). What earns the gate the right to refuse rather than warn is that it is cheap: **p99 of 0.342–0.422 ms per call**, measured over three runs of 1000 calls each, 10–13× under a 5 ms budget. A gate that cheap gives nobody a reason to disable it.
 
 ## Three traps
 

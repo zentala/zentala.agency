@@ -9,17 +9,27 @@ export async function getStaticPaths() {
   if (!isPreview) return []
 
   const posts = await getCollection('blog')
+  const sidecars = await getCollection('linkedin')
+  // The `linkedin` collection's generateId (config.ts) already resolves
+  // `_<slug>.li.md` to the blog post's own `<slug>`.
+  const sidecarBySlug = new Map(sidecars.map((entry) => [entry.id, entry]))
+
   return posts
-    .filter((post) => Boolean(post.data.linkedinPost))
+    .filter(
+      (post) => sidecarBySlug.has(post.slug) || Boolean(post.data.linkedinPost),
+    )
     .map((post) => ({
       params: { postSlug: post.slug },
-      props: { post },
+      props: { post, sidecar: sidecarBySlug.get(post.slug) ?? null },
     }))
 }
 
-const { post } = Astro.props
+const { post, sidecar } = Astro.props
 const authorData = (await getCollection('authors'))[0].data
 const author = authorData.find((a) => a.slug === post.data.author)
+// Sidecar file (new pattern) wins over the legacy linkedinPost frontmatter
+// field, which older posts still carry until they're migrated.
+const text = sidecar ? sidecar.body ?? '' : (post.data.linkedinPost ?? '')
 ---
 
 <Layout title={`LinkedIn preview: ${post.data.title}`}>
@@ -30,7 +40,7 @@ const author = authorData.find((a) => a.slug === post.data.author)
       </p>
       <LinkedInPostCard
         title={post.data.title}
-        text={post.data.linkedinPost ?? ''}
+        text={text}
         articleLink={`/blog/${post.slug}`}
         authorName={author?.name ?? post.data.author}
         authorAvatar={author?.avatar ?? ''}
