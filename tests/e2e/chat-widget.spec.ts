@@ -7,6 +7,11 @@ import { test, expect } from '@playwright/test'
  */
 
 test.describe('Zentala Chat Widget', () => {
+  test.skip(
+    process.env.PUBLIC_PLAYWRIGHT_TEST === 'true',
+    'External chat widget is disabled during Playwright E2E runs to avoid CORS errors on localhost',
+  )
+
   test('should load chat widget without CORS errors', async ({ page }) => {
     // Collect console errors
     const consoleErrors: string[] = []
@@ -97,7 +102,7 @@ test.describe('Zentala Chat Widget', () => {
 
     // At least one chat element should be present
     // Note: Widget might inject content dynamically, so we check for script first
-    const chatScript = page.locator('script[src*="hub.zentala.io"]')
+    const chatScript = page.locator('script[src*="hub.zentala.agency"]')
     const scriptCount = await chatScript.count()
     console.log(`Chat script count: ${scriptCount}`)
 

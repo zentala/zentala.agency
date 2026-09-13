@@ -10,6 +10,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_PLAYWRIGHT_TEST: 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

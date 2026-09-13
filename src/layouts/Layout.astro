@@ -101,8 +101,13 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
          bot.zentala.io host, and the Cloudflare route pattern lacked a
          trailing `*` so the `?site=` URL below never reached the worker at
          all. Verified in a real browser: the chat answers in Polish.
-         If it breaks again, check the content-type FIRST, never the status. -->
-    <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"
-    ></script>
+         If it breaks again, check the content-type FIRST, never the status.
+
+         Disabled during Playwright E2E runs: the widget's backend does not
+         allow `localhost` origins, so its internal requests throw CORS console
+         errors that fail the `chat-widget.spec.ts` test on CI. -->
+    {import.meta.env.PUBLIC_PLAYWRIGHT_TEST !== 'true' && (
+      <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"></script>
+    )}
   </body>
 </html>
