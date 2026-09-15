@@ -7,18 +7,31 @@ on:
       - "*.md"
       - "docs/**"
       - ".plan/**"
+      - "README*"
+      - "LICENSE"
+      - "CHANGELOG*"
   push:
     branches: [main]
     paths-ignore:
       - "*.md"
       - "docs/**"
       - ".plan/**"
+      - "README*"
+      - "LICENSE"
+      - "CHANGELOG*"
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     env:
       PUBLIC_PLAYWRIGHT_TEST: 'true'
     steps:
@@ -58,5 +71,4 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
 

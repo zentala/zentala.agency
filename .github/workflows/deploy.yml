@@ -9,8 +9,15 @@ on:
       - "*.md"
       - "docs/**"
       - ".plan/**"
+      - "README*"
+      - "LICENSE"
+      - "CHANGELOG*"
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -21,6 +28,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       PUBLIC_PLAYWRIGHT_TEST: 'true'
     steps:
@@ -50,6 +58,7 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
@@ -63,6 +72,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
