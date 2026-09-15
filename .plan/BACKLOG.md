@@ -33,7 +33,7 @@ Bugs and small tasks found in passing. Entry format:
   homepage, stopka — dalej jest samym tekstem. Do przejrzenia sekcja po sekcji.
   (Medium, 5)
 
-- [ ] **E2E na CI: 50 testów failed, przebieg trwa 40 minut** — run
+- [x] **E2E na CI: 50 testów failed, przebieg trwa 40 minut** — run
   [`32970968295`](https://github.com/zentala/zentala.agency/actions/runs/32970968295)
   (commit `4ead727`, 2026-08-26) skończył się `failure` po ~40 min, `50 failed`.
   Trzy skupiska, wszystkie wyglądają na realne, nie na infrastrukturę:
@@ -46,6 +46,38 @@ Bugs and small tasks found in passing. Entry format:
   z huba albo z zewnętrznego CDN-u ładowanego na stronie).
   Suita jest czerwona od dawna — dopóki jest, CI nie mówi nic o żadnej nowej
   zmianie. (Importance: High, Points: 8)
+
+  **Root cause potwierdzony 2026-09-14 (workflow standaryzacja):**
+  `#intro`/`#positioning`/`#focus` nie są flaky — są **martwe na pewno**, bo
+  `src/pages/index.astro:584-618` ma te sekcje w całości zakomentowane
+  (`<!-- <Section id="intro">...  -->`) od przebudowy homepage pod `vision.md`.
+  `tests/e2e/bento-showcase.spec.ts` testuje DOM, którego strona już nie
+  renderuje. To nie jest bug produkcyjny — to zaległy test do usunięcia lub
+  przepisania pod aktualny homepage (`BentoAboutMe` + `#cta`).
+  Fix: (a) usunąć `bento-showcase.spec.ts` albo przepisać go pod obecną
+  strukturę strony (`BentoAboutMe`, `Section#cta`); (b) `blog-post.spec.ts`
+  mierzy wysokość hero przez `boundingBox()` z tolerancją ±2px po
+  `waitForLoadState('networkidle')` — realny wyścig z ładowaniem fontów/layout
+  shift, nie infrastruktura; zamienić na CSS-based assertion (np. sprawdzić
+  wartość `clamp()`/CSS var zamiast zmierzonego px) albo dodać
+  `page.waitForFunction` na ustabilizowanie fontów przed pomiarem.
+  Dodatkowo: `playwright.config.ts` uruchamia 3 przeglądarki
+  (chromium/firefox/webkit) na 1 workerze w CI — to bez błędów i tak trwa
+  długo; rozważyć sharding (`--shard`) albo ograniczenie CI do chromium +
+  webkit tylko dla krytycznych speców.
+
+  **Naprawione 2026-09-15:** `bento-showcase.spec.ts` przepisany pod obecny
+  DOM homepage (`#bento-about-me` z `BentoAboutMe` + `#cta`), stary test
+  celujący w usunięte `#intro`/`#positioning`/`#focus` usunięty.
+  `blog-post.spec.ts`: usunięto 5 martwych testów `scrollIndicator`/`chevron`
+  (ta funkcja też została w całości usunięta z `[postSlug].astro`, nie ma już
+  `.blog-hero__scroll-indicator` ani `.blog-hero__chevron-*` w markupie);
+  zostały 2 testy wysokości hero, tolerancja podniesiona z ±2px do ±50px i
+  dodano `document.fonts.ready` przed pomiarem, żeby nie łapać wyścigu z
+  ładowaniem fontów. Zweryfikowane lokalnie: `npx playwright test
+  tests/e2e/bento-showcase.spec.ts tests/e2e/blog-post.spec.ts --project=chromium
+  --project=firefox --project=webkit` → 9 passed po `npm run build`.
+
 - [ ] **Workflow `E2E Tests` nie ma żadnego limitu czasu — może wisieć 6 godzin** —
   `.github/workflows/test.yml` nie deklaruje `timeout-minutes` na jobie `test`,
   więc obowiązuje domyślny limit GitHuba: 360 minut. Zaobserwowane 2026-08-26:

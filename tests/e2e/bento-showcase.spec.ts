@@ -1,30 +1,27 @@
 import { expect, test } from '@playwright/test'
 
-test.describe('Homepage intro (vision.md)', () => {
-  test('shows Intro + Positioning + Current focus sections', async ({ page }) => {
+test.describe('Homepage bento showcase', () => {
+  test('shows BentoAboutMe section with key content and the CTA section', async ({
+    page,
+  }) => {
     await page.goto('/')
 
-    const intro = page.locator('#intro')
-    await expect(intro).toBeVisible()
+    const bento = page.locator('#bento-about-me')
+    await expect(bento).toBeVisible()
     await expect(
-      intro.getByRole('heading', { name: 'Hands-On CTO for Innovation Projects' }),
+      bento.getByRole('heading', { name: 'Discovery & Strategy' }),
     ).toBeVisible()
-
-    const positioning = page.locator('#positioning')
-    await expect(positioning).toBeVisible()
     await expect(
-      positioning.getByRole('heading', {
-        name: 'Not Just a Developer. Hands-On CTO With Business & UX Understanding.',
+      bento.getByRole('heading', {
+        name: 'Your Hands-On CTO for an innovative project',
       }),
     ).toBeVisible()
 
-    const focus = page.locator('#focus')
-    await expect(focus).toBeVisible()
-    await expect(focus.getByRole('heading', { name: 'Current focus' })).toBeVisible()
+    const portfolioLink = bento.getByRole('link', { name: /See the portfolio/i })
+    await expect(portfolioLink).toBeVisible()
+    await expect(portfolioLink).toHaveAttribute('href', '/portfolio')
 
-    // Only Backstage card is clickable for now
-    const backstageLink = focus.getByRole('link', { name: 'Explore Backstage offer' })
-    await expect(backstageLink).toBeVisible()
-    await expect(backstageLink).toHaveAttribute('href', '/offer/backstage')
+    const cta = page.locator('#cta')
+    await expect(cta).toBeVisible()
   })
 })
