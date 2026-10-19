@@ -59,7 +59,7 @@ const { variants, defaultVariant = 'A' } = Astro.props
   }
 
   // Run on load and on URL change
-  switchHeroVariant()
+  document.addEventListener('astro:page-load', switchHeroVariant)
   window.addEventListener('popstate', switchHeroVariant)
 </script>
 

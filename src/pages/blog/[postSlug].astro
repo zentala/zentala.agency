@@ -412,14 +412,22 @@ const contentBoxClass = 'py-responsive-md'
   </section>
 </Layout>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+<script>
+  let tocObserver: IntersectionObserver | undefined
+  const copyTimers = new Set<ReturnType<typeof setTimeout>>()
+  document.addEventListener('astro:before-swap', () => {
+    tocObserver?.disconnect()
+    tocObserver = undefined
+    copyTimers.forEach(clearTimeout)
+    copyTimers.clear()
+  })
+  document.addEventListener('astro:page-load', () => {
     // TOC scroll-spy: highlights the heading currently in view
     const article = document.getElementById('post-content')
     const tocLinks = document.querySelectorAll('[data-toc-link]')
 
     if (article && tocLinks.length) {
-      const itemBySlug = new Map()
+      const itemBySlug = new Map<string, Element>()
       tocLinks.forEach((link) => {
         const slug = link.getAttribute('data-toc-link')
         const item = link.closest('.blog-toc__item')
@@ -428,7 +436,7 @@ const contentBoxClass = 'py-responsive-md'
 
       const headings = article.querySelectorAll('h2[id], h3[id]')
       if (headings.length) {
-        const observer = new IntersectionObserver(
+        tocObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               const item = itemBySlug.get(entry.target.id)
@@ -443,7 +451,7 @@ const contentBoxClass = 'py-responsive-md'
           },
           { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
         )
-        headings.forEach((h) => observer.observe(h))
+        headings.forEach((h) => tocObserver?.observe(h))
       }
     }
 
@@ -466,7 +474,7 @@ const contentBoxClass = 'py-responsive-md'
           document.body.removeChild(ta)
         }
         btn.classList.add('is-copied')
-        setTimeout(() => btn.classList.remove('is-copied'), 1500)
+        copyTimers.add(setTimeout(() => btn.classList.remove('is-copied'), 1500))
       })
     })
   })

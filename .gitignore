@@ -56,3 +56,5 @@ nul
 
 # kb session logs — per-session noise, not project history
 .plan/sessions/
+
+.plan/worktrees/

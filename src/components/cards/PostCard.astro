@@ -56,26 +56,27 @@ if (!author) {
   }
 </style>
 
-<script is:inline>
+<script>
   function truncateExcerpt() {
-    const cards = document.querySelectorAll('.post-card')
+    const cards = document.querySelectorAll<HTMLElement>('.post-card')
 
     cards.forEach((card) => {
-      const excerpt = card.querySelector('[data-excerpt]')
+      const excerpt = card.querySelector<HTMLElement>('[data-excerpt]')
       if (!excerpt) return
 
       // Store original text if not already stored
       if (!excerpt.dataset.originalText) {
-        excerpt.dataset.originalText = excerpt.textContent.trim()
+        excerpt.dataset.originalText = excerpt.textContent?.trim() || ''
       }
 
-      const originalText = excerpt.dataset.originalText
+      const originalText = excerpt.dataset.originalText || ''
 
       // Reset to original text first
       excerpt.textContent = originalText
 
       // Let the browser render first, then check if we need to truncate
       requestAnimationFrame(() => {
+        if (!excerpt.isConnected) return
         // Check if excerpt overflows
         const isOverflowing =
           excerpt.scrollHeight > excerpt.offsetHeight ||
@@ -116,16 +117,14 @@ if (!author) {
     })
   }
 
-  // Run on DOM ready and window resize
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', truncateExcerpt)
-  } else {
-    truncateExcerpt()
-  }
-
+  // Bundled once for all cards, including pages entered through ClientRouter.
+  document.addEventListener('astro:page-load', truncateExcerpt)
+  let resizeTimer: ReturnType<typeof setTimeout>
   window.addEventListener('resize', () => {
-    setTimeout(truncateExcerpt, 100) // Small delay for resize
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(truncateExcerpt, 100)
   })
+  document.addEventListener('astro:before-swap', () => clearTimeout(resizeTimer))
 </script>
 
 <article class="card-link">
