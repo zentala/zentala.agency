@@ -27,16 +27,8 @@
     border-bottom: 1px solid $border-color;
     z-index: 1100; /* Higher than header (50) and overlay (400) */
 
-    @include tablet-up {
-      display: none !important; /* Force hide on desktop */
-    }
-
     &.active {
       @apply block;
-
-      @include tablet-up {
-        display: none !important; /* Force hide on desktop even when active */
-      }
     }
 
     nav {

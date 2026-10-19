@@ -22,6 +22,20 @@ const links = [
 ---
 
 <style lang="scss">
+  #header {
+    container: site-header / inline-size;
+  }
+
+  .logo-container {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .desktop-nav {
+    flex-shrink: 0;
+  }
+
   .tracking-wide {
     letter-spacing: 0.26rem;
   }
@@ -31,10 +45,7 @@ const links = [
     @apply relative flex h-5 w-7 cursor-pointer flex-col justify-center;
     gap: 4px;
 
-    // Hide on desktop
-    @media (min-width: 771px) {
-      @apply hidden;
-    }
+    display: none;
 
     .line {
       @apply w-full bg-white transition-all duration-300 ease-in-out;
@@ -69,42 +80,30 @@ const links = [
     &.active {
       @apply block;
     }
-
-    @media (min-width: 771px) {
-      display: none !important; /* Force hide on desktop */
-    }
   }
 
-  // Medium desktop nav adjustments
-  .desktop-nav {
-    // Hide first link (Home) on medium desktop
-    @media (min-width: 771px) and (max-width: 999px) {
-      a:first-child {
-        @apply hidden;
-      }
+  @container site-header (width < 1180px) {
+    .desktop-nav {
+      display: none;
     }
-  }
-
-  @media (max-width: 1200px) {
-    .logo-container {
+    .hamburger {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      flex-shrink: 0;
     }
-
-    .text-lg {
-      font-size: 0.82rem;
-      margin-left: 0;
-      margin-bottom: -4px;
-      padding-bottom: 0;
-      position: relative;
-      top: -4px;
-      opacity: 0.5;
+    .mobile-nav.active {
+      display: block !important;
     }
+  }
 
-    nav {
-      align-self: flex-end;
-      margin-bottom: 7px;
+  @container site-header (width < 600px) {
+    .agency-descriptor {
+      display: none;
+    }
+  }
+
+  @container site-header (width >= 1180px) {
+    .mobile-nav {
+      display: none !important;
     }
   }
 </style>
@@ -120,7 +119,7 @@ const links = [
       <Logo {...headerLogoProps} />
       <a href="/" class="flex cursor-pointer items-center">
         <span
-          class="text-md ml-[40px] font-medium uppercase tracking-wide text-white"
+          class="agency-descriptor text-md ml-[40px] font-medium uppercase tracking-wide text-white"
         >
           Innovation Agency
         </span>
@@ -141,7 +140,13 @@ const links = [
     </nav>
 
     <!-- Mobile Hamburger Button -->
-    <button class="mobile-nav-toggle hamburger" id="mobile-toggle">
+    <button
+      class="mobile-nav-toggle hamburger"
+      id="mobile-toggle"
+      aria-label="Toggle navigation"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+    >
       <div class="line"></div>
       <div class="line"></div>
       <div class="line"></div>
@@ -176,91 +181,61 @@ const links = [
 </style>
 
 <script>
-  // Header spacer height now handled by CSS only - no JS needed
+  // One module-wide listener set. Resolve the current DOM after every swap.
+  function closeMobileNav() {
+    document.getElementById('mobile-nav')?.classList.remove('active')
+    document.getElementById('mobile-toggle')?.classList.remove('active')
+    document
+      .getElementById('mobile-toggle')
+      ?.setAttribute('aria-expanded', 'false')
+    document.getElementById('mobile-overlay')?.classList.remove('active')
+    document.body.classList.remove('mobile-nav-open')
+  }
 
-  // Mobile navigation toggle
-  document.addEventListener('DOMContentLoaded', function () {
-    const mobileToggle = document.getElementById('mobile-toggle')
-    const mobileNav = document.getElementById('mobile-nav')
-    const mobileOverlay = document.getElementById('mobile-overlay')
+  function updateMobileNavPosition() {
     const header = document.getElementById('header')
+    const nav = document.getElementById('mobile-nav')
+    const overlay = document.getElementById('mobile-overlay')
+    if (!header || !nav || !overlay) return
+    nav.style.top = overlay.style.top = `${header.offsetHeight}px`
+    if (header.clientWidth >= 1180) closeMobileNav()
+  }
 
-    function updateMobileNavPosition() {
-      if (header && mobileNav) {
-        const headerHeight = header.offsetHeight
-        mobileNav.style.top = `${headerHeight}px`
-      }
-    }
-
-    function closeMobileNav() {
-      if (mobileNav && mobileToggle && mobileOverlay) {
-        mobileNav.classList.remove('active')
-        mobileToggle.classList.remove('active')
-        mobileOverlay.classList.remove('active')
-        document.body.classList.remove('mobile-nav-open')
-      }
-    }
-
-    function openMobileNav() {
-      if (mobileNav && mobileToggle && mobileOverlay && header) {
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement
+    const toggle = document.getElementById('mobile-toggle')
+    const nav = document.getElementById('mobile-nav')
+    if (toggle?.contains(target)) {
+      const opening = !nav?.classList.contains('active')
+      closeMobileNav()
+      if (opening) {
         updateMobileNavPosition()
-        const headerHeight = header.offsetHeight
-        mobileOverlay.style.top = `${headerHeight}px`
-        mobileNav.classList.add('active')
-        mobileToggle.classList.add('active')
-        mobileOverlay.classList.add('active')
+        nav?.classList.add('active')
+        toggle.classList.add('active')
+        toggle.setAttribute('aria-expanded', 'true')
+        document.getElementById('mobile-overlay')?.classList.add('active')
         document.body.classList.add('mobile-nav-open')
       }
+    } else if (!nav?.contains(target) || target.closest('a')) {
+      closeMobileNav()
     }
-
-    function toggleMobileNav() {
-      if (mobileNav) {
-        const isActive = mobileNav.classList.contains('active')
-        if (isActive) {
-          closeMobileNav()
-        } else {
-          openMobileNav()
-        }
-      }
-    }
-
-    if (mobileToggle && mobileNav) {
-      mobileToggle.addEventListener('click', toggleMobileNav)
-
-      // Close mobile nav when clicking on a link
-      const mobileLinks = mobileNav.querySelectorAll('a')
-      mobileLinks.forEach((link) => {
-        link.addEventListener('click', closeMobileNav)
-      })
-
-      // Close mobile nav when clicking on overlay
-      if (mobileOverlay) {
-        mobileOverlay.addEventListener('click', closeMobileNav)
-      }
-
-      // Close mobile nav when clicking outside
-      document.addEventListener('click', function (e) {
-        const target = e.target as HTMLElement
-        if (
-          target &&
-          !mobileToggle.contains(target) &&
-          !mobileNav.contains(target)
-        ) {
-          closeMobileNav()
-        }
-      })
-
-      // Close mobile nav when resizing to desktop view + update position on resize
-      window.addEventListener('resize', function () {
-        if (window.innerWidth >= 771) {
-          closeMobileNav()
-        } else {
-          updateMobileNavPosition()
-        }
-      })
-
-      // Update position on initial load
-      updateMobileNavPosition()
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMobileNav()
+  })
+  window.addEventListener('resize', updateMobileNavPosition)
+  let headerObserver: ResizeObserver | undefined
+  document.addEventListener('astro:before-swap', () => {
+    headerObserver?.disconnect()
+    headerObserver = undefined
+    closeMobileNav()
+  })
+  document.addEventListener('astro:page-load', () => {
+    updateMobileNavPosition()
+    const header = document.getElementById('header')
+    if (header) {
+      headerObserver = new ResizeObserver(updateMobileNavPosition)
+      headerObserver.observe(header)
     }
   })
 </script>
