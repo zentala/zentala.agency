@@ -9,6 +9,14 @@ All published site content is English. The hub chat defaults to English for inst
 - `npm run dev` starts development; `npm run build` runs Astro type checking and builds `dist/`.
 - `npm run test:unit` runs Vitest; `npm run test:e2e` runs Playwright against the preview server. Build first. CI sets `PUBLIC_PLAYWRIGHT_TEST=true` to disable the external chat for link tests.
 - Read [DESIGN.md](DESIGN.md) before visual changes.
+- Run `just check` for the build/typecheck, unit suite and critical Playwright flow. The check uses the existing tools; maintain it following the shared `just-check` skill. Use `npm run test:e2e` for the full browser suite.
+
+## Critical workflows
+
+- Navigate through the header and return with browser Back without a full document reload.
+- Open the hamburger menu after navigation, including when a side panel reduces the available header width.
+- Enter a blog post from the feed and highlight its current section in the table of contents.
+- Before delivery of chat changes, additionally verify the live hub iframe keeps its document, conversation and open panel through three internal links and Back at 1200px and 1920px, using a real browser with scrollbars.
 
 ## Navigation and hub chat
 
