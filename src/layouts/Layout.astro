@@ -1,5 +1,7 @@
 ---
 import '../styles/global.scss'
+import { ClientRouter } from 'astro:transitions'
+import HubChat from '@internal/hub-chat-astro/HubChat.astro'
 import Footer from '../components/Footer.astro'
 import Header from '../components/Header.astro'
 
@@ -35,6 +37,7 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 <!doctype html>
 <html lang="en">
   <head>
+    <ClientRouter />
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
@@ -93,21 +96,8 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
     </main>
     <Footer />
 
-    <!-- Chat huba — RESTORED 2026-08-26.
-         Was disabled the same day: the host answered 200 with
-         `content-type: text/html` (the SPA fallback), so the browser parsed
-         HTML as JavaScript and threw SyntaxError on every page. Two causes,
-         both fixed in the cloudflare repo: the worker proxied to the deleted
-         bot.zentala.io host, and the Cloudflare route pattern lacked a
-         trailing `*` so the `?site=` URL below never reached the worker at
-         all. Verified in a real browser: the chat answers in Polish.
-         If it breaks again, check the content-type FIRST, never the status.
-
-         Disabled during Playwright E2E runs: the widget's backend does not
-         allow `localhost` origins, so its internal requests throw CORS console
-         errors that fail the `chat-widget.spec.ts` test on CI. -->
     {import.meta.env.PUBLIC_PLAYWRIGHT_TEST !== 'true' && (
-      <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"></script>
+      <HubChat site="zentala.agency" />
     )}
   </body>
 </html>
