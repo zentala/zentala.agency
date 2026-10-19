@@ -491,7 +491,7 @@ const bentoStates = {
   </SectionBento>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('astro:page-load', () => {
       const cards = document.querySelectorAll('[data-bento-hover]')
       const states = document.querySelectorAll('.state-content')
       const sygnetWrapper = document.querySelector(
