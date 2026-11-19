@@ -3,9 +3,7 @@
  * SectionBlockQuote - Quote block for sections
  *
  * Enhanced version of BlockQuote with:
- * - Top/bottom borders for section integration
- * - Margin -1px for border overlap
- * - Hover states
+ * - Top line and hover overlay from the shared line model (DESIGN.md section 3)
  * - Multiple variants
  * - Optional role/title for author
  *
@@ -56,28 +54,17 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
   @use '../../../styles/variables' as *;
 
   .section-blockquote {
-    border-top: 1px solid $border-color;
-    border-bottom: 1px solid $border-color;
-    margin: -1px 0; // Overlap with adjacent borders
-    background: #000;
-    transition: background 200ms, border-color 200ms;
-    position: relative;
-    z-index: 1;
+    @include line-block;
+    @include cell-interactive;
     @include px-responsive('md');
     @include py-responsive('md');
-
-    &:hover {
-      background: #111827;
-      border-color: $border-color-hover;
-      z-index: 10; // Lift above siblings to show all borders
-    }
 
     blockquote {
       margin: 0;
     }
 
     .quote-text {
-      @apply text-xl md:text-2xl font-light text-white/90 italic;
+      @apply text-xl md:text-2xl font-light text-fg-secondary italic;
       line-height: 1.6;
       margin: 0;
     }
@@ -90,11 +77,11 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
     }
 
     .quote-author {
-      @apply text-base text-white font-normal not-italic;
+      @apply text-base text-fg font-normal not-italic;
     }
 
     .quote-role {
-      @apply text-sm text-white/60;
+      @apply text-sm text-fg-muted;
     }
 
     // Variants
@@ -110,12 +97,15 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
 
     &--minimal {
       border-top: none;
-      border-bottom: none;
       padding: 0;
       margin: 0;
 
+      &::after {
+        display: none;
+      }
+
       &:hover {
-        background: transparent;
+        background-color: transparent;
       }
 
       .quote-text {
@@ -124,10 +114,4 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
     }
   }
 
-  // Reduced motion support
-  @media (prefers-reduced-motion: reduce) {
-    .section-blockquote {
-      transition: none !important;
-    }
-  }
 </style>

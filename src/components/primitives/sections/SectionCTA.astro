@@ -2,8 +2,7 @@
 /**
  * SectionCTA - Call-to-action button/link for sections
  *
- * Enhanced version of GridCTA with:
- * - Top border for section integration
+ * - Top line and hover overlay from the shared line model (DESIGN.md section 3)
  * - Full-width layout
  * - Icon + text + arrow pattern
  * - Hover states
@@ -64,17 +63,14 @@ const rel = external ? 'noopener noreferrer' : undefined
   @use '../../../styles/variables' as *;
 
   .section-cta {
+    @include line-block;
+    @include cell-interactive;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    border-top: 1px solid $border-color;
-    background: #000;
-    transition: all 200ms;
     min-height: 120px;
-    position: relative;
-    z-index: 2; // Higher than Section's z-index: 1
-    overflow: hidden; // Clip background text
+    overflow: clip; // Clip background text
     @include px-responsive('md');
     @include py-responsive('md');
 
@@ -83,11 +79,6 @@ const rel = external ? 'noopener noreferrer' : undefined
     }
 
     &:hover {
-      background: #111827;
-      border-color: $border-color-hover;
-      z-index: 20; // Much higher on hover to show all borders
-      border: 1px solid $border-color-hover; // Force all borders visible
-
       .section-cta__arrow {
         transform: translateX(4px);
       }
@@ -95,10 +86,6 @@ const rel = external ? 'noopener noreferrer' : undefined
       .section-cta__bg-text {
         opacity: 0.15; // Slightly more visible on hover
       }
-    }
-
-    &:active {
-      transform: scale(0.98);
     }
   }
 
@@ -111,12 +98,12 @@ const rel = external ? 'noopener noreferrer' : undefined
     font-size: 60px;
     font-weight: 100;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.1); // decorative watermark
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
     z-index: 0;
-    transition: opacity 200ms;
+    transition: opacity var(--motion-fast) var(--ease-standard);
 
     @include mobile {
       font-size: 40px;
@@ -149,29 +136,29 @@ const rel = external ? 'noopener noreferrer' : undefined
     width: 1.25rem;
     height: 1.25rem;
     flex-shrink: 0;
-    transition: transform 200ms;
+    transition: transform var(--motion-fast) var(--ease-standard);
   }
 
   // Variants
   .section-cta--primary,
   .section-cta--outline {
     .section-cta__text {
-      @apply text-blue-400;
+      @apply text-accent;
     }
 
     .section-cta__icon,
     .section-cta__arrow {
-      @apply text-blue-400;
+      @apply text-accent;
     }
 
     &:hover {
       .section-cta__text {
-        @apply text-blue-300;
+        @apply text-accent-hover;
       }
 
       .section-cta__icon,
       .section-cta__arrow {
-        @apply text-blue-300;
+        @apply text-accent-hover;
       }
     }
   }
@@ -180,12 +167,12 @@ const rel = external ? 'noopener noreferrer' : undefined
     background-color: rgba(255, 255, 255, 0.02);
 
     .section-cta__text {
-      @apply text-white;
+      @apply text-fg;
     }
 
     .section-cta__icon,
     .section-cta__arrow {
-      @apply text-white/60;
+      @apply text-fg-muted;
     }
 
     &:hover {
@@ -193,21 +180,9 @@ const rel = external ? 'noopener noreferrer' : undefined
 
       .section-cta__icon,
       .section-cta__arrow {
-        @apply text-white/80;
+        @apply text-fg-secondary;
       }
     }
   }
 
-  // Reduced motion support
-  @media (prefers-reduced-motion: reduce) {
-    .section-cta,
-    .section-cta__arrow {
-      transition: none !important;
-    }
-
-    .section-cta:hover,
-    .section-cta:active {
-      transform: none !important;
-    }
-  }
 </style>

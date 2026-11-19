@@ -32,39 +32,21 @@ const {
   @use '../../../styles/variables' as *;
 
   .banner-simple-with-image {
+    @include line-block;
+    @include cell-interactive;
+    @include padding-responsive('md'); // 64px → 48px → 32px → 24px → 16px
     width: 100%;
-    margin: 0;
-    background: black;
-    border: 1px solid $border-color; /* default framing */
-    position: relative;
     display: block;
     cursor: pointer;
     text-decoration: none;
-    transition:
-      background-color 200ms ease-in-out,
-      border-color 200ms ease-in-out,
-      box-shadow 200ms ease-in-out;
-    overflow: hidden;
-
-    // Responsive padding using design system
-    @include padding-responsive('md'); // 64px → 48px → 32px → 24px → 16px
-
-    &:hover {
-      background-color: $border-color-subtle; // gray-900
-      border-color: $border-color-hover; // gray-700
-    }
-
-    &:focus-visible {
-      outline: none;
-      box-shadow: inset 0 0 0 1px $border-color-hover;
-    }
+    overflow: clip;
 
     .banner-image {
       width: 100%;
       height: auto;
       object-fit: cover;
       margin-bottom: 1.5rem;
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
     }
 
     .banner-content {
@@ -73,7 +55,7 @@ const {
     }
 
     h3 {
-      @apply mb-4 font-light text-white;
+      @apply mb-4 font-light text-fg;
       font-size: 2rem; // text-3xl
       line-height: 1.2;
 
@@ -87,7 +69,7 @@ const {
     }
 
     p {
-      @apply mb-6 text-gray-300;
+      @apply mb-6 text-fg-secondary;
       font-size: 1.25rem; // text-xl
       line-height: 1.6;
 
@@ -101,7 +83,7 @@ const {
     }
 
     .banner-link {
-      @apply inline-block text-white transition-colors duration-200;
+      @apply inline-block text-fg transition-colors duration-fast ease-standard;
       font-size: 1.125rem; // text-lg
       position: relative;
       padding-bottom: 2px;
@@ -115,7 +97,7 @@ const {
       }
 
       &:hover {
-        @apply text-gray-300;
+        @apply text-fg-secondary;
       }
 
       &::after {
@@ -127,7 +109,7 @@ const {
         height: 1px;
         background-color: currentColor;
         opacity: 0.6;
-        transition: opacity 200ms ease-in-out;
+        transition: opacity var(--motion-fast) var(--ease-standard);
       }
 
       &:hover::after {
@@ -145,19 +127,11 @@ const {
     /* Full-bleed inside container-padded without relying on margins (more deterministic). */
     left: calc(var(--container-padded-padding) * -1);
     width: calc(100% + (var(--container-padded-padding) * 2));
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-
-    &:hover {
-      /* Show "full border" on hover (like cards) without double-borders with the container. */
-      box-shadow: inset 0 0 0 1px $border-color-hover;
-    }
   }
 
   /* Remove container padding above/below when the banner is flush to the edges (first/last). */
   :global(.container-padded > .banner-simple-with-image:first-child) {
-    margin-top: calc(var(--container-padded-padding) * -1);
+    margin-top: calc(var(--container-padded-padding) * -1 - 1px);
   }
 
   :global(.container-padded > .banner-simple-with-image:last-child) {

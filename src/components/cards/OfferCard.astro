@@ -28,11 +28,6 @@ const { number, title, description, icon, href } = Astro.props
 <style lang="scss">
   @use '../../styles/components/cards' as *;
 
-  .offer-card {
-    position: relative;
-    overflow: hidden;
-  }
-
   .number {
     z-index: 0;
   }
@@ -47,8 +42,8 @@ const { number, title, description, icon, href } = Astro.props
 
   .offer-card__description {
     @extend %card-content;
-    font-size: 1.25rem;
-    color: #9ca3af;
+    font-size: var(--text-h4);
+    color: var(--color-text-muted);
     position: relative;
     z-index: 1;
   }

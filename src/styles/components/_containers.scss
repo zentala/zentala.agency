@@ -31,28 +31,25 @@
 
   // Border system utilities
   .border-system {
-    @apply border-gray-800;
+    border-color: var(--color-line);
   }
 
   .border-system-hover {
-    @apply transition-colors duration-200 hover:border-gray-700;
+    @apply transition-colors duration-fast ease-standard;
+    &:hover {
+      border-color: var(--color-line-strong);
+    }
   }
 
   .section-bordered {
-    @apply border-b border-gray-800;
+    @include section-borders;
   }
 
-  // Container System with Mobile Responsive Borders
+  // flow-root keeps a grid's negative top margin from collapsing through the container
   .container-bordered {
     @include container-base;
     @include container-borders;
-    
-    // Ensure vertical borders extend from top to bottom when inside section-full
-    // by making container fill the section height
-    :global(.section-full) > & {
-      min-height: 100%;
-      @include px-responsive();
-    }
+    display: flow-root;
   }
 
   .container-simple {
@@ -87,7 +84,7 @@
 
   .container-header {
     @include container-base;
-    @include container-borders;
+    @include container-side-lines;
     @include px-responsive();
     @include py-responsive('sm');
   }

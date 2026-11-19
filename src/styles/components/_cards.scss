@@ -1,21 +1,21 @@
 %card-title {
-  color: white;
+  color: var(--color-text);
   font-weight: 300; // font-light
   margin-bottom: 0.5rem;
 }
 
 %card-title-large {
   @extend %card-title;
-  font-size: 1.875rem; // text-3xl
+  font-size: var(--text-h2);
 }
 
 %card-title-medium {
   @extend %card-title;
-  font-size: 1.5rem; // text-2xl
+  font-size: var(--text-h3);
 }
 
 %card-content {
-  font-size: 1.125rem; // text-lg
+  font-size: var(--text-lead);
 
   ul {
     list-style: disc;

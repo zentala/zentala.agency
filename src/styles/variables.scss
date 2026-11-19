@@ -10,13 +10,14 @@ $large-max: 1440px;
 $container-max: 1450px; // Point where container borders disappear
 
 // Container & Layout
-$container-max-width: 8xl; // Tailwind's max-w-8xl
-$border-color: #1f2937; // gray-800
-$border-color-hover: #374151; // gray-700
-$border-color-subtle: #111827; // gray-900
+// Colours reference the CSS custom properties in tokens.scss
+$border-color: var(--color-line);
+$border-color-hover: var(--color-line-strong);
+$border-color-subtle: var(--color-surface-hover);
+$surface-base: var(--color-surface);
+$surface-hover: var(--color-surface-hover);
 
-// Colors
-$color-accent: #60a5fa; // blue-400
+$color-accent: var(--color-accent);
 
 // =======================================
 // HEADER SPECIFIC VARIABLES
@@ -363,13 +364,20 @@ $header-height-mobile: calc(
   max-width: theme('maxWidth.8xl');
 }
 
+// Outer vertical lines exist only above $container-max. Below it the container
+// clips the 1px a grid or block overlay overshoots, so no line shows at the viewport edge.
+@mixin container-side-lines {
+  @media (min-width: #{$container-max + 1px}) {
+    border-left: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+  }
+}
+
 @mixin container-borders {
-  border-left: 1px solid $border-color;
-  border-right: 1px solid $border-color;
+  @include container-side-lines;
 
   @include container-responsive {
-    border-left: none;
-    border-right: none;
+    overflow-x: clip;
   }
 }
 
@@ -381,16 +389,99 @@ $header-height-mobile: calc(
 // GRID MIXINS
 // =======================================
 
-@mixin cards-grid {
-  @apply grid grid-cols-1;
+// ONE line model, see DESIGN.md section 3. Every grid-like wrapper includes `line-grid`.
+// Columns come from --cols-wide (above 1000px), --cols-medium (771-1000px) and
+// --cols-narrow (770px and below); override them on the element, never the template.
+@mixin line-grid {
+  --cols-wide: 3;
+  --cols-medium: 2;
+  --cols-narrow: 1;
+  --cols: var(--cols-wide);
 
-  @include tablet-up {
-    @apply grid-cols-2;
+  display: grid;
+  grid-template-columns: var(--grid-columns, repeat(var(--cols), minmax(0, 1fr)));
+  align-items: stretch;
+  // Overlap the line above and the container's left line instead of adding new ones.
+  margin: -1px 0 0 -1px;
+  background-color: $surface-base;
+
+  @include medium {
+    --cols: var(--cols-medium);
   }
 
-  @include medium-up {
-    @apply grid-cols-3;
+  @include tablet {
+    --cols: var(--cols-narrow);
+  }
+
+  > * {
+    @include line-cell;
+  }
+
+  // Closes an incomplete last row with the line under the cells above it. With a full
+  // last row it collapses to zero height and sits on the section's bottom line.
+  &::after {
+    content: '';
+    grid-column: auto / -1;
+    margin-bottom: -1px;
+    @include line-cell;
   }
 }
 
-// cards-grid-borders mixin removed - now using simpler -m-px approach in _grids.scss
+// A cell draws only its own left and top line. Right and bottom lines belong to the
+// neighbour, the container or the section.
+@mixin line-cell {
+  border-left: 1px solid $border-color;
+  border-top: 1px solid $border-color;
+  min-width: 0;
+}
+
+// A full-width block (CTA, quote, banner) outside a line-grid: top line only,
+// overlapping the line above it.
+@mixin line-block {
+  border-top: 1px solid $border-color;
+  margin-top: -1px;
+
+  .line-grid + & {
+    margin-top: 0;
+  }
+}
+
+// Hover and focus are an overlay that lands on the neighbours' lines.
+// Zero layout shift: only background-color and the overlay opacity change.
+@mixin cell-interactive {
+  position: relative;
+  transition: background-color var(--motion-fast) var(--ease-standard);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid $border-color-hover;
+    opacity: 0;
+    pointer-events: none;
+    z-index: var(--z-cell-hover);
+    transition:
+      opacity var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  &:hover {
+    background-color: $surface-hover;
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &:has(:focus-visible)::after {
+    opacity: 1;
+  }
+
+  &:focus-visible,
+  &:has(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible::after,
+  &:has(:focus-visible)::after {
+    border-color: var(--line-focus);
+  }
+}

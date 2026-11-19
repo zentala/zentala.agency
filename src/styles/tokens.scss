@@ -1,0 +1,52 @@
+// Design tokens. Canonical reference: DESIGN.md (repo root). Mirrored in tailwind.config.js.
+:root {
+  // Surfaces
+  --color-surface: #000;
+  --color-surface-raised: #0a0a0a;
+  --color-surface-hover: #111827;
+
+  // Lines
+  --color-line: #1f2937;
+  --color-line-strong: #374151;
+  --line-focus: rgba(255, 255, 255, 0.55);
+
+  // Text (text-subtle is the contrast floor for any text on #000)
+  --color-text: #fff;
+  --color-text-secondary: rgba(255, 255, 255, 0.75);
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+  --color-text-subtle: rgba(255, 255, 255, 0.55);
+
+  // Accent and status
+  --color-accent: #60a5fa;
+  --color-accent-hover: #93c5fd;
+  --color-accent-solid: #2563eb;
+  --color-warn: #f59e0b;
+  --color-success: #34d399;
+  --color-danger: #f87171;
+
+  // Type scale
+  --text-label: 0.6875rem;
+  --text-sm: 0.875rem;
+  --text-body: 1rem;
+  --text-lead: 1.125rem;
+  --text-h4: 1.25rem;
+  --text-h3: 1.5rem;
+  --text-h2: 1.875rem;
+  --text-h1-page: 2.25rem;
+  --tracking-label: 0.12em;
+
+  // Radii
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-full: 9999px;
+
+  // Motion
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 600ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+
+  // The only hover z-index: lifts a hovered cell's overlay above its neighbours
+  --z-cell-hover: 2;
+}

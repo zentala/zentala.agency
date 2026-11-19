@@ -28,7 +28,7 @@ interface Props {
   logoAlt?: string
   tag?: 'h1' | 'h2' | 'h3'
   align?: 'left' | 'center'
-  interactive?: boolean // Enable hover effects
+  interactive?: boolean // Deprecated, no effect: the scale hover was removed
 }
 
 const {
@@ -40,7 +40,6 @@ const {
   logoAlt = '',
   tag = 'h2',
   align = 'left',
-  interactive = false,
 } = Astro.props
 const HeadingTag = tag
 ---
@@ -51,7 +50,6 @@ const HeadingTag = tag
     (eyebrow || icon || logoSrc) && 'section-header--feature',
   ]}
   data-align={align}
-  data-interactive={interactive}
 >
   {icon && <CardBackgroundIcon icon={icon} />}
   {logoSrc && <img src={logoSrc} alt={logoAlt} class="section-header__logo" />}
@@ -72,31 +70,6 @@ const HeadingTag = tag
 
     &[data-align='center'] {
       text-align: center;
-    }
-
-    /* Interactive variant — with hover effects */
-    &[data-interactive='true'] {
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      text-align: center;
-      border: 1px solid $border-color;
-
-      &:hover {
-        transform: scale(1.1);
-        background-color: #111827;
-        border-color: #60a5fa;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        z-index: 10;
-
-        .section-headline {
-          transform: scale(1.15);
-        }
-
-        .section-subhead {
-          transform: scale(1.1);
-        }
-      }
     }
   }
 
@@ -152,28 +125,30 @@ const HeadingTag = tag
   }
 
   .section-eyebrow {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
   }
 
   .section-headline {
-    @apply text-3xl md:text-4xl font-light text-white;
-    transition: all 0.3s ease;
+    @apply text-3xl md:text-4xl font-light text-fg;
     position: relative;
     z-index: 1;
   }
 
   .section-subhead {
-    @apply text-lg text-white/80 mt-4;
-    transition: all 0.3s ease;
+    @apply text-lg text-fg-secondary mt-4;
     position: relative;
     z-index: 1;
     max-width: 56rem;
+  }
+
+  .section-header[data-align='center'] .section-subhead {
+    margin-inline: auto;
   }
 </style>
