@@ -386,7 +386,7 @@ const finalCtaFooter = [
         processSteps.map((step) => (
           <SectionContent context="grid" prose={false}>
             <CardBackgroundIcon icon={step.icon} />
-            <span class="bs-step__num">{step.n}</span>
+            <span class="bs-step__num" aria-hidden="true">{step.n}</span>
             <div class="bs-card bs-card--step">
               <h3 class="bs-card__title">{step.title}</h3>
               <p class="bs-card__desc">{step.body}</p>
@@ -519,38 +519,37 @@ const finalCtaFooter = [
 </Layout>
 
 <style lang="scss">
+  @use '../../../styles/variables' as *;
+
   /* Restore proper card padding (matches CardContainer used elsewhere on site).
      Need !important to beat SectionContent's own scoped styles. */
-  :global(.section-grid-wrapper > .section-content) {
+  :global(.line-grid > .section-content) {
     padding: 4rem !important;
   }
 
   @media (max-width: 1440px) {
-    :global(.section-grid-wrapper > .section-content) {
+    :global(.line-grid > .section-content) {
       padding: 3rem !important;
     }
   }
 
   @media (max-width: 1000px) {
-    :global(.section-grid-wrapper > .section-content) {
+    :global(.line-grid > .section-content) {
       padding: 2rem !important;
     }
   }
 
   @media (max-width: 770px) {
-    :global(.section-grid-wrapper > .section-content) {
+    :global(.line-grid > .section-content) {
       padding: 1.5rem !important;
     }
   }
 
   @media (max-width: 480px) {
-    :global(.section-grid-wrapper > .section-content) {
+    :global(.line-grid > .section-content) {
       padding: 1rem !important;
     }
   }
-
-  /* Hover behavior is handled by SectionGrid (z-index + border-color).
-     Do not add margin shifts here — they cause content to jump on hover. */
 
   .bs-card {
     position: relative;
@@ -569,7 +568,7 @@ const finalCtaFooter = [
   }
 
   .bs-card__step {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-subtle);
     font-size: 0.875rem;
     letter-spacing: 0.2em;
     font-weight: 500;
@@ -577,7 +576,7 @@ const finalCtaFooter = [
   }
 
   .bs-card__title {
-    color: #fff;
+    color: var(--color-text);
     font-size: 1.875rem; /* text-3xl — matches card-title-large */
     font-weight: 300;
     line-height: 1.2;
@@ -589,7 +588,7 @@ const finalCtaFooter = [
   }
 
   .bs-card__pain {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     font-style: italic;
     font-size: 1rem;
     margin-bottom: 1rem;
@@ -597,13 +596,13 @@ const finalCtaFooter = [
   }
 
   .bs-card__fix {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
   }
 
   .bs-card__desc {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--color-text-secondary);
     font-size: 1.125rem; /* text-lg — matches card-content */
     line-height: 1.6;
     margin-bottom: 1.5rem;
@@ -621,7 +620,7 @@ const finalCtaFooter = [
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
-      color: rgba(255, 255, 255, 0.75);
+      color: var(--color-text-secondary);
       font-size: 1rem; /* text-base */
       line-height: 1.5;
     }
@@ -636,26 +635,25 @@ const finalCtaFooter = [
   }
 
   .bs-list__check {
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--color-text-subtle);
     font-weight: 400;
     flex-shrink: 0;
-    transition: color 200ms ease-in-out;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
-  :global(.section-grid):hover .bs-list__check,
-  :global(.cards-grid) > *:hover .bs-list__check {
-    color: #fff;
+  :global(.line-grid) > *:hover .bs-list__check {
+    color: var(--color-text);
   }
 
   .bs-about__lead {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     font-size: 1.125rem;
     line-height: 1.6;
     margin-bottom: 1.25rem;
   }
 
   .bs-about__body {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text-secondary);
     font-size: 1.125rem; /* text-lg */
     line-height: 1.6;
   }
@@ -663,12 +661,12 @@ const finalCtaFooter = [
   .bs-about__divider {
     width: 3rem;
     height: 1px;
-    background: #1f2937;
+    background: var(--color-line);
     margin: 2rem 0;
   }
 
   .bs-about__subhead {
-    color: #fff;
+    color: var(--color-text);
     font-size: 1.25rem;
     font-weight: 300;
     line-height: 1.2;
@@ -677,23 +675,20 @@ const finalCtaFooter = [
 
   /* FAQ — accordion-style single column list, always expanded */
   .bs-faq-list {
+    @include line-grid;
+    --cols-wide: 1;
+    --cols-medium: 1;
     list-style: none;
     padding: 0;
-    margin: -1px 0 0; /* overlap previous element's bottom border */
-    border-top: 1px solid #1f2937;
   }
 
+  /* A cell of .bs-faq-list: lines come from the grid, the inner layout is a 2-column grid. */
   .bs-faq-item {
     display: grid;
     grid-template-columns: 6rem 1fr;
     gap: 2rem;
     align-items: start;
     padding: 2.25rem 1rem 2.25rem 4rem;
-    background: #000;
-    border-bottom: 1px solid #1f2937;
-    position: relative;
-    z-index: 1;
-    transition: all 200ms ease-in-out;
 
     @media (max-width: 1440px) {
       padding: 2rem 0.75rem 2rem 3rem;
@@ -717,16 +712,10 @@ const finalCtaFooter = [
       grid-template-columns: 3rem 1fr;
       gap: 1rem;
     }
-
-    &:hover {
-      z-index: 10;
-      background: #111827;
-      border-color: #374151;
-    }
   }
 
   .bs-faq-item__num {
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--color-text-subtle);
     font-size: 2.75rem;
     font-weight: 200;
     line-height: 1;
@@ -743,7 +732,7 @@ const finalCtaFooter = [
   }
 
   .bs-faq-item__q {
-    color: #fff;
+    color: var(--color-text);
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.35;
@@ -755,7 +744,7 @@ const finalCtaFooter = [
   }
 
   .bs-faq-item__a {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text-secondary);
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
@@ -763,18 +752,12 @@ const finalCtaFooter = [
 
   /* DevStage stats row (banner has standard SectionHeader above this) */
   .bs-devstage__stats {
+    @include line-grid;
+    --cols-wide: 4;
+    --cols-medium: 4;
+    --cols-narrow: 2;
     list-style: none;
     padding: 0;
-    margin: -1px 0 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-    border-top: 1px solid #1f2937;
-    border-bottom: 1px solid #1f2937;
-
-    @media (min-width: 770px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
 
     li {
       display: flex;
@@ -782,15 +765,6 @@ const finalCtaFooter = [
       align-items: flex-end;
       gap: 1.25rem;
       padding: 4rem;
-      background: #000;
-      position: relative;
-      z-index: 1;
-      transition: all 200ms ease-in-out;
-
-      /* Transparent border pattern (matches SectionGrid cells):
-         only right border colored idle; on hover all 4 sides highlight */
-      border: 1px solid transparent;
-      border-right-color: #1f2937;
 
       @media (max-width: 1440px) {
         padding: 3rem;
@@ -798,7 +772,6 @@ const finalCtaFooter = [
 
       @media (max-width: 1000px) {
         padding: 2rem;
-        gap: 1.25rem;
       }
 
       @media (max-width: 770px) {
@@ -809,32 +782,11 @@ const finalCtaFooter = [
       @media (max-width: 480px) {
         padding: 1.25rem 1rem;
       }
-
-      &:hover {
-        z-index: 10;
-        background: #111827;
-        border-color: #374151;
-      }
-    }
-
-    /* Mobile (2 cols): no right border on every 2nd item, border-bottom between rows */
-    @media (max-width: 770px) {
-      li:nth-child(2n) {
-        border-right-color: transparent;
-      }
-      li:nth-child(-n + 2) {
-        border-bottom-color: #1f2937;
-      }
-    }
-
-    /* Desktop (4 cols): no right border on last item */
-    li:last-child {
-      border-right-color: transparent;
     }
   }
 
   .bs-devstage__stat-num {
-    color: #fff;
+    color: var(--color-text);
     font-size: 4.5rem;
     font-weight: 200;
     line-height: 0.85;
@@ -851,7 +803,7 @@ const finalCtaFooter = [
   }
 
   .bs-devstage__stat-label {
-    color: rgba(255, 255, 255, 0.55);
+    color: var(--color-text-subtle);
     font-size: 0.875rem;
     line-height: 1.4;
     text-transform: uppercase;
@@ -859,7 +811,10 @@ const finalCtaFooter = [
     padding-bottom: 0.35rem;
   }
 
+  /* Always follows the stats grid, whose filler already draws the line above. */
   .bs-devstage__cta {
+    @include line-block;
+    margin-top: 0;
     padding: 2.5rem 4rem;
     display: flex;
     justify-content: center;
@@ -871,8 +826,8 @@ const finalCtaFooter = [
 
   /* Tech stack row */
   .tech-stack {
-    background: #000;
-    border-bottom: 1px solid #1f2937;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
 
     > :global(.container-bordered) {
       padding: 1.25rem 2rem;
@@ -887,9 +842,9 @@ const finalCtaFooter = [
     }
 
     &__label {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
+      color: var(--color-text-subtle);
+      font-size: var(--text-label);
+      letter-spacing: var(--tracking-label);
       text-transform: uppercase;
       font-weight: 500;
     }
@@ -903,7 +858,7 @@ const finalCtaFooter = [
       gap: 0.5rem 1.5rem;
 
       li {
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--color-text-secondary);
         font-size: 0.875rem;
         font-weight: 400;
         letter-spacing: 0.02em;
@@ -913,7 +868,7 @@ const finalCtaFooter = [
           content: '·';
           position: absolute;
           right: -0.875rem;
-          color: rgba(255, 255, 255, 0.25);
+          color: var(--color-text-subtle);
         }
       }
     }
@@ -925,7 +880,7 @@ const finalCtaFooter = [
     position: absolute;
     top: 1.5rem;
     left: 2rem;
-    color: rgba(255, 255, 255, 0.06);
+    color: color-mix(in srgb, var(--color-text) 6%, transparent);
     font-size: 5rem;
     font-weight: 100;
     line-height: 0.9;
@@ -952,9 +907,9 @@ const finalCtaFooter = [
   /* FAQ — Q numbering */
   .bs-faq__num {
     display: inline-block;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     font-weight: 400;
     margin-bottom: 0.75rem;

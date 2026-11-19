@@ -1,9 +1,9 @@
 ---
+import { Icon } from 'astro-icon/components'
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import Button from '../components/Button.astro'
-import CardBackgroundIcon from '../components/primitives/CardBackgroundIcon.astro'
-// import ContactForm from '../components/ContactForm.astro'
+import CardContainer from '../components/cards/CardContainer.astro'
 
 const heroProps = {
   title: 'Contact',
@@ -18,86 +18,111 @@ const heroProps = {
   <Hero {...heroProps} />
   <section class="section-full">
     <div class="container-bordered">
-      <div class="cards-grid">
-        <!-- Column 1: Let's Talk -->
-        <div class="card-item">
-          <div class="padding-responsive-md text-white">
-            <h2 class="mb-4 text-4xl font-normal text-white">Let's Talk</h2>
-            <p class="mb-6 text-xl text-gray-300">
-              Let's discuss your project and explore how we can work together.
-            </p>
-            <div class="mb-4 flex items-center">
-              <img
-                src="https://avatars.githubusercontent.com/u/7286123?v=4"
-                alt="Paweł Żentała"
-                class="mr-4 h-24 w-24 rounded-full"
-              />
-              <div>
-                <h3 class="text-2xl font-semibold text-white">Paweł Żentała</h3>
-                <p class="mt-1 text-gray-300">
-                  <a
-                    href="mailto:zentala@gmail.com"
-                    class="transition-colors hover:text-white"
-                    >zentala@gmail.com</a
-                  >
-                </p>
+      <div class="line-grid">
+        <CardContainer>
+          <div class="contact-card__head">
+            <h2 class="contact-card__title">Let's Talk</h2>
+          </div>
+          <p class="contact-card__text">
+            Let's discuss your project and explore how we can work together.
+          </p>
+          <div class="mb-4 flex items-center">
+            <img
+              src="https://avatars.githubusercontent.com/u/7286123?v=4"
+              alt="Paweł Żentała"
+              class="mr-4 h-24 w-24 rounded-full"
+            />
+            <div>
+              <h3 class="text-2xl font-semibold text-fg">Paweł Żentała</h3>
+              <p class="mt-1 text-fg-secondary">
                 <a
-                  href="tel:+48517178984"
-                  class="text-gray-300 transition-colors hover:text-white"
-                  >+48 517 17 89 84</a
+                  href="mailto:zentala@gmail.com"
+                  class="transition-colors duration-fast hover:text-fg"
+                  >zentala@gmail.com</a
                 >
-              </div>
+              </p>
+              <a
+                href="tel:+48517178984"
+                class="text-fg-secondary transition-colors duration-fast hover:text-fg"
+                >+48 517 17 89 84</a
+              >
             </div>
           </div>
-        </div>
+        </CardContainer>
 
-        <!-- Column 2: Schedule Meeting -->
-        <div class="card-item relative overflow-hidden">
-          <CardBackgroundIcon icon="ph:calendar-blank-thin" />
-          <div class="padding-responsive-md relative z-10 text-white">
-            <h2 class="mb-4 text-4xl font-normal text-white">
-              Schedule Meeting
-            </h2>
-            <p class="mb-6 text-xl text-gray-300">
-              Let's discuss your needs in a 20-minute free consultation call.
-            </p>
-            <Button
-              href="http://cal.com/zentala"
-              text="Book a Call"
-              target="_blank"
-              variant="outline"
-              icon="calendar"
-            />
+        <CardContainer>
+          <div class="contact-card__head">
+            <h2 class="contact-card__title">Schedule Meeting</h2>
+            <span class="contact-card__icon" aria-hidden="true">
+              <Icon name="ph:calendar-blank-thin" />
+            </span>
           </div>
-        </div>
+          <p class="contact-card__text">
+            Let's discuss your needs in a 20-minute free consultation call.
+          </p>
+          <Button
+            href="http://cal.com/zentala"
+            text="Book a Call"
+            target="_blank"
+            variant="outline"
+            icon="calendar"
+          />
+        </CardContainer>
 
-        <!-- Column 3: Follow Me -->
-        <div class="card-item relative overflow-hidden">
-          <CardBackgroundIcon icon="ph:briefcase-thin" />
-          <div class="padding-responsive-md relative z-10 text-white">
-            <h2 class="mb-4 text-4xl font-normal text-white">Follow Me</h2>
-            <p class="mb-6 text-xl text-gray-300">
-              Connect with me on LinkedIn to stay updated with my latest
-              insights and projects.
-            </p>
-            <Button
-              href="https://linkedin.com/in/zentala"
-              text="Add on LinkedIn"
-              target="_blank"
-              variant="outline"
-              icon="linkedin"
-            />
+        <CardContainer>
+          <div class="contact-card__head">
+            <h2 class="contact-card__title">Follow Me</h2>
+            <span class="contact-card__icon" aria-hidden="true">
+              <Icon name="ph:briefcase-thin" />
+            </span>
           </div>
-        </div>
+          <p class="contact-card__text">
+            Connect with me on LinkedIn to stay updated with my latest insights
+            and projects.
+          </p>
+          <Button
+            href="https://linkedin.com/in/zentala"
+            text="Add on LinkedIn"
+            target="_blank"
+            variant="outline"
+            icon="linkedin"
+          />
+        </CardContainer>
       </div>
-
-      <!-- Commented out form - now extracted to ContactForm component -->
-      <!-- 
-      <div class="mt-16 border-t border-gray-800 pt-16">
-        <h2 class="text-3xl font-normal mb-8 text-white text-center">Send Message</h2>
-        <ContactForm />
-      </div>
-      -->
     </div>
   </section>
 </Layout>
+
+<style>
+  .contact-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-card__title {
+    font-size: var(--text-h2);
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .contact-card__text {
+    margin-bottom: 1.5rem;
+    font-size: var(--text-lead);
+    color: var(--color-text-secondary);
+  }
+
+  /* Decorative: sits in the heading row, never under the paragraph */
+  .contact-card__icon {
+    flex-shrink: 0;
+    color: var(--color-text);
+    opacity: 0.12;
+  }
+
+  .contact-card__icon :global(svg) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+</style>

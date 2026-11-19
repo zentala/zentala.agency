@@ -6,7 +6,7 @@ const { title, subtitle, eyebrow } = Astro.props
   <div class="container-padded py-responsive-lg">
     {
       eyebrow && (
-        <p class="hero-eyebrow text-sm font-light tracking-wide text-white/55 sm:text-base">
+        <p class="hero-eyebrow text-sm font-light tracking-wide text-fg-muted sm:text-base">
           {eyebrow}
         </p>
       )
@@ -18,7 +18,7 @@ const { title, subtitle, eyebrow } = Astro.props
       {title}
     </h1>
     <h2
-      class="mt-6 text-xl font-light text-white/85 sm:text-2xl md:text-3xl xl:text-4xl"
+      class="mt-6 text-xl font-light text-fg-secondary sm:text-2xl md:text-3xl xl:text-4xl"
     >
       {subtitle}
     </h2>

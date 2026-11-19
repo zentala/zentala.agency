@@ -22,11 +22,12 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
   @use '../../styles/variables' as *;
 
   .note-box {
+    --note-accent: var(--color-accent);
     max-width: 900px;
     margin: 3rem auto 2rem;
     padding: 2rem;
-    background: rgba(31, 41, 55, 0.3);
-    border-left: 3px solid $border-color;
+    background: color-mix(in srgb, var(--color-line) 30%, transparent);
+    border-left: 3px solid var(--note-accent);
     display: flex;
     align-items: flex-start;
     gap: 1.5rem;
@@ -41,7 +42,7 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
 
     &__icon {
       flex-shrink: 0;
-      color: #60a5fa;
+      color: var(--note-accent);
       width: 24px;
       height: 24px;
       stroke-width: 1;
@@ -54,17 +55,17 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
 
     &__content {
       flex: 1;
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--color-text-secondary);
 
       p {
         font-size: 1.125rem;
         line-height: 1.6;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--color-text-secondary);
         margin: 0;
         text-align: left;
 
         strong {
-          color: rgba(255, 255, 255, 1);
+          color: var(--color-text);
         }
 
         @include mobile {
@@ -76,74 +77,17 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
 
     &__title {
       display: block;
-      color: #60a5fa;
+      color: var(--note-accent);
       font-size: 1.125rem;
       margin-bottom: 0.5rem;
     }
 
-    // Variants
-    &--info {
-      .note-box__icon {
-        color: #3b82f6; // blue-500
-      }
-
-      .note-box__content {
-        p {
-          color: rgba(255, 255, 255, 0.9) !important;
-        }
-
-        strong {
-          color: rgba(255, 255, 255, 1) !important;
-        }
-      }
-
-      .note-box__title {
-        color: #3b82f6;
-      }
-    }
-
     &--success {
-      border-left-color: #10b981; // green-500
-
-      .note-box__icon {
-        color: #10b981;
-      }
-
-      .note-box__content {
-        p {
-          color: rgba(255, 255, 255, 0.9) !important;
-        }
-
-        strong {
-          color: rgba(255, 255, 255, 1) !important;
-        }
-      }
-
-      .note-box__title {
-        color: #10b981;
-      }
+      --note-accent: var(--color-success);
     }
 
     &--warning {
-      border-left-color: #f59e0b; // amber-500
-
-      .note-box__icon {
-        color: #f59e0b;
-      }
-
-      .note-box__content {
-        p {
-          color: rgba(255, 255, 255, 0.9) !important;
-        }
-
-        strong {
-          color: rgba(255, 255, 255, 1) !important;
-        }
-      }
-
-      .note-box__title {
-        color: #f59e0b;
-      }
+      --note-accent: var(--color-warn);
     }
   }
 </style>

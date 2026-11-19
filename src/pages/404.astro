@@ -1,71 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Button from '../components/Button.astro'
+import CardContainer from '../components/cards/CardContainer.astro'
+
+const destinations = [
+  { href: '/', title: 'Home', description: 'Return to homepage' },
+  {
+    href: '/about/capabilities',
+    title: 'Capabilities',
+    description: 'Areas of expertise',
+  },
+  { href: '/portfolio', title: 'Portfolio', description: 'See our work' },
+  { href: '/blog', title: 'Blog', description: 'Read insights' },
+]
 ---
 
 <Layout
   title="404 - Page Not Found"
   description="Page not found. Explore our services, portfolio, blog, or contact us directly."
 >
-  <main
-    class="flex min-h-screen items-center border-y border-gray-800 bg-black text-white"
-  >
+  <section class="section-full">
     <div class="container-padded py-responsive-lg text-center">
       <div class="mx-auto max-w-4xl">
-        <h1 class="mb-8 text-8xl font-light text-gray-300">404</h1>
-        <h2 class="mb-6 text-4xl font-light">Page Not Found</h2>
-        <p class="mb-12 text-xl text-gray-400">
+        <h1 class="mb-8 text-8xl font-light text-fg-muted">404</h1>
+        <h2 class="mb-6 text-4xl font-light text-fg">Page Not Found</h2>
+        <p class="mb-12 text-xl text-fg-muted">
           The page you're looking for doesn't exist or has been moved.
         </p>
-
-        <div class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <a
-            href="/"
-            class="block border border-gray-800 p-6 transition-colors hover:border-gray-600"
-          >
-            <h3 class="mb-2 text-xl font-medium">Home</h3>
-            <p class="text-sm text-gray-400">Return to homepage</p>
-          </a>
-
-          <a
-            href="/about/capabilities"
-            class="block border border-gray-800 p-6 transition-colors hover:border-gray-600"
-          >
-            <h3 class="mb-2 text-xl font-medium">Capabilities</h3>
-            <p class="text-sm text-gray-400">Explore areas of specialization</p>
-          </a>
-
-          <a
-            href="/portfolio"
-            class="block border border-gray-800 p-6 transition-colors hover:border-gray-600"
-          >
-            <h3 class="mb-2 text-xl font-medium">Portfolio</h3>
-            <p class="text-sm text-gray-400">See our work</p>
-          </a>
-
-          <a
-            href="/blog"
-            class="block border border-gray-800 p-6 transition-colors hover:border-gray-600"
-          >
-            <h3 class="mb-2 text-xl font-medium">Blog</h3>
-            <p class="text-sm text-gray-400">Read insights</p>
-          </a>
-        </div>
-
-        <div class="flex justify-center gap-6">
-          <a
-            href="/contact"
-            class="inline-block bg-white px-8 py-3 text-black transition-colors hover:bg-gray-200"
-          >
-            Contact Us
-          </a>
-          <a
-            href="/"
-            class="inline-block border border-white px-8 py-3 text-white transition-colors hover:bg-white hover:text-black"
-          >
-            Go Home
-          </a>
-        </div>
+        <Button href="/contact" text="Contact Us" />
       </div>
     </div>
-  </main>
+  </section>
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="line-grid" style="--cols-wide: 4">
+        {
+          destinations.map(({ href, title, description }) => (
+            <CardContainer href={href}>
+              <h3 class="mb-2 text-xl font-medium text-fg">{title}</h3>
+              <p class="truncate text-sm text-fg-muted">{description}</p>
+            </CardContainer>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </Layout>

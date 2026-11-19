@@ -71,7 +71,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
     font-size: clamp(1.75rem, 2.2vw, 2.6rem);
     line-height: 1.35;
     font-weight: 400;
-    color: #ffffff;
+    color: var(--color-text);
     font-style: italic;
     text-align: center;
     margin-bottom: 1.25rem;
@@ -82,7 +82,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
       content: attr(data-quote-left);
       font-family: Georgia, serif;
       font-size: clamp(8rem, 12vw, 14rem);
-      color: rgba(255, 255, 255, 0.0525);
+      color: color-mix(in srgb, var(--color-accent) 8%, transparent);
       position: absolute;
       /* Pozycjonowanie względem ramki .quote-text - lewy górny róg */
       top: 0;
@@ -99,7 +99,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
       content: attr(data-quote-right);
       font-family: Georgia, serif;
       font-size: clamp(8rem, 12vw, 14rem);
-      color: rgba(255, 255, 255, 0.0525);
+      color: color-mix(in srgb, var(--color-accent) 8%, transparent);
       position: absolute;
       /* Pozycjonowanie względem ramki .quote-text - prawy dolny róg */
       top: auto;
@@ -120,24 +120,20 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
 
   .quote-author {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text-secondary);
     font-style: normal;
     font-weight: 500;
 
     .quote-source {
       font-weight: 300;
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--color-text-subtle);
     }
   }
 
   // Wariant z tłem gradientowym
   .quote-container.gradient {
-    background: linear-gradient(
-      135deg,
-      rgba(59, 130, 246, 0.1) 0%,
-      rgba(147, 51, 234, 0.1) 100%
-    );
-    border-left-color: #3b82f6;
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    border-left: 2px solid var(--color-accent);
   }
 
   // Wariant minimalistyczny
@@ -148,7 +144,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
 
     &::before,
     &::after {
-      color: rgba(255, 255, 255, 0.1);
+      color: color-mix(in srgb, var(--color-accent) 12%, transparent);
     }
   }
 

@@ -72,9 +72,13 @@ const clients = [
         .client-logo {
           width: 100px;
           height: auto;
-          transition: transform 0.3s ease;
+          transition: transform var(--motion-base) var(--ease-standard);
           &:hover {
             transform: scale(1.1);
+
+            @media (prefers-reduced-motion: reduce) {
+              transform: none;
+            }
           }
         }
         .tooltip {
@@ -82,10 +86,11 @@ const clients = [
           bottom: 100%;
           left: 50%;
           transform: translateX(-50%);
-          background-color: rgba(0, 0, 0, 0.7);
-          color: white;
+          background-color: var(--color-surface);
+          border: 1px solid var(--color-line-strong);
+          color: var(--color-text);
           padding: 10px;
-          border-radius: 5px;
+          border-radius: var(--radius-sm);
           display: none;
           text-align: center;
           &:before {
@@ -95,7 +100,7 @@ const clients = [
             left: 50%;
             border-width: 5px;
             border-style: solid;
-            border-color: black transparent transparent transparent;
+            border-color: var(--color-line-strong) transparent transparent transparent;
           }
         }
         &:hover .tooltip {
