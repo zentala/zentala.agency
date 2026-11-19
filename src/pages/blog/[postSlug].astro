@@ -7,6 +7,7 @@ import PostNav from '../../components/blog/PostNav.astro'
 import PostToc from '../../components/blog/PostToc.astro'
 import SeriesRail from '../../components/blog/SeriesRail.astro'
 import ShareButtons from '../../components/blog/ShareButtons.astro'
+import DraftBadge from '../../components/primitives/DraftBadge.astro'
 import { SHOW_AUTHOR } from '@/config/blog'
 import { partLabel } from '@/lib/blog/part-label'
 import { getVisiblePosts } from '@/lib/blog/visibility'
@@ -140,7 +141,8 @@ const summaryClass =
   <!-- HERO BOX (meta + title + excerpt) -->
   <section class="section-full">
     <div class="container-bordered">
-      <div class="px-responsive py-responsive-lg">
+      <div class="px-responsive py-responsive-lg relative">
+        {post.data.published === false && <DraftBadge />}
         <div class="blog-hero mx-auto flex max-w-6xl flex-col">
           <div class="blog-hero__content">
             {
@@ -172,7 +174,6 @@ const summaryClass =
               date={post.data.date}
               category={post.data.category}
               partLabel={currentPartLabel}
-              isDraft={post.data.published === false}
               size="sm"
               tone="muted"
             />

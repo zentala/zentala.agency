@@ -2,18 +2,78 @@
 import { Icon } from 'astro-icon/components'
 import { SHOW_DRAFTS } from '@/config/blog'
 
-/** The one DRAFT marker. Renders only where drafts are shown (never in production). */
+/**
+ * The one DRAFT marker. Renders only where drafts are shown (never in production)
+ * and never takes layout space, so a page is as tall in dev as in production:
+ * - `corner`: a tag pinned to the top-right corner of the nearest positioned
+ *   ancestor (cards, post hero); it sits in that box's padding.
+ * - `edge`: a 2px bar just left of the nearest positioned ancestor (list rows).
+ * - `inline`: plain text, only for a line that cannot wrap (a short label).
+ */
+interface Props {
+  placement?: 'corner' | 'edge' | 'inline'
+}
+
+const { placement = 'corner' } = Astro.props
+const hint = 'Draft: hidden in production'
 ---
 
 {
-  SHOW_DRAFTS && (
-    <span class="inline-flex items-center gap-x-1 text-xs font-semibold uppercase tracking-wide text-warn">
-      <Icon
-        name="lucide:pencil-line"
-        class="h-3.5 w-3.5"
-        style="stroke-width: 1.5;"
-      />
-      Draft
-    </span>
-  )
+  SHOW_DRAFTS &&
+    (placement === 'edge' ? (
+      <span class="draft-edge" title={hint}>
+        <span class="sr-only">Draft</span>
+      </span>
+    ) : (
+      <span class={`draft-tag draft-tag--${placement}`} title={hint}>
+        <Icon name="lucide:pencil-line" class="draft-tag__icon" />
+        Draft
+      </span>
+    ))
 }
+
+<style>
+  .draft-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-warn);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .draft-tag__icon {
+    width: 0.75rem;
+    height: 0.75rem;
+    stroke-width: 1.5;
+  }
+
+  .draft-tag--corner {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 3;
+    padding: 3px 6px;
+    background: var(--color-surface);
+    border: 1px solid color-mix(in srgb, var(--color-warn) 40%, transparent);
+    pointer-events: none;
+  }
+
+  .draft-tag--inline {
+    margin-left: 0.5rem;
+  }
+
+  .draft-edge {
+    position: absolute;
+    top: 0.3em;
+    bottom: 0.3em;
+    left: -0.5rem;
+    width: 2px;
+    background: var(--color-warn);
+    pointer-events: none;
+  }
+</style>

@@ -38,10 +38,14 @@ const titleClass = 'mt-2 block text-lg leading-snug text-fg'
         <div class="grid gap-4 md:grid-cols-2">
           {previous ? (
             <a href={`/blog/${previous.slug}`} class={linkClass} rel="prev">
-              <span class={labelClass}>← Previous part</span>
+              <span class={labelClass}>
+                ← Previous part
+                {previous.data.published === false && (
+                  <DraftBadge placement="inline" />
+                )}
+              </span>
               <span class={titleClass}>
                 Part {previous.data.part}: {previous.data.title}
-                {previous.data.published === false && <DraftBadge />}
               </span>
             </a>
           ) : (
@@ -53,10 +57,14 @@ const titleClass = 'mt-2 block text-lg leading-snug text-fg'
               class={`${linkClass} md:text-right`}
               rel="next"
             >
-              <span class={labelClass}>Next part →</span>
+              <span class={labelClass}>
+                Next part →
+                {next.data.published === false && (
+                  <DraftBadge placement="inline" />
+                )}
+              </span>
               <span class={titleClass}>
                 Part {next.data.part}: {next.data.title}
-                {next.data.published === false && <DraftBadge />}
               </span>
             </a>
           )}

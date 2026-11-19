@@ -93,7 +93,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                     <span class="line-clamp-2 text-fg-secondary">
                       {part.data.title}
                     </span>
-                    {part.data.published === false && <DraftBadge />}
+                    {part.data.published === false && <DraftBadge placement="edge" />}
                     {isNewest && (
                       <time
                         datetime={date.datetime}

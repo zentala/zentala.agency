@@ -34,11 +34,11 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
   <ol class="mt-4 flex flex-col gap-2 p-0">
     {
       nearby.map((post) => (
-        <li class="list-none text-sm leading-snug">
+        <li class="relative list-none text-sm leading-snug">
           {post.slug === currentSlug ? (
             <span class="text-fg" aria-current="page">
               Part {post.data.part}: {post.data.title}
-              {post.data.published === false && <DraftBadge />}
+              {post.data.published === false && <DraftBadge placement="edge" />}
             </span>
           ) : (
             <a
@@ -46,7 +46,7 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
               class="text-fg-muted no-underline hover:text-fg"
             >
               Part {post.data.part}: {post.data.title}
-              {post.data.published === false && <DraftBadge />}
+              {post.data.published === false && <DraftBadge placement="edge" />}
             </a>
           )}
         </li>
