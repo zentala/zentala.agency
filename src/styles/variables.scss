@@ -359,9 +359,15 @@ $header-height-mobile: calc(
 // CONTAINER MIXINS
 // =======================================
 
+// Full width up to $container-max; the 8xl cap starts together with the side lines,
+// so no width exists where the container is narrower than the viewport without lines.
 @mixin container-base {
   @apply container mx-auto;
-  max-width: theme('maxWidth.8xl');
+  max-width: none;
+
+  @media (min-width: #{$container-max + 1px}) {
+    max-width: theme('maxWidth.8xl');
+  }
 }
 
 // Outer vertical lines exist only above $container-max. Below it the container

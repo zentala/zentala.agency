@@ -8,8 +8,9 @@ import { expect, test, type Page } from '@playwright/test'
  * - hovering a cell changes any layout rect.
  */
 
-const WIDTHS = [1920, 1280, 768, 390]
-const PAGES = ['/', '/blog', '/capabilities', '/portfolio']
+const WIDTHS = [1920, 1450, 1280, 768, 390]
+const CONTAINER_SELECTOR = '.container-bordered, .container-padded'
+const PAGES = ['/', '/blog', '/about/capabilities', '/portfolio']
 const INTERACTIVE_CELL =
   ':is(.cards-grid, .line-grid) > :is(a, .cell-interactive, .card-container--hover)'
 const CONTAINER_SIDE_LINES_MIN_WIDTH = 1451
@@ -141,6 +142,24 @@ for (const width of WIDTHS) {
           )
         }
       })
+
+      if (width < CONTAINER_SIDE_LINES_MIN_WIDTH) {
+        // Without side lines the container must span the viewport, or row
+        // lines stop short of the edge and look dangling.
+        test(`${path}: containers span the viewport`, async ({ page }) => {
+          await page.goto(path)
+          await page.waitForLoadState('networkidle')
+          const widths = await page.evaluate(
+            (selector) =>
+              [...document.querySelectorAll(selector)].map((el) =>
+                Math.round(el.getBoundingClientRect().width),
+              ),
+            CONTAINER_SELECTOR,
+          )
+          expect(widths.length).toBeGreaterThan(0)
+          for (const w of widths) expect(w).toBe(width)
+        })
+      }
     }
   })
 }
