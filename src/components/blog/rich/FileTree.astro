@@ -1,0 +1,93 @@
+---
+/**
+ * Annotated file tree: each row is a path at a depth, with a short note
+ * on what lives there. Notes sit beside the name on wide screens and
+ * under it on narrow ones.
+ */
+export interface TreeNode {
+  /** File or folder name as it appears on disk. */
+  name: string
+  /** Nesting level, 0 for the root. */
+  depth: number
+  /** What the file or folder is for. */
+  note?: string
+}
+
+interface Props {
+  nodes: TreeNode[]
+}
+
+const { nodes } = Astro.props
+
+if (!nodes?.length) {
+  throw new Error('FileTree: "nodes" must contain at least one node')
+}
+---
+
+<ul class="file-tree">
+  {
+    nodes.map((node) => (
+      <li class="file-tree__row" style={`--depth: ${node.depth}`}>
+        <code class="file-tree__name">{node.name}</code>
+        {node.note && <span class="file-tree__note">{node.note}</span>}
+      </li>
+    ))
+  }
+</ul>
+
+<style lang="scss">
+  /* Nested under the figure frame: these rules must outrank the blog
+     prose rules for headings, lists and code. */
+  :global(.rich-figure) {
+      .file-tree {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .file-tree__row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+        margin: 0;
+        padding: 0.375rem 0 0.375rem calc(var(--depth) * 1.25rem);
+        border-bottom: 1px solid rgb(17 24 39);
+      }
+
+      .file-tree__row:last-child {
+        border-bottom: 0;
+      }
+
+      .file-tree__name {
+        color: rgb(243 244 246);
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.875rem;
+        white-space: nowrap;
+      }
+
+      .file-tree__note {
+        color: rgb(156 163 175);
+        font-size: 0.8125rem;
+        font-weight: 300;
+        line-height: 1.45;
+      }
+
+      @media (min-width: 640px) {
+        .file-tree__row {
+          flex-direction: row;
+          align-items: baseline;
+          gap: 1rem;
+        }
+
+        .file-tree__name {
+          flex: none;
+          width: calc(13rem - var(--depth) * 1.25rem);
+        }
+      }
+  }
+</style>
