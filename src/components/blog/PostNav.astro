@@ -1,0 +1,101 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+
+/**
+ * End-of-article navigation, shown at every width. A series post gets the
+ * previous and next part plus a link to all parts; any other post gets
+ * related posts from the same category, so a reader is never left at a dead end.
+ */
+export interface PostNavProps {
+  seriesSlug?: string
+  seriesPosts: CollectionEntry<'blog'>[]
+  related: CollectionEntry<'blog'>[]
+  currentSlug: string
+}
+
+const { seriesSlug, seriesPosts, related, currentSlug } =
+  Astro.props as PostNavProps
+
+const currentIndex = seriesPosts.findIndex((post) => post.slug === currentSlug)
+const previous = currentIndex > 0 ? seriesPosts[currentIndex - 1] : undefined
+const next = currentIndex >= 0 ? seriesPosts[currentIndex + 1] : undefined
+
+const linkClass =
+  'group block border border-line p-5 no-underline transition-colors duration-fast ease-standard hover:border-line-strong hover:bg-surface-hover'
+const labelClass = 'text-label uppercase text-fg-subtle'
+const titleClass = 'mt-2 block text-lg leading-snug text-fg'
+---
+
+<nav
+  class="mt-16 border-t border-line pt-8"
+  aria-label="More to read"
+  data-post-nav
+>
+  {
+    seriesSlug && (
+      <>
+        <div class="grid gap-4 md:grid-cols-2">
+          {previous ? (
+            <a href={`/blog/${previous.slug}`} class={linkClass} rel="prev">
+              <span class={labelClass}>← Previous part</span>
+              <span class={titleClass}>
+                Part {previous.data.part}: {previous.data.title}
+                {previous.data.published === false && <DraftBadge />}
+              </span>
+            </a>
+          ) : (
+            <span class="hidden md:block" aria-hidden="true" />
+          )}
+          {next && (
+            <a
+              href={`/blog/${next.slug}`}
+              class={`${linkClass} md:text-right`}
+              rel="next"
+            >
+              <span class={labelClass}>Next part →</span>
+              <span class={titleClass}>
+                Part {next.data.part}: {next.data.title}
+                {next.data.published === false && <DraftBadge />}
+              </span>
+            </a>
+          )}
+        </div>
+        <p class="mt-6 text-sm">
+          <a
+            href={`/series/${seriesSlug}`}
+            class="text-accent no-underline hover:text-accent-hover hover:underline"
+          >
+            All {seriesPosts.length} parts →
+          </a>
+        </p>
+      </>
+    )
+  }
+  {
+    !seriesSlug && related.length > 0 && (
+      <>
+        <p class={`mb-4 ${labelClass}`}>Related posts</p>
+        <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
+          {related.map((post) => (
+            <li>
+              <a href={`/blog/${post.slug}`} class={`${linkClass} h-full`}>
+                <span class="block text-base leading-snug text-fg">
+                  {post.data.title}
+                </span>
+                <span class="mt-2 line-clamp-3 block text-sm text-fg-muted">
+                  {post.data.excerpt}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+  <p class="mt-6 text-sm">
+    <a href="/blog" class="text-fg-muted no-underline hover:text-fg">
+      ← All posts
+    </a>
+  </p>
+</nav>

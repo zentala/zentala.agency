@@ -1,14 +1,14 @@
 ---
 import { getCollection } from 'astro:content'
+import { SHOW_DRAFTS } from '@/config/blog'
+import { getVisiblePosts } from '@/lib/blog/visibility'
 import Layout from '../../layouts/Layout.astro'
 import LinkedInPostCard from '../../components/preview/LinkedInPostCard.astro'
 
 export async function getStaticPaths() {
-  const isPreview =
-    import.meta.env.DEV || import.meta.env.PUBLIC_PREVIEW === 'true'
-  if (!isPreview) return []
+  if (!SHOW_DRAFTS) return []
 
-  const posts = await getCollection('blog')
+  const posts = await getVisiblePosts()
   const sidecars = await getCollection('linkedin')
   // The `linkedin` collection's generateId (config.ts) already resolves
   // `_<slug>.li.md` to the blog post's own `<slug>`.
@@ -32,12 +32,17 @@ const author = authorData.find((a) => a.slug === post.data.author)
 const text = sidecar ? sidecar.body ?? '' : (post.data.linkedinPost ?? '')
 ---
 
-<Layout title={`LinkedIn preview: ${post.data.title}`}>
+<Layout title={`LinkedIn preview: ${post.data.title}`} noindex>
   <section class="section-full">
     <div class="container-bordered padding-responsive-md">
-      <p class="mb-6 text-sm text-gray-500">
-        LinkedIn draft preview — not a live post.
-      </p>
+      <div class="mb-6 flex flex-col items-center gap-2 text-center">
+        <span class="bg-surface-hover px-2 py-1 text-label uppercase text-warn">
+          Draft preview
+        </span>
+        <p class="text-sm text-fg-secondary">
+          LinkedIn draft preview, not a live post.
+        </p>
+      </div>
       <LinkedInPostCard
         title={post.data.title}
         text={text}

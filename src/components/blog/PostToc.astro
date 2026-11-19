@@ -1,0 +1,34 @@
+---
+/** "On this page" list of h2/h3 headings. The scroll-spy script lives in the post page. */
+export interface PostTocProps {
+  headings: { depth: number; slug: string; text: string }[]
+}
+
+const { headings } = Astro.props as PostTocProps
+---
+
+<nav aria-label="Table of contents">
+  <p class="mb-3 text-label uppercase text-fg-subtle">On this page</p>
+  <ol class="m-0 list-none border-l border-line p-0">
+    {
+      headings.map((heading) => (
+        <li class={`blog-toc__item ${heading.depth === 3 ? 'pl-3' : ''}`}>
+          <a
+            href={`#${heading.slug}`}
+            data-toc-link={heading.slug}
+            class="-ml-px block border-l border-transparent py-1.5 pl-3.5 text-sm leading-snug text-fg-muted no-underline transition-colors duration-fast ease-standard hover:border-line-strong hover:text-fg"
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .blog-toc__item:global(.is-active) > a {
+    color: var(--color-text);
+    border-left-color: var(--color-text);
+  }
+</style>

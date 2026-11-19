@@ -34,8 +34,8 @@ const paragraphs = text
   </a>
 
   <div class="li-card__stats" aria-hidden="true">
-    <span>👍 42</span>
-    <span>8 comments</span>
+    <span>Likes: -</span>
+    <span>Comments: -</span>
   </div>
 
   <div class="li-card__actions" aria-hidden="true">
@@ -49,9 +49,9 @@ const paragraphs = text
   .li-card {
     max-width: 34rem;
     margin: 0 auto;
-    border: 1px solid rgb(31 41 55); /* gray-800 */
+    border: 1px solid var(--color-line);
     border-radius: 0.5rem;
-    background: rgb(17 24 39); /* gray-900 */
+    background: var(--color-surface-raised);
     overflow: hidden;
   }
 
@@ -72,19 +72,19 @@ const paragraphs = text
   .li-card__name {
     margin: 0;
     font-weight: 600;
-    color: white;
+    color: var(--color-text);
     font-size: 0.9375rem;
   }
 
   .li-card__role {
     margin: 0;
     font-size: 0.8125rem;
-    color: rgb(156 163 175); /* gray-400 */
+    color: var(--color-text-muted);
   }
 
   .li-card__body {
     padding: 0.5rem 1.25rem 1rem;
-    color: rgb(229 231 235); /* gray-200 */
+    color: var(--color-text-secondary);
     font-size: 0.9375rem;
     line-height: 1.5;
   }
@@ -101,21 +101,21 @@ const paragraphs = text
     display: block;
     margin: 0 1.25rem 1rem;
     padding: 0.75rem 1rem;
-    border: 1px solid rgb(31 41 55);
+    border: 1px solid var(--color-line);
     border-radius: 0.375rem;
     text-decoration: none;
-    background: rgb(31 41 55 / 0.4);
-    transition: background 200ms ease;
+    background: var(--color-surface-hover);
+    transition: background-color var(--motion-fast) var(--ease-standard);
   }
 
   .li-card__link:hover {
-    background: rgb(31 41 55 / 0.7);
+    background: var(--color-line);
   }
 
   .li-card__link-domain {
     display: block;
     font-size: 0.75rem;
-    color: rgb(156 163 175);
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
@@ -125,7 +125,7 @@ const paragraphs = text
     margin-top: 0.25rem;
     font-size: 0.875rem;
     font-weight: 500;
-    color: white;
+    color: var(--color-text);
   }
 
   .li-card__stats {
@@ -133,16 +133,16 @@ const paragraphs = text
     justify-content: space-between;
     padding: 0 1.25rem 0.5rem;
     font-size: 0.75rem;
-    color: rgb(107 114 128); /* gray-500 */
+    color: var(--color-text-subtle);
   }
 
   .li-card__actions {
     display: flex;
     justify-content: space-around;
     padding: 0.5rem 0;
-    border-top: 1px solid rgb(31 41 55);
+    border-top: 1px solid var(--color-line);
     font-size: 0.8125rem;
     font-weight: 500;
-    color: rgb(156 163 175);
+    color: var(--color-text-muted);
   }
 </style>

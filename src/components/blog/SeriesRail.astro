@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+
+/**
+ * Series navigation for a post: the series display title, the current part's
+ * label, the previous and next part, and a link to the whole series. Short on
+ * purpose so it fits one screen in the sticky rail.
+ */
+export interface SeriesRailProps {
+  seriesSlug: string
+  seriesTitle: string
+  posts: CollectionEntry<'blog'>[]
+  currentSlug: string
+  currentLabel: string
+}
+
+const { seriesSlug, seriesTitle, posts, currentSlug, currentLabel } =
+  Astro.props as SeriesRailProps
+
+const currentIndex = posts.findIndex((post) => post.slug === currentSlug)
+const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
+---
+
+<nav aria-label="Series navigation">
+  <p class="text-label uppercase text-fg-subtle">Series</p>
+  <a
+    href={`/series/${seriesSlug}`}
+    class="mt-1 block text-base text-fg no-underline hover:text-accent"
+  >
+    {seriesTitle}
+  </a>
+  <p class="mt-1 text-sm text-fg-muted">{currentLabel}</p>
+  <ol class="mt-4 flex flex-col gap-2 p-0">
+    {
+      nearby.map((post) => (
+        <li class="list-none text-sm leading-snug">
+          {post.slug === currentSlug ? (
+            <span class="text-fg" aria-current="page">
+              Part {post.data.part}: {post.data.title}
+              {post.data.published === false && <DraftBadge />}
+            </span>
+          ) : (
+            <a
+              href={`/blog/${post.slug}`}
+              class="text-fg-muted no-underline hover:text-fg"
+            >
+              Part {post.data.part}: {post.data.title}
+              {post.data.published === false && <DraftBadge />}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  <a
+    href={`/series/${seriesSlug}`}
+    class="mt-4 inline-block text-sm text-accent no-underline hover:text-accent-hover hover:underline"
+  >
+    See all {posts.length} parts
+  </a>
+</nav>

@@ -3,40 +3,37 @@ import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import PostCta from '../../components/PostCta.astro'
 import PostMeta from '../../components/blog/PostMeta.astro'
-import { SHOW_AUTHOR, SHOW_DRAFTS } from '@/config/blog'
+import PostNav from '../../components/blog/PostNav.astro'
+import PostToc from '../../components/blog/PostToc.astro'
+import SeriesRail from '../../components/blog/SeriesRail.astro'
+import ShareButtons from '../../components/blog/ShareButtons.astro'
+import { SHOW_AUTHOR } from '@/config/blog'
+import { partLabel } from '@/lib/blog/part-label'
+import { getVisiblePosts } from '@/lib/blog/visibility'
 
 import BlogVersionPanelMount from '../../components/react-stuff/dev/blog-version-panel/BlogVersionPanelMount.astro'
 
 const isDev = import.meta.env.DEV
+const RELATED_POST_COUNT = 3
+const WORDS_PER_MINUTE = 200
+const SITE_URL = 'https://zentala.agency'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
-  return posts
-    .filter(
-      (post) =>
-        import.meta.env.DEV ||
-        import.meta.env.PUBLIC_PREVIEW === 'true' ||
-        post.data.published !== false,
-    )
-    .map((post) => ({
-      params: { postSlug: post.slug },
-    }))
+  const posts = await getVisiblePosts()
+  return posts.map((post) => ({
+    params: { postSlug: post.slug },
+  }))
 }
 
 const { postSlug } = Astro.params
-const post = (await getCollection('blog')).find(
-  (p) =>
-    p.slug === postSlug &&
-    (import.meta.env.DEV ||
-      import.meta.env.PUBLIC_PREVIEW === 'true' ||
-      p.data.published !== false),
-)
-const authorData = (await getCollection('authors'))[0].data
+const visiblePosts = await getVisiblePosts()
+const post = visiblePosts.find((p) => p.slug === postSlug)
 
 if (!post) {
   return Astro.redirect('/404')
 }
 
+const authorData = (await getCollection('authors'))[0].data
 const author = authorData.find((a) => a.slug === post.data.author)
 const authorRole = post.data.authorRole || author?.role
 
@@ -46,43 +43,50 @@ if (!author) {
 
 const { Content, headings } = await post.render()
 
-// Series siblings — only fetched when this post belongs to a series.
+// Series siblings, ordered by part number.
 const seriesPosts = post.data.series
-  ? (await getCollection('blog'))
-      .filter(
-        (p) =>
-          p.data.series === post.data.series &&
-          (import.meta.env.DEV ||
-            import.meta.env.PUBLIC_PREVIEW === 'true' ||
-            p.data.published !== false),
-      )
+  ? visiblePosts
+      .filter((p) => p.data.series === post.data.series)
       .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
   : []
+const visiblePartNumbers = seriesPosts.flatMap((p) =>
+  p.data.part === undefined ? [] : [p.data.part],
+)
+const currentPartLabel =
+  post.data.series && post.data.part !== undefined
+    ? partLabel(post.data.part, visiblePartNumbers)
+    : undefined
 
-// CTA copy variant — comes from the post's series, if it has one.
+// Non-series posts end with other posts from the same category.
+const relatedPosts = post.data.series
+  ? []
+  : visiblePosts
+      .filter(
+        (p) => p.slug !== post.slug && p.data.category === post.data.category,
+      )
+      .sort((a, b) => b.data.date.localeCompare(a.data.date))
+      .slice(0, RELATED_POST_COUNT)
+
+// Series display title and CTA copy variant.
 const seriesDescription = post.data.series
   ? (await getCollection('series-descriptions')).find(
       (entry) => entry.slug === post.data.series,
     )
   : undefined
 const ctaVariant = seriesDescription?.data.ctaVariant
+const seriesTitle = seriesDescription?.data.title ?? post.data.series ?? ''
+const hasSeriesNav = Boolean(post.data.series) && seriesPosts.length > 0
 
-// TOC: only h2 + h3 — keeps it scannable
+// TOC: only h2 + h3, which keeps it scannable.
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3)
 
-// Reading time estimate (~200 wpm)
 const wordCount = post.body.trim().split(/\s+/).length
-const readingMinutes = Math.max(1, Math.round(wordCount / 200))
+const readingMinutes = Math.max(1, Math.round(wordCount / WORDS_PER_MINUTE))
 
-// Share URLs — built against the live domain so they work in dev too.
-const SITE_URL = 'https://zentala.agency'
+// Share URL is built against the live domain so it works in dev too.
 const postUrl = `${SITE_URL}/blog/${post.slug}/`
-const shareTitle = post.data.title
-const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`
-const teamsShareUrl = `https://teams.microsoft.com/share?href=${encodeURIComponent(postUrl)}&msgText=${encodeURIComponent(shareTitle)}`
-const emailShareUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareTitle}\n\n${postUrl}`)}`
 
-// SEO — canonical, OG image, and JSON-LD (Article + BreadcrumbList)
+// SEO: canonical, OG image, and JSON-LD (Article + BreadcrumbList)
 const canonicalUrl = postUrl
 const ogImageUrl = post.data.imageUrl
 const articleJsonLd = {
@@ -120,6 +124,9 @@ if (post.data.bannerEnd) {
 }
 
 const contentBoxClass = 'py-responsive-md'
+const collapsibleClass = 'border-b border-line py-3'
+const summaryClass =
+  'cursor-pointer text-label uppercase text-fg-secondary hover:text-fg'
 ---
 
 <Layout
@@ -144,36 +151,42 @@ const contentBoxClass = 'py-responsive-md'
                     src={author.avatar}
                     alt={`Avatar of ${author.name}`}
                   />
-                  <span class="text-white">
+                  <span class="text-fg">
                     <span class="font-semibold">{author.name}</span>
-                    <span class="ml-2 text-gray-400">{authorRole}</span>
+                    <span class="ml-2 text-fg-muted">{authorRole}</span>
                   </span>
                 </div>
               )
             }
 
             <h1
-              class="text-6xl font-light leading-tight text-white md:text-7xl"
+              class="text-4xl font-light leading-tight text-fg sm:text-5xl lg:text-6xl"
               data-blog-title
             >
               {post.data.title}
             </h1>
 
-            <hr class="my-6 border-t border-gray-800" />
+            <hr class="my-6 border-t border-line" />
 
             <PostMeta
               date={post.data.date}
               category={post.data.category}
-              part={post.data.part}
-              partsTotal={seriesPosts.length || undefined}
+              partLabel={currentPartLabel}
               isDraft={post.data.published === false}
-              size="md"
+              size="sm"
             />
+
+            <div
+              class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-fg-muted xl:hidden"
+            >
+              <span>{readingMinutes} min read</span>
+              <ShareButtons postUrl={postUrl} title={post.data.title} />
+            </div>
 
             {
               post.data.excerpt && (
                 <p
-                  class="mt-6 text-3xl font-light leading-relaxed text-gray-300 md:text-4xl"
+                  class="mt-6 line-clamp-3 text-xl font-light leading-relaxed text-fg-secondary md:text-2xl"
                   data-blog-excerpt
                 >
                   {post.data.excerpt}
@@ -189,209 +202,85 @@ const contentBoxClass = 'py-responsive-md'
   <!-- CONTENT BOX (article + side rails + banner) -->
   <section class={`section-full ${Banner ? 'has-banner' : ''}`}>
     <div class="container-padded">
+      <!-- Below xl the rails are gone: series and TOC collapse above the article. -->
+      {
+        (hasSeriesNav || tocHeadings.length > 0) && (
+          <div class="mx-auto mt-6 max-w-3xl xl:hidden">
+            {hasSeriesNav && (
+              <details class={collapsibleClass} data-series-details>
+                <summary class={summaryClass}>In this series</summary>
+                <div class="pt-4">
+                  <SeriesRail
+                    seriesSlug={post.data.series!}
+                    seriesTitle={seriesTitle}
+                    posts={seriesPosts}
+                    currentSlug={post.slug}
+                    currentLabel={currentPartLabel ?? ''}
+                  />
+                </div>
+              </details>
+            )}
+            {tocHeadings.length > 0 && (
+              <details class={collapsibleClass} data-toc-details>
+                <summary class={summaryClass}>On this page</summary>
+                <div class="pt-4">
+                  <PostToc headings={tocHeadings} />
+                </div>
+              </details>
+            )}
+          </div>
+        )
+      }
+
       <div class={`${contentBoxClass} blog-article-layout`}>
         <aside class="blog-aside blog-aside--left" aria-label="Article meta">
-          {
-            post.data.series ? (
-              <>
-                <a
-                  href={`/series/${post.data.series}`}
-                  class="blog-aside__back"
-                >
-                  ← All in series
-                </a>
-                <a
-                  href="/blog"
-                  class="blog-aside__back blog-aside__back--secondary"
-                >
-                  ← All posts
-                </a>
-              </>
-            ) : (
-              <a href="/blog" class="blog-aside__back">
-                ← All posts
-              </a>
-            )
-          }
-          <p class="blog-aside__meta">{readingMinutes} min read</p>
+          <a
+            href="/blog"
+            class="block text-sm font-light text-fg-muted no-underline transition-colors duration-fast ease-standard hover:text-fg"
+          >
+            ← All posts
+          </a>
+          <p class="mt-3 text-sm text-fg-subtle">{readingMinutes} min read</p>
 
           {
-            post.data.series && seriesPosts.length > 0 && (
-              <nav class="blog-series" aria-label="Series navigation">
-                <p class="blog-series__title">Series: {post.data.series}</p>
-                <ol class="blog-series__list">
-                  {seriesPosts.map((seriesPost) => (
-                    <li
-                      class={
-                        seriesPost.slug === post.slug
-                          ? 'blog-series__item blog-series__item--current'
-                          : 'blog-series__item'
-                      }
-                    >
-                      {seriesPost.slug === post.slug ? (
-                        <span>
-                          Part {seriesPost.data.part}: {seriesPost.data.title}
-                          {seriesPost.data.published === false &&
-                            SHOW_DRAFTS && (
-                              <span class="blog-series__draft">DRAFT</span>
-                            )}
-                        </span>
-                      ) : (
-                        <a href={`/blog/${seriesPost.slug}`}>
-                          Part {seriesPost.data.part}: {seriesPost.data.title}
-                          {seriesPost.data.published === false &&
-                            SHOW_DRAFTS && (
-                              <span class="blog-series__draft">DRAFT</span>
-                            )}
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </nav>
+            hasSeriesNav && (
+              <div class="mt-8 border-t border-line pt-5">
+                <SeriesRail
+                  seriesSlug={post.data.series!}
+                  seriesTitle={seriesTitle}
+                  posts={seriesPosts}
+                  currentSlug={post.slug}
+                  currentLabel={currentPartLabel ?? ''}
+                />
+              </div>
             )
           }
 
-          <div class="blog-share" aria-label="Share this article">
-            <p class="blog-share__title">Share</p>
-            <div class="blog-share__buttons">
-              <a
-                class="blog-share__btn"
-                href={linkedinShareUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on LinkedIn"
-                title="Share on LinkedIn"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"
-                  ></path>
-                </svg>
-              </a>
-
-              <a
-                class="blog-share__btn"
-                href={teamsShareUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Microsoft Teams"
-                title="Share on Microsoft Teams"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2.5 6.5h13a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-13A.5.5 0 0 1 2 17V7a.5.5 0 0 1 .5-.5zM12 9.5H4v1.4h3v5.6h2v-5.6h3z"
-                  ></path>
-                  <circle cx="18.5" cy="6" r="2"></circle>
-                  <path
-                    d="M21 9.5h-4.5V13a3 3 0 0 0 3 3h.25A2.25 2.25 0 0 0 22 13.75v-3.25a1 1 0 0 0-1-1z"
-                  ></path>
-                </svg>
-              </a>
-
-              <a
-                class="blog-share__btn"
-                href={emailShareUrl}
-                aria-label="Share via email"
-                title="Share via email"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                  <path d="M3 7l9 6 9-6"></path>
-                </svg>
-              </a>
-
-              <button
-                type="button"
-                class="blog-share__btn blog-share__btn--copy"
-                data-copy-url={postUrl}
-                aria-label="Copy link"
-                title="Copy link"
-              >
-                <svg
-                  class="blog-share__icon-default"
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
-                  <path d="M15 7h2a5 5 0 0 1 0 10h-2"></path>
-                  <line x1="8" y1="12" x2="16" y2="12"></line>
-                </svg>
-                <svg
-                  class="blog-share__icon-copied"
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </button>
-            </div>
+          <div class="mt-8 border-t border-line pt-5">
+            <p class="mb-3 text-label uppercase text-fg-subtle">Share</p>
+            <ShareButtons postUrl={postUrl} title={post.data.title} />
           </div>
         </aside>
 
-        <article
-          id="post-content"
-          class="custom-markdown prose-blog prose w-full max-w-3xl text-white"
-          style="scroll-margin-top: calc(var(--header-spacer-height) + 24px);"
-        >
-          <Content />
-        </article>
+        <div class="w-full min-w-0 max-w-3xl">
+          <article
+            id="post-content"
+            class="custom-markdown prose-blog prose w-full max-w-3xl text-fg"
+            style="scroll-margin-top: calc(var(--header-spacer-height) + 24px);"
+          >
+            <Content />
+          </article>
+
+          <PostNav
+            seriesSlug={post.data.series}
+            seriesPosts={seriesPosts}
+            related={relatedPosts}
+            currentSlug={post.slug}
+          />
+        </div>
 
         <aside class="blog-aside blog-aside--right">
-          {
-            tocHeadings.length > 0 && (
-              <nav class="blog-toc" aria-label="Table of contents">
-                <p class="blog-toc__title">On this page</p>
-                <ol class="blog-toc__list">
-                  {tocHeadings.map((h) => (
-                    <li
-                      class={`blog-toc__item blog-toc__item--depth-${h.depth}`}
-                    >
-                      <a href={`#${h.slug}`} data-toc-link={h.slug}>
-                        {h.text}
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
-            )
-          }
+          {tocHeadings.length > 0 && <PostToc headings={tocHeadings} />}
         </aside>
       </div>
 
@@ -419,11 +308,12 @@ const contentBoxClass = 'py-responsive-md'
     const tocLinks = document.querySelectorAll('[data-toc-link]')
 
     if (article && tocLinks.length) {
-      const itemBySlug = new Map()
+      const itemsBySlug = new Map()
       tocLinks.forEach((link) => {
         const slug = link.getAttribute('data-toc-link')
         const item = link.closest('.blog-toc__item')
-        if (slug && item) itemBySlug.set(slug, item)
+        if (!slug || !item) return
+        itemsBySlug.set(slug, [...(itemsBySlug.get(slug) ?? []), item])
       })
 
       const headings = article.querySelectorAll('h2[id], h3[id]')
@@ -431,14 +321,12 @@ const contentBoxClass = 'py-responsive-md'
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              const item = itemBySlug.get(entry.target.id)
-              if (!item) return
-              if (entry.isIntersecting) {
-                document
-                  .querySelectorAll('.blog-toc__item.is-active')
-                  .forEach((el) => el.classList.remove('is-active'))
-                item.classList.add('is-active')
-              }
+              const items = itemsBySlug.get(entry.target.id)
+              if (!items || !entry.isIntersecting) return
+              document
+                .querySelectorAll('.blog-toc__item.is-active')
+                .forEach((el) => el.classList.remove('is-active'))
+              items.forEach((item) => item.classList.add('is-active'))
             })
           },
           { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
@@ -486,7 +374,8 @@ const contentBoxClass = 'py-responsive-md'
   }
 
   /* 3-column layout: left rail | article (centered, max 48rem) | right TOC.
-     Below xl breakpoint both side rails collapse and article goes full width. */
+     Below xl both side rails collapse (series and TOC move into <details>
+     above the article) and the article goes full width. */
   .blog-article-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -515,208 +404,6 @@ const contentBoxClass = 'py-responsive-md'
       max-height: calc(100vh - var(--header-spacer-height, 0px) - 4rem);
       overflow-y: auto;
     }
-  }
-
-  /* Left rail — back link + reading time */
-  .blog-aside__back {
-    display: block;
-    color: rgb(156 163 175); /* gray-400 */
-    font-size: 0.875rem;
-    font-weight: 300;
-    text-decoration: none;
-    transition: color 200ms ease;
-  }
-
-  .blog-aside__back:hover {
-    color: white;
-  }
-
-  .blog-aside__back--secondary {
-    margin-top: 0.375rem;
-    color: rgb(107 114 128); /* gray-500 */
-    font-size: 0.8125rem;
-  }
-
-  .blog-aside__meta {
-    margin: 0.75rem 0 0;
-    font-size: 0.8125rem;
-    font-weight: 300;
-    color: rgb(107 114 128); /* gray-500 */
-  }
-
-  /* Series rail */
-  .blog-series {
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgb(31 41 55); /* gray-800 */
-  }
-
-  .blog-series__title {
-    margin: 0 0 0.625rem;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgb(156 163 175); /* gray-400 */
-  }
-
-  .blog-series__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .blog-series__item {
-    font-size: 0.8125rem;
-    font-weight: 300;
-    line-height: 1.4;
-  }
-
-  .blog-series__item a {
-    color: rgb(156 163 175); /* gray-400 */
-    text-decoration: none;
-    transition: color 200ms ease;
-  }
-
-  .blog-series__item a:hover {
-    color: white;
-  }
-
-  .blog-series__item--current span {
-    color: white;
-    font-weight: 500;
-  }
-
-  .blog-series__draft {
-    margin-left: 0.375rem;
-    color: rgb(245 158 11); /* amber-500 */
-    font-size: 0.6875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  /* Share rail */
-  .blog-share {
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgb(31 41 55); /* gray-800 */
-  }
-
-  .blog-share__title {
-    margin: 0 0 0.625rem;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgb(156 163 175); /* gray-400 */
-  }
-
-  .blog-share__buttons {
-    display: flex;
-    gap: 0.375rem;
-    flex-wrap: wrap;
-  }
-
-  .blog-share__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    border: 1px solid rgb(31 41 55); /* gray-800 */
-    border-radius: 0.375rem;
-    background: transparent;
-    color: rgb(156 163 175); /* gray-400 */
-    cursor: pointer;
-    transition:
-      color 200ms ease,
-      border-color 200ms ease,
-      background-color 200ms ease;
-  }
-
-  .blog-share__btn:hover {
-    color: white;
-    border-color: rgb(75 85 99); /* gray-600 */
-    background-color: rgb(17 24 39 / 0.6); /* gray-900/60 */
-  }
-
-  .blog-share__btn:focus-visible {
-    outline: 2px solid rgb(96 165 250); /* blue-400 */
-    outline-offset: 2px;
-  }
-
-  /* Copy button — show check icon while in copied state */
-  .blog-share__icon-copied {
-    display: none;
-  }
-
-  .blog-share__btn.is-copied {
-    color: rgb(74 222 128); /* green-400 */
-    border-color: rgb(34 197 94 / 0.5); /* green-500/50 */
-  }
-
-  .blog-share__btn.is-copied .blog-share__icon-default {
-    display: none;
-  }
-
-  .blog-share__btn.is-copied .blog-share__icon-copied {
-    display: block;
-  }
-
-  /* Right rail — TOC */
-  .blog-toc__title {
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: rgb(156 163 175); /* gray-400 */
-    margin: 0 0 0.875rem;
-  }
-
-  .blog-toc__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-left: 1px solid rgb(31 41 55); /* gray-800 */
-  }
-
-  .blog-toc__item {
-    margin: 0;
-  }
-
-  .blog-toc__item a {
-    display: block;
-    margin-left: -1px;
-    padding: 0.375rem 0 0.375rem 0.875rem;
-    font-size: 0.875rem;
-    font-weight: 300;
-    line-height: 1.4;
-    color: rgb(156 163 175); /* gray-400 */
-    text-decoration: none;
-    border-left: 1px solid transparent;
-    transition:
-      color 200ms ease,
-      border-color 200ms ease;
-  }
-
-  .blog-toc__item a:hover {
-    color: white;
-    border-left-color: rgb(75 85 99); /* gray-600 */
-  }
-
-  .blog-toc__item--depth-3 a {
-    padding-left: 1.625rem;
-    font-size: 0.8125rem;
-    color: rgb(107 114 128); /* gray-500 */
-  }
-
-  .blog-toc__item.is-active > a {
-    color: white;
-    border-left-color: white;
   }
 
   /* Remove padding-bottom from container-padded when banner is present */

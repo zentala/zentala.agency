@@ -9,7 +9,7 @@
     --tw-prose-body: theme('colors.white');
     --tw-prose-headings: theme('colors.white');
     --tw-prose-lead: theme('colors.gray.300');
-    --tw-prose-links: theme('colors.blue.400');
+    --tw-prose-links: var(--color-accent);
     --tw-prose-bold: theme('colors.white');
     --tw-prose-counters: theme('colors.gray.400');
     --tw-prose-bullets: theme('colors.gray.400');
@@ -81,22 +81,22 @@
    */
   .prose.prose-blog {
     /* Override Tailwind Typography defaults (e.g. blue links) for blog posts */
-    --tw-prose-body: theme('colors.white');
-    --tw-prose-headings: theme('colors.white');
-    --tw-prose-lead: theme('colors.gray.300');
-    --tw-prose-links: theme('colors.white');
-    --tw-prose-bold: theme('colors.white');
-    --tw-prose-counters: theme('colors.gray.400');
-    --tw-prose-bullets: theme('colors.gray.400');
-    --tw-prose-hr: theme('colors.gray.800');
-    --tw-prose-quotes: theme('colors.gray.200');
-    --tw-prose-quote-borders: theme('colors.gray.700');
-    --tw-prose-captions: theme('colors.gray.400');
-    --tw-prose-code: theme('colors.gray.100');
-    --tw-prose-pre-code: theme('colors.gray.100');
-    --tw-prose-pre-bg: theme('colors.gray.900');
-    --tw-prose-th-borders: theme('colors.gray.800');
-    --tw-prose-td-borders: theme('colors.gray.800');
+    --tw-prose-body: var(--color-text-secondary);
+    --tw-prose-headings: var(--color-text);
+    --tw-prose-lead: var(--color-text-secondary);
+    --tw-prose-links: var(--color-text);
+    --tw-prose-bold: var(--color-text);
+    --tw-prose-counters: var(--color-text-muted);
+    --tw-prose-bullets: var(--color-text-muted);
+    --tw-prose-hr: var(--color-line);
+    --tw-prose-quotes: var(--color-text-secondary);
+    --tw-prose-quote-borders: var(--color-line-strong);
+    --tw-prose-captions: var(--color-text-muted);
+    --tw-prose-code: var(--color-text);
+    --tw-prose-pre-code: var(--color-text);
+    --tw-prose-pre-bg: var(--color-surface-raised);
+    --tw-prose-th-borders: var(--color-line);
+    --tw-prose-td-borders: var(--color-line);
 
     /* Headings: clear hierarchy, light weights, more top than bottom margin.
        scroll-margin-top keeps in-page anchors below the sticky header. */
@@ -128,17 +128,17 @@
     }
 
     h6 {
-      @apply mt-8 mb-2 text-sm font-medium uppercase tracking-wide text-gray-300;
+      @apply mt-8 mb-2 text-sm font-medium uppercase tracking-wide text-fg-secondary;
     }
 
     /* Paragraphs: comfortable reading size + line-height (~18-20px body) */
     p {
-      @apply mb-6 text-lg leading-relaxed md:text-xl;
+      @apply mb-6 text-lg leading-relaxed md:text-xl md:leading-[1.7];
     }
 
     /* Links: keep strong affordance on dark UI */
     a {
-      @apply text-white underline decoration-white/40 decoration-1 underline-offset-4 transition-colors duration-200 hover:text-gray-200 hover:decoration-white/80;
+      @apply text-fg underline decoration-white/40 decoration-1 underline-offset-4 transition-colors duration-fast hover:text-fg-secondary hover:decoration-white/80;
     }
 
     /* Lists: consistent indentation + spacing, including nested lists */
@@ -148,7 +148,7 @@
     }
 
     li {
-      @apply my-2 text-lg leading-relaxed md:text-xl;
+      @apply my-2 text-lg leading-relaxed md:text-xl md:leading-[1.7];
     }
 
     li > p {
@@ -165,9 +165,7 @@
     /* Quotes: give them a container feel (not just italic text)
        NOTE: exclude Quote component (.quote-container), which has its own styling. */
     blockquote:not(.quote-container) {
-      @apply my-10 border-l-2 border-gray-700 bg-gray-900/20 py-5 pl-6 pr-5 text-xl leading-relaxed text-gray-200 not-italic;
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
+      @apply my-10 border-l-2 border-line-strong bg-surface-raised py-5 pl-6 pr-5 text-lg leading-relaxed text-fg-secondary not-italic md:text-xl md:leading-[1.7];
     }
 
     blockquote:not(.quote-container) p {
@@ -176,11 +174,17 @@
 
     /* Code: inline and block */
     code {
-      @apply rounded border border-gray-800 bg-gray-900/60 px-1.5 py-0.5 font-mono text-[0.9em] text-gray-100;
+      @apply rounded border border-line bg-surface-raised px-1.5 py-0.5 font-mono text-[0.9em] text-fg;
     }
 
     pre {
-      @apply my-8 overflow-x-auto rounded-lg border border-gray-800 bg-gray-900 p-5;
+      @apply my-8 overflow-x-auto rounded border border-line bg-surface-raised p-5;
+    }
+
+    /* The typography plugin wraps inline code in literal backticks. */
+    code::before,
+    code::after {
+      content: none;
     }
 
     pre code {
@@ -189,7 +193,7 @@
 
     /* Horizontal rule */
     hr {
-      @apply my-10 border-gray-800;
+      @apply my-10 border-line;
     }
 
     /* Tables (when they appear in MDX/MD) */
@@ -198,16 +202,16 @@
     }
 
     thead th {
-      @apply border-b border-gray-800 pb-3 text-left text-sm font-medium uppercase tracking-wide text-gray-300;
+      @apply border-b border-line pb-3 text-left text-sm font-medium uppercase tracking-wide text-fg-secondary;
     }
 
     tbody td {
-      @apply border-b border-gray-900 py-3 align-top text-base text-gray-200;
+      @apply border-b border-line py-3 align-top text-base text-fg-secondary;
     }
 
     /* Images */
     img {
-      @apply my-8 rounded-lg border border-gray-800;
+      @apply my-8 rounded border border-line;
     }
   }
 }
