@@ -1,3 +1,5 @@
+> DESIGN.md at the repository root supersedes this guide; where they differ, DESIGN.md wins.
+
 # Theming & Design System Guide
 
 This document describes the theming patterns and design system used in zentala.agency website.

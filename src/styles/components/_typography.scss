@@ -6,22 +6,22 @@
 
 @layer base {
   .prose {
-    --tw-prose-body: theme('colors.white');
-    --tw-prose-headings: theme('colors.white');
-    --tw-prose-lead: theme('colors.gray.300');
+    --tw-prose-body: var(--color-text);
+    --tw-prose-headings: var(--color-text);
+    --tw-prose-lead: var(--color-text-secondary);
     --tw-prose-links: var(--color-accent);
-    --tw-prose-bold: theme('colors.white');
-    --tw-prose-counters: theme('colors.gray.400');
-    --tw-prose-bullets: theme('colors.gray.400');
-    --tw-prose-hr: theme('colors.gray.700');
-    --tw-prose-quotes: theme('colors.gray.300');
-    --tw-prose-quote-borders: theme('colors.gray.700');
-    --tw-prose-captions: theme('colors.gray.400');
-    --tw-prose-code: theme('colors.white');
-    --tw-prose-pre-code: theme('colors.gray.200');
-    --tw-prose-pre-bg: theme('colors.gray.800');
-    --tw-prose-th-borders: theme('colors.gray.700');
-    --tw-prose-td-borders: theme('colors.gray.700');
+    --tw-prose-bold: var(--color-text);
+    --tw-prose-counters: var(--color-text-muted);
+    --tw-prose-bullets: var(--color-text-muted);
+    --tw-prose-hr: var(--color-line);
+    --tw-prose-quotes: var(--color-text-secondary);
+    --tw-prose-quote-borders: var(--color-line);
+    --tw-prose-captions: var(--color-text-muted);
+    --tw-prose-code: var(--color-text);
+    --tw-prose-pre-code: var(--color-text-secondary);
+    --tw-prose-pre-bg: var(--color-surface-raised);
+    --tw-prose-th-borders: var(--color-line);
+    --tw-prose-td-borders: var(--color-line);
 
     // Dodatkowe style dla elementów markdown
     h1,
@@ -67,7 +67,7 @@
     }
 
     blockquote {
-      @apply my-4 border-l-4 border-gray-700 pl-4 italic;
+      @apply my-4 border-l-4 border-line pl-4 italic;
     }
 
     hr {

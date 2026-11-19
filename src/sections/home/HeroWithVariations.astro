@@ -1,10 +1,12 @@
 ---
 import Hero from './Hero.astro'
 
+type HeroProps = Parameters<typeof Hero>[0]
+
 type VariantKey = 'A' | 'B' | 'C' | 'D' | 'E'
 
 type HeroVariantConfig = {
-  componentProps: Record<string, any>
+  componentProps: HeroProps
 }
 
 interface Props {
@@ -21,7 +23,7 @@ const { variants, defaultVariant = 'A' } = Astro.props
       data-variant={key}
       class={`hero-variant-wrapper ${key === defaultVariant ? 'hero-variant-active' : 'hero-variant-hidden'}`}
     >
-      <Hero {...(config.componentProps as any)} />
+      <Hero {...config.componentProps} />
     </div>
   ))}
 </div>
@@ -62,5 +64,3 @@ const { variants, defaultVariant = 'A' } = Astro.props
   switchHeroVariant()
   window.addEventListener('popstate', switchHeroVariant)
 </script>
-
-

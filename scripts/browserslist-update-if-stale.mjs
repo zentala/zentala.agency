@@ -41,7 +41,7 @@ const isStale = force || lastRunMs === 0 || now - lastRunMs >= intervalMs
 if (!isStale) process.exit(0)
 
 const lastRunLabel = lastRunMs ? new Date(lastRunMs).toISOString() : 'never'
-// eslint-disable-next-line no-console
+ 
 console.log(
   `[browserslist] Updating caniuse-lite via update-browserslist-db (lastRun=${lastRunLabel}, intervalDays=${intervalDays})`,
 )

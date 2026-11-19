@@ -24,7 +24,7 @@ const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
   <section class="section-full">
     <div class="container-bordered">
       <h1 class="sr-only">Blog</h1>
-      <div class="cards-grid">
+      <div class="cards-grid line-grid--fill-last">
         {
           feed.map((entry) =>
             entry.kind === 'post' ? (

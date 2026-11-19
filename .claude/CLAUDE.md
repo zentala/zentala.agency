@@ -69,7 +69,7 @@ src/
 **⚠️ CRITICAL: This project has a sophisticated custom design system.**
 
 **When working on ANY styling/layout:**
-1. **Read [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md)** first
+1. **Read [DESIGN.md](DESIGN.md)** first (then [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md), which it supersedes)
 2. Follow the established patterns
 3. Never add borders to card components (grid handles it)
 4. Use responsive mixins, not fixed pixels
@@ -81,7 +81,7 @@ src/
 - Containers: `.container-bordered`, `.container-padded`, `.container-simple`
 - Path alias: `@/` = `/src`
 
-**For complete details:** [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md)
+**For complete details:** [DESIGN.md](DESIGN.md), then [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md)
 
 ## Task Management
 
@@ -317,7 +317,7 @@ import Hero from '@/components/Hero.astro'
 ## Critical Reminders
 
 ### Theming
-- **Read [CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md) when working on UI/styles**
+- **Read [DESIGN.md](DESIGN.md) when working on UI/styles** ([CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md) is superseded)
 - Grid system uses transparent border pattern (no double borders)
 - All spacing should be responsive (use mixins)
 - Never mix SCSS breakpoints with Tailwind breakpoints
@@ -334,7 +334,7 @@ import Hero from '@/components/Hero.astro'
 
 ---
 
-**For UI/styling work:** Read [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md)
+**For UI/styling work:** Read [DESIGN.md](DESIGN.md) first
 **For task priorities:** Read [.claude/tasks/PRIORITIES.md](.claude/tasks/PRIORITIES.md) ⭐
 **For task workflow:** Read [.claude/CLAUDE.TASKS.md](.claude/CLAUDE.TASKS.md)
 **For SEO/meta strategy:** Read [.claude/CLAUDE.META.md](.claude/CLAUDE.META.md)

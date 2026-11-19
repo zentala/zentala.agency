@@ -4,7 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default tseslint.config(
   {
-    ignores: ['node_modules/**', '.astro/**', 'dist/**', 'archive/**'],
+    ignores: ['node_modules/**', '.astro/**', 'dist/**', 'archive/**', 'src/env.d.ts'],
   },
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs['flat/recommended'],

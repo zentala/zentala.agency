@@ -39,8 +39,9 @@ lint:
 fix:
     npm run lint:fix; npm run format
 
-# pre-commit gate: build (widget off, as in CI), unit tests, prod-bundle audit, critical e2e on chromium
+# pre-commit gate: lint, build (widget off, as in CI), unit tests, prod-bundle audit, critical e2e on chromium
 check:
+    npm run lint
     $env:PUBLIC_PLAYWRIGHT_TEST = 'true'; npm run build
     npm run test:unit
     npm run audit:prod

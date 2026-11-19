@@ -33,9 +33,25 @@
     @include cell-interactive;
   }
 
-  // The last cell takes the rest of an incomplete last row
-  .line-grid--fill-last > :last-child {
-    grid-column-end: -1;
+  // The last cell takes the rest of an incomplete last row. Grid placement cannot span
+  // "the remaining columns" (an auto start with an end line spans one column), so the
+  // spans are written out for the default 3 / 2 / 1 columns. Not for custom column counts.
+  .line-grid--fill-last {
+    @include medium-up {
+      > :last-child:nth-child(3n + 1) {
+        grid-column: span 3;
+      }
+
+      > :last-child:nth-child(3n + 2) {
+        grid-column: span 2;
+      }
+    }
+
+    @include medium-only {
+      > :last-child:nth-child(2n + 1) {
+        grid-column: span 2;
+      }
+    }
   }
 
   // Cards: 2 columns on desktop

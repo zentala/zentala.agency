@@ -2,7 +2,7 @@
 
 ## TLDR
 
-Dark, square, line-grid site: black surface, 1px gray-800 lines, one blue accent, light-weight type. All colour, type, radius, motion and breakpoint values come from tokens (CSS custom properties in `src/styles/tokens.scss`, mirrored in `tailwind.config.js`). All lines come from one line model (section 3): cells draw only their left and top line, hover is an overlay on lines that already exist. Anything not in this file is a design decision: record it in the Decisions table (section 10) first, then implement it. Legacy primitive docs stay in [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md); this file wins where they differ.
+Dark, square, line-grid site: black surface, 1px gray-800 lines, one blue accent, light-weight type. All colour, type, radius, motion and breakpoint values come from tokens (CSS custom properties in `src/styles/tokens.scss`, mirrored in `tailwind.config.js`). All lines come from one line model (section 3): cells draw only their left and top line, hover is an overlay on lines that already exist. Anything not in this file is a design decision: record it in the Decisions table (section 10) first, then implement it. Legacy primitive docs stay in [.claude/CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md); this file supersedes it where they differ. Incomplete last rows of variable-length card grids use `line-grid--fill-last` (section 4); blog helpers and components are named in section 5.
 
 ## 1. Visual direction
 
@@ -161,6 +161,7 @@ Do not add a seventh border system. New grids use `.line-grid`. Path alias `@/` 
 - **Columns.** `--cols-wide` (above 1000px, default 3), `--cols-medium` (771-1000px, default 2), `--cols-narrow` (770px and below, default 1). `--cols` is derived. Set them on the element (`style="--cols-wide: 4"`); `.content-grid` defaults to 2 / 1 / 1. Custom proportions: `--grid-columns: 1.67fr 1fr` (replaces the whole template).
 - **Mixins** (`src/styles/variables.scss`): `line-grid`, `line-cell`, `line-block`, `cell-interactive`, plus the existing `padding-responsive`, `px-responsive`, `py-responsive`, `tablet`, `medium`, `medium-up`, `container-borders`, `container-side-lines`, `section-borders`.
 - **Classes**: `.line-grid`, `.line-grid--fill-last`, `.cards-grid`, `.content-grid`, `.cell-interactive`.
+- **Incomplete last row.** Grids whose cell count varies (blog index, series, category) add `line-grid--fill-last`: the last cell spans the remaining columns, so no stray or missing line is left (measured at 1920, 1280 and 1024 on `/blog`, `/series/agent-native-harness`, `/category/innovation`). The default wrapper filler stays for grids that do not opt in; with a gap it draws a vertical line on the last column only and leaves the last cell without a right line, so it is not used for listings. `fill-last` assumes the default 3 / 2 / 1 columns (grid placement cannot span "the rest", so the spans are written out); do not combine it with custom `--cols-*`.
 - **A component opts into being a grid cell** by being a direct child of one of the grid classes: it gets its lines automatically and must not draw a border, `overflow: hidden`, a fixed `aspect-ratio` or an opaque background. A direct-child `<a>` is interactive automatically. Any other interactive cell adds `class="cell-interactive"` or `@include cell-interactive` in its own style (add `position: relative` only through the mixin). Inside the cell, wrap content that needs clipping in an inner element with `overflow: clip` (see `CardContainer`).
 - **Do not** put `margin`, `border`, `transform` or `z-index` rules on a cell for hover or layout.
 
@@ -168,12 +169,15 @@ Do not add a seventh border system. New grids use `.line-grid`. Path alias `@/` 
 
 - **Cards** (PostCard, SeriesCard, OfferCard, PortfolioItem, CardContainer): no borders, no `overflow: hidden`, no fixed aspect-ratio (`min-height`), interactive overlay from the mixin, titles wrap (`line-clamp-2`), excerpt line-clamp, one title size per grid.
 - **Badges and meta:** one DraftBadge (icon plus uppercase text-xs, warn colour); one `formatDate` (en-GB, UTC, with `<time>`); one part label ('Part n of N' only when contiguous, else 'Part n'); the category display name is the badge text and is used in the h1, the document title and the slug.
+- **Blog helpers** (`src/lib/blog/`): `formatDate`, `partLabel`, `slugify`, `isVisiblePost` / `getVisiblePosts` (one visibility rule, `SHOW_DRAFTS`), plus the `DraftBadge` primitive. Pages never inline these rules.
+- **Blog components** (`src/components/blog/`): `PostMeta` (`tone="muted"` for the post hero at 14px `text-fg-muted`; listings keep `subtle`), `SeriesRail`, `PostNav`, `PostToc`, `ShareButtons`.
+- **Background icons** (`CardBackgroundIcon`): .06 at rest, hover capped at `--icon-bg-max-opacity` (.12); decorative icons never exceed it.
 - **Tags and labels:** the one label style; 4px square chips.
 - **CTA cells and quotes:** the same overlay hover; no `translateY`, scale or z-index jumps; the arrow nudges `translateX(4px)`.
 - **SectionHeader:** the `interactive` prop is deprecated and has no effect (the 1.1x scale was removed). Centred subheads centre their box (`margin-inline: auto`).
 - **Buttons:** primary solid white, secondary outlined (colours pending the owner); all CTAs use the shared Button/CTA component.
 - **Inputs:** `surface-raised` fill, line border, focus uses the focus ring; buttons and fields in a row have equal height.
-- **Links:** accent, hover accent-hover, underline on hover for arrow links.
+- **Links:** accent, hover accent-hover, underline on hover for arrow links (including the PortfolioItem link title).
 
 ## 6. Interaction states
 
@@ -221,8 +225,48 @@ Do not add a seventh border system. New grids use `.line-grid`. Path alias `@/` 
 | 2026-11-19 | `.container-bordered` is `display: flow-root` and clips `overflow-x` at 1450px and below                                                                                                   | none                                                                                            | Grid negative margins must not collapse through the container; no stray line at the viewport edge                                                                                                    |
 | 2026-11-19 | Eyebrow label uses the label style (11px, 600, tracking .12em, `text-subtle`)                                                                                                              | 12px, 400, .2em, white/50                                                                       | One label style, contrast                                                                                                                                                                            |
 | 2026-11-19 | `SectionHeader` `interactive` scale hover removed; prop kept as deprecated no-op until importers drop it                                                                                   | scale 1.1, shadow, z-index 10                                                                   | Scaling a cell breaks every shared line                                                                                                                                                              |
-| 2026-11-19 | Dates en-GB and UTC through one helper                                                                                                                                                     | pl-PL and ISO mix                                                                               | Consistency                                                                                                                                                                                          |
-| 2026-11-19 | Draft badge is one primitive                                                                                                                                                               | Two implementations                                                                             | Consistency                                                                                                                                                                                          |
 | 2026-10-19 | Header navigation responds to the header's available inline size; below 1180px use the existing hamburger menu, below 600px hide the agency descriptor. Keep logo and controls on one row. | Viewport-only navigation breakpoints and wrapping logo text.                                    | An open hub chat panel reduces the page width while the viewport remains wide; all navigation must remain reachable down to a 400px page width. (lives on `feat/hub-chat-adoption`, not yet on main) |
+| 2026-11-19 | Incomplete last row closed by `line-grid--fill-last` on listings, not the wrapper filler | Wrapper filler (stray last-column line, no right line on the last cell) | Measured at 1920/1280/1024; `auto / -1` cannot span, so nth-child spans for the 3/2/1 default |
+| 2026-11-19 | Overlay inset -1px on all sides; wrapper margin `-1px 0 0 -1px` | Per-grid overlay offsets | Overlay lands on the neighbour's, next row's and container lines |
+| 2026-11-19 | Standalone blocks (CTA, quote, banner) use the `line-block` mixin | Own borders | Same line model as grids |
+| 2026-11-19 | Direct-child `<a>` in a line grid is interactive automatically; other interactive cells opt in with `.cell-interactive` | Hover border on every cell | Static cells stay quiet |
+| 2026-11-19 | Per-breakpoint columns via `--cols-wide`, `--cols-medium`, `--cols-narrow`; `.content-grid` defaults to 2/1/1 | Per-grid media queries | One column API |
+| 2026-11-19 | `SectionGrid` `gap` prop removed | Unused prop | No importer used it |
+| 2026-11-19 | PortfolioItem link title at full accent strength, underline on hover | Opacity .75 | Contrast gain is intentional |
+| 2026-11-19 | Dates en-GB long month, UTC ('8 September 2026') | Short month | Short en-GB renders 'Sept' on newer ICU |
+| 2026-11-19 | Series rail rows show the real part number; date only on the newest part, muted | Row index | Gaps from unpublished parts stay honest |
+| 2026-11-19 | `DraftBadge` renders only when `SHOW_DRAFTS` is true | Caller-side gating | No caller gates it |
+| 2026-11-19 | 'New' chip and '+N more' button are square | Rounded corners | Square-card rule |
+| 2026-11-19 | Category display name is the badge text, used in h1, title and slug | Description title as a name | One canonical name |
+| 2026-11-19 | 'LinkedIn draft' link on series cards is an accent square chip on `bg-surface-hover` | blue-900 pill | Token colours, square chips |
+| 2026-11-19 | Series rail shows previous, current, next part plus 'See all N parts'; reading time and share move into the hero meta below 1280px | Full list in the rail | Shorter rail |
+| 2026-11-19 | Related posts for non-series posts: same category, newest first, three at most; every PostNav ends with '← All posts' | None | Navigation dead ends |
+| 2026-11-19 | Prose body `--color-text-secondary`, headings white, line-height 1.7 from md up | `leading-relaxed` (1.625) | Middle of the 1.65-1.7 range |
+| 2026-11-19 | Prose inline code on line border and `surface-raised`, 4px radius; pre, images and blockquote 4px, no right rounding | `rounded-lg` | Square-card rule |
+| 2026-11-19 | Base `.prose` block uses tokens, no `theme('colors.gray.*')` | Legacy gray values | One colour source |
+| 2026-11-19 | LinkedIn preview banner: centred warn 'Draft preview' chip; counters read 'Likes: -', 'Comments: -' | Blue banner | Token colours |
+| 2026-11-19 | Share buttons square; copied state uses the success colour via Tailwind group variants | 6px radius, scoped CSS | Astro scoped CSS did not reach spread-prop svgs |
+| 2026-11-19 | Active nav link: persistent 1px underline at 40% opacity (100% on hover or focus), 4px below the baseline | None | No nav active state existed |
+| 2026-11-19 | Mobile menu items inset with the header padding; active and hover background `surface-hover` | `px-responsive('sm')` | Alignment with the header |
+| 2026-11-19 | Tagline 'INNOVATION AGENCY' hidden at 480px and below; header 57px at 390 | Always shown | Fits `--header-spacer-height` |
+| 2026-11-19 | Footer social row reserves 88px right padding at 1450px and below (chat bubble), 0 at 480px and below | Bubble covered the third icon | Chat bubble overlap |
+| 2026-11-19 | Footer links `text-fg-muted`, hover `text-fg` | gray-300, neutral-300/400 | Tokens |
+| 2026-11-19 | `footer.scss` rules are unlayered (no Tailwind layer import); if other component sheets get the same cleanup, move them to `global.scss` | `@layer components` | First change to the layer convention |
+| 2026-11-19 | Bento cards are transparent cells with `cell-interactive`; the central stage keeps the focus overlay only | Opaque bordered cards | Its hover drives the stage state |
+| 2026-11-19 | Bento state layers use `--motion-slow` and `--ease-standard` (600ms) | 500ms and 700ms ease | Motion tokens |
+| 2026-11-19 | Bento decor clipped by an inner `overflow-clip` wrapper; decor arrow nudges `translate-x-2` | `overflow-hidden` on the cell; animated `right` | No cell overflow, no layout animation |
+| 2026-11-19 | Tag `label` and `simple` chips fg-muted on tint, fg-subtle on black; `pill` stays rounded-full (C6 open) | Hard-coded greys | Tokens |
+| 2026-11-19 | Logo colour is `var(--color-text)`; h2 'Your Hands-On CTO' uses `--text-h2` | Hex literal; 28px | Tokens |
+| 2026-11-19 | `SectionImage` background variant renders a `.section-image__bg` child; entrance 600ms `--ease-enter` | scale(1.1) entrance | Shared `appear` motion |
+| 2026-11-19 | `NoteBox` variants set one `--note-accent`; default and info use the accent | Own colour per variant | Tokens |
+| 2026-11-19 | `Quote` `gradient` variant is a flat accent 10% tint with a 2px accent left border; marks accent 8% (12% minimal) | Blue-purple gradient | No gradients |
+| 2026-11-19 | /contact cards: 2.5rem in-flow icon in the heading row at .12 opacity, shared `CardContainer` in a `.line-grid` | Large absolute glyph under text | Icon can never sit under text |
+| 2026-11-19 | /404 keeps one 'Contact Us' button; /mission collapsed to one column (C3 open) | Two buttons; image columns | Minimum fix pending owner |
+| 2026-11-19 | Backstage stats and FAQ are static `.line-grid` cells; the stats CTA row is a `line-block` | Per-cell hover | Static content |
+| 2026-11-19 | Agentation dev toolbar: GET /health added to the proxy allow-list; `agentation` added to all three forbidden-string lists (`FORBIDDEN_RUNTIME` gates the build) | Toolbar showed disconnected | The widget probes /health first |
+| 2026-11-19 | PM3 dev service runs astro directly (argv array) | `npm run dev` string command | The secret broker cannot spawn a string command |
+| 2026-11-19 | Background icon hover capped at `--icon-bg-max-opacity` (.12) | Hover to .32 | Decorative icons stay quiet |
+| 2026-11-19 | Post hero meta: `PostMeta tone="muted"` (`text-fg-muted`, 14px) | `text-fg-subtle` | Hero meta is brighter than listing meta |
+| 2026-11-19 | Post bodies start at `h2`; the page title is the only `h1` | Body `# ` heading in one post | One h1 per page |
 
 Pending owner rows: blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), heading weight (C5), chip shape (C6), surface tint and buttons (C7), ambient motion (C8).

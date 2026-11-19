@@ -20,4 +20,3 @@ export interface BannerProps {
   /** Optional additional CSS classes */
   class?: string
 }
-
