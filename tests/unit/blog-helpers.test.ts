@@ -78,8 +78,8 @@ describe('partLabel', () => {
     expect(partLabel(9, [9])).toBe('Part 9')
   })
 
-  it('reads "Part 1 of 1" for a lone first part', () => {
-    expect(partLabel(1, [1])).toBe('Part 1 of 1')
+  it('reads "Part 1" for a lone first part', () => {
+    expect(partLabel(1, [1])).toBe('Part 1')
   })
 
   it('falls back to "Part n" with no visible parts', () => {

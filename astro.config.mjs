@@ -27,6 +27,16 @@ const isAgentationReview =
   process.env.PUBLIC_AGENTATION_REVIEW === '1' &&
   Boolean(agentationToken)
 
+if (
+  !isBuild &&
+  process.env.PUBLIC_AGENTATION_REVIEW === '1' &&
+  !agentationToken
+) {
+  console.warn(
+    '[agentation] PUBLIC_AGENTATION_REVIEW=1 but AGENTATION_MCP_AUTH_TOKEN is missing: the toolbar renders without the sync proxy.',
+  )
+}
+
 /**
  * Same-origin proxy for the Agentation review widget. The broker token is added
  * here, server-side; the browser Origin is forwarded untouched so the backend's

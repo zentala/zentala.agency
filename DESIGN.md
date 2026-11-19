@@ -274,3 +274,11 @@ Do not add a seventh border system. New grids use `.line-grid`. Path alias `@/` 
 | 2026-11-19 | Home h1 is the product-minded bento heading, same look | No h1 on home | One h1 per page |
 
 Pending owner rows: blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), heading weight (C5), chip shape (C6), surface tint and buttons (C7), ambient motion (C8).
+| 2026-11-19 | Focus ring on cells sits at inset 0 (hover overlay stays -1px) | Focus ring at -1px | Container overflow clip cut the left/right edge of edge-column cells; hover keeps the open edge on purpose |
+| 2026-11-19 | Blockquote bar is 1px `line-strong` (prose and `Quote` gradient variant) | 2px bar, accent bar | One line weight; the bar is a callout edge, not a grid line |
+| 2026-11-19 | Dev tools start out of the way: Version History panel collapsed, bottom-left; Agentation button at bottom 5.5rem | Open panel bottom-right over the article and the round button | Neither covers article text, the TOC or the chat bubble slot |
+| 2026-11-19 | Series intro: 70ch, 1rem, line-height 1.65, paragraph spacing; blog prose column 70ch with the secondary text token | Full-width 14px intro; 768px, white prose | Readable measure |
+| 2026-11-19 | Footer Capabilities plain items use `text-fg-muted` like links | Bright plain items next to a dim link | The one link is not dimmer than text |
+| 2026-11-19 | Series toggle is an underlined `fg-secondary` control that expands and collapses (`aria-expanded`) | Meta-style text that vanished on click | Looks clickable, reports state |
+| 2026-11-19 | `/faq` removed | Placeholder store-FAQ copy on a light slate block | Not linked, off-system; rebuild on the line model when real content exists |
+| 2026-11-19 | Non-linked bento cards and static offer cards stay non-interactive (no focus, no overlay) | Hover-only highlight | Static cells stay quiet; linked cards are `<a>` and focusable |

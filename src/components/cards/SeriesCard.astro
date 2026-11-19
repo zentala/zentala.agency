@@ -39,7 +39,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
         <span>Series</span>
         {
           isFresh && (
-            <span class="relative z-10 ml-auto bg-surface-hover px-2 py-1 text-label uppercase text-fg-secondary">
+            <span class="relative z-10 ml-auto bg-surface-hover px-2 text-label uppercase leading-none text-fg-secondary">
               New
             </span>
           )
@@ -67,7 +67,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                 <li class="relative z-10">
                   <button
                     type="button"
-                    class="-mx-2 w-full px-2 py-1 text-left text-sm text-fg-muted transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
+                    class="-mx-2 w-full px-2 py-1 text-left text-sm text-fg-secondary underline decoration-line-strong underline-offset-4 transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
                     aria-expanded="false"
                     data-series-expand
                   >
@@ -75,7 +75,11 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                   </button>
                 </li>
               )}
-              <li class={isHidden ? 'hidden' : undefined} data-series-part>
+              <li
+                class={isHidden ? 'hidden' : undefined}
+                data-series-part
+                data-series-middle={isHidden ? '' : undefined}
+              >
                 <a
                   href={`/blog/${part.slug}`}
                   class="relative z-10 -mx-2 flex items-start gap-x-2 px-2 py-1 text-sm transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
@@ -116,12 +120,13 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
     )
     const list = button?.closest('[data-series-parts]')
     if (!button || !list) return
-    const revealed = list.querySelectorAll<HTMLElement>(
-      '[data-series-part].hidden',
-    )
-    revealed.forEach((item) => item.classList.remove('hidden'))
-    button.setAttribute('aria-expanded', 'true')
-    button.closest('li')?.remove()
-    revealed[0]?.querySelector('a')?.focus()
+    const isExpanding = button.getAttribute('aria-expanded') !== 'true'
+    const middle = list.querySelectorAll<HTMLElement>('[data-series-middle]')
+    middle.forEach((item) => item.classList.toggle('hidden', !isExpanding))
+    button.setAttribute('aria-expanded', String(isExpanding))
+    button.textContent = isExpanding
+      ? 'Show fewer parts'
+      : `Show ${middle.length} more parts`
+    if (isExpanding) middle[0]?.querySelector('a')?.focus()
   })
 </script>

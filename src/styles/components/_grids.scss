@@ -36,19 +36,21 @@
   // The last cell takes the rest of an incomplete last row. Grid placement cannot span
   // "the remaining columns" (an auto start with an end line spans one column), so the
   // spans are written out for the default 3 / 2 / 1 columns. Not for custom column counts.
+  // Counts by element type: dev mode injects <script> siblings that would shift nth-child.
+  // Children must all share one tag (<article>).
   .line-grid--fill-last {
     @include medium-up {
-      > :last-child:nth-child(3n + 1) {
+      > :last-of-type:nth-of-type(3n + 1) {
         grid-column: span 3;
       }
 
-      > :last-child:nth-child(3n + 2) {
+      > :last-of-type:nth-of-type(3n + 2) {
         grid-column: span 2;
       }
     }
 
     @include medium-only {
-      > :last-child:nth-child(2n + 1) {
+      > :last-of-type:nth-of-type(2n + 1) {
         grid-column: span 2;
       }
     }

@@ -33,6 +33,12 @@ const isIconifyName = icon.includes(':')
     line-height: 1;
   }
 
+  /* A positioned icon paints over in-flow siblings; lift the text above it. */
+  .card-background-icon ~ :global(*:not(a):not([class*='absolute'])) {
+    position: relative;
+    z-index: 1;
+  }
+
   :global(.card-container):hover .card-background-icon {
     opacity: var(--icon-bg-max-opacity);
   }

@@ -105,11 +105,11 @@ const breadcrumbJsonLd = {
         }
         {
           Content ? (
-            <div class="mt-4 max-w-none text-fg-secondary">
+            <div class="mt-4 max-w-[70ch] text-base leading-[1.65] text-fg-secondary [&_p+p]:mt-4">
               <Content />
             </div>
           ) : (
-            <p class="mt-4 max-w-none text-fg-secondary">
+            <p class="mt-4 max-w-[70ch] text-base leading-[1.65] text-fg-secondary">
               {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
             </p>
           )

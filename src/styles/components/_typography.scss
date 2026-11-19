@@ -165,7 +165,7 @@
     /* Quotes: give them a container feel (not just italic text)
        NOTE: exclude Quote component (.quote-container), which has its own styling. */
     blockquote:not(.quote-container) {
-      @apply my-10 border-l-2 border-line-strong bg-surface-raised py-5 pl-6 pr-5 text-lg leading-relaxed text-fg-secondary not-italic md:text-xl md:leading-[1.7];
+      @apply my-10 border-l border-line-strong bg-surface-raised py-5 pl-6 pr-5 text-lg leading-relaxed text-fg-secondary not-italic md:text-xl md:leading-[1.7];
     }
 
     blockquote:not(.quote-container) p {

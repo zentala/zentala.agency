@@ -7,14 +7,14 @@ type Props = {
   children: ReactNode
 }
 
-/** Floating panel chrome with collapse/expand and persisted state. */
+/** Floating panel chrome with collapse/expand and persisted state. Starts collapsed so it never covers the article. */
 export function PanelChrome({ children }: Props) {
-  const [collapsed, setCollapsed] = useState<boolean>(false)
+  const [collapsed, setCollapsed] = useState<boolean>(true)
 
   useEffect(() => {
     try {
       const v = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null
-      if (v === '1') setCollapsed(true)
+      if (v === '0') setCollapsed(false)
     } catch {
       // ignore — localStorage may be blocked
     }

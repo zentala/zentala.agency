@@ -61,14 +61,16 @@ const titleClass = 'mt-2 block text-lg leading-snug text-fg'
             </a>
           )}
         </div>
-        <p class="mt-6 text-sm">
-          <a
-            href={`/series/${seriesSlug}`}
-            class="text-accent no-underline hover:text-accent-hover hover:underline"
-          >
-            All {seriesPosts.length} parts →
-          </a>
-        </p>
+        {seriesPosts.length > 1 && (
+          <p class="mt-6 text-sm">
+            <a
+              href={`/series/${seriesSlug}`}
+              class="text-accent no-underline hover:text-accent-hover hover:underline"
+            >
+              All {seriesPosts.length} parts →
+            </a>
+          </p>
+        )}
       </>
     )
   }

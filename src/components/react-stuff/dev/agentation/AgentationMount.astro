@@ -7,3 +7,10 @@ const isReviewEnabled =
 ---
 
 {isReviewEnabled && <AgentationReview client:only="react" />}
+
+<style is:global>
+  /* Own offset: keeps the round button clear of the chat bubble slot (bottom-right). */
+  agentation-toolbar {
+    bottom: 5.5rem;
+  }
+</style>

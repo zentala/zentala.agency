@@ -4,20 +4,25 @@ export interface Props {
   text: string
   articleLink: string
   authorName: string
-  authorAvatar: string
 }
 
-const { title, text, articleLink, authorName, authorAvatar } = Astro.props
+const { title, text, articleLink, authorName } = Astro.props
 
 const paragraphs = text
   .split('\n')
   .map((line) => line.trim())
   .filter(Boolean)
+
+const authorInitials = authorName
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((word) => word.charAt(0).toUpperCase())
+  .join('')
 ---
 
 <div class="li-card">
   <div class="li-card__header">
-    <img src={authorAvatar} alt={authorName} class="li-card__avatar" />
+    <span class="li-card__avatar" aria-hidden="true">{authorInitials}</span>
     <div class="li-card__identity">
       <p class="li-card__name">{authorName}</p>
       <p class="li-card__role">DevEx Consultant · 1st</p>
@@ -66,7 +71,12 @@ const paragraphs = text
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    font-weight: 600;
   }
 
   .li-card__name {

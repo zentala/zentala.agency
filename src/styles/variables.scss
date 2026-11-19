@@ -481,8 +481,11 @@ $header-height-mobile: calc(
     outline: none;
   }
 
+  // Focus ring sits 1px inside the cell: at inset -1px the container's overflow clip
+  // cuts the left/right edge of edge-column cells (WCAG focus visibility).
   &:focus-visible::after,
   &:has(:focus-visible)::after {
+    inset: 0;
     border-color: var(--line-focus);
   }
 }

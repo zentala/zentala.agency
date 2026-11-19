@@ -48,7 +48,6 @@ const text = sidecar ? sidecar.body ?? '' : (post.data.linkedinPost ?? '')
         text={text}
         articleLink={`/blog/${post.slug}`}
         authorName={author?.name ?? post.data.author}
-        authorAvatar={author?.avatar ?? ''}
       />
     </div>
   </section>
