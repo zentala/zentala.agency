@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test'
 
 // Published posts only: the suite runs against the production build, where drafts do not exist.
 const SERIES_POST = '/blog/devex-purpose'
-const SERIES_NEXT_POST = '/blog/kickart-backstage-implementation'
+const SERIES_NEXT_POST = '/blog/how-to-deal-with-resistance-when-implementing-dev-portal'
 const STANDALONE_POST = '/blog/future-of-agentic-ai-automation'
 const LONG_POST = '/blog/ia'
 

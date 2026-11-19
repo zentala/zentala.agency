@@ -103,7 +103,7 @@ async function measureLines(page: Page): Promise<LineReport> {
   // The fixed header and widgets would repeat or hide lines in a full-page capture
   await page.addStyleTag({
     content:
-      'header, .fixed { position: absolute !important } astro-dev-toolbar, [class*=chat] { display: none !important }',
+      'header, .fixed { position: absolute !important } astro-dev-toolbar, [class*=chat] { display: none !important } a[class*="bg-gray-800"], button { visibility: hidden !important }',
   })
   const shot = await page.screenshot({ fullPage: true })
   const dataUrl = `data:image/png;base64,${shot.toString('base64')}`

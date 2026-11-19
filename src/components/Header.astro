@@ -166,7 +166,7 @@ const isCurrent = (href: string) =>
 
 <header
   id="header"
-  class="fixed top-0 z-50 w-full border-b border-line bg-black bg-opacity-90 shadow-md backdrop-blur transition-[background-color,border-color,box-shadow] duration-base"
+  class="fixed top-0 z-50 w-full border-b border-line bg-black bg-opacity-90 backdrop-blur transition-[background-color,border-color,box-shadow] duration-base"
 >
   <div class="container-header flex items-center justify-between">
     <div class="logo-container flex items-center">
@@ -317,4 +317,18 @@ const isCurrent = (href: string) =>
       updateMobileNavPosition()
     }
   })
+</script>
+
+<script>
+  // The header height varies (tagline wraps at tablet widths); the spacer follows the real height
+  const siteHeader = document.getElementById('header')
+  if (siteHeader) {
+    const syncSpacer = () =>
+      document.documentElement.style.setProperty(
+        '--header-spacer-height',
+        `${siteHeader.offsetHeight}px`,
+      )
+    new ResizeObserver(syncSpacer).observe(siteHeader)
+    syncSpacer()
+  }
 </script>

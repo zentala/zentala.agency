@@ -268,5 +268,9 @@ Do not add a seventh border system. New grids use `.line-grid`. Path alias `@/` 
 | 2026-11-19 | Background icon hover capped at `--icon-bg-max-opacity` (.12) | Hover to .32 | Decorative icons stay quiet |
 | 2026-11-19 | Post hero meta: `PostMeta tone="muted"` (`text-fg-muted`, 14px) | `text-fg-subtle` | Hero meta is brighter than listing meta |
 | 2026-11-19 | Post bodies start at `h2`; the page title is the only `h1` | Body `# ` heading in one post | One h1 per page |
+| 2026-11-19 | `--header-spacer-height` is set from the measured header height (ResizeObserver); header has no shadow | Fixed per-breakpoint calc constants; `shadow-md` | The tagline wraps at tablet widths and the header covered content; the shadow dimmed the verticals below it |
+| 2026-11-19 | Bento rows are `minmax(14rem, auto)` | `0.8fr` rows | Fractional rows let tall cells overflow and left the grid taller than its tracks, so verticals dangled |
+| 2026-11-19 | Inside an interactive cell the overlay is the only focus indicator (descendant outline removed) | Overlay plus stretched-link outline | Two focus rings 2px apart |
+| 2026-11-19 | Home h1 is the product-minded bento heading, same look | No h1 on home | One h1 per page |
 
 Pending owner rows: blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), heading weight (C5), chip shape (C6), surface tint and buttons (C7), ambient motion (C8).

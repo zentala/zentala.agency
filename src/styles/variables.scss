@@ -476,7 +476,8 @@ $header-height-mobile: calc(
   }
 
   &:focus-visible,
-  &:has(:focus-visible) {
+  &:has(:focus-visible),
+  & :focus-visible {
     outline: none;
   }
 
