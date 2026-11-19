@@ -1,15 +1,25 @@
 version: 1
 name: zentala-agency
 description: zentala.agency marketing site (Astro dev server)
+launch:
+  secretBroker:
+    command:
+      - C:/Program Files/PowerShell/7/pwsh.exe
+      - -NoProfile
+      - -File
+      - C:/Users/zentala/.agents/skills/password-broker/broker.ps1
 
 services:
   - name: dev
     description: Astro dev server for zentala.agency
     cwd: .
-    cmd: npm run dev -- --port 4300 --host
+    cmd: [node, node_modules/astro/astro.js, dev, --port, '4300', --host]
     port: 4300
     domain: zentala.internal
     health: { type: http, port: 4300 }
     env:
       NODE_ENV: development
       PORT: '4300'
+      PUBLIC_AGENTATION_REVIEW: '1'
+    secrets:
+      AGENTATION_MCP_AUTH_TOKEN: secret://mcp-local-token

@@ -1,0 +1,9 @@
+---
+import { AgentationReview } from './index'
+
+/** Needs an explicit flag: DEV alone must not turn the review toolbar on. */
+const isReviewEnabled =
+  import.meta.env.DEV && import.meta.env.PUBLIC_AGENTATION_REVIEW === '1'
+---
+
+{isReviewEnabled && <AgentationReview client:only="react" />}

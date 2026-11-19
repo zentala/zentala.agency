@@ -31,11 +31,16 @@ const FORBIDDEN_JS_HTML = [
   'dev/blog-version-panel',
   '/api/dev/',
   '@astrojs/markdown-remark',
+  'agentation',
+  'dev/agentation',
+  '/__agentation',
 ]
 
 const FORBIDDEN_CSS = [
   'dev/blog-version-panel',
   '/api/dev/',
+  'agentation',
+  '/__agentation',
 ]
 
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.css', '.html'])
@@ -64,6 +69,9 @@ const FORBIDDEN_RUNTIME = [
   '@astrojs/markdown-remark',
   'Blog version history',
   'Expand blog version panel',
+  'agentation',
+  'dev/agentation',
+  '/__agentation',
 ]
 
 function collectReferences(html, htmlPath) {

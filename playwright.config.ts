@@ -7,6 +7,12 @@ const baseURL = new URL(
   process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:4333',
 )
 
+/*
+ * The chat widget is switched off at BUILD time: build dist/ with
+ * PUBLIC_PLAYWRIGHT_TEST=true (CI workflows and `just check` do) before
+ * `astro preview` serves it. Specs that need other viewports, such as
+ * line-geometry.spec.ts, set them themselves; the chromium project runs them.
+ */
 export default defineConfig({
   testDir: './tests/e2e',
   /* Run tests in files in parallel */
@@ -52,4 +58,3 @@ export default defineConfig({
     timeout: 120 * 1000,
   },
 })
-

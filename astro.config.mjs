@@ -9,6 +9,46 @@ import { blogVersionHistoryDevPlugin } from './src/lib/dev/git-history/vitePlugi
 /** True when Astro was invoked as `astro build`, false for `astro dev`/`preview`. */
 const isBuild = process.argv.includes('build')
 
+const AGENTATION_PREFIX = '/__agentation'
+const AGENTATION_BACKEND = 'http://127.0.0.1:4747'
+/** Only the routes the widget uses (it probes /health first); never /mcp, /status, /events or /pending. */
+const AGENTATION_WIDGET_ROUTES = [
+  /^\/health$/,
+  /^\/sessions$/,
+  /^\/sessions\/[^/]+$/,
+  /^\/sessions\/[^/]+\/(events|pending|action|annotations)$/,
+  /^\/annotations\/[^/]+$/,
+  /^\/annotations\/[^/]+\/thread$/,
+]
+
+const agentationToken = process.env.AGENTATION_MCP_AUTH_TOKEN
+const isAgentationReview =
+  !isBuild &&
+  process.env.PUBLIC_AGENTATION_REVIEW === '1' &&
+  Boolean(agentationToken)
+
+/**
+ * Same-origin proxy for the Agentation review widget. The broker token is added
+ * here, server-side; the browser Origin is forwarded untouched so the backend's
+ * CORS allow-list stays in charge.
+ */
+const agentationProxy = {
+  [AGENTATION_PREFIX]: {
+    target: AGENTATION_BACKEND,
+    changeOrigin: true,
+    rewrite: (path) => path.slice(AGENTATION_PREFIX.length),
+    bypass: (req) => {
+      const route = (req.url ?? '').slice(AGENTATION_PREFIX.length).split('?')[0]
+      return AGENTATION_WIDGET_ROUTES.some((re) => re.test(route)) ? undefined : false
+    },
+    configure: (proxy) => {
+      proxy.on('proxyReq', (proxyReq) => {
+        proxyReq.setHeader('Authorization', `Bearer ${agentationToken}`)
+      })
+    },
+  },
+}
+
 export default defineConfig({
   site: 'https://zentala.agency',
   output: 'static',
@@ -53,6 +93,7 @@ export default defineConfig({
         overlay: false,
       },
       allowedHosts: ['zentala.internal', 'localhost'],
+      proxy: isAgentationReview ? agentationProxy : undefined,
     },
     css: {
       preprocessorOptions: {
