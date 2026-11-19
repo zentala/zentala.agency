@@ -222,7 +222,8 @@ Three rules, one after the other. They are not suggestions (Paweł, 2026-08-26).
    the PAC file. `astro.config.mjs` already allows the host
    (`vite.server.allowedHosts`).
 2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev`
-   (`npm run dev -- --port 4300 --host`, health check on 4300). Start it with
+   (`node node_modules/astro/astro.js dev --port 4300 --host`, health check on 4300; it
+   injects the Agentation token through the password broker, see DESIGN.md / pm3.yaml). Start it with
    `pm3 start zentala-agency/dev`, never with a loose `npm run dev` in a shell —
    an unsupervised dev server dies with its terminal and nothing notices.
 3. **[CRITICAL] Every link handed to Paweł is `http://zentala.internal`** — in
@@ -318,7 +319,7 @@ import Hero from '@/components/Hero.astro'
 
 ### Theming
 - **Read [DESIGN.md](DESIGN.md) when working on UI/styles** ([CLAUDE.THEMING.md](.claude/CLAUDE.THEMING.md) is superseded)
-- Grid system uses transparent border pattern (no double borders)
+- Grid lines follow the one line model in [DESIGN.md](DESIGN.md) §3 (cells draw left + top only; hover/focus is an overlay on existing lines)
 - All spacing should be responsive (use mixins)
 - Never mix SCSS breakpoints with Tailwind breakpoints
 

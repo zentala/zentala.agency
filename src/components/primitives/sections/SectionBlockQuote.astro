@@ -55,7 +55,7 @@ const { quote, author, role, variant = 'default', class: className = '' } = Astr
 
   .section-blockquote {
     @include line-block;
-    @include cell-interactive($full-bleed: true);
+    @include cell-interactive;
     @include px-responsive('md');
     @include py-responsive('md');
 

@@ -448,15 +448,7 @@ $header-height-mobile: calc(
 
 // Hover and focus are an overlay that lands on the neighbours' lines.
 // Zero layout shift: only background-color and the overlay opacity change.
-@mixin focus-ring-edge($side) {
-  &:focus-visible::after,
-  &:has(:focus-visible)::after {
-    #{$side}: 0;
-  }
-}
-
-// $full-bleed: the cell spans the whole container (CTA, quote, banner), so both sides are edges.
-@mixin cell-interactive($full-bleed: false) {
+@mixin cell-interactive {
   position: relative;
   transition: background-color var(--motion-fast) var(--ease-standard);
 
@@ -489,30 +481,12 @@ $header-height-mobile: calc(
     outline: none;
   }
 
-  // Focus ring: same geometry as the hover overlay, on the line pixels.
+  // Focus ring: 2px from the line pixel inward. It covers the shared line, and where a
+  // viewport edge clips the outer pixel (<= $container-max) the inner pixel stays visible,
+  // so no cell needs to know its column.
   &:focus-visible::after,
   &:has(:focus-visible)::after {
+    border-width: var(--focus-ring-width);
     border-color: var(--line-focus);
-  }
-
-  // At <= $container-max the container clips x and its edges are the viewport edges, so
-  // the 1px of ring beyond an edge cell is never seen. Pull the ring in on those sides only.
-  // nth-of-type, not nth-child: dev mode injects <script> siblings into grids.
-  @include container-responsive {
-    @if $full-bleed {
-      @include focus-ring-edge(left);
-      @include focus-ring-edge(right);
-    }
-
-    @for $cols from 1 through 4 {
-      @container style(--cols: #{$cols}) {
-        &:nth-of-type(#{$cols}n + 1) {
-          @include focus-ring-edge(left);
-        }
-        &:nth-of-type(#{$cols}n) {
-          @include focus-ring-edge(right);
-        }
-      }
-    }
   }
 }
