@@ -52,12 +52,14 @@ const hint = 'Draft: hidden in production'
     stroke-width: 1.5;
   }
 
+  /* 17px tall and 2px from the corner, so it ends inside the smallest card and
+     hero padding (16px + content margin, 24px) and never meets the first line. */
   .draft-tag--corner {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 2px;
+    right: 2px;
     z-index: 3;
-    padding: 3px 6px;
+    padding: 2px 5px;
     background: var(--color-surface);
     border: 1px solid color-mix(in srgb, var(--color-warn) 40%, transparent);
     pointer-events: none;
