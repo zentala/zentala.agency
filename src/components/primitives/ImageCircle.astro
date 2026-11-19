@@ -42,37 +42,18 @@ const {
     /* matches $border-color */
   }
 
-  /* Entrance animation */
+  /* Entrance animation: shared `appear` keyframes (motion.scss) */
   .image-circle[data-animate-in='true'] .image-circle__img {
-    animation: ic-appear 800ms ease-out both;
-  }
-
-  @keyframes ic-appear {
-    0% {
-      opacity: 0;
-      transform: scale(1.1);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+    animation: appear var(--motion-slow) var(--ease-enter) both;
   }
 
   /* Hover zoom on precise pointers */
   @media (hover: hover) and (pointer: fine) {
     .image-circle[data-hover-zoom='true'] .image-circle__img {
-      transition: transform 300ms ease;
+      transition: transform var(--motion-slow) var(--ease-standard);
     }
     .image-circle[data-hover-zoom='true']:hover .image-circle__img {
       transform: scale(1.05);
-    }
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    .image-circle__img {
-      animation: none !important;
-      transition: none !important;
     }
   }
 </style>

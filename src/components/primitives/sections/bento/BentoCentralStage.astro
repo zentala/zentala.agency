@@ -11,20 +11,20 @@ import BentoCard from './BentoCard.astro'
   class="cursor-pointer bento-card--transparent"
 >
   <div
-    class="interactive-container group relative h-full w-full overflow-hidden"
+    class="interactive-container group relative h-full w-full overflow-clip"
   >
     <slot />
   </div>
-  <div class="overflow-hidden">
+  <div class="overflow-clip">
     <span
-      class="nav-font block translate-y-full transition-transform delay-100 duration-500"
+      class="nav-font block translate-y-full transition-transform delay-100 duration-slow ease-standard"
     >
       <slot name="label-primary" />
     </span>
   </div>
-  <div class="overflow-hidden">
+  <div class="overflow-clip">
     <span
-      class="nav-font block translate-y-full transition-transform delay-200 duration-500"
+      class="nav-font block translate-y-full transition-transform delay-200 duration-slow ease-standard"
     >
       <slot name="label-secondary" />
     </span>

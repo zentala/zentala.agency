@@ -37,14 +37,14 @@ const bentoStates = {
     <BentoCard colSpan={1} rowSpan={2} padding="sm" class="group">
       <!-- hoverState={bentoStates.prototyping} -->
       <div
-        class="absolute inset-0 opacity-[0.03] transition-opacity group-hover:opacity-[0.07]"
-        style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"
+        class="absolute inset-0 opacity-[0.03] transition-opacity duration-base ease-standard group-hover:opacity-[0.07]"
+        style="background-image: radial-gradient(var(--color-text) 1px, transparent 1px); background-size: 20px 20px;"
       >
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
           <div class="mb-2 flex items-baseline gap-2">
-            <h3 class="m-0 transition-colors group-hover:text-white">
+            <h3 class="m-0 transition-colors group-hover:text-fg">
               Discovery & Strategy
             </h3>
             <PhaseLabel phase={1} />
@@ -87,16 +87,13 @@ const bentoStates = {
     </BentoCard>
 
     <!-- Row 1: Col 2 - R&D & Prototyping (1:1) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={1}
-      padding="sm"
-      class="group overflow-hidden"
-    >
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
       <!-- hoverState={bentoStates.prototyping} -->
-      <div
-        class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-white/5 transition-transform duration-700 group-hover:scale-150"
-      >
+      <div class="pointer-events-none absolute inset-0 overflow-clip">
+        <div
+          class="absolute -right-4 -top-4 h-24 w-24 rounded-full border border-line transition-transform duration-slow ease-standard group-hover:scale-150"
+        >
+        </div>
       </div>
       <!-- I research the best path
             to validate your idea. -->
@@ -116,12 +113,7 @@ const bentoStates = {
     </BentoCard>
 
     <!-- Row 1: Col 3 - Holistic Design (1:1) -->
-    <BentoCard
-      colSpan={1}
-      rowSpan={1}
-      padding="sm"
-      class="group overflow-hidden"
-    >
+    <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
       <!-- hoverState={bentoStates.logo} -->
       <SectionContent context="grid" prose={true}>
         <TagGroup class="mb-2" theme="label" tags={['Systems Thinking']} />
@@ -145,11 +137,11 @@ const bentoStates = {
         hoverZoom={true}
         overlayPosition="bottom-left"
       >
-        <h2 class="m-0 text-2xl font-light text-white opacity-50">
+        <h2 class="m-0 text-2xl font-light text-fg-subtle">
           Paweł Żentała
         </h2>
 
-        <p class="font-light text-white opacity-50">
+        <p class="font-light text-fg-subtle">
           20+ years in IT — between marketing, UX, web design, software
           development, through IoT, robotics, and management — perspectives that
           allow me to design solutions that work technically and practically.
@@ -162,17 +154,17 @@ const bentoStates = {
       <!-- Default: Sygnet -->
       <BentoStageState
         state={bentoStates.default}
-        class="active flex h-full items-center justify-center bg-black transition-all duration-500"
+        class="active flex h-full items-center justify-center bg-surface"
       >
-        <div class="sygnet-wrapper transition-transform duration-700">
-          <Logo type="sygnet" width="220px" height="220px" color="#fff" />
+        <div class="sygnet-wrapper">
+          <Logo type="sygnet" width="220px" height="220px" color="var(--color-text)" />
         </div>
       </BentoStageState>
 
       <!-- State: Avatar -->
       <BentoStageState
         state={bentoStates.avatar}
-        class="absolute inset-0 opacity-0 transition-all duration-500"
+        class="absolute inset-0 opacity-0"
       >
         <div class="relative h-full w-full">
           <img
@@ -183,11 +175,11 @@ const bentoStates = {
           <div
             class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/40 to-transparent p-6 md:p-10"
           >
-            <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+            <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">
               Paweł Żentała
             </h3>
             <p
-              class="max-w-md text-xs leading-relaxed text-gray-300 md:text-sm"
+              class="max-w-md text-xs leading-relaxed text-fg-secondary md:text-sm"
             >
               Architect, Engineer, and Technical Leader with business and client
               understanding. I bridge the gap between abstract vision and
@@ -200,36 +192,36 @@ const bentoStates = {
       <!-- State: Discovery/Prototyping (for Cards 1 & 2) -->
       <BentoStageState
         state={bentoStates.prototyping}
-        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+        class="absolute inset-0 flex flex-col justify-center bg-surface-raised p-8 opacity-0 md:p-12"
       >
-        <h3 class="mb-4 text-2xl font-light text-white md:text-3xl">
+        <h3 class="mb-4 text-2xl font-light text-fg md:text-3xl">
           Fast-Track MVP
         </h3>
-        <div class="space-y-3 border-l border-white/20 pl-6 md:space-y-4">
+        <div class="space-y-3 border-l border-line-strong pl-6 md:space-y-4">
           <div>
             <span
-              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              class="text-label font-semibold uppercase text-fg-subtle"
               >Step 01</span
             >
-            <p class="text-base text-white/80 md:text-lg">
+            <p class="text-base text-fg-secondary md:text-lg">
               Business & Tech Workshops
             </p>
           </div>
           <div>
             <span
-              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              class="text-label font-semibold uppercase text-fg-subtle"
               >Step 02</span
             >
-            <p class="text-base text-white/80 md:text-lg">
+            <p class="text-base text-fg-secondary md:text-lg">
               Rapid Functional Prototyping
             </p>
           </div>
           <div>
             <span
-              class="text-[9px] font-bold uppercase tracking-widest text-white/40"
+              class="text-label font-semibold uppercase text-fg-subtle"
               >Step 03</span
             >
-            <p class="text-base text-white/80 md:text-lg">
+            <p class="text-base text-fg-secondary md:text-lg">
               Market Validation & Scale
             </p>
           </div>
@@ -239,13 +231,13 @@ const bentoStates = {
       <!-- State: CTO (for Card 7) -->
       <BentoStageState
         state={bentoStates.cto}
-        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+        class="absolute inset-0 flex flex-col justify-center bg-surface-raised p-8 opacity-0 md:p-12"
       >
-        <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+        <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">
           Fractional CTO
         </h3>
         <p
-          class="max-w-md text-lg italic leading-relaxed text-white/60 md:text-xl"
+          class="max-w-md text-lg italic leading-relaxed text-fg-muted md:text-xl"
         >
           "I don't just manage; I architect the future of your product while
           building the team that will carry it forward."
@@ -255,25 +247,25 @@ const bentoStates = {
       <!-- State: AI (for Card 8) -->
       <BentoStageState
         state={bentoStates.ai}
-        class="absolute inset-0 flex flex-col justify-center bg-zinc-950 p-8 opacity-0 transition-all duration-500 md:p-12"
+        class="absolute inset-0 flex flex-col justify-center bg-surface-raised p-8 opacity-0 md:p-12"
       >
-        <h3 class="mb-6 text-2xl font-light text-white md:text-3xl">
+        <h3 class="mb-6 text-2xl font-light text-fg md:text-3xl">
           AI Orchestration
         </h3>
         <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-          <div class="rounded border border-white/10 p-3 md:p-4">
-            <p class="text-[10px] font-bold uppercase text-white/40">
+          <div class="rounded border border-line p-3 md:p-4">
+            <p class="text-label font-semibold uppercase text-fg-subtle">
               Multi-Agent Systems
             </p>
-            <p class="text-xs text-white/80 md:text-sm">
+            <p class="text-xs text-fg-secondary md:text-sm">
               Automating complex workflows.
             </p>
           </div>
-          <div class="rounded border border-white/10 p-3 md:p-4">
-            <p class="text-[10px] font-bold uppercase text-white/40">
+          <div class="rounded border border-line p-3 md:p-4">
+            <p class="text-label font-semibold uppercase text-fg-subtle">
               LLM Integration
             </p>
-            <p class="text-xs text-white/80 md:text-sm">
+            <p class="text-xs text-fg-secondary md:text-sm">
               Context-aware architectures.
             </p>
           </div>
@@ -283,58 +275,18 @@ const bentoStates = {
       <!-- State: Logo/Agency (Hover info) -->
       <BentoStageState
         state={bentoStates.logo}
-        class="absolute inset-0 flex items-center p-4 text-white opacity-0 transition-all duration-700 md:p-8 lg:p-10"
+        class="absolute inset-0 flex items-center p-4 text-fg opacity-0 md:p-8 lg:p-10"
       >
-        <!-- <div
-          class="logo-state-content flex w-full flex-col gap-6 md:flex-row md:gap-10"
-        >
-          <div class="flex w-full flex-col gap-3 md:w-[40%]">
-            <Logo
-              type="full"
-              color="#fff"
-              width="220px"
-              height="36px"
-              tagline="Innovation Agency"
-              taglineClass="mt-3 text-xs font-medium uppercase tracking-[0.3em] text-white/70"
-            />
-            <div
-              class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
-            >
-              EST. 2024 / WARSAW / REMOTE
-            </div>
-          </div>
-          <div class="w-full md:w-[60%]">
-            <p
-              class="text-base font-semibold leading-tight md:text-lg lg:text-xl"
-            >
-              The ultimate format for software prototyping and technological
-              bootstrapping.
-            </p>
-            <p
-              class="mt-2 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
-            >
-              We don't do everything. We focus on
-              <strong class="text-white">technological processes</strong>,
-              providing the shortest path from strategy to successful
-              validation.
-            </p>
-          </div>
-        </div> -->
         <div
           class="logo-state-content flex w-full flex-col items-center gap-3 text-center md:gap-4"
         >
           <Logo
             type="full"
-            color="#fff"
+            color="var(--color-text)"
             width="400px"
             height="72px"
             tagline="Innovation Agency"
           />
-          <!-- <div
-            class="text-[8px] font-bold tracking-[0.2em] opacity-60 md:text-[9px]"
-          >
-            EST. 2024 / WARSAW, PL, EU
-          </div> -->
           <div class="mt-10 w-full px-16">
             <p
               class="text-base font-normal leading-tight md:text-lg lg:text-xl"
@@ -342,10 +294,10 @@ const bentoStates = {
               The ultimate format for technological bootstrapping.
             </p>
             <p
-              class="mt-4 text-xs leading-relaxed text-white/70 md:text-sm lg:text-base"
+              class="mt-4 text-xs leading-relaxed text-fg-secondary md:text-sm lg:text-base"
             >
               I don't do everything. I focus on
-              <strong class="font-semibold text-white">prototyping</strong>,
+              <strong class="font-semibold text-fg">prototyping</strong>,
               providing the shortest path from idea to minimal viable product
               release.
             </p>
@@ -358,7 +310,7 @@ const bentoStates = {
     <BentoCard colSpan={1} rowSpan={2} padding="none">
       <a
         href="/portfolio"
-        class="group relative block h-full w-full overflow-hidden"
+        class="group relative block h-full w-full overflow-clip"
       >
         <CardIconMosaic
           icons={[
@@ -371,18 +323,18 @@ const bentoStates = {
         <div
           class="absolute inset-0 flex flex-col justify-end p-6 md:p-10"
         >
-          <h3 class="mb-2 text-2xl font-light text-white md:text-3xl">
+          <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">
             Portfolio
           </h3>
           <p
-            class="max-w-md text-xs leading-relaxed text-gray-300 opacity-0 transition-opacity duration-700 group-hover:opacity-100 md:text-sm"
+            class="max-w-md text-xs leading-relaxed text-fg-secondary opacity-0 transition-opacity duration-slow ease-standard group-hover:opacity-100 group-focus-visible:opacity-100 md:text-sm"
           >
             Twenty years of shipped work — indoor location systems for
             retail, a socially-aware humanoid robot, Backstage portals for
             enterprises, and a smart home built into my own walls.
           </p>
           <span
-            class="mt-3 text-xs font-medium uppercase tracking-widest text-white/50 transition-colors duration-500 group-hover:text-white/80"
+            class="mt-3 text-label font-semibold uppercase text-fg-subtle transition-colors duration-fast ease-standard group-hover:text-fg-secondary"
           >
             See the portfolio →
           </span>
@@ -401,7 +353,7 @@ const bentoStates = {
               tags={['Product‑Minded']}
             />
             <!-- 'Systems Thinker' -->
-            <h2 style="font-size:28px;">
+            <h2 style="font-size: var(--text-h2);">
               Your Hands-On CTO for an innovative project
             </h2>
             <p>
@@ -410,7 +362,7 @@ const bentoStates = {
             </p>
           </div>
           <div
-            class="mt-4 border-l-2 border-white/10 pl-3 transition-colors group-hover:border-white/30"
+            class="mt-4 border-l-2 border-line pl-3 transition-colors duration-fast ease-standard group-hover:border-line-strong"
           >
           </div>
         </div>
@@ -453,7 +405,7 @@ const bentoStates = {
         class="absolute inset-0 z-20"
         aria-label="Book a call about execution and delivery"></a>
       <div
-        class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-all duration-700 group-hover:right-8 group-hover:opacity-[0.08]"
+        class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-[opacity,transform] duration-slow ease-standard group-hover:translate-x-2 group-hover:opacity-[0.08]"
       >
         <svg
           width="120"
@@ -464,7 +416,7 @@ const bentoStates = {
           stroke-width="0.5"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="text-white"
+          class="text-fg"
           ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
         >
       </div>
@@ -481,7 +433,7 @@ const bentoStates = {
             users, gather feedback, and validate in the market.
           </p>
           <span
-            class="mt-3 inline-block text-xs font-medium uppercase tracking-widest text-white/60 transition-colors group-hover:text-white"
+            class="mt-3 inline-block text-label font-semibold uppercase text-fg-muted transition-colors duration-fast ease-standard group-hover:text-fg"
           >
             Book a call →
           </span>
@@ -497,46 +449,34 @@ const bentoStates = {
       const sygnetWrapper = document.querySelector(
         '.sygnet-wrapper',
       ) as HTMLElement
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      )
 
+      const showState = (targetState: string | null) => {
+        states.forEach((state) => {
+          const isTarget = state.getAttribute('data-state') === targetState
+          state.classList.toggle('active', isTarget)
+          state.classList.toggle('opacity-100', isTarget)
+          state.classList.toggle('opacity-0', !isTarget)
+          state.classList.toggle('pointer-events-none', !isTarget)
+        })
+
+        if (sygnetWrapper) {
+          const zoomLogo =
+            targetState === 'logo' && !prefersReducedMotion.matches
+          sygnetWrapper.style.transform = zoomLogo ? 'scale(20)' : 'scale(1)'
+        }
+      }
+
+      // Hover and keyboard focus run the same state switch
       cards.forEach((card) => {
-        card.addEventListener('mouseenter', () => {
-          const targetState = card.getAttribute('data-bento-hover')
-
-          states.forEach((state) => {
-            const stateName = state.getAttribute('data-state')
-            if (stateName === targetState) {
-              state.classList.add('active')
-              state.classList.remove('opacity-0', 'pointer-events-none')
-              state.classList.add('opacity-100')
-            } else {
-              state.classList.remove('active', 'opacity-100')
-              state.classList.add('opacity-0', 'pointer-events-none')
-            }
-          })
-
-          // Special effect for logo zoom
-          if (targetState === 'logo' && sygnetWrapper) {
-            sygnetWrapper.style.transform = 'scale(20)'
-          }
-        })
-
-        card.addEventListener('mouseleave', () => {
-          states.forEach((state) => {
-            const stateName = state.getAttribute('data-state')
-            if (stateName === 'default') {
-              state.classList.add('active')
-              state.classList.remove('opacity-0', 'pointer-events-none')
-              state.classList.add('opacity-100')
-            } else {
-              state.classList.remove('active', 'opacity-100')
-              state.classList.add('opacity-0', 'pointer-events-none')
-            }
-          })
-
-          if (sygnetWrapper) {
-            sygnetWrapper.style.transform = 'scale(1)'
-          }
-        })
+        const enter = () => showState(card.getAttribute('data-bento-hover'))
+        const leave = () => showState('default')
+        card.addEventListener('mouseenter', enter)
+        card.addEventListener('mouseleave', leave)
+        card.addEventListener('focusin', enter)
+        card.addEventListener('focusout', leave)
       })
     })
   </script>
@@ -544,8 +484,8 @@ const bentoStates = {
   <style lang="scss">
     .state-content {
       transition:
-        opacity 0.5s ease,
-        transform 0.7s ease;
+        opacity var(--motion-slow) var(--ease-standard),
+        transform var(--motion-slow) var(--ease-standard);
       pointer-events: none;
 
       &.active {
@@ -556,7 +496,7 @@ const bentoStates = {
         .logo-state-content {
           transform: scale(0.01);
           transform-origin: center;
-          transition: transform 0.7s ease;
+          transition: transform var(--motion-slow) var(--ease-standard);
         }
 
         &.active {
@@ -599,7 +539,7 @@ const bentoStates = {
 
     .sygnet-wrapper {
       will-change: transform;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform var(--motion-slow) var(--ease-standard);
     }
   </style>
 </Section>

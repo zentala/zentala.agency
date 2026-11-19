@@ -55,12 +55,13 @@ const ratios = {
   background ? (
     <div
       class={`section-image section-image--background ${className}`}
-      style={`background-image: url(${src}); aspect-ratio: ${ratios[aspectRatio]};`}
+      style={`aspect-ratio: ${ratios[aspectRatio]};`}
       role="img"
       aria-label={alt}
       data-animate-in={String(animateIn)}
       data-hover-zoom={String(hoverZoom)}
     >
+      <div class="section-image__bg" style={`background-image: url(${src});`} />
       <div class={`section-image__overlay section-image__overlay--${overlayPosition}`}>
         <slot />
       </div>
@@ -92,8 +93,8 @@ const ratios = {
   .section-image {
     width: 100%;
     height: 100%; /* Fill parent (BentoCard) completely */
-    overflow: hidden;
-    background: #000;
+    overflow: clip;
+    background: var(--color-surface);
     position: relative;
 
     &:hover .section-image__overlay {
@@ -109,7 +110,10 @@ const ratios = {
     object-position: center; /* Center the image */
   }
 
-  .section-image--background {
+  /* Inner layer: the zoom scales this, the wrapper keeps its box and clips it */
+  .section-image__bg {
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -121,7 +125,7 @@ const ratios = {
     inset: 0;
     z-index: 10;
     opacity: 0;
-    transition: opacity 300ms ease;
+    transition: opacity var(--motion-base) var(--ease-standard);
     pointer-events: none;
     padding: 0.75rem 1rem; // Match bento md padding
     display: flex;
@@ -168,46 +172,21 @@ const ratios = {
     }
   }
 
-  /* Entrance animation */
+  /* Entrance animation: shared `appear` keyframes (motion.scss) */
   .section-image[data-animate-in='true'] .section-image__img,
-  .section-image[data-animate-in='true'].section-image--background {
-    animation: si-appear 800ms ease-out both;
+  .section-image[data-animate-in='true'] .section-image__bg {
+    animation: appear var(--motion-slow) var(--ease-enter) both;
   }
 
-  @keyframes si-appear {
-    0% {
-      opacity: 0;
-      transform: scale(1.1);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Hover zoom on precise pointers */
+  /* Hover zoom on precise pointers, on the inner layer only */
   @media (hover: hover) and (pointer: fine) {
-    .section-image[data-hover-zoom='true'] .section-image__img {
-      transition: transform 300ms ease;
+    .section-image[data-hover-zoom='true'] .section-image__img,
+    .section-image[data-hover-zoom='true'] .section-image__bg {
+      transition: transform var(--motion-slow) var(--ease-standard);
     }
-    .section-image[data-hover-zoom='true']:hover .section-image__img {
+    .section-image[data-hover-zoom='true']:hover .section-image__img,
+    .section-image[data-hover-zoom='true']:hover .section-image__bg {
       transform: scale(1.05);
-    }
-
-    .section-image[data-hover-zoom='true'].section-image--background {
-      transition: transform 300ms ease;
-    }
-    .section-image[data-hover-zoom='true'].section-image--background:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    .section-image__img,
-    .section-image--background {
-      animation: none !important;
-      transition: none !important;
     }
   }
 </style>

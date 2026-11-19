@@ -5,8 +5,9 @@
  * Provides:
  * - Custom column/row spans
  * - Flexible padding options
- * - Border mechanics handled by parent (SectionBento)
- * - Hover states
+ * - Lines from the parent line grid (SectionBento); the card is a transparent cell
+ * - Hover and focus overlay from the shared cell-interactive mixin
+ * - Cards with a hoverState are focusable and switch the central stage on focus too
  * - Dev mode: Shows grid dimensions (col:row)
  *
  * Usage:
@@ -39,6 +40,7 @@ const isDev = import.meta.env.DEV
   class={`bento-card ${padding !== 'none' ? `bento-card--padding-${padding}` : ''} ${className || ''}`}
   style={`grid-column: span ${colSpan}; grid-row: span ${rowSpan};`}
   data-bento-hover={hoverState}
+  tabindex={hoverState ? 0 : undefined}
   {...rest}
 >
   {
@@ -58,20 +60,17 @@ const isDev = import.meta.env.DEV
   @use '../../../../styles/variables' as *;
 
   .bento-card {
-    background: #000;
-    transition: background 200ms;
-    position: relative;
+    @include cell-interactive;
 
+    // Stage card: hover is handled by the stage content, not the cell overlay
     &.bento-card--transparent {
-      background: transparent;
-
       &:hover {
-        background: transparent;
+        background-color: transparent;
       }
-    }
 
-    &:hover {
-      background: #111827;
+      &:hover:not(:focus-visible)::after {
+        opacity: 0;
+      }
     }
 
     // Dev mode label (top-right corner)
@@ -80,13 +79,12 @@ const isDev = import.meta.env.DEV
       top: 4px;
       right: 4px;
       background: rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.5);
-      opacity: 0.5;
-      font-size: 10px;
+      color: var(--color-text-subtle);
+      font-size: var(--text-label);
       font-weight: 600;
       padding: 2px 6px;
       border-radius: 3px;
-      z-index: 100;
+      z-index: var(--z-cell-hover);
       pointer-events: none;
       font-family: monospace;
       line-height: 1;
