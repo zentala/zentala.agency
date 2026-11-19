@@ -2,6 +2,8 @@
 import Logo from '../components/Logo.astro'
 import '../styles/footer.scss'
 
+const currentYear = new Date().getFullYear()
+
 // Responsive logo props - using auto-scaling system
 const footerLogoProps = {
   link: '/',
@@ -12,7 +14,7 @@ const footerLogoProps = {
 }
 ---
 
-<footer class="bg-black text-white">
+<footer class="bg-surface text-fg">
   <div class="container-footer-small">
     <div class="footer-logo-social mb-0">
       <div>
@@ -71,7 +73,7 @@ const footerLogoProps = {
       </div>-->
     </div>
   </div>
-  <div class="flex items-center border-y border-gray-800">
+  <div class="flex items-center border-y border-line">
     <div class="container-padded flex justify-between">
       <div class="footer-responsive-grid">
         <div class="footer-about">
@@ -129,8 +131,8 @@ const footerLogoProps = {
 
   <div class="flex items-center">
     <div class="container-footer-small flex justify-between">
-      <div class="footer-copyright text-sm text-neutral-400">
-        © 2025 <a href="/">Żentała Innovation Agency</a>
+      <div class="footer-copyright text-sm text-fg-muted">
+        © {currentYear} <a href="/">Żentała Innovation Agency</a>
         <span class="mx-2">·</span>
         <a href="/privacy-policy/">Privacy Policy</a>
       </div>

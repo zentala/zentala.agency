@@ -19,6 +19,10 @@ const links = [
   { href: '/blog', text: 'Blog' },
   { href: '/contact', text: 'Contact' },
 ]
+
+const { pathname } = Astro.url
+const isCurrent = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href)
 ---
 
 <style lang="scss">
@@ -37,7 +41,7 @@ const links = [
     }
 
     .line {
-      @apply w-full bg-white transition-all duration-300 ease-in-out;
+      @apply w-full bg-fg transition-[transform,opacity] duration-base ease-standard;
       height: 3px; // Thicker lines
       transform-origin: center;
     }
@@ -60,7 +64,7 @@ const links = [
 
   // Mobile nav overlay
   .mobile-nav-overlay {
-    @apply fixed hidden bg-black bg-opacity-80 transition-opacity duration-300;
+    @apply fixed hidden bg-black bg-opacity-80 transition-opacity duration-base;
     left: 0;
     right: 0;
     bottom: 0;
@@ -77,11 +81,60 @@ const links = [
 
   // Medium desktop nav adjustments
   .desktop-nav {
+    a {
+      @apply relative text-fg transition-colors duration-fast;
+
+      // Underline is an overlay: it draws on top, so layout never shifts
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -4px;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--motion-base) var(--ease-standard);
+      }
+
+      &:hover,
+      &:focus-visible {
+        @apply text-fg-secondary;
+
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+
+      &[aria-current='page']::after {
+        transform: scaleX(1);
+        opacity: 0.4;
+      }
+
+      &[aria-current='page']:hover::after,
+      &[aria-current='page']:focus-visible::after {
+        opacity: 1;
+      }
+    }
+
     // Hide first link (Home) on medium desktop
     @media (min-width: 771px) and (max-width: 999px) {
       a:first-child {
         @apply hidden;
       }
+    }
+  }
+
+  // The tagline wraps under the logo on phones and doubles the header height
+  @media (max-width: 480px) {
+    .tagline {
+      display: none;
+    }
+
+    // Drop the inline line-box gap under the logo so the header stays at 56px
+    .logo-container > :global(div) {
+      line-height: 0;
     }
   }
 
@@ -113,14 +166,14 @@ const links = [
 
 <header
   id="header"
-  class="fixed top-0 z-50 w-full border-b border-gray-800 bg-black bg-opacity-90 shadow-md backdrop-blur transition-all duration-300"
+  class="fixed top-0 z-50 w-full border-b border-line bg-black bg-opacity-90 shadow-md backdrop-blur transition-[background-color,border-color,box-shadow] duration-base"
 >
   <div class="container-header flex items-center justify-between">
     <div class="logo-container flex items-center">
       <Logo {...headerLogoProps} />
       <a href="/" class="flex cursor-pointer items-center">
         <span
-          class="text-md ml-[40px] font-medium uppercase tracking-wide text-white"
+          class="tagline text-md ml-[40px] font-medium uppercase tracking-wide text-fg"
         >
           Innovation Agency
         </span>
@@ -132,7 +185,8 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="font-medium uppercase tracking-wide text-white hover:text-gray-400"
+            class="font-medium uppercase tracking-wide"
+            aria-current={isCurrent(link.href) ? 'page' : undefined}
           >
             {link.text}
           </a>
@@ -155,7 +209,7 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="border-b border-gray-800 py-2 font-medium uppercase tracking-wide text-white hover:text-gray-400"
+            aria-current={isCurrent(link.href) ? 'page' : undefined}
           >
             {link.text}
           </a>

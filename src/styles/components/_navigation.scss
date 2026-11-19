@@ -23,7 +23,7 @@
   }
 
   .mobile-nav {
-    @apply fixed left-0 hidden w-full bg-black;
+    @apply fixed left-0 hidden w-full bg-surface;
     border-bottom: 1px solid $border-color;
     z-index: 1100; /* Higher than header (50) and overlay (400) */
 
@@ -43,10 +43,20 @@
       @apply flex flex-col;
 
       a {
-        @apply block font-medium uppercase tracking-wide text-white hover:text-gray-400;
+        @apply block font-medium uppercase tracking-wide text-fg transition-colors duration-fast;
         border-bottom: 1px solid $border-color;
-        @include px-responsive('sm');
+        @include px-responsive();
         @include py-responsive('sm');
+
+        &:hover,
+        &:focus-visible,
+        &[aria-current='page'] {
+          @apply bg-surface-hover;
+        }
+
+        &:not([aria-current='page']):hover {
+          @apply text-fg-secondary;
+        }
 
         &:last-child {
           border-bottom: 1px solid $border-color; // Keep border on last item since we have container border
