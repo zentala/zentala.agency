@@ -59,6 +59,27 @@ const agentationProxy = {
   },
 }
 
+/** Dev-only: mounts the review toolbar from a client script, so no template, CSS or chunk reaches `astro build`. */
+const agentationReviewIntegration = {
+  name: 'agentation-review',
+  hooks: {
+    'astro:config:setup': ({ command, injectScript }) => {
+      if (command !== 'dev' || process.env.PUBLIC_AGENTATION_REVIEW !== '1') return
+      // The page has no React island, so @astrojs/react never installs the Fast Refresh
+      // preamble that @vitejs/plugin-react requires before mount.tsx loads.
+      injectScript(
+        'page',
+        `import RefreshRuntime from '/@react-refresh'
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true
+import('/src/components/react-stuff/dev/agentation/mount.tsx')`,
+      )
+    },
+  },
+}
+
 export default defineConfig({
   site: 'https://zentala.agency',
   output: 'static',
@@ -68,6 +89,7 @@ export default defineConfig({
   },
   integrations: [
     tailwind(),
+    agentationReviewIntegration,
     mdx(),
     icon({ include: { lucide: ['*'], ph: ['*'] } }),
     react({ include: ['src/components/react-stuff/**/*'] }),

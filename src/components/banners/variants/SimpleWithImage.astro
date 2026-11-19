@@ -33,7 +33,7 @@ const {
 
   .banner-simple-with-image {
     @include line-block;
-    @include cell-interactive;
+    @include cell-interactive($full-bleed: true);
     @include padding-responsive('md'); // 64px → 48px → 32px → 24px → 16px
     width: 100%;
     display: block;
