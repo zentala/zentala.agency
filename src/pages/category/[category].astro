@@ -1,15 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
-import { getCollection, getEntry, type CollectionEntry } from 'astro:content'
+import { getEntry, type CollectionEntry } from 'astro:content'
+import { getVisiblePosts } from '@/lib/blog/visibility'
+import { slugify } from '@/lib/blog/slug'
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter(
-    (post: CollectionEntry<'blog'>) =>
-      import.meta.env.DEV ||
-      import.meta.env.PUBLIC_PREVIEW === 'true' ||
-      post.data.published !== false,
-  )
+  const posts = await getVisiblePosts()
   const categoryMap = new Map<
     string,
     { title: string; posts: CollectionEntry<'blog'>[] }
@@ -17,7 +14,7 @@ export async function getStaticPaths() {
 
   posts.forEach((post) => {
     const title = post.data.category
-    const slug = title.toLowerCase()
+    const slug = slugify(title)
     const existing = categoryMap.get(slug)
 
     if (existing) {
@@ -38,73 +35,50 @@ export async function getStaticPaths() {
 
 interface Props {
   posts: CollectionEntry<'blog'>[]
-}
-
-const { category } = Astro.params as { category: string }
-const { posts, displayTitle } = Astro.props as {
-  posts: CollectionEntry<'blog'>[]
   displayTitle: string
 }
-const authorsCollection = await getCollection('authors')
-const authors: any[] =
-  authorsCollection && authorsCollection[0]
-    ? (authorsCollection[0].data as any[])
-    : []
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error - Astro content typing limitation for dynamic slug
-const categoryDescriptionEntry = (await getEntry(
+const { category } = Astro.params
+const { posts, displayTitle } = Astro.props
+
+// Only some categories have a description file; getEntry returns undefined for the rest.
+const categoryDescriptionEntry = await getEntry(
   'category-descriptions',
-  category,
-).catch(() => null)) as any | null
+  category as 'devex',
+)
 
 const Content = categoryDescriptionEntry
   ? (await categoryDescriptionEntry.render()).Content
-  : null
-
-const resolvedTitle =
-  categoryDescriptionEntry?.data?.title || displayTitle || category
+  : undefined
 ---
 
-<Layout title={`Category: ${resolvedTitle}`}>
+<Layout title={displayTitle}>
   <section class="section-full">
     <div class="container-bordered">
-      <div class="padding-responsive-md border-b border-gray-800">
-        <h1 class="text-4xl font-light text-white">
-          Category: {resolvedTitle}
-        </h1>
+      <div class="padding-responsive-md border-b border-line">
+        <h1 class="text-4xl font-light text-fg">{displayTitle}</h1>
         {
-          categoryDescriptionEntry ? (
-            Content && (
-              <div class="category-description-content prose prose-invert mt-4 max-w-none text-gray-300 prose-strong:text-white">
-                <Content />
-              </div>
-            )
-          ) : (
-            <div class="category-description-content prose prose-invert mt-4 max-w-none text-gray-300 prose-strong:text-white">
-              Category description not found.
+          Content && (
+            <div class="category-description-content prose prose-invert mt-4 max-w-none text-fg-secondary prose-strong:text-fg">
+              <Content />
             </div>
           )
         }
       </div>
       <div class="cards-grid">
         {
-          posts.map((post) => {
-            const author = authors.find((a: any) => a.slug === post.data.author)
-            return (
-              <PostCard
-                title={post.data.title}
-                date={post.data.date}
-                category={post.data.category}
-                imageUrl={post.data.imageUrl}
-                excerpt={post.data.excerpt}
-                authorName={author?.name}
-                authorAvatar={author?.avatar}
-                authorRole={post.data.authorRole || author?.role}
-                link={`/blog/${post.slug}`}
-              />
-            )
-          })
+          posts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              date={post.data.date}
+              category={post.data.category}
+              imageUrl={post.data.imageUrl}
+              excerpt={post.data.excerpt}
+              authorVersion={post.data.author}
+              link={`/blog/${post.slug}`}
+              isDraft={post.data.published === false}
+            />
+          ))
         }
       </div>
     </div>

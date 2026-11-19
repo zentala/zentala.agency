@@ -1,0 +1,19 @@
+---
+import { Icon } from 'astro-icon/components'
+import { SHOW_DRAFTS } from '@/config/blog'
+
+/** The one DRAFT marker. Renders only where drafts are shown (never in production). */
+---
+
+{
+  SHOW_DRAFTS && (
+    <span class="inline-flex items-center gap-x-1 text-xs font-semibold uppercase tracking-wide text-warn">
+      <Icon
+        name="lucide:pencil-line"
+        class="h-3.5 w-3.5"
+        style="stroke-width: 1.5;"
+      />
+      Draft
+    </span>
+  )
+}

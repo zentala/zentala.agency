@@ -43,8 +43,8 @@ export interface BuildFeedOptions {
  * every other post stays a `StandaloneEntry`. Entries are sorted by date
  * descending. Pure — no `astro:content` import, no clock read inside.
  *
- * `posts` must already be visibility-filtered by the caller (the existing
- * `DEV || PUBLIC_PREVIEW || published !== false` rule) — this function does
+ * `posts` must already be visibility-filtered by the caller (`getVisiblePosts`
+ * in `./visibility`) — this function does
  * not re-apply that filter, so an excluded part simply is not in `posts`,
  * and the series it belongs to still groups correctly around what remains.
  */

@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { Icon } from 'astro-icon/components'
-import { SHOW_DRAFTS } from '@/config/blog'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import { formatDate } from '@/lib/blog/format-date'
 
 export interface SeriesCardProps {
   title: string
@@ -19,16 +20,16 @@ const isCollapsed = parts.length > 6
 const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
 ---
 
-<article class="card-link">
+<article class="cell-interactive">
   <div
-    class="padding-responsive-md relative flex min-h-full flex-col items-start"
+    class="padding-responsive-md relative flex h-full flex-col items-start"
   >
     <a href={`/series/${slug}`} class="absolute inset-0 z-0" aria-label={title}
     ></a>
 
     <div class="card-content-wrapper flex w-full flex-col">
       <div
-        class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-gray-500"
+        class="flex items-center gap-x-1 text-label uppercase text-fg-subtle"
       >
         <Icon
           name="lucide:layers"
@@ -38,7 +39,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
         <span>Series</span>
         {
           isFresh && (
-            <span class="relative z-10 ml-auto rounded-full bg-gray-800 px-2 py-1 text-xs normal-case tracking-normal text-gray-300">
+            <span class="relative z-10 ml-auto bg-surface-hover px-2 py-1 text-label uppercase text-fg-secondary">
               New
             </span>
           )
@@ -47,55 +48,59 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
       <h3 class="mt-2">{title}</h3>
     </div>
 
-    <ul class="mt-5 w-full space-y-1">
+    <ul class="mt-5 w-full space-y-1" data-series-parts>
       {
         parts.map((part, index) => {
           const isHidden =
             isCollapsed &&
             index >= VISIBLE_EDGE_COUNT &&
             index < parts.length - VISIBLE_EDGE_COUNT
-          const isDraft = part.data.published === false
           // The toggle sits where the gap actually is — right before the first
           // collapsed row — so the card reads 1 2 3 ··· 6 7 8.
           const isFirstHidden = isCollapsed && index === VISIBLE_EDGE_COUNT
+          const isNewest = part.slug === newestSlug
+          const partNumber = part.data.part ?? index + 1
+          const date = formatDate(part.data.date)
           return (
             <>
-            {isFirstHidden && (
-              <li class="relative z-10">
-                <button
-                  type="button"
-                  class="-mx-2 flex w-full items-center gap-x-2 rounded px-2 py-1 text-xs text-gray-500 hover:bg-gray-800 hover:text-white"
-                  data-series-expand
+              {isFirstHidden && (
+                <li class="relative z-10">
+                  <button
+                    type="button"
+                    class="-mx-2 w-full px-2 py-1 text-left text-sm text-fg-muted transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
+                    aria-expanded="false"
+                    data-series-expand
+                  >
+                    Show {hiddenCount} more parts
+                  </button>
+                </li>
+              )}
+              <li class={isHidden ? 'hidden' : undefined} data-series-part>
+                <a
+                  href={`/blog/${part.slug}`}
+                  class="relative z-10 -mx-2 flex items-start gap-x-2 px-2 py-1 text-sm transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
+                  aria-current={isNewest ? 'true' : undefined}
                 >
-                  ··· +{hiddenCount} more
-                </button>
+                  <span class="w-4 shrink-0 text-right text-xs tabular-nums text-fg-subtle">
+                    <span class="sr-only">Part </span>
+                    {partNumber}
+                  </span>
+                  <span class="flex min-w-0 flex-1 flex-col gap-y-0.5">
+                    <span class="line-clamp-2 text-fg-secondary">
+                      {part.data.title}
+                    </span>
+                    {part.data.published === false && <DraftBadge />}
+                    {isNewest && (
+                      <time
+                        datetime={date.datetime}
+                        class="text-xs text-fg-subtle"
+                      >
+                        {date.label}
+                      </time>
+                    )}
+                  </span>
+                </a>
               </li>
-            )}
-            <li class={isHidden ? 'hidden' : undefined} data-series-part>
-              <a
-                href={`/blog/${part.slug}`}
-                class="relative z-10 -mx-2 flex items-center gap-x-2 rounded px-2 py-1 text-sm hover:bg-gray-800 hover:text-white"
-                aria-current={part.slug === newestSlug ? 'true' : undefined}
-              >
-                <span class="w-4 shrink-0 text-right text-xs tabular-nums text-gray-600">
-                  {index + 1}
-                </span>
-                <span class="flex-1 truncate text-gray-300">
-                  {part.data.title}
-                </span>
-                {isDraft && SHOW_DRAFTS && (
-                  <span class="shrink-0 text-xs text-amber-500">DRAFT</span>
-                )}
-                <span class="flex shrink-0 items-center gap-x-1 text-gray-600">
-                  <Icon
-                    name="lucide:calendar"
-                    class="h-3.5 w-3.5"
-                    style="stroke-width: 1.5;"
-                  />
-                  {part.data.date}
-                </span>
-              </a>
-            </li>
             </>
           )
         })
@@ -104,21 +109,19 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
   </div>
 </article>
 
-<script is:inline>
-  // This script is emitted once per SeriesCard instance, so multiple
-  // collapsed series on one page would each register their own document-wide
-  // listener. Bind exactly one delegated listener, guarded by a global flag.
-  if (!window.__seriesExpandBound) {
-    window.__seriesExpandBound = true
-    document.addEventListener('click', (event) => {
-      const btn = event.target.closest('[data-series-expand]')
-      if (!btn) return
-      const list = btn.closest('ul')
-      if (!list) return
-      list.querySelectorAll('[data-series-part].hidden').forEach((li) => {
-        li.classList.remove('hidden')
-      })
-      btn.closest('li')?.remove()
-    })
-  }
+<script>
+  document.addEventListener('click', (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>(
+      '[data-series-expand]',
+    )
+    const list = button?.closest('[data-series-parts]')
+    if (!button || !list) return
+    const revealed = list.querySelectorAll<HTMLElement>(
+      '[data-series-part].hidden',
+    )
+    revealed.forEach((item) => item.classList.remove('hidden'))
+    button.setAttribute('aria-expanded', 'true')
+    button.closest('li')?.remove()
+    revealed[0]?.querySelector('a')?.focus()
+  })
 </script>

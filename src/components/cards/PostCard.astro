@@ -11,8 +11,7 @@ export interface PostProps {
   excerpt?: string
   authorVersion?: string
   link: string
-  part?: number
-  partsTotal?: number
+  partLabel?: string
   isDraft?: boolean
 }
 
@@ -23,8 +22,7 @@ const {
   excerpt,
   authorVersion = 'pawel-zentala',
   link,
-  part,
-  partsTotal,
+  partLabel,
   isDraft = false,
 } = Astro.props
 
@@ -42,106 +40,24 @@ if (!author) {
 
 <style lang="scss">
   .post-card {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-  }
-
-  .post-card-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    min-height: clamp(16rem, 24vw, 24rem);
   }
 </style>
 
-<script is:inline>
-  function truncateExcerpt() {
-    const cards = document.querySelectorAll('.post-card')
-
-    cards.forEach((card) => {
-      const excerpt = card.querySelector('[data-excerpt]')
-      if (!excerpt) return
-
-      // Store original text if not already stored
-      if (!excerpt.dataset.originalText) {
-        excerpt.dataset.originalText = excerpt.textContent.trim()
-      }
-
-      const originalText = excerpt.dataset.originalText
-
-      // Reset to original text first
-      excerpt.textContent = originalText
-
-      // Let the browser render first, then check if we need to truncate
-      requestAnimationFrame(() => {
-        // Check if excerpt overflows
-        const isOverflowing =
-          excerpt.scrollHeight > excerpt.offsetHeight ||
-          card.scrollHeight > card.offsetHeight
-
-        if (!isOverflowing) {
-          // Text fits, no need to truncate
-          return
-        }
-
-        // Binary search to find the maximum text that fits
-        let left = 0
-        let right = originalText.length
-        let bestFit = originalText
-
-        while (left < right) {
-          const mid = Math.floor((left + right + 1) / 2)
-          const testText = originalText.slice(0, mid)
-          const textWithEllipsis =
-            mid < originalText.length ? testText + '…' : testText
-
-          excerpt.textContent = textWithEllipsis
-
-          // Check if this fits
-          const cardOverflows = card.scrollHeight > card.offsetHeight
-          const excerptOverflows = excerpt.scrollHeight > excerpt.offsetHeight
-
-          if (!cardOverflows && !excerptOverflows) {
-            bestFit = textWithEllipsis
-            left = mid
-          } else {
-            right = mid - 1
-          }
-        }
-
-        excerpt.textContent = bestFit
-      })
-    })
-  }
-
-  // Run on DOM ready and window resize
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', truncateExcerpt)
-  } else {
-    truncateExcerpt()
-  }
-
-  window.addEventListener('resize', () => {
-    setTimeout(truncateExcerpt, 100) // Small delay for resize
-  })
-</script>
-
-<article class="card-link">
+<article class="cell-interactive">
   <div
-    class="padding-responsive-md post-card relative flex min-h-full flex-col items-start"
+    class="padding-responsive-md post-card relative flex h-full flex-col items-start"
   >
     <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
     {
       SHOW_AUTHOR && (
-        <div class="flex items-center gap-x-2 text-gray-700">
+        <div class="flex items-center gap-x-2">
           <img
             src={author.avatar}
             alt={author.name}
             class="h-5 w-5 rounded-full bg-gray-50"
           />
-          <span class="text-sm leading-6 text-gray-400">
+          <span class="text-sm leading-6 text-fg-muted">
             <a href={author.profileUrl} class="relative z-10">
               {author.name}
             </a>
@@ -163,17 +79,14 @@ if (!author) {
           <PostMeta
             date={date}
             category={category}
-            part={part}
-            partsTotal={partsTotal}
+            partLabel={partLabel}
             isDraft={isDraft}
           />
         </div>
         {
           excerpt && (
             <p
-              class="mt-5 min-h-0 flex-1 overflow-hidden text-ellipsis leading-6 text-gray-300"
-              style="display: -webkit-box; -webkit-box-orient: vertical;"
-              data-excerpt
+              class="mt-5 line-clamp-5 leading-6 text-fg-secondary"
             >
               {excerpt}
             </p>

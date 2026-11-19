@@ -4,15 +4,13 @@ import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 import SeriesCard from '../../components/cards/SeriesCard.astro'
 import { buildFeed } from '@/lib/blog/feed'
+import { getVisiblePosts } from '@/lib/blog/visibility'
 
 const FRESH_DAYS = 14
+const BLOG_DESCRIPTION =
+  'Architecture and strategy notes on agent-native tooling, developer experience and information architecture.'
 
-const posts = (await getCollection('blog')).filter(
-  (post) =>
-    import.meta.env.DEV ||
-    import.meta.env.PUBLIC_PREVIEW === 'true' ||
-    post.data.published !== false,
-)
+const posts = await getVisiblePosts()
 
 const seriesDescriptions = await getCollection('series-descriptions')
 const seriesTitleBySlug = new Map(
@@ -22,10 +20,11 @@ const seriesTitleBySlug = new Map(
 const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
 ---
 
-<Layout title="Blog">
+<Layout title="Blog" description={BLOG_DESCRIPTION}>
   <section class="section-full">
     <div class="container-bordered">
-      <div class="cards-grid cards-grid--top-aligned">
+      <h1 class="sr-only">Blog</h1>
+      <div class="cards-grid">
         {
           feed.map((entry) =>
             entry.kind === 'post' ? (

@@ -130,3 +130,28 @@ describe('buildFeed', () => {
     expect(feed).toHaveLength(0)
   })
 })
+
+describe('buildFeed part ordering', () => {
+  it('sorts parts by number and puts unnumbered parts last, by date', () => {
+    const posts = [
+      post({ slug: 'loose-late', data: { date: '2026-01-09', series: 's' } }),
+      post({ slug: 'p3', data: { date: '2026-01-03', series: 's', part: 3 } }),
+      post({ slug: 'loose-early', data: { date: '2026-01-05', series: 's' } }),
+      post({ slug: 'p1', data: { date: '2026-01-01', series: 's', part: 1 } }),
+    ]
+    const [entry] = buildFeed(posts, OPTS)
+    expect(entry.kind).toBe('series')
+    if (entry.kind === 'series') {
+      expect(entry.parts.map((p) => p.slug)).toEqual([
+        'p1',
+        'p3',
+        'loose-early',
+        'loose-late',
+      ])
+    }
+  })
+
+  it('returns an empty feed for no posts', () => {
+    expect(buildFeed([], OPTS)).toEqual([])
+  })
+})

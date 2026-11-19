@@ -4,17 +4,13 @@ import PostCard from '../../components/cards/PostCard.astro'
 import PostCta from '../../components/PostCta.astro'
 import { Icon } from 'astro-icon/components'
 import { getCollection, type CollectionEntry } from 'astro:content'
-
-const isPreview =
-  import.meta.env.DEV || import.meta.env.PUBLIC_PREVIEW === 'true'
+import { getVisiblePosts } from '@/lib/blog/visibility'
+import { partLabel } from '@/lib/blog/part-label'
+import { SHOW_DRAFTS } from '@/config/blog'
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter(
-    (post: CollectionEntry<'blog'>) =>
-      post.data.series &&
-      (import.meta.env.DEV ||
-        import.meta.env.PUBLIC_PREVIEW === 'true' ||
-        post.data.published !== false),
+  const posts = (await getVisiblePosts()).filter(
+    (post: CollectionEntry<'blog'>) => post.data.series,
   )
   const seriesMap = new Map<string, CollectionEntry<'blog'>[]>()
 
@@ -51,6 +47,9 @@ const { Content } = description
   ? await description.render()
   : { Content: undefined }
 
+const visibleParts = posts.flatMap((post) =>
+  post.data.part === undefined ? [] : [post.data.part],
+)
 const headline = description?.data.title ?? series
 
 const SITE_URL = 'https://zentala.agency'
@@ -87,9 +86,9 @@ const breadcrumbJsonLd = {
 >
   <section class="section-full">
     <div class="container-bordered">
-      <div class="padding-responsive-md border-b border-gray-800">
+      <div class="padding-responsive-md border-b border-line">
         <div
-          class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-gray-500"
+          class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-fg-subtle"
         >
           <Icon
             name="lucide:layers"
@@ -98,19 +97,19 @@ const breadcrumbJsonLd = {
           />
           <span>Series</span>
         </div>
-        <h1 class="mt-2 text-4xl font-light text-white">{headline}</h1>
+        <h1 class="mt-2 text-4xl font-light text-fg">{headline}</h1>
         {
           description?.data.tagline && (
-            <p class="mt-2 text-lg text-gray-400">{description.data.tagline}</p>
+            <p class="mt-2 text-lg text-fg-muted">{description.data.tagline}</p>
           )
         }
         {
           Content ? (
-            <div class="mt-4 max-w-none text-gray-300">
+            <div class="mt-4 max-w-none text-fg-secondary">
               <Content />
             </div>
           ) : (
-            <p class="mt-4 max-w-none text-gray-300">
+            <p class="mt-4 max-w-none text-fg-secondary">
               {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
             </p>
           )
@@ -127,15 +126,18 @@ const breadcrumbJsonLd = {
               excerpt={post.data.excerpt}
               authorVersion={post.data.author}
               link={`/blog/${post.slug}`}
-              part={post.data.part}
-              partsTotal={posts.length}
+              partLabel={
+                post.data.part === undefined
+                  ? undefined
+                  : partLabel(post.data.part, visibleParts)
+              }
               isDraft={post.data.published === false}
             >
-              {isPreview && post.data.linkedinPost && (
+              {SHOW_DRAFTS && post.data.linkedinPost && (
                 <a
                   slot="footer"
                   href={`/linkedin-preview/${post.slug}`}
-                  class="inline-block rounded-full bg-blue-900/40 px-3 py-1 text-xs text-blue-300 hover:bg-blue-900/60"
+                  class="inline-block bg-surface-hover px-3 py-1 text-xs text-accent transition-colors duration-fast ease-standard hover:text-accent-hover"
                 >
                   LinkedIn draft →
                 </a>
