@@ -93,8 +93,9 @@ async function extractFooterLinks(): Promise<AppLink[]> {
   const content = await readFile(footerPath, 'utf-8')
   const links: AppLink[] = []
 
-  // Extract internal links (not external http/https)
-  const hrefMatches = content.matchAll(/href\s*=\s*["']([^"']+)["']/gi)
+  // Footer links live in the FOOTER_GROUPS data (`href: '/x/'`) and in plain markup (`href="/x/"`).
+  // Series links are built from the content collection and are covered by the series route spec.
+  const hrefMatches = content.matchAll(/href\s*[=:]\s*["']([^"']+)["']/gi)
   for (const match of hrefMatches) {
     const href = match[1]
     // Only internal links (relative paths)
@@ -293,6 +294,19 @@ test.describe('All Internal Links Validation', () => {
     }
 
     expect(failedLinks.length).toBe(0)
+  })
+
+  test('should not link to the dev-only /demo page', () => {
+    const demoLinks = allLinks.filter((link) => link.href.startsWith('/demo'))
+    expect(demoLinks).toEqual([])
+  })
+
+  test('should link only to canonical routes, not to redirect aliases', () => {
+    const REDIRECT_ALIASES = ['/capabilities', '/offer', '/offer/backstage']
+    const aliasLinks = allLinks.filter((link) =>
+      REDIRECT_ALIASES.includes(link.href.replace(/\/$/, '')),
+    )
+    expect(aliasLinks).toEqual([])
   })
 
   test('should verify links point to internal pages only', () => {

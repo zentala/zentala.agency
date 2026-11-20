@@ -85,6 +85,8 @@ export default defineConfig({
   output: 'static',
   redirects: {
     '/offer': '/about/capabilities',
+    '/capabilities': '/about/capabilities',
+    '/offer/backstage': '/about/capabilities/backstage',
     '/blog/index.old': '/blog',
   },
   integrations: [

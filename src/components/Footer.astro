@@ -1,5 +1,7 @@
 ---
 import Logo from '../components/Logo.astro'
+import { getCollection } from 'astro:content'
+import { getVisiblePosts } from '@/lib/blog/visibility'
 import '../styles/footer.scss'
 
 const currentYear = new Date().getFullYear()
@@ -12,6 +14,54 @@ const footerLogoProps = {
   width: '240px', // Responsive - will be overridden by CSS
   height: '44px', // Base height for CSS variables system
 }
+
+/** Same source as the series route: a series has a page exactly when a visible post carries its slug. */
+const seriesWithPage = new Set(
+  (await getVisiblePosts()).flatMap((post) =>
+    post.data.series ? [post.data.series] : [],
+  ),
+)
+const seriesLinks = (await getCollection('series-descriptions'))
+  .filter((entry) => seriesWithPage.has(entry.slug))
+  .map((entry) => ({ href: `/series/${entry.slug}/`, text: entry.data.title }))
+
+interface FooterLink {
+  href: string
+  text: string
+  external?: boolean
+}
+
+const FOOTER_GROUPS: { label: string; links: FooterLink[] }[] = [
+  {
+    label: 'Blog',
+    links: [{ href: '/blog/', text: 'All posts' }, ...seriesLinks],
+  },
+  {
+    label: 'Offer',
+    links: [
+      { href: '/about/capabilities/', text: 'Capabilities' },
+      { href: '/offer/harness-engineering/', text: 'Harness Engineering' },
+      { href: '/about/capabilities/backstage/', text: 'Backstage Consulting' },
+    ],
+  },
+  {
+    label: 'Company',
+    links: [
+      { href: '/portfolio/', text: 'Portfolio' },
+      { href: '/contact/', text: 'Contact' },
+    ],
+  },
+  {
+    label: 'Elsewhere',
+    links: [
+      { href: 'https://ideas.zentala.agency', text: 'Startup Ideas', external: true },
+      { href: 'https://idom.zentala.pl', text: 'Intelligent Home', external: true },
+      { href: 'https://wifi.edu.zentala.agency', text: 'WiFi 802.11 Tech', external: true },
+      { href: 'https://dev.edu.zentala.agency', text: 'Clever Developer', external: true },
+      { href: 'https://devstage.io', text: 'DevStage.io', external: true },
+    ],
+  },
+]
 ---
 
 <footer class="bg-surface text-fg">
@@ -77,8 +127,8 @@ const footerLogoProps = {
   </div>
   <div class="section-bordered flex items-center">
     <div class="container-padded flex justify-between">
-      <div class="footer-responsive-grid">
-        <div class="footer-about">
+      <div class="footer-ia">
+        <div class="footer-ia-about">
           <h2 class="footer-heading">About</h2>
           <p>
             Żentała Innovation Agency specializes in R&D projects and innovative
@@ -88,45 +138,26 @@ const footerLogoProps = {
             company's competitiveness.
           </p>
         </div>
-        <div class="footer-spacer"></div>
-        <div class="footer-offer">
-          <h2 class="footer-heading">Capabilities</h2>
-          <ul class="space-y-2">
-            <li><a href="/about/capabilities/backstage/">Backstage Consulting</a></li>
-            <li class="text-fg-muted">IoT Solution Design</li>
-            <li class="text-fg-muted">Web Rapid Prototyping</li>
-            <li class="text-fg-muted">Real Time Location Systems</li>
-            <li class="text-fg-muted">Innovation Consulting</li>
-          </ul>
-        </div>
-        <div class="footer-blogs">
-          <h2 class="footer-heading">Blogs</h2>
-          <ul class="space-y-2">
-            <li>
-              <a href="https://ideas.zentala.agency" target="_blank"
-                >Startup Ideas</a
-              >
-            </li>
-            <li>
-              <a href="https://idom.zentala.pl" target="_blank"
-                >Intelligent Home</a
-              >
-            </li>
-            <li>
-              <a href="https://wifi.edu.zentala.agency" target="_blank"
-                >WiFi 802.11 Tech</a
-              >
-            </li>
-            <li>
-              <a href="https://dev.edu.zentala.agency" target="_blank"
-                >Clever Developer</a
-              >
-            </li>
-            <li>
-              <a href="https://devstage.io" target="_blank">DevStage.io</a>
-            </li>
-          </ul>
-        </div>
+        {
+          FOOTER_GROUPS.map((group) => (
+            <div class="footer-ia-group">
+              <h2 class="footer-heading">{group.label}</h2>
+              <ul class="space-y-2">
+                {group.links.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>
@@ -146,3 +177,39 @@ const footerLogoProps = {
     </div>
   </div>
 </footer>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .footer-ia {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .footer-ia-about {
+    grid-column: span 4;
+  }
+
+  .footer-ia-group {
+    grid-column: span 2;
+  }
+
+  @include tablet {
+    .footer-ia-about {
+      grid-column: span 12;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-ia-group {
+      grid-column: span 6;
+    }
+  }
+
+  @include mobile {
+    .footer-ia-group {
+      grid-column: span 12;
+    }
+  }
+</style>
