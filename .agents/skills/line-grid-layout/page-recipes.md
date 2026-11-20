@@ -37,7 +37,7 @@ From `src/pages/offer/harness-engineering.astro` (the `Section` primitive is `se
 <Section id="what-i-do">
   <SectionHeader
     eyebrow="What the engagement looks like"
-    icon="ph:handshake-thin"
+    icon="handshake"
     headline="Inside the engagement"
     subhead="..."
   />
@@ -57,7 +57,21 @@ From `src/pages/offer/harness-engineering.astro` (the `Section` primitive is `se
 </Section>
 ```
 
-Imports: `Section`, `SectionHeader`, `SectionGrid`, `SectionContent` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`.
+Imports: `Section`, `SectionHeader`, `SectionGrid` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`. `SectionContent` is a transparent prose block; `.content-grid__text` is the lighter alternative for static cells. Icon names are short Phosphor Light names (`handshake`, `compass`); an unknown name fails the build.
+
+## Prose cell in a grid
+
+A static text cell uses `.content-grid__text` (padding and vertical centring from `_grids.scss`). Unstyled text is not white by default, so set the colours:
+
+```astro
+<div class="content-grid content-grid--halves">
+  <div class="content-grid__text">
+    <h2 class="text-3xl font-light text-fg">Strategy</h2>
+    <p class="mt-4 text-lg text-fg-secondary">Find where new technology pays off.</p>
+  </div>
+  <div class="content-grid__text prose prose-blog max-w-none">...</div>
+</div>
+```
 
 ## New section
 
@@ -95,12 +109,46 @@ Imports: `Section`, `SectionHeader`, `SectionGrid`, `SectionContent` from `src/c
 ```
 
 ```astro
-<SectionCTA href="https://example.com" text="Visit the site" icon="external-link" variant="primary" />
+<SectionCTA href="https://example.com" text="Visit the site" icon="external-link" variant="primary" bgText="Visit" />
 ```
+
+`variant` is `primary`, `secondary`, `accent` or `ghost`; none is a solid fill. `bgText` is normal case (`Visit`, not `VISIT`).
+
+## Buttons, arrows, icons, tags
+
+From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). No solid button exists; use `primary` for the main action and `secondary` for the rest:
+
+```astro
+<Button href="http://cal.com/zentala" text="Book a Call" target="_blank" variant="primary" icon="calendar" />
+<Button href="/portfolio" text="See the work" variant="ghost" />
+```
+
+Every arrow is the same chevron. Put it inside the link, button or `.group` so it moves on hover (a text arrow or a shaft icon is a defect):
+
+```astro
+<a href="/blog" class="group">All posts <SiteIcon name="caret-right" size="sm" class="arrow-nudge" /></a>
+```
+
+Icons: `<SiteIcon name="calendar" size="lg" />` (sizes `sm` 16, `md` 20, `lg` 24) and `<TechIcon name="astro" />` for a logo. Tags: `<TagGroup tags={['UWB', 'BLE']} tech />` shows a logo where `src/data/tech-icons.ts` has one; a single chip is `<Tag text="astro" />`.
+
+## Form
+
+A form is a `.line-grid` of field cells (from `src/components/ContactForm.astro`). The label is the `placeholder` prop, shown inside the cell:
+
+```astro
+<form class="line-grid contact-form" action="..." method="post">
+  <ThemedInput type="text" id="fName" placeholder="First name" icon="user" required />
+  <ThemedInput type="email" id="email" placeholder="Email" icon="envelope-simple" required />
+  <ThemedTextarea id="msg" placeholder="Your message" icon="chat-circle" />
+  <button type="submit" class="contact-form__submit">...</button>
+</form>
+```
+
+Put the form in `<Section id="write"><SectionHeader ... /><ContactForm /></Section>`, as `/contact` does.
 
 ## New card component
 
-A card is a grid cell. Root it on `CardContainer` (`src/components/cards/CardContainer.astro`; props `href`, `hasHover`, `backgroundIcon`, `class`, `target`). It draws no line and clips inside an inner wrapper.
+A card is a grid cell. Root it on `CardContainer` (`src/components/cards/CardContainer.astro`; props `href`, `hasHover`, `backgroundIcon`, `class`, `target`). It draws no line and clips inside an inner wrapper. The real `OfferCard` also takes a required `number` string; the sketch below is shortened.
 
 ```astro
 ---
@@ -161,8 +209,8 @@ And the entry with one example per variant, in the matching `src/components/demo
 
 ```astro
 <GalleryEntry id="offer-card" cols={2}>
-  <OfferCard number="01" title="Harness engineering" description="..." icon="lucide:bot" href="/offer/harness-engineering" />
-  <OfferCard number="02" title="Backstage rollout" description="..." icon="lucide:layout-grid" />
+  <OfferCard number="01" title="Harness engineering" description="..." icon="bot" href="/offer/harness-engineering" />
+  <OfferCard number="02" title="Backstage rollout" description="..." icon="layout-grid" />
 </GalleryEntry>
 ```
 
@@ -177,4 +225,4 @@ MSYS_NO_PATHCONV=1 node scripts/visual-check.mjs http://127.0.0.1:4300/mockups/<
 MSYS_NO_PATHCONV=1 node scripts/visual-check.mjs http://127.0.0.1:4300/blog/<draft-slug> 1920 1280 390
 ```
 
-Default widths are 1920, 1450, 1280, 1024, 768 and 390. It prints doubled, edge, floating and horizontal-scroll findings per width and exits 1 on any. Then look at the screenshots; links handed to the owner use `http://zentala.internal`.
+Default widths are 1920, 1450, 1280, 1024, 768 and 390. It prints doubled, edge, floating and horizontal-scroll findings per width and exits 1 on any. It needs Node 22.6 or newer (`.nvmrc` says 18). Then look at the screenshots and judge them against DESIGN.md "Principles": subtle, no warm colour, no large blue, nothing heavy. Links handed to the owner use `http://zentala.internal`. Against a preview use `http://localhost:<port>`: `astro preview` binds `[::1]`.

@@ -35,7 +35,7 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
 
 ### What the line guard does not cover
 
-- Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are never in `dist/`, so the guard cannot see them. Check them by hand with the same pixel analysis at 1920, 1450, 1280, 768 and 390. `analyzeLines` is not exported from the spec; copy its logic into a scratch script.
+- Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are never in `dist/`, so the guard cannot see them. Check them with `node scripts/visual-check.mjs <url> [width ...]` (default widths 1920, 1450, 1280, 1024, 768, 390; it exits 1 on a finding). `analyzeLines` and `measureLines` are exported from `tests/e2e/lib/line-analysis.ts`, the module the spec imports; scratch scripts import it and never copy the logic. The script needs Node 22.6 or newer (native TypeScript stripping); `.nvmrc` says 18, so use a Node 22.
 - A page taller than about 16k px must be measured in chunks: Chrome paints black rectangles in a taller screenshot, which gives false floating-line findings.
 - Article blocks in `src/components/blog/rich/` carry `data-prose-widget`; the guard skips them for the doubled-line and the floating-segment check (`PROSE_WIDGET_SELECTOR`). A new kind of in-prose box takes the same attribute.
 - Series with fewer than 2 published parts are not built, so their routes drop out of the list.
@@ -43,6 +43,22 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
 ### Critical specs in `just check`
 
 `just check` runs `blog-post`, `bento-showcase`, `series-linkedin-preview` and `line-geometry` on chromium against `npm run preview` of a build made with `PUBLIC_PLAYWRIGHT_TEST=true`. Run the build first; `line-geometry` reads `dist/`.
+
+### Other guards (unit tests, run by `just test` and `just check`)
+
+- `tests/unit/design-guards.test.ts`: the owner rulings of 2026-11-20 on `src/`: no warm colour (`--color-warn`, amber, orange or yellow class or hex), no underlined links, no bold type. Each has a decoy test that proves the pattern fires. Allowlist entries carry a reason.
+- `tests/unit/icon-set.test.ts`: `astro-icon` is imported only by `SiteIcon` and `TechIcon`; no Lucide icon, no non-light Phosphor icon, no inline icon `<svg>` outside its allowlist; every short icon name resolves.
+- `tests/unit/component-gallery.test.ts`: every component has a gallery entry at `/demo`.
+
+### Running the line guard by hand
+
+`just check` runs everything. To run only the guard:
+
+1. Build with the test flag: `PUBLIC_PLAYWRIGHT_TEST=true npm run build` (PowerShell: `$env:PUBLIC_PLAYWRIGHT_TEST='true'; npm run build`). The spec reads `dist/`.
+2. Stop any preview you started. Playwright starts its own (`webServer` in `playwright.config.ts`, `reuseExistingServer: false`) on the port of `PLAYWRIGHT_TEST_BASE_URL` (default `http://localhost:4333`); a running preview on that port fails with "already used". To use another port, set the variable and start nothing.
+3. `npx playwright test --project=chromium tests/e2e/line-geometry.spec.ts --workers=2`. With many workers the specs time out under load (page load timeouts on unrelated routes); that is load, not a line defect.
+
+`astro preview` listens on `[::1]` only. `curl` or Playwright against `http://127.0.0.1:<port>` is refused: use `http://localhost:<port>` or start the preview with `--host 127.0.0.1`. Stopping a background preview can leave its node child listening; end that PID.
 
 ### Line geometry rule
 
@@ -185,7 +201,7 @@ This will:
 
 ### Tests fail locally
 
-- Ensure preview server is running: `npm run preview -- --port 4333`
+- The line guard starts its own preview (see "Running the line guard by hand"); for the other specs run `npm run preview -- --port 4333` and open `http://localhost:4333` (the preview binds `[::1]`, not `127.0.0.1`)
 - Check `PLAYWRIGHT_TEST_BASE_URL` environment variable
 - Verify all pages exist and are accessible
 

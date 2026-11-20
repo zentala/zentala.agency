@@ -24,13 +24,19 @@ just test       # unit tests        just typecheck
 ## Layout and design (always on)
 
 - Every page is built from the line-grid primitives (`Section`, `SectionHeader`, `SectionGrid`, `.line-grid`, `line-block`), never from ad-hoc borders.
-- Design source: [DESIGN.md](DESIGN.md) (tokens, the line model in section 3, primitives and props, decisions). How to build with it: the [line-grid-layout skill](.agents/skills/line-grid-layout/SKILL.md).
+- Principles (owner rulings of 2026-11-20; full text and the guard for each in [DESIGN.md](DESIGN.md) "Principles"): the site is minimal, readable and subtle.
+  - No orange, amber or yellow, ever. Blue is a small accent only (links, tiny highlights), never a large fill or tint. Hover is neutral.
+  - No bold type in components (weight 500 at most). No underlines on links.
+  - Arrows are one chevron (`<SiteIcon name="caret-right" class="arrow-nudge" />`) that moves on hover. No solid bright buttons.
+  - Icons only through `SiteIcon` (Phosphor Light) and technology logos only through `TechIcon`: never import `astro-icon` or draw an inline icon `<svg>` elsewhere. Forms are line-grid cells. Tags only through `Tag`. Draft and review markers stay delicate and neutral.
+  - Guards: `tests/unit/design-guards.test.ts` (colour, underline, bold), `tests/unit/icon-set.test.ts` (icons), the line guard. The rest is checked by looking at the render.
+- Design source: [DESIGN.md](DESIGN.md) (principles, tokens, the line model in section 3, primitives and props, decisions). How to build with it: the [line-grid-layout skill](.agents/skills/line-grid-layout/SKILL.md).
 - A component never writes `border`, `overflow: hidden`, a fixed `aspect-ratio`, an opaque background, or `margin` / `transform` / `z-index` for layout or hover on a grid cell. Reuse or extend a primitive.
 - Colour, type, motion and breakpoints come from tokens: no hex in `.astro` files, no `transition: all`, never mix SCSS and Tailwind breakpoints in one rule. Plain CSS `<style>` blocks take only `/* */` comments.
 - A visual choice that DESIGN.md does not cover goes into its Decisions table first, then into code.
 - The line guard `tests/e2e/line-geometry.spec.ts` discovers routes from `dist/` itself; a new page needs no edit there. See [tests/e2e/README.md](tests/e2e/README.md).
 - Check the render at 1920, 1450, 1280, 1024, 768 and 390 and look at it; green tests do not prove lines. The guard runs a subset for speed: 1920, 1450, 768 and 390 on every route, 1280 on the four core routes, and never 1024.
-- Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are not in `dist/`, so the guard cannot see them. Check them with `node scripts/visual-check.mjs <url> [widths...]` against the dev server (default widths: all six above); it shares `tests/e2e/lib/line-analysis.ts` with the guard.
+- Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are not in `dist/`, so the guard cannot see them. Check them with `node scripts/visual-check.mjs <url> [widths...]` against the dev server (default widths: all six above); it shares `tests/e2e/lib/line-analysis.ts` with the guard. It needs Node 22.6 or newer (`.nvmrc` is 22). How to run the guard against a preview and the `astro preview` binding to `[::1]`: DESIGN.md section 9.
 - UI work follows the owner's global UI rules (mockup acceptance, independent visual review).
 - Component gallery: every new or changed component appears at `/demo` (dev only) with its variants, in the same change: add a row to `src/components/demo/manifest.ts` (or a file in `groups/`) and a `<GalleryEntry>` in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails otherwise. Show the owner components at http://zentala.internal/demo.
 - Owner-facing mockups live at `/mockups/<name>` (dev only, `src/pages/mockups/[mockup].astro`). The real page changes only after the owner accepts the mockup.
@@ -42,7 +48,9 @@ just test       # unit tests        just typecheck
 - `networkidle` never settles on the dev server: use `waitUntil: 'load'` plus a 3 s wait, and retry when the dev server hot-reloads ("Execution context was destroyed").
 - Screenshot pages taller than about 16k px in chunks: a single capture shows black rectangles and false floating-line findings.
 - A bordered chip inside a grid cell draws a dangling line: chip rows go outside the grid as borderless filled chips (DESIGN.md).
-- No webfont is loaded: tailwind names Inter first, but nobody ships it, so everyone sees the system font (Segoe UI on Windows) and weight 200 cannot render. Owner decision C5 (Inter) is pending; the dev-only switch at the bottom left compares system and Inter.
+- No webfont is loaded on real pages: tailwind names Inter first, but nobody ships it, so everyone sees the system font (Segoe UI on Windows) and weight 200 cannot render. Owner decision C5 (Inter) is pending; compare the variants in the Typography section of `/demo`.
+- `astro preview` listens on `[::1]` only: use `http://localhost:<port>` (or `--host 127.0.0.1`), not `127.0.0.1`. The dev server on 4300 does answer on `127.0.0.1`.
+- Unstyled text in a grid cell can be near black on black: give headings `text-fg`, or use `.content-grid__text` and `prose` (DESIGN.md section 4).
 
 ## Project structure
 
@@ -80,9 +88,9 @@ src/
 ## Blog and content
 
 - The blog register is architecture and strategy, for DevEx practitioners and agent-builders; every post gives a working mechanism or argues a position backed by a running system.
-- Load the skill `authorship` before drafting or editing any post. Four series, frontmatter contract and LinkedIn sidecars (`_<slug>.li.md`) are in [docs/agents/blog-content.md](docs/agents/blog-content.md).
+- Load the skill `authorship` before drafting or editing any post. Three series, frontmatter contract and LinkedIn sidecars (`_<slug>.li.md`) are in [docs/agents/blog-content.md](docs/agents/blog-content.md).
 - Drafts use `published: false` (visible in dev, absent in production).
-- Never set `published: true` without the owner's separate review. A draft you judge ready gets `review: true` (shown as the blue Review marker in dev); details in [docs/agents/blog-content.md](docs/agents/blog-content.md).
+- Never set `published: true` without the owner's separate review. A draft you judge ready gets `review: true` (shown as the Review marker in dev); details in [docs/agents/blog-content.md](docs/agents/blog-content.md).
 
 ## Local dev runs as `zentala.internal`, under PM3 — never `localhost:PORT`
 
