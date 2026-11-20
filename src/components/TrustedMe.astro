@@ -1,52 +1,59 @@
 ---
-const clients = [
+/**
+ * Client strip. Renders nothing until a client has a real logo: add `logo` (a path
+ * under /public or a URL of the client's own mark) to a client below. No placeholder
+ * logos: the gallery lists this component as "needs real client logos".
+ */
+interface Client {
+  name: string
+  desc: string
+  logo?: string
+}
+
+const clients: Client[] = [
   {
     name: 'Ubudu',
     desc: 'French RTLS startup. Developed RTLS admin panel and deployed systems across Asia.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=Ubudu',
   },
   {
     name: 'Hypermedia',
     desc: 'International marketing agency. Engaged in modern web development with React.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=Hypermedia',
   },
   {
     name: 'Beamly',
     desc: 'British marketing agency. Developed website for Marc Jacobs fragrances.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=Beamly',
   },
   {
     name: 'GreenParrot',
     desc: 'Warsaw marketing agency. Specialized in WordPress web development.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=GreenParrot',
   },
   {
     name: 'DSB',
     desc: 'Dutch national railways. Built Backstage Developer Portal from scratch.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=DSB',
   },
   {
     name: 'BSH',
     desc: 'Bosch Siemens home appliances. Developed software for home appliances.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=BSH',
   },
   {
     name: 'ZF',
     desc: 'Car components manufacturer. Developed web panel for flashing software on car platforms.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=ZF',
   },
   {
     name: 'Cheil',
     desc: 'Global marketing agency by Samsung. Developed merch robot and NFC-table for brand stores.',
-    logo: 'https://via.placeholder.com/100x40/ffffff/000000?text=Cheil',
   },
 ]
+
+const logoClients = clients.filter((client) => client.logo)
 ---
 
+{
+  logoClients.length > 0 && (
 <aside class="trusted-me-container">
   <ul>
     {
-      clients.map((client) => (
+      logoClients.map((client) => (
         <li data-key={client.name}>
           <img src={client.logo} alt={client.name} class="client-logo" />
           <span class="tooltip">{client.desc}</span>
@@ -55,6 +62,8 @@ const clients = [
     }
   </ul>
 </aside>
+  )
+}
 
 <style>
   .trusted-me-container {

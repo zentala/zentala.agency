@@ -13,21 +13,56 @@ const ROOT = process.cwd()
 const COMPONENTS_DIR = join(ROOT, 'src', 'components')
 const DEMO_DIR = join(COMPONENTS_DIR, 'demo')
 const DEMO_PAGE = join(ROOT, 'src', 'pages', 'demo', '[...slug].astro')
+const SECTIONS_DIR = join(ROOT, 'src', 'sections')
 const COMPONENT_IMPORT_PREFIX = '@/components/'
+const SECTION_IMPORT_PREFIX = '@/sections/'
+/** Manifest paths for files in src/sections/ start with this, relative to src/components. */
+const SECTION_PATH_PREFIX = '../sections/'
 
-/** Directories whose every .astro file needs a gallery entry (recursive). */
-const GUARDED_DIRS = ['primitives', 'cards', 'blog', 'banners']
+/**
+ * Directories whose every .astro file needs a gallery entry (recursive).
+ * `home` and `preview` are guarded on purpose: both hold real, page-used components.
+ * `react-stuff` and `solid-chat` are out of scope: they are isolated framework islands, not Astro primitives.
+ */
+const GUARDED_DIRS = [
+  'primitives',
+  'cards',
+  'blog',
+  'banners',
+  'home',
+  'preview',
+]
 
 /** Component files that are not in the gallery, each with the reason. Keys are paths relative to src/components. */
 const EXEMPT: Record<string, string> = {
   'Header.astro': 'page chrome, rendered on every page including the gallery',
   'Footer.astro': 'page chrome, rendered on every page including the gallery',
+  '../sections/home/HeroWithVariations.astro':
+    'wrapper that picks one Hero variant for the home page; the Hero (home) entry shows both layouts',
+  '../sections/home/HeroVariantA.astro':
+    'not imported by any page: a hero exploration kept for reference, a candidate for deletion',
+  '../sections/home/HeroVariantB.astro':
+    'not imported by any page: a hero exploration kept for reference, a candidate for deletion',
+  '../sections/home/HeroVariantC.astro':
+    'not imported by any page: a hero exploration kept for reference, a candidate for deletion',
+  '../sections/home/HeroVariantD.astro':
+    'not imported by any page: a hero exploration kept for reference, a candidate for deletion',
+  '../sections/home/HeroVariantE.astro':
+    'not imported by any page: a hero exploration kept for reference, a candidate for deletion',
+  '../sections/home/ServiceBackstage.astro':
+    'not imported by any page: home service copy kept for reference, built from ServiceSection, FeaturedProjects and ProjectCard, which are in the gallery',
+  '../sections/home/ServiceIoT.astro':
+    'not imported by any page: home service copy kept for reference, built from ServiceSection, FeaturedProjects and ProjectCard, which are in the gallery',
+  '../sections/home/ServiceRapidDev.astro':
+    'not imported by any page: home service copy kept for reference, built from ServiceSection, FeaturedProjects and ProjectCard, which are in the gallery',
 }
 
 /** Whole directories that are not in the gallery, with the reason. Keys end with a slash. */
 const EXEMPT_DIRS: Record<string, string> = {
   'blog/mockups/':
     'owner-facing mockups shown at /mockups/<name>; promoted into real components (and the gallery) when the owner accepts one',
+  'review-mockup/':
+    'owner-facing E008 mockup shown at /mockups/review-layer; promoted into real components (and the gallery) when the owner accepts it',
 }
 
 const isExempt = (path: string) =>
@@ -45,14 +80,18 @@ function listAstroFiles(dir: string, recursive: boolean): string[] {
 const toComponentPath = (file: string) =>
   relative(COMPONENTS_DIR, file).split(sep).join('/')
 
+const sectionFiles = listAstroFiles(SECTIONS_DIR, true).map(
+  (file) =>
+    `${SECTION_PATH_PREFIX}${relative(SECTIONS_DIR, file).split(sep).join('/')}`,
+)
+
 const guardedComponents = [
-  ...listAstroFiles(COMPONENTS_DIR, false),
+  ...sectionFiles,
+  ...listAstroFiles(COMPONENTS_DIR, false).map(toComponentPath),
   ...GUARDED_DIRS.flatMap((dir) =>
-    listAstroFiles(join(COMPONENTS_DIR, dir), true),
+    listAstroFiles(join(COMPONENTS_DIR, dir), true).map(toComponentPath),
   ),
-]
-  .map(toComponentPath)
-  .sort()
+].sort()
 
 const gallerySource = [DEMO_PAGE, ...listAstroFiles(DEMO_DIR, true)]
   .map((file) => readFileSync(file, 'utf8'))
@@ -60,11 +99,20 @@ const gallerySource = [DEMO_PAGE, ...listAstroFiles(DEMO_DIR, true)]
 
 /** Components the gallery source imports, as paths relative to src/components. */
 function importedComponents(source: string): Set<string> {
-  const pattern = new RegExp(
+  const components = new RegExp(
     `from '${COMPONENT_IMPORT_PREFIX}([^']+\\.astro)'`,
     'g',
   )
-  return new Set([...source.matchAll(pattern)].map((match) => match[1]))
+  const sections = new RegExp(
+    `from '${SECTION_IMPORT_PREFIX}([^']+\\.astro)'`,
+    'g',
+  )
+  return new Set([
+    ...[...source.matchAll(components)].map((match) => match[1]),
+    ...[...source.matchAll(sections)].map(
+      (match) => `${SECTION_PATH_PREFIX}${match[1]}`,
+    ),
+  ])
 }
 
 /** Component paths that have a manifest row AND a GalleryEntry with that id. */

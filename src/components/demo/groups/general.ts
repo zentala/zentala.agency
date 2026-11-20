@@ -9,7 +9,7 @@ export const GENERAL_GROUP: GalleryGroup = {
       path: 'Button.astro',
       purpose: 'Link styled as a button.',
       props:
-        'href, text, target, variant (primary; secondary, accent), icon, arrow (true)',
+        'href, text, target, variant (primary; secondary, accent, ghost), icon, arrow (true)',
     },
     {
       id: 'cta',
@@ -31,7 +31,7 @@ export const GENERAL_GROUP: GalleryGroup = {
       path: 'Quote.astro',
       purpose: 'Pull quote with optional author and source.',
       props:
-        'text, author, source, quoteMarkVariant (typographic; heavy, sans-serif)',
+        'text, author, source, quoteMarkVariant (typographic; heavy)',
     },
     {
       id: 'hero',
@@ -88,6 +88,7 @@ export const GENERAL_GROUP: GalleryGroup = {
       path: 'TrustedMe.astro',
       purpose: 'Client logo strip with hover descriptions.',
       props: 'none',
+      note: 'Needs real client logos. It renders nothing until a client in the file has a logo; there are no placeholder logos.',
     },
   ],
 }

@@ -1,8 +1,16 @@
 ---
+/**
+ * Banners are full-width blocks (line-block); the gallery shows each one in a natural-size
+ * frame so their type is shown as it renders on a page.
+ */
 import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
 import Banner from '@/components/banners/Banner.astro'
 import BannerSimple from '@/components/banners/variants/Simple.astro'
 import BannerSimpleWithImage from '@/components/banners/variants/SimpleWithImage.astro'
+import DevexBanner from '@/sections/banners/devex.astro'
+import DevexCategoryBanner from '@/sections/banners/devex-category.astro'
+import AiAutomationBanner from '@/sections/banners/ai-automation.astro'
 
 const BANNER_IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
 const bannerCopy = {
@@ -13,15 +21,62 @@ const bannerCopy = {
 }
 ---
 
-<GalleryEntry id="banner" bare>
-  <Banner variant="simple" {...bannerCopy} />
-  <Banner variant="simpleWithImage" {...bannerCopy} image={BANNER_IMAGE} />
+<GalleryEntry id="banner" cols={1}>
+  <GalleryCell label="variant simple: text only">
+    <div class="banner-frame"><Banner variant="simple" {...bannerCopy} /></div>
+  </GalleryCell>
+  <GalleryCell label="variant simpleWithImage: with an image">
+    <div class="banner-frame">
+      <Banner variant="simpleWithImage" {...bannerCopy} image={BANNER_IMAGE} />
+    </div>
+  </GalleryCell>
 </GalleryEntry>
 
-<GalleryEntry id="banner-simple" bare>
-  <BannerSimple {...bannerCopy} />
+<GalleryEntry id="banner-simple" cols={1}>
+  <GalleryCell label="the variant on its own">
+    <div class="banner-frame"><BannerSimple {...bannerCopy} /></div>
+  </GalleryCell>
 </GalleryEntry>
 
-<GalleryEntry id="banner-simple-with-image" bare>
-  <BannerSimpleWithImage {...bannerCopy} image={BANNER_IMAGE} />
+<GalleryEntry id="banner-simple-with-image" cols={1}>
+  <GalleryCell label="the variant on its own">
+    <div class="banner-frame">
+      <BannerSimpleWithImage {...bannerCopy} image={BANNER_IMAGE} />
+    </div>
+  </GalleryCell>
 </GalleryEntry>
+
+<GalleryEntry id="banner-devex" cols={1}>
+  <GalleryCell label="as a post ends">
+    <div class="banner-frame"><DevexBanner /></div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="banner-devex-category" cols={1}>
+  <GalleryCell label="as a category page ends">
+    <div class="banner-frame"><DevexCategoryBanner /></div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="banner-ai-automation" cols={1}>
+  <GalleryCell label="as a post ends">
+    <div class="banner-frame"><AiAutomationBanner /></div>
+  </GalleryCell>
+</GalleryEntry>
+
+<style>
+  .banner-frame {
+    width: 100%;
+  }
+
+  /* The cell below the label already draws a line; the banner's own top line would dangle. */
+  .banner-frame :global(.banner-image) {
+    max-height: 16rem;
+    object-fit: cover;
+  }
+
+  .banner-frame :global(.banner) {
+    border-top: 0;
+    margin-top: 0;
+  }
+</style>

@@ -38,8 +38,16 @@ const treeNodes = [
 ---
 
 <GalleryEntry id="box-grid" cols={1}>
-  <GalleryCell label="default"><BoxGrid boxes={boxes} /></GalleryCell>
-  <GalleryCell label="mono"><BoxGrid boxes={boxes} mono /></GalleryCell>
+  <GalleryCell label="default"
+    ><Figure caption="Three hosts and what runs on each."
+      ><BoxGrid boxes={boxes} /></Figure
+    ></GalleryCell
+  >
+  <GalleryCell label="mono"
+    ><Figure caption="The same boxes in a monospace face."
+      ><BoxGrid boxes={boxes} mono /></Figure
+    ></GalleryCell
+  >
 </GalleryEntry>
 
 <GalleryEntry id="disclosure" cols={2}>
@@ -78,19 +86,25 @@ const treeNodes = [
 
 <GalleryEntry id="file-tree" cols={1}>
   <GalleryCell label="four levels, notes"
-    ><FileTree nodes={treeNodes} /></GalleryCell
+    ><Figure caption="The repository, annotated."
+      ><FileTree nodes={treeNodes} /></Figure
+    ></GalleryCell
   >
 </GalleryEntry>
 
 <GalleryEntry id="flow" cols={1}>
   <GalleryCell label="steps with notes and a highlight"
-    ><Flow steps={flowSteps} /></GalleryCell
+    ><Figure caption="One change, start to finish."
+      ><Flow steps={flowSteps} /></Figure
+    ></GalleryCell
   >
   <GalleryCell label="with a return note">
-    <Flow
-      steps={flowSteps}
-      returnNote="A failed check sends the work back to Edit."
-    />
+    <Figure caption="A failed check sends the work back.">
+      <Flow
+        steps={flowSteps}
+        returnNote="A failed check sends the work back to Edit."
+      />
+    </Figure>
   </GalleryCell>
 </GalleryEntry>
 

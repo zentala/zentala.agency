@@ -1,7 +1,8 @@
 ---
 /**
- * One gallery section: the component name, path, purpose and props (read from the
- * manifest by `id`), then its examples. Built from the line model.
+ * One gallery section: the component name and one-line purpose, where it is used
+ * (computed from the imports), its props in plain or TypeScript form (the page-wide
+ * toggle), then its examples. Built from the line model.
  * - Default: the slot holds cells (GalleryCell, or cards directly) in a `.line-grid`.
  *   `cols` sets the columns; 3 closes an incomplete last row with `line-grid--fill-last`,
  *   so every child of a 3-column entry must be a `div`.
@@ -12,6 +13,8 @@
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import { GALLERY_ITEMS } from './manifest'
+import { propsInterface, toSrcPath, usedIn } from '@/lib/demo/component-info'
+import { highlightPlainProps, highlightTypeScript } from '@/lib/demo/highlight'
 
 interface Props {
   id: string
@@ -23,6 +26,13 @@ const { id, cols = 3, bare = false } = Astro.props
 
 const item = GALLERY_ITEMS.find((candidate) => candidate.id === id)
 if (!item) throw new Error(`GalleryEntry: no manifest row with id "${id}"`)
+
+const used = usedIn(item.path)
+const typeScript = propsInterface(item.path)
+const plainHtml = highlightPlainProps(item.props)
+const typeScriptHtml = highlightTypeScript(
+  typeScript ?? `// no Props interface: ${item.props}`,
+)
 
 const COLUMNS_STYLE = {
   1: '--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1',
@@ -37,19 +47,51 @@ const COLUMNS_STYLE = {
   <div class="gallery-meta">
     <p class="gallery-meta__row">
       <span class="gallery-meta__key">File</span>
-      <code class="font-mono">src/components/{item.path}</code>
+      <code class="font-mono">{toSrcPath(item.path)}</code>
     </p>
     <p class="gallery-meta__row">
-      <span class="gallery-meta__key">Props</span>
-      <code class="font-mono">{item.props}</code>
+      <span class="gallery-meta__key">Used in</span>
+      <span class="gallery-meta__links">
+        {used.everywhere && <span>every page, through the layout</span>}
+        {
+          used.pages.map((page) =>
+            page.href ? (
+              <a href={page.href}>{page.route}</a>
+            ) : (
+              <span>{page.route}</span>
+            ),
+          )
+        }
+        {used.more > 0 && <span>and {used.more} more</span>}
+        {
+          !used.everywhere && used.pages.length === 0 && (
+            <span>{item.usedNote ?? 'no page yet, only this gallery'}</span>
+          )
+        }
+      </span>
     </p>
+    {
+      item.note && (
+        <p class="gallery-meta__row">
+          <span class="gallery-meta__key">Note</span>
+          {item.noteHref ? <a href={item.noteHref}>{item.note}</a> : <span>{item.note}</span>}
+        </p>
+      )
+    }
+    <div class="gallery-meta__row">
+      <span class="gallery-meta__key">Props</span>
+      <div class="gallery-code">
+        <code class="font-mono gallery-code__plain" set:html={plainHtml} />
+        <pre class="font-mono gallery-code__ts"><code set:html={typeScriptHtml} /></pre>
+      </div>
+    </div>
   </div>
   {
     !Astro.slots.has('default') ? null : bare ? (
       <slot />
     ) : (
       <div
-        class:list={['line-grid', cols === 3 && 'line-grid--fill-last']}
+        class:list={['line-grid', 'gallery-examples', cols === 3 && 'line-grid--fill-last']}
         style={COLUMNS_STYLE[cols]}
       >
         <slot />
@@ -76,14 +118,82 @@ const COLUMNS_STYLE = {
   }
 
   .gallery-meta__key {
-    min-width: 3.5rem;
+    min-width: 4.5rem;
     text-transform: uppercase;
     letter-spacing: var(--tracking-label);
     font-size: var(--text-label);
     color: var(--color-text-subtle, inherit);
   }
 
+  .gallery-meta__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+  }
+
+  .gallery-meta a,
+  .gallery-meta__links a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .gallery-meta a:hover {
+    color: var(--color-text);
+  }
+
   .gallery-meta code {
     overflow-wrap: anywhere;
   }
+
+  .gallery-code {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .gallery-code pre {
+    margin: 0;
+    white-space: pre-wrap;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .gallery-code__ts {
+    display: none;
+  }
+
+  :global([data-props-mode='ts']) .gallery-code__plain {
+    display: none;
+  }
+
+  :global([data-props-mode='ts']) .gallery-code__ts {
+    display: block;
+  }
+
+  .gallery-code :global(.tok-key) {
+    color: var(--color-text);
+  }
+
+  .gallery-code :global(.tok-type) {
+    color: var(--color-accent);
+  }
+
+  .gallery-code :global(.tok-str) {
+    color: var(--color-text-secondary);
+  }
+
+  .gallery-code :global(.tok-keyword),
+  .gallery-code :global(.tok-punct),
+  .gallery-code :global(.tok-comment) {
+    color: var(--color-text-subtle);
+  }
+
+  .gallery-examples :global(.card-container) {
+    color: var(--color-text-secondary);
+  }
+
+  .gallery-examples :global(.card-container h3) {
+    color: var(--color-text);
+  }
+
 </style>

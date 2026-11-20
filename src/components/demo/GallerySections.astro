@@ -1,0 +1,176 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import HomeHero from '@/sections/home/Hero.astro'
+import ServiceSection from '@/sections/home/ServiceSection.astro'
+import FeaturedProjects from '@/sections/home/FeaturedProjects.astro'
+import ProjectCard from '@/sections/home/ProjectCard.astro'
+import WhyWorkWithMe from '@/sections/home/WhyWorkWithMe.astro'
+import EngagementModels from '@/sections/home/EngagementModels.astro'
+import CTASection from '@/sections/home/CTASection.astro'
+import BentoAboutMe from '@/sections/home/BentoAboutMe.astro'
+import BentoShowcase from '@/components/home/BentoShowcase.astro'
+import LinkedInPostCard from '@/components/preview/LinkedInPostCard.astro'
+
+const AVATAR = 'https://cdn.zentala.agency/images/avatar.jpg'
+const PROJECT_IMAGE = '/images/portfolio/zentala-eu.png'
+const ctas = [
+  { href: '/contact', text: 'Get started', variant: 'primary' },
+  { href: '/portfolio', text: 'View portfolio', variant: 'secondary' },
+] as const
+const columns = [
+  {
+    title: 'Hands-on',
+    list: [
+      { label: 'Build', text: 'a working prototype' },
+      { label: 'Lead', text: 'the team that scales it' },
+    ],
+  },
+  {
+    title: 'Whole stack',
+    paragraphs: [{ text: 'IoT, full-stack, DevOps and UX in one person.' }],
+  },
+] as const
+const engagementCards = [
+  {
+    title: 'Fractional CTO',
+    bestFor: 'Founders with an idea and no technical team.',
+    whatYouGet: ['Technical vision', 'A working prototype'],
+    format: 'Part time, monthly',
+  },
+  {
+    title: 'Fixed project',
+    bestFor: 'A defined build with a clear end.',
+    whatYouGet: ['Scoped delivery', 'Handover and docs'],
+    format: 'Fixed scope',
+    link: { href: '/contact', text: 'Ask about it', variant: 'secondary' },
+  },
+] as const
+const LINKEDIN_TEXT =
+  'Run two coding agents against one checkout and you do not get a crash.\n\nYou get something worse: quiet overwrites.'
+---
+
+<GalleryEntry id="home-hero" cols={1}>
+  <GalleryCell label="profile layout">
+    <div style="width: 100%">
+      <HomeHero
+        layout="profile"
+        name="Paweł Żentała"
+        title="Technical leader for greenfield projects"
+        description="From IoT products to developer platforms."
+        tagline="One person. Complete technical capabilities."
+        avatarSrc={AVATAR}
+        avatarAlt="Paweł Żentała"
+        ctas={[...ctas]}
+      />
+    </div>
+  </GalleryCell>
+  <GalleryCell label="split layout">
+    <div style="width: 100%">
+      <HomeHero
+        layout="split"
+        title="Hands-on CTO for innovation projects"
+        description="Vision to working prototype, then the team to scale it."
+        quote={{
+          quote: 'Where you have nothing, I build everything.',
+          author: 'Paweł Żentała',
+          role: '',
+          variant: 'large',
+        }}
+        imageSrc={AVATAR}
+        imageAlt="Paweł Żentała"
+        ctas={[...ctas]}
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="service-section" cols={1}>
+  <GalleryCell label="header over content">
+    <div style="width: 100%">
+      <ServiceSection
+        id="gallery-service"
+        headline="Backstage"
+        subhead="An internal developer portal that survives a real organisation."
+      >
+        <p>Content goes here.</p>
+      </ServiceSection>
+    </div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="featured-projects" bare>
+  <FeaturedProjects columns={2}>
+    <ProjectCard
+      title="Backstage portal"
+      description="Built from scratch for a railway operator."
+      image={PROJECT_IMAGE}
+      link="/about/capabilities/backstage"
+    />
+    <ProjectCard
+      title="Merch robot"
+      description="An NFC table and a robot for brand stores."
+      image={PROJECT_IMAGE}
+      link="/portfolio"
+    />
+  </FeaturedProjects>
+</GalleryEntry>
+
+<GalleryEntry id="project-card" cols={2}>
+  <ProjectCard
+    title="Default link text"
+    description="One sentence about the project."
+    image={PROJECT_IMAGE}
+    link="/portfolio"
+  />
+  <ProjectCard
+    title="Own link text"
+    description="One sentence about the project."
+    image={PROJECT_IMAGE}
+    link="/portfolio"
+    linkText="Read the case"
+  />
+</GalleryEntry>
+
+<GalleryEntry id="why-work-with-me" bare>
+  <WhyWorkWithMe
+    headline="Why work with me"
+    subhead="One person for the whole build."
+    columns={columns}
+    cta={{ href: '/contact', text: 'Get started', variant: 'secondary' }}
+    showCta
+  />
+</GalleryEntry>
+
+<GalleryEntry id="engagement-models" bare>
+  <EngagementModels
+    headline="Ways to work together"
+    subhead="Pick the shape that fits."
+    cards={engagementCards}
+  />
+</GalleryEntry>
+
+<GalleryEntry id="cta-section" bare>
+  <CTASection />
+</GalleryEntry>
+
+<GalleryEntry id="bento-about-me">
+  <BentoAboutMe slot="after" />
+</GalleryEntry>
+
+<GalleryEntry id="bento-showcase">
+  <BentoShowcase slot="after" />
+</GalleryEntry>
+
+<GalleryEntry id="linkedin-post-card" cols={1}>
+  <GalleryCell label="a short post">
+    <div style="width: 100%">
+      <LinkedInPostCard
+        title="The lease: one writer at a time"
+        text={LINKEDIN_TEXT}
+        articleLink="/blog/the-lease-one-writer-at-a-time"
+        authorName="Paweł Żentała"
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>

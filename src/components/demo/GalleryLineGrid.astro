@@ -6,6 +6,7 @@ import SectionContent from '@/components/primitives/sections/SectionContent.astr
 import SectionImage from '@/components/primitives/sections/SectionImage.astro'
 import SectionCTA from '@/components/primitives/sections/SectionCTA.astro'
 import SectionBlockQuote from '@/components/primitives/sections/SectionBlockQuote.astro'
+import TechIconGrid from '@/components/primitives/sections/TechIconGrid.astro'
 import SectionBento from '@/components/primitives/sections/SectionBento.astro'
 import BentoCardSections from '@/components/primitives/sections/BentoCard.astro'
 import BentoCard from '@/components/primitives/sections/bento/BentoCard.astro'
@@ -15,7 +16,7 @@ import BentoStageState from '@/components/primitives/sections/bento/BentoStageSt
 const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
 ---
 
-<!-- NOTE(intent): Section and SectionHeader cannot nest inside a Section without doubling the line below them, so their live examples are the ones this page already uses: every entry is a Section with a SectionHeader, and the group headers use the feature variant. -->
+<!-- NOTE(intent): Section and SectionHeader cannot nest inside a Section without doubling the line below them, so their live examples are the ones this page already uses: every entry is a Section with a SectionHeader, and the group headers are the default header with a count. -->
 <GalleryEntry id="section" cols={1}>
   <GalleryCell label="live example">
     <p>
@@ -28,8 +29,9 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
 <GalleryEntry id="section-header" cols={1}>
   <GalleryCell label="live examples">
     <p>
-      Default: the header of every entry (headline plus subhead). Feature: the
-      group headers (eyebrow plus icon). Centered: the index header. A Section
+      Default: the header of every entry (headline plus subhead). Feature: an
+      eyebrow and an icon, as on the offer pages. The group headers on this page
+      are the default header with a small count under the headline. Centered: the index header. A Section
       may hold only one header, so these are not repeated here.
     </p>
   </GalleryCell>
@@ -43,12 +45,6 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
     <SectionContent context="grid" prose={false}>second</SectionContent>
     <SectionContent context="grid" prose={false}>third</SectionContent>
     <SectionContent context="grid" prose={false}>fourth</SectionContent>
-  </SectionGrid>
-  <SectionGrid columns={2}>
-    <SectionContent context="grid" prose={false}
-      >columns=2: first cell</SectionContent
-    >
-    <SectionContent context="grid" prose={false}>second</SectionContent>
   </SectionGrid>
 </GalleryEntry>
 
@@ -112,8 +108,15 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
     text="secondary, external, background text"
     variant="secondary"
     external
-    bgText="CONTACT"
+    bgText="Contact"
   />
+  <SectionCTA
+    href="/contact"
+    text="secondary, with an icon"
+    icon="calendar"
+    variant="secondary"
+  />
+  <SectionCTA href="/contact" text="accent" variant="accent" />
   <SectionCTA href="/blog" text="primary, no arrow" arrow={false} />
 </GalleryEntry>
 
@@ -129,6 +132,10 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
     author="Design rule"
   />
   <SectionBlockQuote variant="minimal" quote="Minimal: only the text." />
+</GalleryEntry>
+
+<GalleryEntry id="tech-icon-grid">
+  <TechIconGrid slot="after" columns={4} />
 </GalleryEntry>
 
 <GalleryEntry id="section-bento" bare>

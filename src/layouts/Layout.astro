@@ -65,19 +65,6 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
       ))
     }
 
-    <!-- Preload critical resources -->
-    <link
-      rel="preload"
-      href="https://kit.fontawesome.com/71aeb2a21d.js"
-      as="script"
-      crossorigin="anonymous"
-    />
-
-    <script
-      src="https://kit.fontawesome.com/71aeb2a21d.js"
-      crossorigin="anonymous"
-      defer
-      is:inline></script>
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Żentała Innovation Agency</title>
   </head>
@@ -87,12 +74,6 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
       <slot />
     </main>
     <Footer />
-
-    <script>
-      if (import.meta.env.DEV) {
-        import('@/dev/heading-switch')
-      }
-    </script>
 
     <!-- Chat huba — RESTORED 2026-08-26.
          Was disabled the same day: the host answered 200 with
@@ -107,7 +88,9 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
          Disabled during Playwright E2E runs: the widget's backend does not
          allow `localhost` origins, so its internal requests throw CORS console
          errors that fail the `chat-widget.spec.ts` test on CI. -->
-    {import.meta.env.PUBLIC_PLAYWRIGHT_TEST !== 'true' && (
+    {/* The dev-only review mockup needs the lower right corner, so its pages skip the bubble. */}
+    {import.meta.env.PUBLIC_PLAYWRIGHT_TEST !== 'true' &&
+      !Astro.url.pathname.startsWith('/mockups/') && (
       <script is:inline src="https://hub.zentala.agency/widget.js?site=zentala.agency"></script>
     )}
   </body>

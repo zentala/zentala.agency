@@ -1,0 +1,109 @@
+---
+/**
+ * Typography comparison, dev only: the same heading and paragraph in three clearly
+ * named variants, side by side. Replaces the old heading switch, which changed the
+ * navbar instead of the page. The Inter variable font is loaded by the CSS
+ * import in this file, so it exists only on this dev-only page and never reaches production.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+
+// Dev only: a static import would bundle the font files into production as orphans.
+if (import.meta.env.DEV) await import('@fontsource-variable/inter/index.css')
+
+const SAMPLE_HEADING = 'Agents need a harness, not a bigger prompt'
+const SAMPLE_BODY =
+  'The machinery around coding agents is what keeps parallel work from overwriting itself: a registry, a lease on the checkout and a knowledge base they can all read.'
+
+const VARIANTS = [
+  {
+    id: 'today',
+    label: 'Today (system font, 300)',
+    note: 'What the site renders now: Segoe UI on Windows, heading weight 300.',
+  },
+  {
+    id: 'larger-300',
+    label: 'Larger, 300',
+    note: 'Same system font and weight, headings one step larger.',
+  },
+  {
+    id: 'larger-200-inter',
+    label: 'Larger, 200, Inter',
+    note: 'Inter Variable at weight 200, the thin look; needs the webfont.',
+  },
+]
+---
+
+<Section id="typography">
+  <SectionHeader
+    headline="Typography"
+    subhead="One heading and paragraph, three variants. Pick the one that reads best; only the owner's choice goes into the site."
+  />
+  <div class="line-grid typography-grid">
+    {
+      VARIANTS.map((variant) => (
+        <div class="typography-cell" data-variant={variant.id}>
+          <p class="typography-cell__label">{variant.label}</p>
+          <h2 class="typography-cell__heading">{SAMPLE_HEADING}</h2>
+          <p class="typography-cell__body">{SAMPLE_BODY}</p>
+          <p class="typography-cell__note">{variant.note}</p>
+        </div>
+      ))
+    }
+  </div>
+</Section>
+
+<style is:global>
+  .typography-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    padding: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .typography-cell p {
+    margin: 0;
+  }
+
+  .typography-cell__label {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle);
+  }
+
+  .typography-cell__heading {
+    margin: 0;
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .typography-cell__body {
+    font-size: var(--text-body);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .typography-cell__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .typography-cell[data-variant='larger-300'] .typography-cell__heading,
+  .typography-cell[data-variant='larger-200-inter'] .typography-cell__heading {
+    font-size: var(--text-h2);
+  }
+
+  .typography-cell[data-variant='larger-200-inter'] .typography-cell__heading {
+    font-family: 'Inter Variable', sans-serif;
+    font-weight: 200;
+  }
+
+  .typography-cell[data-variant='larger-200-inter'] .typography-cell__body {
+    font-family: 'Inter Variable', sans-serif;
+    font-weight: 300;
+  }
+</style>

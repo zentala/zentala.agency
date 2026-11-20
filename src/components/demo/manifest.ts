@@ -4,6 +4,7 @@ import { CARDS_GROUP } from './groups/cards'
 import { BLOG_GROUP } from './groups/blog'
 import { BANNERS_GROUP } from './groups/banners'
 import { GENERAL_GROUP } from './groups/general'
+import { SECTIONS_GROUP } from './groups/sections'
 
 /**
  * The gallery manifest: one row per component shown on /demo. `GalleryEntry` reads
@@ -14,10 +15,17 @@ import { GENERAL_GROUP } from './groups/general'
 export interface GalleryItem {
   id: string
   name: string
-  /** Path relative to `src/components/`. */
+  /** Path relative to `src/components/`; `../sections/...` for files in `src/sections/`. */
   path: string
   purpose: string
+  /** Plain props summary: names, with options and defaults in parentheses. */
   props: string
+  /** What the owner should know that the source does not say (an article widget, missing assets). */
+  note?: string
+  /** Link target for the note, when it points at a page. */
+  noteHref?: string
+  /** Where it is used when the import graph cannot see it (a dynamic import). */
+  usedNote?: string
 }
 
 export interface GalleryGroup {
@@ -32,6 +40,7 @@ export const GALLERY_GROUPS: GalleryGroup[] = [
   BLOG_GROUP,
   BANNERS_GROUP,
   GENERAL_GROUP,
+  SECTIONS_GROUP,
 ]
 
 export const GALLERY_ITEMS: GalleryItem[] = GALLERY_GROUPS.flatMap(

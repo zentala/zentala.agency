@@ -1,5 +1,9 @@
 import type { GalleryGroup } from '../manifest'
 
+const ARTICLE_WIDGET_NOTE =
+  'An article widget: written inside a post (MDX), not on a page. See it in the software factory tour.'
+const ARTICLE_WIDGET_HREF = '/blog/software-factory-tour'
+
 export const BLOG_GROUP: GalleryGroup = {
   title: 'Blog',
   items: [
@@ -43,6 +47,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'box-grid',
       name: 'BoxGrid',
       path: 'blog/rich/BoxGrid.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose: 'Article widget: grid of titled boxes with items.',
       props: 'boxes ({ title, sub, items, highlight }), mono',
     },
@@ -50,6 +56,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'disclosure',
       name: 'Disclosure',
       path: 'blog/rich/Disclosure.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose: 'Article widget: collapsed detail on a native details element.',
       props: 'summary',
     },
@@ -57,6 +65,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'figure',
       name: 'Figure',
       path: 'blog/rich/Figure.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose: 'Article widget: labelled frame and caption for a diagram.',
       props: 'label, caption',
     },
@@ -64,6 +74,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'file-tree',
       name: 'FileTree',
       path: 'blog/rich/FileTree.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose: 'Article widget: annotated file tree.',
       props: 'nodes ({ name, depth, note })',
     },
@@ -71,6 +83,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'flow',
       name: 'Flow',
       path: 'blog/rich/Flow.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose: 'Article widget: boxes joined by arrows.',
       props: 'steps ({ label, note, highlight }), returnNote',
     },
@@ -78,6 +92,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'term',
       name: 'Term',
       path: 'blog/rich/Term.astro',
+      note: ARTICLE_WIDGET_NOTE,
+      noteHref: ARTICLE_WIDGET_HREF,
       purpose:
         'Article widget: inline term with a definition on hover and focus.',
       props: 'definition',

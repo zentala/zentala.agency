@@ -30,3 +30,11 @@ import BentoCard from './BentoCard.astro'
     </span>
   </div>
 </BentoCard>
+
+<style>
+  /* Dev span label: the card draws a 1px top line, so top 1px shows 2px of space, equal to the right offset */
+  :global(#central-interactive-card > .bento-card__dev-label) {
+    top: 1px;
+    right: 2px;
+  }
+</style>

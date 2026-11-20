@@ -57,6 +57,14 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       props: 'quote, author, role, variant (default; large, minimal)',
     },
     {
+      id: 'tech-icon-grid',
+      name: 'TechIconGrid',
+      path: 'primitives/sections/TechIconGrid.astro',
+      purpose:
+        'A line grid of technology logos, muted until hovered. A Section of its own.',
+      props: 'items (every logo), columns (5; 4), id',
+    },
+    {
       id: 'section-bento',
       name: 'SectionBento',
       path: 'primitives/sections/SectionBento.astro',
