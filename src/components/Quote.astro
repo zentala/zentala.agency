@@ -3,7 +3,7 @@ export interface QuoteProps {
   text: string
   author?: string
   source?: string
-  quoteMarkVariant?: 'typographic' | 'heavy' | 'sans-serif'
+  quoteMarkVariant?: 'typographic' | 'heavy'
 }
 
 const { text, author, source, quoteMarkVariant = 'typographic' } = Astro.props
@@ -12,7 +12,6 @@ const { text, author, source, quoteMarkVariant = 'typographic' } = Astro.props
 const quoteMarks = {
   typographic: { left: '"', right: '"' }, // U+201C, U+201D
   heavy: { left: '❝', right: '❞' }, // U+275D, U+275E
-  'sans-serif': { left: '🙶', right: '🙷' }, // U+1F676, U+1F677
 } as const
 
 const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
@@ -76,40 +75,31 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
     text-align: center;
     margin-bottom: 1.25rem;
 
-    // TODO: Improve quote marks positioning and change font to appropriate one
-    // Lewy cudzysłow - w lewym górnym rogu ramki tekstu, nachodzi ~30-40% od góry i lewej
-    &::before {
-      content: attr(data-quote-left);
+    /* The marks sit centred above and below the text, never over the words. */
+    padding: 3.25rem 0;
+
+    &::before,
+    &::after {
       font-family: Georgia, serif;
-      font-size: clamp(8rem, 12vw, 14rem);
-      color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+      font-size: clamp(4rem, 6vw, 6rem);
+      color: color-mix(in srgb, #fff 14%, transparent);
       position: absolute;
-      /* Pozycjonowanie względem ramki .quote-text - lewy górny róg */
-      top: 0;
-      left: 0;
-      /* ~60-70% poza tekstem, ~30-40% nachodzi na tekst (transform w % szerokości/wysokości tekstu) */
-      transform: translate(-70%, -25%);
+      left: 50%;
       line-height: 1;
-      z-index: -1;
+      height: 1ch;
       pointer-events: none;
     }
 
-    // Prawy cudzysłow - w prawym dolnym rogu ramki tekstu, nachodzi ~30-40% od prawej i dołu
+    &::before {
+      content: attr(data-quote-left);
+      top: 0;
+      transform: translateX(-50%);
+    }
+
     &::after {
       content: attr(data-quote-right);
-      font-family: Georgia, serif;
-      font-size: clamp(8rem, 12vw, 14rem);
-      color: color-mix(in srgb, var(--color-accent) 8%, transparent);
-      position: absolute;
-      /* Pozycjonowanie względem ramki .quote-text - prawy dolny róg */
-      top: auto;
       bottom: 0;
-      right: 0;
-      /* ~60-70% poza tekstem, ~30-40% nachodzi na tekst - przesuwa w prawo i w dół */
-      transform: translate(70%, 30%);
-      line-height: 1;
-      z-index: -1;
-      pointer-events: none;
+      transform: translateX(-50%);
     }
   }
 
@@ -132,7 +122,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
 
   // Wariant z tłem gradientowym
   .quote-container.gradient {
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    background: var(--color-surface-hover);
     border-left: 1px solid var(--color-line-strong);
   }
 
@@ -144,7 +134,7 @@ const marks = quoteMarks[quoteMarkVariant as keyof typeof quoteMarks]
 
     &::before,
     &::after {
-      color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+      color: color-mix(in srgb, #fff 12%, transparent);
     }
   }
 

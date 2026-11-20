@@ -5,9 +5,10 @@ import MockupDevLabel from './MockupDevLabel.astro'
 interface Props {
   decision: string
   realHref: string
+  label?: string
 }
 
-const { decision, realHref } = Astro.props as Props
+const { decision, realHref, label = 'Mockup of decision' } = Astro.props as Props
 ---
 
 <section class="section-full">
@@ -17,7 +18,7 @@ const { decision, realHref } = Astro.props as Props
     >
       <MockupDevLabel>Mockup</MockupDevLabel>
       <span>
-        Mockup of decision {decision} &mdash; <code>{realHref}</code> is
+        {label} {decision} &mdash; <code>{realHref}</code> is
         unchanged; compare at
         <a href={realHref} class="text-accent hover:text-accent-hover">
           {realHref}

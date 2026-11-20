@@ -1,0 +1,199 @@
+---
+/**
+ * Component gallery, dev only: every component with its variants, rendered with the
+ * real layout and styles. Rendered by src/pages/demo/[...slug].astro in dev only.
+ * Add a component here, in the manifest and in a Gallery* file, in the same change
+ * that creates it: tests/unit/component-gallery.test.ts fails otherwise.
+ * NOTE(intent): a group header is a SectionHeader in a bare container-bordered, not a
+ * Section: a Section's own bottom line would sit right next to the header's line.
+ */
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import GalleryLineGrid from '@/components/demo/GalleryLineGrid.astro'
+import GalleryPrimitives from '@/components/demo/GalleryPrimitives.astro'
+import GalleryCards from '@/components/demo/GalleryCards.astro'
+import GalleryBlog from '@/components/demo/GalleryBlog.astro'
+import GalleryRich from '@/components/demo/GalleryRich.astro'
+import GalleryBanners from '@/components/demo/GalleryBanners.astro'
+import GalleryGeneral from '@/components/demo/GalleryGeneral.astro'
+import GallerySections from '@/components/demo/GallerySections.astro'
+import GalleryTypography from '@/components/demo/GalleryTypography.astro'
+import { GALLERY_GROUPS } from '@/components/demo/manifest'
+
+const groupId = (title: string) =>
+  `group-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+const totalCount = GALLERY_GROUPS.reduce(
+  (sum, group) => sum + group.items.length,
+  0,
+)
+---
+
+<Layout
+  title="Component gallery"
+  description="Every component with its variants, rendered with the real layout. Dev only."
+  noindex
+>
+  <Hero
+    eyebrow="Dev only"
+    title="Component gallery"
+    subtitle={`${totalCount} components, every variant, real props`}
+  />
+
+  <GalleryTypography />
+
+  <Section id="index">
+    <SectionHeader
+      headline="Index"
+      subhead="Each section shows the component name, its file, one line of purpose, the props it takes and rendered examples. A new or changed component is added here in the same change; the unit test fails otherwise."
+      align="center"
+    />
+    <div class="line-grid">
+      {
+        GALLERY_GROUPS.map((group) => (
+          <div class="padding-responsive-md gallery-index">
+            <h3 class="gallery-index__title">
+              <a href={`#${groupId(group.title)}`}>{group.title}</a>
+            </h3>
+            <ul class="gallery-index__list">
+              {group.items.map((item) => (
+                <li>
+                  <a href={`#${item.id}`}>{item.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+  <Section id="props-mode">
+    <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+      <div class="gallery-toolbar" role="group" aria-label="Props display">
+        <span class="gallery-toolbar__label">Props shown as</span>
+        <button type="button" data-props-mode-button="plain" aria-pressed="true">plain</button>
+        <button type="button" data-props-mode-button="ts" aria-pressed="false">TypeScript</button>
+      </div>
+    </div>
+  </Section>
+
+  {
+    GALLERY_GROUPS.map((group) => (
+      <>
+        <div id={groupId(group.title)} class="container-bordered">
+          <SectionHeader headline={group.title}>
+            <p class="gallery-count">
+              {group.items.length} {group.items.length === 1 ? 'component' : 'components'}
+            </p>
+          </SectionHeader>
+        </div>
+        {group.title === 'Line-grid primitives' && <GalleryLineGrid />}
+        {group.title === 'Primitives' && <GalleryPrimitives />}
+        {group.title === 'Cards' && <GalleryCards />}
+        {group.title === 'Blog' && (
+          <>
+            <GalleryBlog />
+            <GalleryRich />
+          </>
+        )}
+        {group.title === 'Banners' && <GalleryBanners />}
+        {group.title === 'General' && <GalleryGeneral />}
+        {group.title === 'Page sections' && <GallerySections />}
+      </>
+    ))
+  }
+</Layout>
+
+<script>
+  const STORAGE_KEY = 'gallery-props-mode'
+  const buttons = document.querySelectorAll<HTMLButtonElement>(
+    '[data-props-mode-button]',
+  )
+  function applyMode(mode: string) {
+    document.documentElement.dataset.propsMode = mode
+    buttons.forEach((button) =>
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.propsModeButton === mode),
+      ),
+    )
+    localStorage.setItem(STORAGE_KEY, mode)
+  }
+  applyMode(localStorage.getItem(STORAGE_KEY) === 'ts' ? 'ts' : 'plain')
+  buttons.forEach((button) =>
+    button.addEventListener('click', () =>
+      applyMode(button.dataset.propsModeButton ?? 'plain'),
+    ),
+  )
+</script>
+
+<style>
+  .gallery-count {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .gallery-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .gallery-toolbar__label {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle);
+  }
+
+  .gallery-toolbar button {
+    padding: 0.25rem 0.5rem;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .gallery-toolbar button:hover,
+  .gallery-toolbar button[aria-pressed='true'] {
+    color: var(--color-text);
+  }
+
+  .gallery-index {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+  }
+
+  .gallery-index__title {
+    margin: 0;
+    font-size: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-subtle);
+  }
+
+  .gallery-index__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery-index a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .gallery-index a:hover {
+    color: var(--color-text);
+  }
+</style>

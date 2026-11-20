@@ -447,7 +447,8 @@ $header-height-mobile: calc(
   border-top: 1px solid $border-color;
   margin-top: -1px;
 
-  .line-grid + & {
+  // :global because .line-grid belongs to SectionGrid's style scope, not the including component's.
+  :global(.line-grid) + & {
     margin-top: 0;
   }
 }

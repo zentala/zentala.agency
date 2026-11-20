@@ -5,7 +5,7 @@
  * Provides:
  * - Auto-adjusting padding based on context (full vs grid)
  * - Prose typography for text content
- * - Hover states with border mechanics
+ * The cell is transparent and never lifts on hover: the grid cell around it owns lines and hover.
  *
  * Context modes:
  * - 'full': Large padding, max-width, centered (standalone)
@@ -44,50 +44,33 @@ const actualContext = context === 'auto' ? 'full' : context
   @use '../../../styles/variables' as *;
 
   .section-content {
-    background: var(--section-content-bg, #000);
-    transition: background 200ms;
     position: relative;
-    z-index: 1;
-
-    &:hover {
-      z-index: 10; // Lift above siblings
-    }
   }
 
-  :global(.bento-card) .section-content {
-    --section-content-bg: transparent;
-  }
-
-  :global(.bento-card:hover) .section-content {
-    z-index: 10; // keep highlight above neighbors
-  }
-
-  // Full-width context: generous padding + max-width
+  /* Full-width context: generous padding + max-width */
   .section-content--full {
-    max-width: 960px;
+    max-width: 60rem;
     margin: 0 auto;
-    @include px-responsive('lg'); // 64→48→32→24→16px
-    @include py-responsive('lg'); // 96→72→48→36→24px
+    @include px-responsive('lg');
+    @include py-responsive('lg');
   }
 
-  // Grid context: compact padding, use available space
+  /* Grid context: compact padding, use available space */
   .section-content--grid {
-    // Much smaller padding for grid items (especially in bento)
-    padding: 0.75rem 1rem; // ~12-16px
+    padding: 0.75rem 1rem;
 
     @include medium-up {
-      padding: 1rem 1.25rem; // ~16-20px
+      padding: 1rem 1.25rem;
     }
 
     @include large-up {
-      padding: 1.25rem 1.5rem; // ~20-24px on large screens
+      padding: 1.25rem 1.5rem;
     }
   }
 
-  // Prose styling for text content
   .section-content__body {
     width: 100%;
-    color: #f8fafc;
+    color: var(--color-text);
   }
 
   .section-content--prose .section-content__body {
@@ -96,44 +79,43 @@ const actualContext = context === 'auto' ? 'full' : context
     :global(h1) {
       margin-top: 0;
       margin-bottom: 1.5rem;
-      font-size: 44px;
+      font-size: var(--text-h1-page);
       font-weight: 300;
       line-height: 1.1;
-      color: #f8fafc;
+      color: var(--color-text);
     }
 
     :global(h2) {
       margin-top: 0;
       margin-bottom: 1rem;
-      font-size: 32px;
+      font-size: var(--text-h2);
       font-weight: 300;
       line-height: 1.1;
-      color: #f8fafc;
+      color: var(--color-text);
     }
 
     :global(h3) {
-      // Keep this as plain CSS (not @apply) because Tailwind @apply can be flaky in .astro <style>.
-      // Requirement: all h3 headings inside the bento grid should be 24px.
       margin-top: 0;
       margin-bottom: 1rem;
-      font-size: 24px;
+      font-size: var(--text-h3);
       font-weight: 300;
       line-height: 1.1;
-      color: #f8fafc;
+      color: var(--color-text);
     }
 
     :global(h4) {
       @apply mb-3 text-xl font-light;
-      color: rgba(248, 250, 252, 0.95);
+      color: var(--color-text);
     }
 
     :global(h5) {
       @apply mb-2 text-lg font-light;
-      color: rgba(248, 250, 252, 0.9);
+      color: var(--color-text-secondary);
     }
 
     :global(p) {
-      @apply mb-4 text-base text-white/70 md:text-lg;
+      @apply mb-4 text-base md:text-lg;
+      color: var(--color-text-secondary);
 
       &:last-child {
         margin-bottom: 0;
@@ -142,13 +124,14 @@ const actualContext = context === 'auto' ? 'full' : context
 
     :global(ul),
     :global(ol) {
-      @apply mb-4 ml-6 text-base text-white/70 md:text-lg;
+      @apply mb-4 ml-6 text-base md:text-lg;
+      color: var(--color-text-secondary);
 
       li {
         @apply mb-2;
 
         strong {
-          @apply text-white/90;
+          color: var(--color-text);
         }
       }
     }
@@ -162,11 +145,13 @@ const actualContext = context === 'auto' ? 'full' : context
     }
 
     :global(strong) {
-      @apply font-normal text-white;
+      @apply font-normal;
+      color: var(--color-text);
     }
 
     .value-statement {
-      @apply mt-4 italic text-white/70;
+      @apply mt-4 italic;
+      color: var(--color-text-secondary);
     }
 
     .mt-2 {

@@ -9,7 +9,7 @@ import type { Page } from '@playwright/test'
 
 /** Dev and runtime widgets that are not page lines. */
 export const HIDDEN_WIDGETS_CSS =
-  'astro-dev-toolbar, [class*=chat], [id*=chat], [id*=agentation], [data-agentation], .heading-switch { display: none !important } iframe { visibility: hidden !important }'
+  'astro-dev-toolbar, [class*=chat], [id*=chat], [id*=agentation], [data-agentation] { display: none !important } iframe { visibility: hidden !important }'
 
 /** Floating-segment check: a vertical line at least this long must join another line. */
 export const FLOATING_MIN_LENGTH = 80

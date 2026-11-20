@@ -21,7 +21,7 @@ build:
 
 # serve the production build
 preview:
-    npm run preview
+    npm run preview -- --host 127.0.0.1
 
 # unit tests
 test:
