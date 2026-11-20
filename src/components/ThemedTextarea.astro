@@ -1,24 +1,19 @@
 ---
-const { id = 'name', placeholder = 'Empty' } = Astro.props
+/** ThemedTextarea - ThemedInput as a multi-line field; `size="large"` for a tall one. */
+import ThemedInput from './ThemedInput.astro'
+
+interface Props {
+  id?: string
+  name?: string
+  placeholder?: string // the label text
+  icon?: string
+  size?: 'default' | 'large'
+  required?: boolean
+  disabled?: boolean
+  error?: string
+}
+
+const props = Astro.props
 ---
 
-<style>
-  .float-label-input:focus-within label,
-  .float-label-input textarea:not(:placeholder-shown) + label {
-    transform: translateY(-1.5rem) scale(0.75);
-  }
-</style>
-
-<div class="relative float-label-input border border-line">
-  <textarea
-    id={id}
-    placeholder=" "
-    class="block w-full bg-surface-raised text-lg text-fg p-8 focus:z-100 focus:bg-surface-hover appearance-none leading-normal"
-  ></textarea>
-  <label
-    for={id}
-    class="absolute top-8 left-6 text-fg-muted pointer-events-none transition text-lg duration-200 ease-in-out"
-  >
-    {placeholder}
-  </label>
-</div>
+<ThemedInput {...props} multiline />

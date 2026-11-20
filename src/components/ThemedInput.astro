@@ -1,30 +1,139 @@
 ---
-const { type = 'text', id = 'name', placeholder = 'Empty' } = Astro.props
+/**
+ * ThemedInput - a form field that is one cell of a line grid.
+ *
+ * The label sits inside the field, top left, small and muted; the value is
+ * below it. The field draws no border: lines come from the parent `.line-grid`
+ * (see ContactForm). Hover and focus use the shared cell overlay.
+ * `multiline` renders a textarea (ThemedTextarea wraps it); `size="large"` gives it more rows.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+interface Props {
+  type?: 'text' | 'email' | 'tel' | 'password' | 'url' | 'number'
+  id?: string
+  name?: string
+  placeholder?: string // the label text
+  icon?: string // short SiteIcon name, left of the field
+  multiline?: boolean
+  size?: 'default' | 'large'
+  required?: boolean
+  disabled?: boolean
+  error?: string
+  class?: string
+}
+
+const {
+  type = 'text',
+  id = 'name',
+  name = id,
+  placeholder = 'Empty',
+  icon,
+  multiline = false,
+  size = 'default',
+  required = false,
+  disabled = false,
+  error,
+  class: className = '',
+} = Astro.props
+
+const Control = multiline ? 'textarea' : 'input'
+const rows = size === 'large' ? 8 : 4
+const errorId = error ? `${id}-error` : undefined
 ---
 
-<style>
-  .float-label-input {
-    /* margin: 32px 0; */
+<div
+  class:list={[
+    'field',
+    icon && 'field--icon',
+    multiline && 'field--multiline',
+    error && 'field--error',
+    disabled && 'field--disabled',
+    className,
+  ]}
+>
+  {icon && <SiteIcon name={icon} size="md" class="field__icon" />}
+  <div class="field__body">
+    <label for={id} class="field__label">{placeholder}</label>
+    <Control
+      id={id}
+      name={name}
+      type={multiline ? undefined : type}
+      rows={multiline ? rows : undefined}
+      required={required}
+      disabled={disabled}
+      aria-invalid={error ? 'true' : undefined}
+      aria-describedby={errorId}
+      class="field__control"
+    />
+    {error && <p id={errorId} class="field__error">{error}</p>}
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .field {
+    @include cell-interactive;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem 0.875rem;
+    height: 100%;
+    cursor: text;
   }
 
-  .float-label-input:focus-within label,
-  .float-label-input input:not(:placeholder-shown) + label {
-    transform: translateY(-1.5rem) scale(0.75);
-    /* background-color: white; */
+  .field__icon {
+    margin-top: 1.5rem;
+    color: var(--color-text-subtle);
+  }
+
+  .field__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .field__label {
+    font-size: var(--text-label);
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+  }
+
+  .field__control {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    appearance: none;
+    outline: none;
+  }
+
+  .field--multiline .field__control {
+    resize: vertical;
+    min-height: 5rem;
+  }
+
+  .field__error {
+    margin-top: 0.25rem;
+    font-size: var(--text-label);
+    color: var(--color-danger);
+  }
+
+  .field--error .field__label {
+    color: var(--color-danger);
+  }
+
+  .field--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 </style>
-
-<div class="relative float-label-input border border-line">
-  <input
-    type={type}
-    id={id}
-    placeholder=" "
-    class="block w-full bg-surface-raised text-lg text-fg p-8 focus:z-100 focus:bg-surface-hover appearance-none leading-normal"
-  />
-  <label
-    for={id}
-    class="absolute top-8 left-6 text-fg-muted pointer-events-none transition text-lg duration-200 ease-in-out"
-  >
-    {placeholder}
-  </label>
-</div>

@@ -1,23 +1,56 @@
 ---
+/**
+ * ContactForm - the contact fields as cells of one line grid.
+ * Fields share lines, have no radius and no container border. Submit is a cell too.
+ */
 import ThemedInput from './ThemedInput.astro'
 import ThemedTextarea from './ThemedTextarea.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 ---
 
-<div class="cards-grid grid-cols-2">
-  <ThemedInput type="text" id="fName" placeholder="First Name" />
-  <ThemedInput type="text" id="lName" placeholder="Last Name" />
-  <ThemedInput type="email" id="email" placeholder="Email" />
-  <ThemedInput type="tel" id="phone" placeholder="Phone" />
+<form class="line-grid contact-form" action="mailto:zentala@gmail.com" method="post" enctype="text/plain">
+  <ThemedInput type="text" id="fName" placeholder="First name" icon="user" required />
+  <ThemedInput type="text" id="lName" placeholder="Last name" icon="user" />
+  <ThemedInput type="email" id="email" placeholder="Email" icon="envelope-simple" required />
+  <ThemedInput type="tel" id="phone" placeholder="Phone" icon="phone" />
+  <ThemedTextarea id="msg" placeholder="Your message" icon="chat-circle" />
+  <button type="submit" class="contact-form__submit">
+    <span>Send message</span>
+    <SiteIcon name="caret-right" size="sm" class="contact-form__arrow arrow-nudge" />
+  </button>
+</form>
 
-  <div class="col-span-2">
-    <ThemedTextarea id="msg" placeholder="Your message" />
-  </div>
-  <div class="col-span-2 text-right">
-    <button
-      type="submit"
-      class="border border-line p-8 px-16 text-lg font-normal transition-colors duration-fast hover:border-line-strong hover:bg-surface-hover hover:text-fg"
-    >
-      Send Message
-    </button>
-  </div>
-</div>
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .contact-form {
+    --cols-wide: 2;
+    --cols-medium: 2;
+    --cols-narrow: 1;
+  }
+
+  /* The message and the submit cell span both columns */
+  .contact-form > :global(:nth-child(5)),
+  .contact-form > :global(:nth-child(6)) {
+    grid-column: 1 / -1;
+  }
+
+  .contact-form__submit {
+    @include cell-interactive;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    min-height: 3.5rem;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+</style>
