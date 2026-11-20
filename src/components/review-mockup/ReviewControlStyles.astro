@@ -1,0 +1,86 @@
+---
+/**
+ * Styles for the controls inside a review thread: reactions, text buttons with
+ * the moving chevron, and the reply line. Global for the same reason as the
+ * thread styles: the client script clones this markup.
+ */
+---
+
+<style is:global>
+  .rv-thread__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .rv-react,
+  .rv-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .rv-react:hover,
+  .rv-link:hover {
+    color: var(--color-text);
+  }
+
+  .rv-react svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .rv-react[aria-pressed='true'] {
+    color: var(--color-accent);
+  }
+
+  .rv-thread__actions .rv-link {
+    margin-left: auto;
+  }
+
+  .rv-link--go {
+    color: var(--color-text-secondary);
+  }
+
+  .rv-link--go svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .rv-link--go:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Reply: one line that sits on a hairline, no box. */
+  .rv-reply {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.625rem;
+  }
+
+  .rv-reply__field {
+    flex: 1;
+    min-width: 0;
+    min-height: 1.55em;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    resize: none;
+    field-sizing: content;
+  }
+
+  .rv-reply__field::placeholder {
+    color: var(--color-text-subtle);
+  }
+</style>

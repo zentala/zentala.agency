@@ -1,0 +1,240 @@
+---
+/**
+ * Styles for what the review layer adds to the article text: highlights, the
+ * inline proposal (struck words plus new words), the selection popover and the
+ * post grid. Global because the client script creates these elements.
+ */
+---
+
+<style is:global>
+  .rv-root {
+    position: relative;
+  }
+
+  /* Post body: one column below 1280px, three static cells from 1280px
+     (review panel | article | thread margin). Same line model as the post page. */
+  .rv-grid {
+    --cols-wide: 1;
+    --cols-medium: 1;
+    --cols-narrow: 1;
+  }
+
+  .rv-aside {
+    display: none;
+  }
+
+  .rv-strip {
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 1280px) {
+    .rv-grid {
+      --grid-columns: minmax(15rem, 0.7fr) minmax(0, 46rem) minmax(22rem, 1.3fr);
+    }
+
+    .rv-grid > * {
+      padding-inline: 2rem;
+    }
+
+    .rv-grid > .rv-margin {
+      padding-inline: 1rem;
+    }
+
+    .rv-aside {
+      display: block;
+    }
+
+    .rv-strip {
+      display: none;
+    }
+
+    .rv-aside__sticky {
+      position: sticky;
+      top: calc(var(--header-spacer-height, 0px) + 2.5rem);
+      max-width: 12rem;
+      margin-left: auto;
+    }
+  }
+
+  /* Highlight: a neutral tint. The accent appears only on the active one. */
+  .rv-mark {
+    background-color: color-mix(in srgb, var(--color-text) 10%, transparent);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .rv-mark:hover {
+    background-color: color-mix(in srgb, var(--color-text) 16%, transparent);
+  }
+
+  .rv-mark--closed {
+    background-color: color-mix(in srgb, var(--color-text) 4%, transparent);
+    color: inherit;
+  }
+
+  .rv-mark.is-active,
+  .rv-ins.is-active {
+    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    color: var(--color-text);
+  }
+
+  .rv-mark--ghost,
+  .rv-mark--ghost:hover {
+    background-color: transparent;
+    color: inherit;
+    cursor: auto;
+  }
+
+  .rv-mark--editing {
+    display: none;
+  }
+
+  /* Proposal in the text: the old words stay readable, struck and dimmed. */
+  .rv-mark--del,
+  .rv-mark--del:hover,
+  .rv-mark--del.is-active {
+    background-color: transparent;
+    color: var(--color-text-subtle);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .rv-ins {
+    background-color: color-mix(in srgb, var(--color-text) 10%, transparent);
+    color: var(--color-text);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .rv-ins--editing {
+    cursor: text;
+    outline: 1px solid var(--line-focus);
+    outline-offset: 2px;
+  }
+
+  .rv-popover {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-surface);
+    animation: appear var(--motion-fast) var(--ease-enter);
+  }
+
+  .rv-popover[hidden] {
+    display: none;
+  }
+
+  .rv-popover__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    white-space: nowrap;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .rv-popover__btn + .rv-popover__btn {
+    border-left: 1px solid var(--color-line-strong);
+  }
+
+  .rv-popover__btn:hover {
+    background-color: color-mix(in srgb, var(--color-text) 6%, transparent);
+    color: var(--color-text);
+  }
+
+  .rv-popover__btn svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Review panel ("Agent will see"). */
+  .rv-summary {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .rv-summary__label {
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .rv-summary__queue {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.125rem 0.4rem;
+    margin-top: 0.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .rv-summary__num {
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .rv-summary__num:not(:first-child) {
+    margin-left: 0.5rem;
+  }
+
+  .rv-summary__states {
+    display: grid;
+    gap: 0.375rem;
+    margin-top: 1.5rem;
+  }
+
+  .rv-summary__state {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .rv-summary__state svg {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-summary__count {
+    margin-left: auto;
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rv-summary__hint {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-subtle);
+  }
+
+  /* Below 1280px the panel is a compact strip above the article. */
+  .rv-strip .rv-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .rv-strip .rv-summary__queue,
+  .rv-strip .rv-summary__hint {
+    margin: 0;
+  }
+
+  .rv-strip .rv-summary__states {
+    display: none;
+  }
+</style>

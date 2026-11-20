@@ -1,0 +1,35 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { AUTHOR_META, type ReviewMessageData } from './sample-data'
+
+/** One message in a review thread. Built from divs so article prose styles do not reach it. */
+interface Props {
+  message: ReviewMessageData
+}
+
+const { message } = Astro.props as Props
+const author = AUTHOR_META[message.author]
+---
+
+<div
+  class="rv-msg"
+  data-author={message.author}
+  data-pending={message.pending ? '' : undefined}
+>
+  <SiteIcon name={author.icon} class="rv-msg__icon" />
+  <div class="rv-msg__main">
+    <div class="rv-msg__meta">
+      <span class="rv-msg__name">{author.name}</span>
+      <span class="rv-msg__when">{message.when}</span>
+      {
+        message.author === 'owner' && (
+          <span class="rv-msg__sent">
+            <SiteIcon name="paper-plane-tilt" />
+            Sent to agent
+          </span>
+        )
+      }
+    </div>
+    <div class="rv-msg__body">{message.body}</div>
+  </div>
+</div>

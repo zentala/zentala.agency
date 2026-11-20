@@ -1,0 +1,219 @@
+---
+/**
+ * Mockup client script, part 3: what the owner can do. Activate a thread, like
+ * or dislike, reply, remove, select words and comment on them, or edit them in
+ * the text and send the change as a proposal. Everything stays in the page:
+ * no request is made and a reload resets it. Needs ReviewAnchorScript and
+ * ReviewDiffScript first.
+ */
+---
+
+<script is:inline>
+  ;(() => {
+    const api = window.rvMock
+    if (!api) return
+    const { root, article, rail } = api
+    const popover = root.querySelector('[data-rv-popover]')
+    const POPOVER_GAP = 10
+    let pendingRange = null
+    let createdCount = 0
+
+    const clone = (name) =>
+      root
+        .querySelector(`[data-rv-template="${name}"]`)
+        .content.firstElementChild.cloneNode(true)
+    const threadOf = (el) => el.closest('[data-rv-thread]')
+
+    const { refreshTotals, renderDiff } = api
+
+    function showPopover(range) {
+      pendingRange = range.cloneRange()
+      popover.hidden = false
+      const box = range.getBoundingClientRect()
+      const origin = root.getBoundingClientRect()
+      const half = popover.offsetWidth / 2
+      const center = Math.min(
+        Math.max(box.left + box.width / 2, half + 8),
+        window.innerWidth - half - 8,
+      )
+      popover.style.left = `${center - half - origin.left}px`
+      popover.style.top = `${box.top - origin.top - popover.offsetHeight - POPOVER_GAP}px`
+    }
+
+    function hidePopover() {
+      popover.hidden = true
+      pendingRange = null
+    }
+
+    function createThread(kind) {
+      const thread = clone(kind)
+      const id = `new-${++createdCount}`
+      thread.dataset.rvThread = id
+      thread.dataset.quote = pendingRange.toString()
+      const marks = api.wrapRange(pendingRange, id)
+      rail.append(thread)
+      window.getSelection().removeAllRanges()
+      hidePopover()
+      return { thread, id, marks }
+    }
+
+    function startComment() {
+      const { thread, id } = createThread('comment')
+      thread.querySelector('[data-rv-waiting]').textContent = 'Draft'
+      api.setActive(id)
+      thread.querySelector('textarea').focus({ preventScroll: true })
+    }
+
+    /** Inline edit: the selected words become editable in place; the original is kept for the diff. */
+    function startEdit() {
+      const { thread, id, marks } = createThread('proposal')
+      thread.classList.add('is-editing')
+      thread.querySelector('[data-rv-waiting]').textContent = 'Draft'
+      marks.forEach((mark) => mark.classList.add('rv-mark--editing'))
+      const editable = document.createElement('ins')
+      editable.className = 'rv-ins rv-ins--editing'
+      editable.dataset.rvIns = id
+      editable.contentEditable = 'plaintext-only'
+      editable.textContent = thread.dataset.quote
+      marks.at(-1).after(editable)
+      api.setActive(id)
+      editable.focus({ preventScroll: true })
+    }
+
+    function sendEdit(thread) {
+      const id = thread.dataset.rvThread
+      const editable = article.querySelector(`[data-rv-ins="${id}"]`)
+      thread.dataset.after = editable.textContent.trim()
+      editable.contentEditable = 'false'
+      editable.classList.remove('rv-ins--editing')
+      editable.before(' ')
+      api.marksOf(id).forEach((mark) => {
+        mark.classList.replace('rv-mark--editing', 'rv-mark--del')
+      })
+      thread.classList.remove('is-editing')
+      thread.querySelector('[data-rv-waiting]').textContent =
+        'Waiting for agent'
+      renderDiff(thread)
+      refreshTotals()
+      api.setActive(id)
+    }
+
+    function discard(thread) {
+      const id = thread.dataset.rvThread
+      article.querySelector(`[data-rv-ins="${id}"]`)?.remove()
+      api.marksOf(id).forEach((mark) => mark.replaceWith(...mark.childNodes))
+      thread.remove()
+      refreshTotals()
+      api.layout()
+    }
+
+    function removeThread(thread) {
+      thread.dataset.status = 'removed'
+      thread.removeAttribute('data-pending')
+      thread.querySelector('.rv-thread__chip').textContent = 'Removed'
+      thread.querySelector('[data-rv-waiting]')?.remove()
+      api
+        .marksOf(thread.dataset.rvThread)
+        .forEach((mark) => mark.classList.add('rv-mark--closed'))
+      refreshTotals()
+      api.setActive(null)
+    }
+
+    function react(button) {
+      const wasPressed = button.getAttribute('aria-pressed') === 'true'
+      threadOf(button)
+        .querySelectorAll('[data-rv-react][aria-pressed="true"]')
+        .forEach((pressed) => {
+          pressed.setAttribute('aria-pressed', 'false')
+          const count = pressed.querySelector('[data-rv-count]')
+          count.textContent = Number(count.textContent) - 1
+        })
+      if (wasPressed) return
+      button.setAttribute('aria-pressed', 'true')
+      const count = button.querySelector('[data-rv-count]')
+      count.textContent = Number(count.textContent) + 1
+    }
+
+    function reply(form) {
+      const field = form.querySelector('textarea')
+      const body = field.value.trim()
+      if (!body) return
+      const thread = threadOf(form)
+      const message = clone('message')
+      message.querySelector('.rv-msg__body').textContent = body
+      thread.querySelector('[data-rv-messages]').append(message)
+      thread.querySelector('[data-rv-waiting]').textContent =
+        'Waiting for agent'
+      field.value = ''
+      refreshTotals()
+      api.layout()
+    }
+
+    function demo() {
+      const range = api.findQuote(root.dataset.demoQuote)
+      if (!range) return
+      range.startContainer.parentElement.scrollIntoView({ block: 'center' })
+      const selection = window.getSelection()
+      selection.removeAllRanges()
+      selection.addRange(range)
+      showPopover(range)
+    }
+
+    const CLICK_ACTIONS = [
+      ['[data-rv-action="comment"]', startComment],
+      ['[data-rv-action="edit"]', startEdit],
+      ['[data-rv-demo]', demo],
+      ['[data-rv-react]', react],
+      ['[data-rv-send]', (el) => sendEdit(threadOf(el))],
+      ['[data-rv-cancel]', (el) => discard(threadOf(el))],
+      ['[data-rv-remove]', (el) => removeThread(threadOf(el))],
+      [
+        '[data-rv-head]',
+        (el) => {
+          const thread = threadOf(el)
+          const isActive = thread.classList.contains('is-active')
+          api.setActive(isActive ? null : thread.dataset.rvThread)
+        },
+      ],
+      [
+        '.rv-mark:not(.rv-mark--ghost), .rv-ins:not(.rv-ins--editing)',
+        (el) => api.setActive(el.dataset.rvFor ?? el.dataset.rvIns),
+      ],
+    ]
+
+    root.addEventListener('click', (event) => {
+      for (const [selector, run] of CLICK_ACTIONS) {
+        const target = event.target.closest(selector)
+        if (target) return run(target)
+      }
+    })
+
+    root.addEventListener('submit', (event) => {
+      event.preventDefault()
+      reply(event.target)
+    })
+
+    /* Keep the selection alive while the popover is clicked. */
+    popover.addEventListener('mousedown', (event) => event.preventDefault())
+
+    document.addEventListener('mouseup', (event) => {
+      if (
+        popover.contains(event.target) ||
+        event.target.closest('[data-rv-demo]')
+      )
+        return
+      const selection = window.getSelection()
+      const range = selection.rangeCount ? selection.getRangeAt(0) : null
+      const host = range?.commonAncestorContainer
+      const element =
+        host?.nodeType === Node.TEXT_NODE ? host.parentElement : host
+      const isReviewable =
+        range &&
+        !selection.isCollapsed &&
+        article.contains(element) &&
+        !element.closest('[data-rv-thread], [contenteditable]')
+      if (isReviewable) showPopover(range)
+      else hidePopover()
+    })
+  })()
+</script>

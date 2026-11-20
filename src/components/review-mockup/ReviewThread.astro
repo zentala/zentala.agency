@@ -1,0 +1,139 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import Tag from '@/components/primitives/Tag.astro'
+import ReviewMessage from './ReviewMessage.astro'
+import { STATUS_META, type ReviewThreadData } from './sample-data'
+
+/**
+ * One review thread: the quoted words, the conversation, reactions and a reply
+ * field. Closed threads start collapsed to one line. A proposal thread shows the
+ * owner's edit as a diff; the client script fills `.rv-diff` from data attributes.
+ */
+interface Props {
+  thread: ReviewThreadData
+}
+
+const { thread } = Astro.props as Props
+const status = STATUS_META[thread.status]
+const isOpen = thread.status === 'open'
+const isProposal = thread.kind === 'proposal'
+const lastAuthor = thread.messages.at(-1)?.author
+const waitingFor = isProposal || lastAuthor === 'owner' ? 'agent' : 'you'
+const headLabel = isProposal ? 'Suggested edit' : 'Comment'
+---
+
+<div
+  class:list={['rv-thread', 'not-prose', { 'is-collapsed': !isOpen }]}
+  data-rv-thread={thread.id}
+  data-kind={thread.kind}
+  data-status={thread.status}
+  data-quote={thread.quote}
+  data-after={thread.proposal?.after}
+  data-lost-anchor={thread.lostAnchor ? '' : undefined}
+  data-pending={isProposal && isOpen ? '' : undefined}
+>
+  <button
+    type="button"
+    class="rv-thread__head"
+    data-rv-head
+    aria-expanded={isOpen}
+  >
+    <SiteIcon name={status.icon} class="rv-thread__state" />
+    <span class="rv-thread__kind">{headLabel}</span>
+    {
+      isOpen && (
+        <span class="rv-thread__waiting" data-rv-waiting>
+          Waiting for {waitingFor}
+        </span>
+      )
+    }
+    <Tag text={status.label} theme="label" class="rv-thread__chip" />
+  </button>
+
+  {
+    thread.resolution && (
+      <div class="rv-thread__resolution">{thread.resolution}</div>
+    )
+  }
+
+  <div class="rv-thread__body">
+    {
+      thread.lostAnchor && (
+        <div class="rv-thread__lost">Was on: &ldquo;{thread.quote}&rdquo;</div>
+      )
+    }
+
+    {
+      isProposal && (
+        <div class="rv-proposal">
+          <div class="rv-diff" data-rv-diff />
+          <div class="rv-proposal__edit">
+            <span>Editing in the text</span>
+            <button type="button" class="rv-link rv-link--go" data-rv-send>
+              Send to agent
+              <SiteIcon name="caret-right" />
+            </button>
+            <button type="button" class="rv-link" data-rv-cancel>
+              Cancel
+            </button>
+          </div>
+          <div class="rv-proposal__state">
+            <SiteIcon name="paper-plane-tilt" />
+            Sent to agent. The file is unchanged until the agent applies it.
+          </div>
+        </div>
+      )
+    }
+
+    <div class="rv-thread__messages" data-rv-messages>
+      {thread.messages.map((message) => <ReviewMessage message={message} />)}
+    </div>
+
+    <div class="rv-thread__actions">
+      <button
+        type="button"
+        class="rv-react"
+        data-rv-react="like"
+        aria-pressed="false"
+        aria-label="Like"
+      >
+        <SiteIcon name="thumbs-up" />
+        <span data-rv-count>{thread.likes}</span>
+      </button>
+      <button
+        type="button"
+        class="rv-react"
+        data-rv-react="dislike"
+        aria-pressed="false"
+        aria-label="Dislike"
+      >
+        <SiteIcon name="thumbs-down" />
+        <span data-rv-count>{thread.dislikes}</span>
+      </button>
+      {
+        isOpen && (
+          <button type="button" class="rv-link" data-rv-remove>
+            Remove
+          </button>
+        )
+      }
+    </div>
+
+    {
+      isOpen && (
+        <form class="rv-reply" data-rv-reply>
+          <textarea
+            class="rv-reply__field"
+            rows="1"
+            placeholder="Reply or say what to change"
+            aria-label="Reply"
+          />
+          <button type="submit" class="rv-link rv-link--go">
+            Reply
+            <SiteIcon name="caret-right" />
+          </button>
+        </form>
+      )
+    }
+  </div>
+</div>

@@ -1,0 +1,75 @@
+---
+/**
+ * Mockup client script, part 2: the word diff shown in a proposal thread and
+ * the "Agent will see" totals. Needs ReviewAnchorScript first.
+ */
+---
+
+<script is:inline>
+  ;(() => {
+    const api = window.rvMock
+    if (!api) return
+    const { root } = api
+
+    function refreshTotals() {
+      const totals = {
+        comments: root.querySelectorAll('.rv-msg[data-pending]').length,
+        proposals: root.querySelectorAll(
+          '[data-kind="proposal"][data-pending]:not(.is-editing)',
+        ).length,
+      }
+      root.querySelectorAll('[data-rv-total]').forEach((el) => {
+        el.textContent = totals[el.dataset.rvTotal]
+      })
+      root.querySelectorAll('[data-rv-unit]').forEach((el) => {
+        const unit = el.dataset.rvUnit
+        el.textContent = totals[unit] === 1 ? unit.slice(0, -1) : unit
+      })
+      root.querySelectorAll('[data-rv-state]').forEach((row) => {
+        row.querySelector('[data-rv-state-count]').textContent = api
+          .threads()
+          .filter(
+            (thread) => thread.dataset.status === row.dataset.rvState,
+          ).length
+      })
+    }
+
+    /** Word diff by common prefix and suffix: enough for a one-phrase edit. */
+    function renderDiff(thread) {
+      const before = thread.dataset.quote.split(/\s+/)
+      const after = thread.dataset.after.split(/\s+/)
+      let head = 0
+      while (head < before.length && before[head] === after[head]) head++
+      let tail = 0
+      while (
+        tail < before.length - head &&
+        tail < after.length - head &&
+        before.at(-1 - tail) === after.at(-1 - tail)
+      ) {
+        tail++
+      }
+      const part = (tag, words) => {
+        const el = document.createElement(tag)
+        el.textContent = words.join(' ')
+        return el
+      }
+      const box = thread.querySelector('[data-rv-diff]')
+      box.replaceChildren(
+        `${before.slice(0, head).join(' ')} `,
+        part('del', before.slice(head, before.length - tail)),
+        ' ',
+        part('ins', after.slice(head, after.length - tail)),
+        ` ${before.slice(before.length - tail).join(' ')}`,
+      )
+    }
+
+    api.refreshTotals = refreshTotals
+    api.renderDiff = renderDiff
+    api
+      .threads()
+      .filter((thread) => thread.dataset.kind === 'proposal')
+      .forEach(renderDiff)
+    refreshTotals()
+    api.layout()
+  })()
+</script>

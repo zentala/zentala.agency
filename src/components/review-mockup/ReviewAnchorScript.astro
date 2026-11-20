@@ -1,0 +1,200 @@
+---
+/**
+ * Mockup client script, part 1: finds each thread's quoted words in the rendered
+ * article (a TextQuoteSelector lookup), wraps them in highlight spans, and lays
+ * the threads out: in the margin next to their highlight at xl, under the
+ * paragraph below. Inline on purpose: an inline script exists only in the HTML
+ * of a rendered page, and no mockup page is rendered by `astro build`.
+ */
+---
+
+<script is:inline>
+  ;(() => {
+    const root = document.querySelector('[data-rv-root]')
+    if (!root) return
+    const article = root.querySelector('[data-rv-article]')
+    const rail = root.querySelector('[data-rv-rail]')
+    const WIDE = window.matchMedia('(min-width: 1280px)')
+    const THREAD_GAP = 12
+    const THREAD_LEAD = 14
+    const FOLDED = {
+      '‘': "'",
+      '’': "'",
+      '“': '"',
+      '”': '"',
+      ' ': ' ',
+    }
+    /* Typographic quotes come from the Markdown renderer; fold them 1:1 so offsets stay valid. */
+    const fold = (text) => text.replace(/[‘’“” ]/g, (char) => FOLDED[char])
+
+    function textNodes() {
+      const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) =>
+          node.parentElement.closest('[data-rv-thread]')
+            ? NodeFilter.FILTER_REJECT
+            : NodeFilter.FILTER_ACCEPT,
+      })
+      const nodes = []
+      while (walker.nextNode()) nodes.push(walker.currentNode)
+      return nodes
+    }
+
+    /** Exact words -> DOM Range, across inline elements. Null when the words are gone. */
+    function findQuote(quote) {
+      const nodes = textNodes()
+      const starts = []
+      let text = ''
+      nodes.forEach((node) => {
+        starts.push(text.length)
+        text += fold(node.data)
+      })
+      const from = text.indexOf(fold(quote))
+      if (from < 0) return null
+      const to = from + quote.length
+      const startIndex = starts.findLastIndex((start) => start <= from)
+      const endIndex = starts.findLastIndex((start) => start < to)
+      const range = document.createRange()
+      range.setStart(nodes[startIndex], from - starts[startIndex])
+      range.setEnd(nodes[endIndex], to - starts[endIndex])
+      return range
+    }
+
+    /** Wraps every text piece inside the range in a highlight span for one thread. */
+    function wrapRange(range, threadId) {
+      const pieces = textNodes()
+        .filter((node) => range.intersectsNode(node))
+        .map((node) => ({
+          node,
+          from: node === range.startContainer ? range.startOffset : 0,
+          to: node === range.endContainer ? range.endOffset : node.data.length,
+        }))
+      const marks = []
+      pieces.forEach(({ node, from, to }) => {
+        if (to <= from || !node.data.slice(from, to).trim()) return
+        const piece = node.splitText(from)
+        piece.splitText(to - from)
+        const mark = document.createElement('span')
+        mark.className = 'rv-mark'
+        mark.dataset.rvFor = threadId
+        piece.replaceWith(mark)
+        mark.append(piece)
+        marks.push(mark)
+      })
+      return marks
+    }
+
+    const marksOf = (threadId) => [
+      ...article.querySelectorAll(`[data-rv-for="${threadId}"]`),
+    ]
+    const anchorOf = (threadId) =>
+      article.querySelector(
+        `[data-rv-for="${threadId}"]:not(.rv-mark--editing), [data-rv-ins="${threadId}"]`,
+      )
+    const threads = () => [...root.querySelectorAll('[data-rv-thread]')]
+
+    /** Shows a proposal in the text: old words struck through, new words after them. */
+    function showProposal(thread) {
+      const marks = marksOf(thread.dataset.rvThread)
+      if (!marks.length) return
+      marks.forEach((mark) => mark.classList.add('rv-mark--del'))
+      const inserted = document.createElement('ins')
+      inserted.className = 'rv-ins'
+      inserted.dataset.rvIns = thread.dataset.rvThread
+      inserted.textContent = thread.dataset.after
+      marks.at(-1).after(' ', inserted)
+    }
+
+    function layout() {
+      const anchored = threads()
+        .map((thread) => ({
+          thread,
+          anchor: anchorOf(thread.dataset.rvThread),
+        }))
+        .filter(({ anchor }) => anchor)
+      anchored.forEach(({ thread }) => rail.append(thread))
+      const top = (el) => el.getBoundingClientRect().top
+      anchored.sort((a, b) => top(a.anchor) - top(b.anchor))
+
+      if (!WIDE.matches) {
+        rail.classList.remove('is-laid-out')
+        rail.style.minHeight = ''
+        anchored.forEach(({ thread, anchor }) => {
+          thread.style.top = ''
+          const item = anchor.closest('li')
+          if (item) return item.append(thread)
+          let after = anchor.closest('p, h2, h3, h4, blockquote') ?? anchor
+          while (after.nextElementSibling?.matches('[data-rv-thread]')) {
+            after = after.nextElementSibling
+          }
+          after.after(thread)
+        })
+        return
+      }
+
+      anchored.forEach(({ thread }) => rail.append(thread))
+      rail.classList.add('is-laid-out')
+      const railTop = top(rail)
+      let floor = 0
+      anchored.forEach(({ thread, anchor }) => {
+        const wanted = top(anchor) - railTop - THREAD_LEAD
+        const y = Math.max(wanted, floor)
+        thread.style.top = `${y}px`
+        floor = y + thread.offsetHeight + THREAD_GAP
+      })
+      rail.style.minHeight = `${floor}px`
+    }
+
+    function setActive(threadId) {
+      threads().forEach((thread) => {
+        const isActive = thread.dataset.rvThread === threadId
+        thread.classList.toggle('is-active', isActive)
+        const isClosed = thread.dataset.status !== 'open'
+        thread.classList.toggle('is-collapsed', isClosed && !isActive)
+        thread
+          .querySelector('[data-rv-head]')
+          .setAttribute('aria-expanded', String(!isClosed || isActive))
+      })
+      article
+        .querySelectorAll('.rv-mark, .rv-ins')
+        .forEach((mark) =>
+          mark.classList.toggle(
+            'is-active',
+            (mark.dataset.rvFor ?? mark.dataset.rvIns) === threadId,
+          ),
+        )
+      layout()
+    }
+
+    threads().forEach((thread) => {
+      const range = findQuote(thread.dataset.quote)
+      if (!range) return
+      const marks = wrapRange(range, thread.dataset.rvThread)
+      const isClosed = thread.dataset.status !== 'open'
+      marks.forEach((mark) => {
+        mark.classList.toggle('rv-mark--closed', isClosed)
+        mark.classList.toggle(
+          'rv-mark--ghost',
+          thread.hasAttribute('data-lost-anchor'),
+        )
+      })
+      if (thread.dataset.kind === 'proposal') showProposal(thread)
+    })
+
+    layout()
+    WIDE.addEventListener('change', layout)
+    window.addEventListener('resize', layout)
+    window.addEventListener('load', layout)
+
+    window.rvMock = {
+      root,
+      article,
+      rail,
+      findQuote,
+      wrapRange,
+      marksOf,
+      threads,
+      layout,
+      setActive,
+    }
+  })()
+</script>

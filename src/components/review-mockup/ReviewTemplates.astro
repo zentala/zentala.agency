@@ -1,0 +1,57 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import ReviewMessage from './ReviewMessage.astro'
+import ReviewThread from './ReviewThread.astro'
+import type { ReviewThreadData } from './sample-data'
+
+/**
+ * Markup the client script clones: a blank comment thread, a blank proposal
+ * thread, an owner message, and the selection popover. Server-rendered so the
+ * clones carry the same icons and classes as the sample threads.
+ */
+const blank: ReviewThreadData = {
+  id: '',
+  kind: 'comment',
+  status: 'open',
+  quote: '',
+  messages: [],
+  likes: 0,
+  dislikes: 0,
+}
+const blankProposal: ReviewThreadData = {
+  ...blank,
+  kind: 'proposal',
+  proposal: { after: '' },
+}
+---
+
+<template data-rv-template="comment">
+  <ReviewThread thread={blank} />
+</template>
+
+<template data-rv-template="proposal">
+  <ReviewThread thread={blankProposal} />
+</template>
+
+<template data-rv-template="message">
+  <ReviewMessage
+    message={{ author: 'owner', when: 'now', body: '', pending: true }}
+  />
+</template>
+
+<div
+  class="rv-popover"
+  data-rv-popover
+  role="toolbar"
+  aria-label="Selected text"
+  hidden
+>
+  <button type="button" class="rv-popover__btn" data-rv-action="comment">
+    <SiteIcon name="chat-circle" />
+    Comment
+  </button>
+  <button type="button" class="rv-popover__btn" data-rv-action="edit">
+    <SiteIcon name="pencil-simple" />
+    Suggest edit
+  </button>
+</div>

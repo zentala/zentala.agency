@@ -1,0 +1,199 @@
+---
+/**
+ * Styles for a review thread, in the margin (xl) and under its paragraph
+ * (below xl). Global because the client script clones threads and moves them
+ * between the margin and the article. No borders around a thread: a boxed
+ * element in a grid cell would draw lines that join nothing.
+ */
+---
+
+<style is:global>
+  .rv-rail {
+    position: relative;
+  }
+
+  .rv-thread {
+    padding: 0.75rem 1rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    line-height: 1.55;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .rv-thread.is-active {
+    background-color: color-mix(in srgb, var(--color-text) 6%, transparent);
+  }
+
+  @media (min-width: 1280px) {
+    .rv-rail.is-laid-out > .rv-thread {
+      position: absolute;
+      right: 0;
+      left: 0;
+    }
+  }
+
+  /* Under the paragraph (below 1280px): a quiet tinted block inside the reading column. */
+  .rv-article .rv-thread {
+    margin: 0.75rem 0 1.75rem;
+    background-color: color-mix(in srgb, var(--color-text) 4%, transparent);
+  }
+
+  .rv-article li > .rv-thread {
+    margin-bottom: 0.75rem;
+  }
+
+  .rv-thread__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .rv-thread__state {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-thread[data-status='open'] .rv-thread__state {
+    color: var(--color-accent);
+  }
+
+  .rv-thread__kind,
+  .rv-thread__waiting {
+    white-space: nowrap;
+  }
+
+  .rv-thread__waiting {
+    color: var(--color-text-subtle);
+  }
+
+  .rv-thread__chip {
+    margin-left: auto;
+  }
+
+  .rv-thread__resolution,
+  .rv-thread__lost {
+    margin-top: 0.375rem;
+    color: var(--color-text-muted);
+  }
+
+  .rv-thread__lost {
+    color: var(--color-text-subtle);
+  }
+
+  .rv-thread:not(.is-collapsed) .rv-thread__resolution,
+  .rv-thread.is-collapsed .rv-thread__body {
+    display: none;
+  }
+
+  .rv-thread__messages {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .rv-thread__messages:empty {
+    display: none;
+  }
+
+  .rv-msg {
+    display: flex;
+    gap: 0.625rem;
+  }
+
+  .rv-msg__icon {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.125rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-msg__main {
+    min-width: 0;
+  }
+
+  .rv-msg__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.5rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-msg__name {
+    color: var(--color-text);
+  }
+
+  .rv-msg__sent,
+  .rv-proposal__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-msg:not([data-pending]) .rv-msg__sent {
+    display: none;
+  }
+
+  .rv-msg__sent svg,
+  .rv-proposal__state svg {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .rv-proposal {
+    margin-top: 0.75rem;
+  }
+
+  .rv-proposal__state {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 0.5rem;
+  }
+
+  .rv-proposal__state svg {
+    margin-top: 0.25rem;
+  }
+
+  .rv-proposal__edit {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    color: var(--color-text-subtle);
+  }
+
+  .rv-thread.is-editing .rv-proposal__edit {
+    display: flex;
+  }
+
+  .rv-proposal__edit > span {
+    flex-basis: 100%;
+  }
+
+  .rv-thread.is-editing
+    :is(.rv-diff, .rv-proposal__state, .rv-thread__actions, .rv-reply) {
+    display: none;
+  }
+
+  .rv-diff del {
+    color: var(--color-text-subtle);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .rv-diff ins {
+    background-color: color-mix(in srgb, var(--color-text) 10%, transparent);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+</style>

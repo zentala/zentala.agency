@@ -1,0 +1,55 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { SAMPLE_THREADS, STATUS_META, type ThreadStatus } from './sample-data'
+
+/**
+ * "Agent will see" panel: what waits in the agent's queue, thread counts per
+ * state, and the button that demos the selection popover. Rendered twice (left
+ * rail at xl, strip above the article below); the client script updates both.
+ */
+const STATUS_ORDER: ThreadStatus[] = [
+  'open',
+  'done',
+  'declined',
+  'outdated',
+  'removed',
+]
+
+const statusCounts = STATUS_ORDER.map((status) => ({
+  status,
+  ...STATUS_META[status],
+  count: SAMPLE_THREADS.filter((thread) => thread.status === status).length,
+}))
+---
+
+<div class="rv-summary" data-rv-summary>
+  <div class="rv-summary__label">Agent will see</div>
+  <div class="rv-summary__queue">
+    <span class="rv-summary__num" data-rv-total="comments">0</span>
+    <span data-rv-unit="comments">comments</span>
+    <span class="rv-summary__num" data-rv-total="proposals">0</span>
+    <span data-rv-unit="proposals">proposals</span>
+  </div>
+
+  <div class="rv-summary__states">
+    {
+      statusCounts.map(({ status, label, icon, count }) => (
+        <div class="rv-summary__state" data-rv-state={status}>
+          <SiteIcon name={icon} />
+          <span>{label}</span>
+          <span class="rv-summary__count" data-rv-state-count>
+            {count}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="rv-summary__hint">
+    Select any words in the text to comment on them or to suggest an edit.
+  </div>
+  <button type="button" class="rv-link rv-link--go" data-rv-demo>
+    Try it on a sample
+    <SiteIcon name="caret-right" />
+  </button>
+</div>

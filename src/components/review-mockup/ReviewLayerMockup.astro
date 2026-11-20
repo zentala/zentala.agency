@@ -1,0 +1,140 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import MockupNotice from '@/components/blog/mockups/MockupNotice.astro'
+import PostMeta from '@/components/blog/PostMeta.astro'
+import PostToc from '@/components/blog/PostToc.astro'
+import { partLabel } from '@/lib/blog/part-label'
+import { getVisiblePosts } from '@/lib/blog/visibility'
+import ReviewAnchorScript from './ReviewAnchorScript.astro'
+import ReviewControlStyles from './ReviewControlStyles.astro'
+import ReviewDiffScript from './ReviewDiffScript.astro'
+import ReviewInteractScript from './ReviewInteractScript.astro'
+import ReviewSummary from './ReviewSummary.astro'
+import ReviewTemplates from './ReviewTemplates.astro'
+import ReviewTextStyles from './ReviewTextStyles.astro'
+import ReviewThread from './ReviewThread.astro'
+import ReviewThreadStyles from './ReviewThreadStyles.astro'
+import { DEMO_QUOTE, REVIEW_POST_SLUG, SAMPLE_THREADS } from './sample-data'
+
+/**
+ * Mockup of E008, the in-context review layer: a real post in the post layout,
+ * with text-range highlights, a margin of comment threads, a selection popover
+ * and inline edit proposals. Static sample data, nothing is stored.
+ * Dev only (see src/pages/mockups/[mockup].astro).
+ */
+const WORDS_PER_MINUTE = 200
+
+const posts = await getVisiblePosts()
+const post = posts.find((candidate) => candidate.slug === REVIEW_POST_SLUG)
+if (!post) {
+  throw new Error(`Review mockup: post "${REVIEW_POST_SLUG}" not found`)
+}
+
+const { Content, headings } = await post.render()
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3)
+const readingMinutes = Math.max(
+  1,
+  Math.round(post.body.trim().split(/\s+/).length / WORDS_PER_MINUTE),
+)
+const seriesParts = posts.flatMap((other) =>
+  other.data.series === post.data.series && other.data.part !== undefined
+    ? [other.data.part]
+    : [],
+)
+const currentPartLabel =
+  post.data.part === undefined
+    ? undefined
+    : partLabel(post.data.part, seriesParts)
+---
+
+<div class="rv-root" data-rv-root data-demo-quote={DEMO_QUOTE}>
+  <MockupNotice label="Mockup of epic" decision="E008" realHref={`/blog/${post.slug}`} />
+
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="px-responsive py-responsive-lg">
+        <div class="mx-auto flex max-w-6xl flex-col">
+          <h1
+            class="text-4xl font-light leading-tight text-fg sm:text-5xl lg:text-6xl"
+          >
+            {post.data.title}
+          </h1>
+          <div class="mt-6">
+            <PostMeta
+              date={post.data.date}
+              category={post.data.category}
+              partLabel={currentPartLabel}
+              size="sm"
+              tone="muted"
+            />
+          </div>
+          <p
+            class="mt-6 text-xl font-light leading-relaxed text-fg-secondary md:text-2xl"
+          >
+            {post.data.excerpt}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="line-grid rv-grid">
+        <aside class="rv-aside py-responsive-md" aria-label="Review">
+          <div class="rv-aside__sticky">
+            <a href="/blog" class="rv-link rv-link--back no-underline">
+              <SiteIcon name="caret-left" />
+              All posts
+            </a>
+            <div class="mt-3 text-sm text-fg-subtle">
+              {readingMinutes} min read
+            </div>
+            <div class="mt-10">
+              <ReviewSummary />
+            </div>
+          </div>
+        </aside>
+
+        <div class="px-responsive py-responsive-md">
+          <div class="mx-auto w-full min-w-0 max-w-3xl">
+            <div class="rv-strip">
+              <ReviewSummary />
+            </div>
+            <details class="mb-6 py-3">
+              <summary
+                class="cursor-pointer text-label uppercase text-fg-secondary hover:text-fg"
+              >
+                On this page
+              </summary>
+              <div class="pt-4">
+                <PostToc headings={tocHeadings} />
+              </div>
+            </details>
+            <article
+              class="rv-article custom-markdown prose-blog prose w-full max-w-[70ch]"
+              data-rv-article
+            >
+              <Content />
+            </article>
+          </div>
+        </div>
+
+        <aside class="rv-margin py-responsive-md" aria-label="Review threads">
+          <div class="rv-rail" data-rv-rail>
+            {SAMPLE_THREADS.map((thread) => <ReviewThread thread={thread} />)}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <ReviewTemplates />
+</div>
+
+<ReviewTextStyles />
+<ReviewThreadStyles />
+<ReviewControlStyles />
+<ReviewAnchorScript />
+<ReviewDiffScript />
+<ReviewInteractScript />
