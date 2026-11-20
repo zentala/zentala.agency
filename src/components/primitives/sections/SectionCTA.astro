@@ -4,7 +4,7 @@
  *
  * - Top line and hover overlay from the shared line model (DESIGN.md section 3)
  * - Full-width layout
- * - Icon + text + arrow pattern
+ * - Icon + text + arrow pattern, drawn as the shared button look (Button.astro variants)
  * - Hover states
  * - External link support
  *
@@ -24,7 +24,7 @@ interface Props {
   text: string
   icon?: string // Lucide icon name
   arrow?: boolean
-  variant?: 'primary' | 'secondary' | 'outline'
+  variant?: 'primary' | 'secondary' | 'accent'
   external?: boolean
   bgText?: string // Large background text (e.g., "PORTFOLIO")
   class?: string
@@ -110,12 +110,19 @@ const rel = external ? 'noopener noreferrer' : undefined
     }
   }
 
+  // The inner label is the button; the whole cell is the link.
   .section-cta__content {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.75rem;
     position: relative;
     z-index: 1; // Above background text
+    border: 1px solid transparent;
+    padding: 0.75rem 2rem;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
   }
 
   .section-cta__icon {
@@ -139,50 +146,31 @@ const rel = external ? 'noopener noreferrer' : undefined
     transition: transform var(--motion-fast) var(--ease-standard);
   }
 
-  // Variants
-  .section-cta--primary,
-  .section-cta--outline {
-    .section-cta__text {
-      @apply text-accent;
-    }
-
-    .section-cta__icon,
-    .section-cta__arrow {
-      @apply text-accent;
-    }
-
-    &:hover {
-      .section-cta__text {
-        @apply text-accent-hover;
-      }
-
-      .section-cta__icon,
-      .section-cta__arrow {
-        @apply text-accent-hover;
-      }
-    }
+  // Variants: same look as Button.astro. A solid white or solid blue label also needs a
+  // visible focus ring, which the cell overlay provides.
+  .section-cta--primary .section-cta__content {
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-surface);
   }
 
-  .section-cta--secondary {
-    background-color: rgba(255, 255, 255, 0.02);
-
-    .section-cta__text {
-      @apply text-fg;
-    }
-
-    .section-cta__icon,
-    .section-cta__arrow {
-      @apply text-fg-muted;
-    }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-
-      .section-cta__icon,
-      .section-cta__arrow {
-        @apply text-fg-secondary;
-      }
-    }
+  .section-cta--primary:hover .section-cta__content {
+    background-color: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
   }
 
+  .section-cta--secondary .section-cta__content {
+    border-color: var(--color-line-strong);
+    color: var(--color-text);
+  }
+
+  .section-cta--accent .section-cta__content {
+    background-color: var(--color-accent-solid);
+    border-color: var(--color-accent-solid);
+    color: var(--color-text);
+  }
+
+  .section-cta--accent:hover .section-cta__content {
+    border-color: var(--color-accent);
+  }
 </style>

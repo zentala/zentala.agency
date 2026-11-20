@@ -2,8 +2,9 @@
 :root {
   // Surfaces
   --color-surface: #000;
-  --color-surface-raised: #0a0a0a;
-  --color-surface-hover: #111827;
+  --color-surface-raised: #0b0f17;
+  // Hover wash: the accent at 10% over the surface. Text on it stays above 17:1 for white.
+  --color-surface-hover: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
 
   // Lines
   --color-line: #1f2937;

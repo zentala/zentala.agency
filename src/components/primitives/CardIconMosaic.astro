@@ -46,11 +46,11 @@ const { icons, class: className = '' } = Astro.props
     background-size: 22px 22px;
     -webkit-mask-image: linear-gradient(
       to bottom,
-      #000 0%,
-      #000 45%,
+      black 0%,
+      black 45%,
       transparent 88%
     );
-    mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 88%);
+    mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
   }
 
   .mosaic__glow {
@@ -99,7 +99,7 @@ const { icons, class: className = '' } = Astro.props
     width: 3.75rem;
     height: 3.75rem;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 0.75rem;
+    border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(2px);
     color: rgba(255, 255, 255, 0.72);
@@ -133,7 +133,13 @@ const { icons, class: className = '' } = Astro.props
   }
   :global(.group):hover .mosaic__cell {
     border-color: rgba(255, 255, 255, 0.28);
-    color: #fff;
+    color: var(--color-text);
+  }
+
+  /* Toggled by the script below when the mosaic leaves or enters the viewport. */
+  .mosaic.is-paused .mosaic__grid,
+  .mosaic.is-paused .mosaic__cell {
+    animation-play-state: paused;
   }
 
   @media (max-width: 770px) {
@@ -158,3 +164,19 @@ const { icons, class: className = '' } = Astro.props
     }
   }
 </style>
+
+<script>
+  // Ambient loops run only while the mosaic is on screen, and never under reduced motion
+  // (the CSS above already drops the animations in that case).
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const mosaics = document.querySelectorAll<HTMLElement>('.mosaic')
+
+  if (!reduced && mosaics.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        entry.target.classList.toggle('is-paused', !entry.isIntersecting)
+      }
+    })
+    mosaics.forEach((mosaic) => observer.observe(mosaic))
+  }
+</script>

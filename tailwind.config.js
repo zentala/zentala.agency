@@ -45,6 +45,9 @@ export default {
         success: 'var(--color-success)',
         danger: 'var(--color-danger)',
       },
+      borderRadius: {
+        chip: 'var(--radius-sm)',
+      },
       fontSize: {
         label: [
           'var(--text-label)',

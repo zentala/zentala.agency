@@ -5,41 +5,26 @@ interface Props {
   href: string
   text: string
   target?: string
-  variant?: 'primary' | 'secondary' | 'outline' | 'filled' | 'light'
+  /** primary: solid white. secondary: outlined. accent: solid blue, one main action per page. */
+  variant?: 'primary' | 'secondary' | 'accent'
   icon?: string // Lucide icon name from astro-icon (left icon)
   arrow?: boolean // Show arrow on right (default true)
 }
 
 const { href, text, target, variant = 'primary', icon, arrow = true } = Astro.props
 
-let buttonClasses = 'px-8 py-3 font-semibold transition-colors'
+// Every variant has a 1px border so buttons in one row have equal height.
+const baseClasses =
+  'inline-flex items-center justify-center border px-8 py-3 font-semibold transition-colors duration-fast ease-standard focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
 
-// Base styles for all buttons (no rounded corners)
-buttonClasses += ' inline-flex items-center justify-center' // To center icon and text
+const variantClasses = {
+  primary: 'border-white bg-white text-surface hover:border-fg-secondary hover:bg-fg-secondary',
+  secondary: 'border-line-strong text-fg hover:bg-surface-hover',
+  accent:
+    'border-accent-solid bg-accent-solid text-fg hover:border-accent hover:bg-accent-solid',
+} as const
 
-switch (variant) {
-  case 'primary':
-    buttonClasses += ' bg-blue-600 text-white hover:bg-blue-700'
-    break
-  case 'secondary':
-    buttonClasses +=
-      ' border border-line bg-surface-raised text-white hover:bg-surface-hover'
-    break
-  case 'outline':
-    buttonClasses +=
-      ' border border-line-strong text-fg hover:bg-white hover:text-black'
-    break
-  case 'filled':
-    buttonClasses += ' bg-gray-700 text-white hover:bg-gray-600' // Example filled style
-    break
-  case 'light':
-    buttonClasses +=
-      ' bg-white text-black hover:bg-zinc-100 hover:text-black'
-    break
-  default: // Default to primary if variant is not recognized
-    buttonClasses += ' bg-blue-600 text-white hover:bg-blue-700'
-    break
-}
+const buttonClasses = `${baseClasses} ${variantClasses[variant]}`
 ---
 
 <a href={href} target={target} class={buttonClasses}>

@@ -5,7 +5,7 @@ export interface TagGroupProps {
   tags: string[]
   class?: string
   tagClass?: string
-  theme?: 'pill' | 'simple' | 'label'
+  theme?: 'chip' | 'simple' | 'label'
   prefix?: string
   hrefPrefix?: string
 }
@@ -14,7 +14,7 @@ const {
   tags,
   class: className = '',
   tagClass = '',
-  theme = 'pill',
+  theme = 'chip',
   prefix = '#',
   hrefPrefix,
 } = Astro.props as TagGroupProps

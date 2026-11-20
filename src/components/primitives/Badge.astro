@@ -1,0 +1,34 @@
+---
+/**
+ * Badge - small square label (4px radius, surface-raised fill, no border).
+ * `tech` is the muted technology tag; `accent` is the accent-coloured variant.
+ */
+export interface Props {
+  variant?: 'tech' | 'accent'
+  size?: 'sm' | 'md'
+  class?: string
+}
+
+const { variant = 'tech', size = 'sm', class: className = '' } = Astro.props
+
+const variantClass = {
+  tech: 'text-fg-muted',
+  accent: 'text-accent',
+}[variant]
+
+const sizeClass = {
+  sm: 'px-1.5 py-0.5',
+  md: 'px-2 py-1',
+}[size]
+---
+
+<span
+  class:list={[
+    'inline-block rounded-chip bg-surface-raised text-label font-semibold uppercase',
+    variantClass,
+    sizeClass,
+    className,
+  ]}
+>
+  <slot />
+</span>

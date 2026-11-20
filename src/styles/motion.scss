@@ -11,6 +11,13 @@
   }
 }
 
+// First-viewport entrance for hero text only. Nothing below the fold animates on scroll.
+// --reveal-index (0 or 1) staggers by 60ms; CSS only, so it never waits for JS.
+.hero-reveal {
+  animation: appear var(--motion-slow) var(--ease-enter) both;
+  animation-delay: calc(var(--reveal-index, 0) * 60ms);
+}
+
 // Every interactive element without its own overlay gets this inset ring.
 // Cells draw the same colour through their ::after overlay (see cell-interactive).
 :focus-visible {
@@ -27,6 +34,10 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .hero-reveal {
+    animation: none;
   }
 
   [data-motion] {

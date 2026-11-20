@@ -3,7 +3,7 @@ export interface TagProps {
   text: string
   href?: string
   prefix?: string
-  theme?: 'pill' | 'simple' | 'label'
+  theme?: 'chip' | 'simple' | 'label'
   class?: string
 }
 
@@ -11,20 +11,20 @@ const {
   text,
   href,
   prefix = '#',
-  theme = 'pill',
+  theme = 'chip',
   class: className = '',
 } = Astro.props as TagProps
 
+// Chips are square (--radius-sm) and filled with surface-raised; no border, so no dangling line in a grid cell.
 const themeClassMap = {
-  pill:
-    'rounded-full border border-line-strong px-2 py-0.5 text-label font-semibold uppercase text-fg',
+  chip: 'inline-block rounded-chip bg-surface-raised px-2 py-0.5 text-label font-semibold uppercase text-fg',
   simple:
     'text-label font-semibold uppercase text-fg-subtle transition-colors duration-fast ease-standard group-hover:text-fg-secondary',
   label:
-    'inline-block rounded bg-white/10 px-1.5 py-0.5 text-label font-semibold uppercase text-fg-muted transition-colors duration-fast ease-standard group-hover:bg-white group-hover:text-surface',
+    'inline-block rounded-chip bg-surface-raised px-1.5 py-0.5 text-label font-semibold uppercase text-fg-muted transition-colors duration-fast ease-standard group-hover:bg-white group-hover:text-surface',
 } as const
 
-const baseClass = themeClassMap[theme] ?? themeClassMap.pill
+const baseClass = themeClassMap[theme] ?? themeClassMap.chip
 
 const effectivePrefix = theme === 'label' ? '' : prefix
 ---
