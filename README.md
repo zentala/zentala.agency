@@ -46,9 +46,18 @@ All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
+| `just setup`              | Installs dependencies (`npm ci`)                 |
+| `just dev`                | Starts the dev server under the process manager  |
+| `just build`               | Type-check and build the production site to `./dist/` |
+| `just check`               | Pre-commit gate: lint, build, tests, line guard  |
+| `just preview`             | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+npm scripts (`npm run dev`, `npm run build`) remain as the fallback.
+
+## Documentation for contributors and agents
+
+- [AGENTS.md](AGENTS.md): instructions for coding agents (commands, structure, conventions).
+- [DESIGN.md](DESIGN.md): the design reference (tokens, line-grid model, primitives, decisions).
+- [Line-grid layout skill](.agents/skills/line-grid-layout/SKILL.md): how to build pages, sections and cards.

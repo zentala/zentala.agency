@@ -10,7 +10,8 @@ src/
 │   ├── Banner.astro          # Main component (wrapper)
 │   ├── types.ts              # TypeScript interfaces
 │   ├── variants/
-│   │   └── Simple.astro      # Simple banner variant template
+│   │   ├── Simple.astro      # Simple banner variant template
+│   │   └── SimpleWithImage.astro
 │   └── README.md            # This file
 └── sections/banners/
     ├── devex.astro           # DevEx banner (content + design)
@@ -27,7 +28,7 @@ Each banner in `src/sections/banners/` is a self-contained `.astro` file with it
 ```astro
 ---
 // src/sections/banners/devex.astro
-import Banner from '../components/banners/Banner.astro'
+import Banner from '../../components/banners/Banner.astro'
 ---
 
 <Banner
@@ -43,7 +44,7 @@ You can also add custom styles directly in the banner file if needed:
 
 ```astro
 ---
-import Banner from '../components/banners/Banner.astro'
+import Banner from '../../components/banners/Banner.astro'
 ---
 
 <Banner
@@ -66,7 +67,7 @@ import Banner from '../components/banners/Banner.astro'
 
 ```astro
 ---
-import Banner from '../components/banners/Banner.astro'
+import Banner from '../../components/banners/Banner.astro'
 ---
 
 <Banner
@@ -85,7 +86,7 @@ Create a new `.astro` file in `src/sections/banners/`:
 ```astro
 ---
 // src/sections/banners/your-banner.astro
-import Banner from '../components/banners/Banner.astro'
+import Banner from '../../components/banners/Banner.astro'
 ---
 
 <Banner
@@ -168,6 +169,10 @@ bannerEnd: 'your-banner'
    }
    ```
 
+## Line model
+
+A banner is a standalone full-width block: the variant includes the `line-block` mixin (top line, hover overlay), so it takes no border of its own. Place it in a `container-bordered` parent (for example `section-full` > `container-bordered`); see [DESIGN.md](../../../DESIGN.md) section 3 and the [line-grid-layout skill](../../../.agents/skills/line-grid-layout/SKILL.md).
+
 ## Design Principles
 
 - **Self-contained banners**: Each banner in `src/sections/banners/` has its own content and can have custom design
@@ -178,9 +183,9 @@ bannerEnd: 'your-banner'
 ## Current Variants
 
 - `simple` - Basic clickable banner with title, description, and link (entire banner is clickable)
+- `simpleWithImage` - Simple banner with an image
 
 ## Future Variants (planned)
 
-- `simpleWithImage` - Simple banner with image
 - `centered` - Centered content layout
 - `split` - Split layout with image and content

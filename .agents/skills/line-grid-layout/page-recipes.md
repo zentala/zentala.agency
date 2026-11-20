@@ -1,0 +1,144 @@
+# Page recipes
+
+Code copied from current files. Procedure and rules: [SKILL.md](SKILL.md). Numbers and props: [DESIGN.md](../../../DESIGN.md) sections 3 and 4.
+
+## New page: header plus a card grid
+
+From `src/pages/portfolio.astro`. Each `PortfolioItem` wraps a `CardContainer`, so it is a grid cell.
+
+```astro
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import PortfolioItem from '../components/cards/PortfolioItem.astro'
+
+const heroProps = { title: 'Portfolio', subtitle: 'Best examples of my works' }
+---
+
+<Layout title="Portfolio" description="...">
+  <Hero {...heroProps} />
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="cards-grid">
+        {elements.map((element, index) => <PortfolioItem key={`portfolio-${index}`} {...element} />)}
+      </div>
+    </div>
+  </section>
+</Layout>
+```
+
+`src/pages/about/capabilities.astro` has the same shape with `OfferCard`. A route needs no registration for the guard: it is found in `dist/`.
+
+## Page with header and grid sections
+
+From `src/pages/offer/harness-engineering.astro` (the `Section` primitive is `section-grid` plus `container-bordered`; `SectionHeader` owns the line under the header).
+
+```astro
+<Section id="what-i-do">
+  <SectionHeader
+    eyebrow="What the engagement looks like"
+    icon="ph:handshake-thin"
+    headline="Inside the engagement"
+    subhead="..."
+  />
+  <SectionGrid columns={3}>
+    {items.map((item) => (
+      <SectionContent context="grid" prose={false}>
+        <CardBackgroundIcon icon={item.icon} />
+        ...
+      </SectionContent>
+    ))}
+  </SectionGrid>
+</Section>
+
+<Section id="who-i-am">
+  <SectionHeader headline="..." subhead="..." />
+  <SectionContent context="full"><p>...</p></SectionContent>
+</Section>
+```
+
+Imports: `Section`, `SectionHeader`, `SectionGrid`, `SectionContent` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`.
+
+## New section
+
+1. Prose or equal cards: `Section` + `SectionHeader` + `SectionGrid columns={2..5}` (above).
+2. Cells in a custom shape: `<div class="line-grid" style="--cols-wide: 4">` inside `container-bordered`. Set `--cols-wide`, `--cols-medium`, `--cols-narrow` on the element; never write a media query for columns.
+3. Custom proportions: `--grid-columns: 1.67fr 1fr` (replaces the whole template). The blog post body uses a three-column static grid, from `src/pages/blog/[postSlug].astro`:
+
+```css
+.blog-post-grid { --cols-wide: 1; --cols-medium: 1; --cols-narrow: 1; }
+@media (min-width: 1280px) {
+  .blog-post-grid { --grid-columns: minmax(15rem, 1fr) minmax(0, 54rem) minmax(18rem, 1fr); }
+}
+```
+
+4. A listing whose count varies: add `line-grid--fill-last` to the wrapper (from `src/pages/blog/index.astro`):
+
+```astro
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid line-grid--fill-last">
+      {feed.map((entry) => <PostCard ... />)}
+    </div>
+  </div>
+</section>
+```
+
+5. Standalone block after a grid: `SectionCTA`, `SectionBlockQuote` or a banner. They carry `line-block` themselves. A banner needs a `container-bordered` parent (from the post page):
+
+```astro
+{Banner && (
+  <section class="section-full">
+    <div class="container-bordered"><Banner /></div>
+  </section>
+)}
+```
+
+```astro
+<SectionCTA href="https://example.com" text="Visit the site" icon="external-link" variant="primary" />
+```
+
+## New card component
+
+A card is a grid cell. Root it on `CardContainer` (`src/components/cards/CardContainer.astro`; props `href`, `hasHover`, `backgroundIcon`, `class`, `target`). It draws no line and clips inside an inner wrapper.
+
+```astro
+---
+import CardContainer from './CardContainer.astro'
+import CardBackgroundIcon from '../primitives/CardBackgroundIcon.astro'
+
+const { title, description, icon, href } = Astro.props
+---
+
+<CardContainer href={href} class="offer-card">
+  <CardBackgroundIcon icon={icon} />
+  <h3 class="offer-card__title">{title}</h3>
+  <p class="offer-card__description">{description}</p>
+</CardContainer>
+```
+
+Based on `src/components/cards/OfferCard.astro`. With `href` the cell is an `<a>` and gets the hover and focus overlay; without it the cell is static.
+
+What never goes in the card styles: `border`, `overflow: hidden`, fixed `aspect-ratio`, opaque `background`, `margin` or `transform` or `z-index` for hover. Height comes from `min-height`; a tall card uses `grid-row: span N` on the cell.
+
+A custom interactive cell that is not an `<a>` opts in with the mixin:
+
+```scss
+@use '../../styles/variables' as *;
+
+.my-cell { @include cell-interactive; }
+```
+
+Clipping lives on an inner element, as `CardContainer` does:
+
+```scss
+.card-container__clip { position: relative; flex: 1; overflow: clip; isolation: isolate; }
+```
+
+## Responsive spacing
+
+```html
+<div class="py-responsive-md">   <!-- 16 to 64px -->
+<div class="px-responsive">      <!-- horizontal: 64 to 16px; -lg and -xl variants exist -->
+<div class="py-responsive-lg">   <!-- heroes: 24 to 96px -->
+```

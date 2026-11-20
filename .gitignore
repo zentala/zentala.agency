@@ -56,3 +56,10 @@ nul
 
 # kb session logs — per-session noise, not project history
 .plan/sessions/
+
+# Track only the repository-owned line-grid-layout skill despite the global .agents/ ignore.
+!.agents/
+.agents/*
+!.agents/skills/
+.agents/skills/*
+!.agents/skills/line-grid-layout/

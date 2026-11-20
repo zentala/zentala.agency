@@ -1,4 +1,4 @@
-> DESIGN.md at the repository root supersedes this guide; where they differ, DESIGN.md wins.
+> **RETIRED 2026-11-20.** Superseded by [DESIGN.md](../DESIGN.md) and the [line-grid-layout skill](../.agents/skills/line-grid-layout/SKILL.md). This file describes the removed transparent-border model (Border System, Container Behavior, Content Grid, Section Primitives) and components that no longer exist; do not follow it. The bento span notation moved to [docs/design/bento-notation.md](../docs/design/bento-notation.md). Kept for history only.
 
 # Theming & Design System Guide
 
