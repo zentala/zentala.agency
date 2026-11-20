@@ -1,0 +1,44 @@
+---
+/**
+ * Board demo, F3: the Portfolio card of the home bento (markup of BentoAboutMe)
+ * as a shell. The default slot takes the mosaic. The caption lets the pointer
+ * through, so a mosaic may react to hover per icon.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+---
+
+<a href="/portfolio" class="mosaic-card group relative block w-full overflow-clip">
+  <slot />
+  <div class="mosaic-card__caption absolute inset-0 flex flex-col justify-end p-6 md:p-10">
+    <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">Portfolio</h3>
+    <p class="max-w-md text-xs leading-relaxed text-fg-secondary md:text-sm">
+      Twenty years of shipped work — indoor location systems for retail, a
+      socially-aware humanoid robot, Backstage portals for enterprises, and a
+      smart home built into my own walls.
+    </p>
+    <span
+      class="mt-3 inline-flex items-center gap-1 text-label font-medium uppercase text-fg-subtle transition-colors duration-fast ease-standard group-hover:text-fg-secondary"
+    >
+      See the portfolio
+      <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+    </span>
+  </div>
+</a>
+
+<style>
+  /* The home card is one bento column wide and two rows tall. */
+  .mosaic-card {
+    min-height: 35rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .mosaic-card__caption {
+    pointer-events: none;
+  }
+
+  @media (max-width: 770px) {
+    .mosaic-card {
+      min-height: 30rem;
+    }
+  }
+</style>

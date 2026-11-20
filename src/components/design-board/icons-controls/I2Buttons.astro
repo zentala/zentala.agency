@@ -1,0 +1,165 @@
+---
+/**
+ * I2: buttons and CTAs. Four looks, each shown as a main and a second action at rest,
+ * with hover pinned, and with the real labels of /contact and of the home hero.
+ */
+import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
+import BoardCell from './BoardCell.astro'
+import BoardButton, { type ButtonKind, type ButtonLook } from './BoardButton.astro'
+import { getSystem, systemIcon, type SystemKey } from './icon-systems'
+import type { SemanticIconName } from './icon-map'
+
+interface LookSpec extends BoardOption {
+  key: ButtonLook
+  /** The icon system this look was drawn with. */
+  icons: SystemKey
+  main: ButtonKind
+  second: ButtonKind
+  /** Kinds used on /contact for "Book a call" and "Send message". */
+  contact: readonly [ButtonKind, ButtonKind]
+}
+
+const LOOKS: readonly LookSpec[] = [
+  {
+    key: 'A',
+    label: 'Przed zmianami',
+    consequence:
+      'Pogrubiony napis, główna akcja w pełnym niebieskim, na /contact biała ramka; strzałka stoi w miejscu.',
+    icons: 'A',
+    main: 'primary',
+    second: 'secondary',
+    contact: ['outline', 'outline'],
+  },
+  {
+    key: 'B',
+    label: 'Koniec fali 5',
+    consequence:
+      'Pogrubiony napis, główna akcja biała pełna, „Book a Call” na /contact pełny niebieski z niebieską ramką.',
+    icons: 'A',
+    main: 'primary',
+    second: 'secondary',
+    contact: ['accent', 'secondary'],
+  },
+  {
+    key: 'C',
+    label: 'Obecnie',
+    consequence:
+      'Szara ramka i ledwo widoczne wypełnienie, zwykła waga, strzałka rusza się na hover; brak koloru odróżniającego główną akcję.',
+    icons: 'B',
+    main: 'primary',
+    second: 'secondary',
+    contact: ['accent', 'secondary'],
+  },
+  {
+    key: 'D',
+    label: 'Propozycja',
+    consequence:
+      'Cienka niebieska ramka bez wypełnienia na głównej akcji, spokojna ikona z lewej, niebieska strzałka bez trzonka, która się przesuwa; druga akcja w szarej ramce.',
+    icons: 'C',
+    main: 'primary',
+    second: 'secondary',
+    contact: ['primary', 'secondary'],
+  },
+]
+
+interface ButtonSample {
+  text: string
+  href: string
+  icon: SemanticIconName
+  role: 'main' | 'second'
+}
+
+const GROUPS: readonly { label: string; hover?: boolean; context?: 'contact'; buttons: readonly ButtonSample[] }[] = [
+  {
+    label: 'Główna i druga akcja',
+    buttons: [
+      { text: 'Get started', href: '/contact', icon: 'chat', role: 'main' },
+      { text: 'View Portfolio', href: '/portfolio', icon: 'nav-portfolio', role: 'second' },
+    ],
+  },
+  {
+    label: 'To samo na hover (pokazane na stałe)',
+    hover: true,
+    buttons: [
+      { text: 'Get started', href: '/contact', icon: 'chat', role: 'main' },
+      { text: 'View Portfolio', href: '/portfolio', icon: 'nav-portfolio', role: 'second' },
+    ],
+  },
+  {
+    label: '/contact',
+    context: 'contact',
+    buttons: [
+      { text: 'Book a Call', href: 'http://cal.com/zentala', icon: 'book-call', role: 'main' },
+      { text: 'Send message', href: '/contact#write', icon: 'send', role: 'second' },
+    ],
+  },
+  {
+    label: 'Strona główna',
+    buttons: [
+      { text: 'Schedule Discovery Call', href: 'http://cal.com/zentala', icon: 'book-call', role: 'main' },
+      { text: 'View Portfolio', href: '/portfolio', icon: 'nav-portfolio', role: 'second' },
+    ],
+  },
+]
+
+function kindFor(look: LookSpec, group: (typeof GROUPS)[number], sample: ButtonSample): ButtonKind {
+  if (group.context === 'contact') return look.contact[sample.role === 'main' ? 0 : 1]
+  return sample.role === 'main' ? look.main : look.second
+}
+---
+
+<BoardQuestion
+  id="I2"
+  question="Jak mają wyglądać przyciski i CTA?"
+  options={LOOKS}
+  recommendation="D. Wraca niebieska ramka z /contact, ale jako cienka linia bez wypełnienia, więc główna akcja jest od razu widoczna, a strona zostaje spokojna; bez pogrubień, ze strzałką, która się rusza."
+  columns={2}
+>
+  {
+    LOOKS.map((look) => {
+      const system = getSystem(look.icons)
+      return (
+        <BoardCell option={`${look.key} · ${look.label}`}>
+          {GROUPS.map((group) => (
+            <div class="button-group">
+              <p class="button-group__label">{group.label}</p>
+              <div class="button-group__row">
+                {group.buttons.map((sample) => (
+                  <BoardButton
+                    look={look.key}
+                    kind={kindFor(look, group, sample)}
+                    text={sample.text}
+                    href={sample.href}
+                    hover={group.hover}
+                    icon={systemIcon(system, 'button', sample.icon)}
+                    arrow={systemIcon(system, 'buttonArrow', 'arrow-next')}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </BoardCell>
+      )
+    })
+  }
+</BoardQuestion>
+
+<style>
+  .button-group {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .button-group__label {
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .button-group__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+</style>

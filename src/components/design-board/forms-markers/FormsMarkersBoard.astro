@@ -1,0 +1,69 @@
+---
+/**
+ * Design board, group "forms, draft and review markers, home icon mosaic".
+ * Three owner questions (F1 to F3), each a section with its options rendered
+ * side by side in real context. Dev-only demo: nothing here changes the site.
+ */
+import { getCollection } from 'astro:content'
+import CardIconMosaic from '@/components/primitives/CardIconMosaic.astro'
+import BoardQuestion from './BoardQuestion.astro'
+import BoardCell from './BoardCell.astro'
+import CurrentForm from './CurrentForm.astro'
+import FloatForm from './FloatForm.astro'
+import MarkerList, { type MarkerPart, type MarkerState } from './MarkerList.astro'
+import MosaicCard from './MosaicCard.astro'
+import MosaicIcons from './MosaicIcons.astro'
+import MosaicTech from './MosaicTech.astro'
+import { F1, F2, F3, MARKER_STATES, MOSAIC_CURRENT, MOSAIC_MORE } from './questions'
+
+const SERIES = 'agent-native-harness'
+const SERIES_TITLE = 'Agent-Native Harness'
+
+const posts = (await getCollection('blog'))
+  .filter((post) => post.data.series === SERIES)
+  .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
+  .slice(0, MARKER_STATES.length)
+
+const parts: MarkerPart[] = posts.map((post, index) => ({
+  title: post.data.title,
+  slug: post.slug,
+  part: post.data.part ?? index + 1,
+  state: MARKER_STATES[index] as MarkerState,
+}))
+---
+
+<BoardQuestion {...F1} columns={2}>
+  <BoardCell option="A" caption="Teraz na /contact"><CurrentForm /></BoardCell>
+  <BoardCell option="B" caption="Pływająca etykieta, komórki siatki"><FloatForm variant="grid" prefix="f1b" /></BoardCell>
+  <BoardCell option="C" caption="Pływająca etykieta, tylko dolna linia"><FloatForm variant="line" prefix="f1c" /></BoardCell>
+  <BoardCell option="D" caption="Siatka + niebieska linia przy fokusie"><FloatForm variant="accent" prefix="f1d" /></BoardCell>
+</BoardQuestion>
+
+<BoardQuestion {...F2} columns={4}>
+  <BoardCell option="A" caption="Ostatni commit: 1 px"><MarkerList variant="current" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="B" caption="2 px, półprzezroczyste"><MarkerList variant="wide" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="C" caption="2 px + napis po najechaniu"><MarkerList variant="wide-label" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="D" caption="1 px, półprzezroczyste"><MarkerList variant="thin" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+</BoardQuestion>
+
+<BoardQuestion {...F3} columns={4}>
+  <BoardCell option="A" caption="Teraz: 4 ikony 24 px" flush>
+    <MosaicCard><CardIconMosaic icons={MOSAIC_CURRENT} /></MosaicCard>
+  </BoardCell>
+  <BoardCell option="B" caption="16 ikon 24 px" flush>
+    <MosaicCard><MosaicIcons icons={MOSAIC_MORE} columns={4} cell={3.75} icon={24} /></MosaicCard>
+  </BoardCell>
+  <BoardCell option="C" caption="4 ikony 48 px" flush>
+    <MosaicCard><MosaicIcons icons={MOSAIC_CURRENT} columns={2} cell={7} icon={48} /></MosaicCard>
+  </BoardCell>
+  <BoardCell option="D" caption="30 logotypów, kolor po najechaniu" flush>
+    <MosaicCard><MosaicTech count={30} /></MosaicCard>
+  </BoardCell>
+</BoardQuestion>
+
+<script>
+  // Demo forms never submit: the board only shows how the fields behave.
+  document.querySelectorAll<HTMLFormElement>('[data-board-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => event.preventDefault())
+  })
+</script>

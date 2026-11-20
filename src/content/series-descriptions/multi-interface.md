@@ -1,6 +1,6 @@
 ---
 title: 'Multi-Interface'
-tagline: 'One interface, three audiences: user, developer, agent'
+tagline: 'One interface, two audiences: human and agent'
 ctaVariant: 'harness'
 ---
 

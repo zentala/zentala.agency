@@ -1,0 +1,119 @@
+---
+import BoardQuestion from './BoardQuestion.astro'
+import IndexCurrent from './IndexCurrent.astro'
+import IndexGrid from './IndexGrid.astro'
+import OptionBar from './OptionBar.astro'
+import SeriesRow from './SeriesRow.astro'
+import { loadBoardData } from './data'
+
+/**
+ * Design board, group "blog index": questions B1 (layout of /blog) and B2
+ * (how one series is presented). Dev-only demo; the real /blog is untouched.
+ * Every option renders the real posts and series, drafts included.
+ */
+const data = await loadBoardData()
+
+const B1 = {
+  id: 'B1',
+  question: 'Jak ma być zbudowana strona /blog?',
+  recommendation:
+    'C: siatka postów z generowanymi okładkami i komórką archiwum, serie niżej. D warto wybrać, jeśli najnowszy post ma dostać wyraźnie więcej miejsca.',
+  note: 'Na 390 px każda opcja układa się w jedną kolumnę: posty jeden pod drugim, potem archiwum, potem serie; okładki maleją do 96 px. W B, C i D nagłówki sekcji mają 44 px wysokości.',
+}
+
+const B2 = {
+  id: 'B2',
+  question: 'Jak ma wyglądać blok jednej serii?',
+  recommendation:
+    'D: numer części po lewej, tytuł, data po prawej; "Start" stoi w pierwszym wierszu, a nazwa serii i liczba części w nagłówku.',
+  note: 'Każda opcja pokazuje trzy prawdziwe serie obok siebie. W wąskiej komórce (poniżej ok. 340 px) data z prawej znika, a data z lewej przechodzi nad tytuł.',
+}
+---
+
+<div data-design-board="blog-index">
+  <BoardQuestion {...B1} />
+
+  <OptionBar
+    questionId="B1"
+    letter="A"
+    name="Obecny /blog"
+    consequence="Bez zmian: posty bez serii i karty serii w jednej siatce, serie pokazują 6 części i zwijają resztę."
+  />
+  <IndexCurrent data={data} />
+
+  <OptionBar
+    questionId="B1"
+    letter="B"
+    name="Siatka postów bez obrazków, potem serie"
+    consequence="Od razu 5 najnowszych postów i komórka archiwum, niżej 3 serie z pełnymi listami; nic nie przyciąga wzroku poza tytułami."
+  />
+  <IndexGrid data={data} />
+
+  <OptionBar
+    questionId="B1"
+    letter="C"
+    name="To samo z generowanymi okładkami"
+    consequence="Każdy post dostaje okładkę wyliczoną z adresu (plan z linii siatki, numer części w największym polu); strona jest wyższa o 144 px na rząd."
+    recommended
+  />
+  <IndexGrid data={data} covers />
+
+  <OptionBar
+    questionId="B1"
+    letter="D"
+    name="Najnowszy post szeroko, reszta w siatce"
+    consequence="Najnowszy post zajmuje dwie kolumny z dużą okładką; w siatce mieszczą się 4 posty zamiast 5 i komórka archiwum."
+  />
+  <IndexGrid data={data} covers featured />
+
+  <BoardQuestion {...B2} />
+
+  <OptionBar
+    questionId="B2"
+    letter="A"
+    name="Obecna karta serii"
+    consequence='Etykieta "Series" nad nazwą, numery części, środek długiej serii zwinięty pod przyciskiem; liczby części nie widać.'
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="card" />
+    </div>
+  </section>
+
+  <OptionBar
+    questionId="B2"
+    letter="B"
+    name="Tabela: data po lewej, tytuł po prawej"
+    consequence="Widać rytm publikacji, ale nie widać kolejności części; w wersji roboczej szkice oznacza kreska po lewej."
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="date" />
+    </div>
+  </section>
+
+  <OptionBar
+    questionId="B2"
+    letter="C"
+    name="Numer części po lewej i status po prawej"
+    consequence="Widać kolejność i stan (Start, New, Draft), ale nie ma dat; na produkcji prawa kolumna jest prawie pusta."
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="number" />
+    </div>
+  </section>
+
+  <OptionBar
+    questionId="B2"
+    letter="D"
+    name="Numer, tytuł i data w jednej tabeli"
+    consequence="Kolejność po lewej, data po prawej; status zastępuje datę tylko tam, gdzie coś znaczy (Start, Draft)."
+    recommended
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="combined" />
+    </div>
+  </section>
+</div>

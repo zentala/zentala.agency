@@ -457,6 +457,7 @@ $header-height-mobile: calc(
 // Zero layout shift: only background-color and the overlay opacity change.
 @mixin cell-interactive {
   position: relative;
+  border-radius: var(--radius-none);
   transition: background-color var(--motion-fast) var(--ease-standard);
 
   &::after {
@@ -464,6 +465,7 @@ $header-height-mobile: calc(
     position: absolute;
     inset: -1px;
     border: 1px solid $border-color-hover;
+    border-radius: var(--radius-none);
     opacity: 0;
     pointer-events: none;
     z-index: var(--z-cell-hover);

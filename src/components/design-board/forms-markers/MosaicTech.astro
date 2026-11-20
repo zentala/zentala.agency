@@ -1,0 +1,61 @@
+---
+/**
+ * Board demo, F3 option D: a mosaic of technology logos (TechIcon, simple-icons).
+ * Logos are dim and monochrome; the one under the pointer takes its brand colour
+ * from `src/data/tech-icons.ts` (warm brands are already neutral there).
+ */
+import TechIcon from '@/components/primitives/TechIcon.astro'
+import { TECH_ICONS } from '@/data/tech-icons'
+
+interface Props {
+  /** How many logos to show, from the start of the site's technology list. */
+  count?: number
+}
+
+const { count = 30 } = Astro.props
+const logos = TECH_ICONS.slice(0, count)
+---
+
+<div class="mt" aria-hidden="true">
+  <div class="mt__grid">
+    {
+      logos.map((logo) => (
+        <span class="mt__cell" style={`--mt-brand: ${logo.brand}`} title={logo.name}>
+          <TechIcon name={logo.slug} size="lg" />
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .mt {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
+    mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
+  }
+
+  .mt__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    padding: 1.25rem 1rem 0;
+  }
+
+  .mt__cell {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    color: rgba(255, 255, 255, 0.32);
+    transition: color var(--motion-base) var(--ease-standard);
+  }
+
+  :global(.group):hover .mt__cell {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  :global(.group) .mt__cell:hover {
+    color: var(--mt-brand);
+  }
+</style>

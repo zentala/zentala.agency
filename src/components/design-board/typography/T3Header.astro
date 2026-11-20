@@ -1,0 +1,105 @@
+---
+/**
+ * T3: header balance. Four headers in today's system font, each above the real page
+ * title, so the weight of the logo and nav can be judged against the light titles.
+ */
+import MockHeader, { type HeaderVariant } from './MockHeader.astro'
+import OptionStrip from './OptionStrip.astro'
+import TypeQuestion from './TypeQuestion.astro'
+import type { TypographySamples } from './data'
+
+interface Props {
+  samples: TypographySamples
+}
+
+const { samples } = Astro.props
+const ANCHOR = 'board-t3'
+
+const options: {
+  key: string
+  label: string
+  consequence: string
+  facts: string
+  variant: HeaderVariant
+}[] = [
+  {
+    key: 'A',
+    label: 'Obecny',
+    consequence:
+      'Hasło i menu wersalikami w wadze 500 (rysowanej jako Semibold) z rozstrzeleniem 0,26 em: trzy ciężkie elementy obok siebie konkurują z logo.',
+    facts: 'menu 16 px · 500 · 0,26 em · wersaliki · logo 200 px',
+    variant: 'current',
+  },
+  {
+    key: 'B',
+    label: 'Lżejsze menu',
+    consequence:
+      'Charakter zostaje (wersaliki), ale menu i hasło cichną, a logo wychodzi na pierwszy plan.',
+    facts: 'menu 14 px · 400 · 0,14 em · wersaliki · hasło szare',
+    variant: 'lighter',
+  },
+  {
+    key: 'C',
+    label: 'Mniejsze menu z ikonami',
+    consequence:
+      'Cienka ikona przy każdej pozycji. W nagłówku przybywa znaków, a przy pięciu jasnych słowach ikony niewiele dodają.',
+    facts: 'menu 13 px · 400 · 0,1 em · wersaliki · ikona 16 px',
+    variant: 'icons',
+  },
+  {
+    key: 'D',
+    label: 'Propozycja: menu zwykłymi literami',
+    consequence:
+      'Logo zostaje jedynym elementem pisanym wersalikami i jest o 20% mniejsze, hasło staje się małą szarą etykietą, a nagłówek jest niższy o ok. 35 px.',
+    facts: 'menu 15 px · 400 · bez rozstrzelenia · logo 160 px',
+    variant: 'proposal',
+  },
+]
+---
+
+<TypeQuestion
+  id="T3"
+  question="Jak wyważyć nagłówek: logo wobec menu?"
+  options={options}
+  recommendation="D: logo nie ma konkurencji, menu czyta się jak zwykły tekst, a treść zyskuje miejsce. Jeśli wersaliki w menu mają zostać, to B."
+  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka."
+>
+  {
+    options.map((option) => (
+      <OptionStrip
+        optionKey={option.key}
+        label={option.label}
+        facts={option.facts}
+        measure="wysokość nagłówka"
+      >
+        <div class="t3-page">
+          <MockHeader variant={option.variant} anchor={ANCHOR} />
+          <div class="t3-page__hero">
+            <p class="text-4xl font-light leading-tight text-fg sm:text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl">
+              {samples.hero.title}
+            </p>
+            <p class="mt-6 text-xl font-light text-fg-secondary sm:text-2xl md:text-3xl xl:text-4xl">
+              {samples.hero.subtitle}
+            </p>
+          </div>
+        </div>
+      </OptionStrip>
+    ))
+  }
+</TypeQuestion>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .t3-page {
+    --tb-font: 'Segoe UI', system-ui, sans-serif;
+    font-family: var(--tb-font);
+  }
+
+  .t3-page__hero {
+    @include px-responsive('md');
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    text-align: center;
+  }
+</style>

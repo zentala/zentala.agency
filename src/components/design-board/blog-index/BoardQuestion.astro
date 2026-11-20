@@ -1,0 +1,54 @@
+---
+/**
+ * Header of one design-board question: id, the question, the recommendation
+ * and an optional note. The options follow it, each under an `OptionBar`.
+ */
+interface Props {
+  id: string
+  question: string
+  recommendation: string
+  note?: string
+}
+
+const { id, question, recommendation, note } = Astro.props
+---
+
+<section
+  id={`board-${id.toLowerCase()}`}
+  class="section-full"
+  data-board-question={id}
+>
+  <div class="container-bordered">
+    <div class="board-question padding-responsive-md">
+      <p class="board-question__id text-label uppercase">{id}</p>
+      <h2 class="mt-2 text-fg">{question}</h2>
+      <p class="mt-3 text-fg-secondary">
+        <span class="text-fg-muted">Rekomendacja:</span>
+        {recommendation}
+      </p>
+      {note && <p class="mt-1 text-sm text-fg-muted">{note}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .board-question {
+    background-color: var(--color-surface-raised);
+  }
+
+  .board-question__id {
+    color: var(--color-accent);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .board-question h2 {
+    max-width: 60ch;
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .board-question p {
+    max-width: 90ch;
+  }
+</style>

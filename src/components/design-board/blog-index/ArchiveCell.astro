@@ -1,0 +1,49 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+/**
+ * Last cell of the proposed posts grid: a button-like link to the full archive.
+ * The archive page does not exist yet, so the demo link stays on the board.
+ */
+interface Props {
+  postCount: number
+  shownCount: number
+}
+
+const { postCount, shownCount } = Astro.props
+const ARCHIVE_HREF = '#archive'
+---
+
+<article class="cell-interactive">
+  <a href={ARCHIVE_HREF} class="archive-cell group px-responsive py-6">
+    <span class="text-label uppercase text-fg-subtle">Archive</span>
+    <span class="archive-cell__action">
+      All {postCount} posts
+      <SiteIcon name="caret-right" size="md" class="arrow-nudge" />
+    </span>
+    <span class="text-sm text-fg-muted">
+      {postCount - shownCount} more, newest first
+    </span>
+  </a>
+</article>
+
+<style>
+  .archive-cell {
+    display: flex;
+    height: 100%;
+    min-height: 10rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .archive-cell__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+</style>

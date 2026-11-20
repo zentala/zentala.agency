@@ -1,0 +1,131 @@
+---
+/**
+ * Board demo: the contact form built from FloatField, for options B, C and D of F1.
+ * `grid` and `accent` are line grids (fields share lines); `line` is a plain
+ * two-column layout. The submit button is never full width and has a left icon.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import FloatField from './FloatField.astro'
+
+interface Props {
+  variant: 'grid' | 'line' | 'accent'
+  /** Prefix that keeps field ids unique on the board. */
+  prefix: string
+}
+
+const { variant, prefix } = Astro.props
+const onGrid = variant !== 'line'
+const blueButton = variant !== 'grid'
+---
+
+<div class:list={['float-frame', onGrid && 'float-frame--grid']}>
+  <form
+    class:list={['float-form', onGrid ? 'line-grid' : 'float-form--line']}
+    novalidate
+    data-board-form
+  >
+    <FloatField id={`${prefix}-fname`} label="First name" icon="user" variant={variant} required />
+    <FloatField id={`${prefix}-lname`} label="Last name" icon="user" variant={variant} />
+    <FloatField id={`${prefix}-email`} label="Email" icon="envelope-simple" type="email" variant={variant} required />
+    <FloatField id={`${prefix}-phone`} label="Phone" icon="phone" type="tel" variant={variant} />
+    <FloatField id={`${prefix}-msg`} label="Your message" icon="chat-circle" variant={variant} multiline class="float-form__span" />
+    <div class:list={['float-form__submit', 'float-form__span', `float-form__submit--${variant}`]}>
+      {variant === 'accent' && <p class="float-form__note">I answer within a day or two.</p>}
+      <button type="submit" class:list={['float-btn', blueButton && 'float-btn--blue']}>
+        <SiteIcon name="paper-plane-tilt" size="md" class="float-btn__icon" />
+        <span>Send message</span>
+        <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+      </button>
+    </div>
+  </form>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* Closes the right and bottom line of a line grid that stands alone in a board cell. */
+  .float-frame--grid {
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .float-form {
+    --cols-wide: 2;
+    --cols-medium: 2;
+    --cols-narrow: 1;
+  }
+
+  .float-form--line {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 2rem;
+
+    @include tablet {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .float-form > :global(.float-form__span) {
+    grid-column: 1 / -1;
+  }
+
+  .float-form__submit {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .float-form__submit--line {
+    justify-content: flex-start;
+    padding: 1rem 0 0;
+  }
+
+  .float-form__submit--accent {
+    justify-content: space-between;
+  }
+
+  .float-form__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .float-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.625rem 1.25rem;
+    border: 1px solid var(--color-text-subtle);
+    border-radius: 0;
+    background-color: color-mix(in srgb, var(--color-text) 4%, transparent);
+    color: var(--color-text);
+    font: inherit;
+    font-weight: 400;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .float-btn:hover {
+    border-color: var(--color-text);
+    background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .float-btn--blue {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    background-color: transparent;
+  }
+
+  .float-btn--blue:hover {
+    border-color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+
+  .float-btn--blue :global(.float-btn__icon) {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+/**
+ * I1: icon style per context. Four icon systems, each shown in the six places icons
+ * appear (or could appear) on the site, at their real sizes.
+ */
+import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
+import I1Footer from './I1Footer.astro'
+import I1Cards from './I1Cards.astro'
+import I1Inline from './I1Inline.astro'
+import I1Nav from './I1Nav.astro'
+
+const OPTIONS: readonly BoardOption[] = [
+  {
+    key: 'A',
+    label: 'Przed zmianami',
+    consequence:
+      'Trzy zestawy naraz: pełne ikony Font Awesome w stopce, Lucide w przyciskach i meta, Phosphor Thin 128 px w tle kart. Mocna stopka, ale brak jednego źródła.',
+  },
+  {
+    key: 'B',
+    label: 'Obecnie',
+    consequence:
+      'Jeden zestaw i jedna waga (Phosphor Light) wszędzie. Spójnie, ale stopka jest słabsza od logo, a ikona na /contact skurczyła się do 40 px.',
+  },
+  {
+    key: 'C',
+    label: 'Phosphor, waga wg miejsca',
+    consequence:
+      'Jeden zestaw, trzy wagi: Fill 32 px w stopce, Regular w przyciskach, meta i menu, Thin 176 px w tle kart. Kreska w tle rośnie razem z ikoną.',
+  },
+  {
+    key: 'D',
+    label: 'Lucide, kreska ok. 1 px',
+    consequence:
+      'Zmiana zestawu. Kreska ma stałą grubość w pikselach, więc ikona w tle może być dowolnie duża i dalej cienka; ikony marek są w Lucide wycofywane.',
+  },
+]
+---
+
+<BoardQuestion
+  id="I1"
+  question="Który zestaw ikon i jaka waga w każdym miejscu strony?"
+  options={OPTIONS}
+  recommendation="C. Zostaje jeden zestaw, który już jest w projekcie, a waga zależy od miejsca: pełne ikony w stopce pasują do logo, Regular daje ostrą kreskę 1 px przy 16 px, Thin wraca jako duża ikona w tle. Jeśli w tle wolisz naprawdę włosowatą kreskę z D, to jedyny powód, by rozważyć Lucide."
+>
+  <I1Footer />
+  <I1Cards />
+  <I1Inline />
+  <I1Nav />
+</BoardQuestion>

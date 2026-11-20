@@ -1,0 +1,141 @@
+---
+/**
+ * T4: compact section headers. Each candidate sits above the same three real post
+ * cards (cropped), and its measured height shows what it costs before content starts.
+ */
+import PostCard from '@/components/cards/PostCard.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import OptionStrip from './OptionStrip.astro'
+import SectionLabel, { type SectionLabelVariant } from './SectionLabel.astro'
+import TypeQuestion from './TypeQuestion.astro'
+import type { TypographySamples } from './data'
+
+interface Props {
+  samples: TypographySamples
+}
+
+const { samples } = Astro.props
+const { series, posts } = samples
+
+const options: {
+  key: string
+  label: string
+  consequence: string
+  facts: string
+  variant?: SectionLabelVariant
+}[] = [
+  {
+    key: 'A',
+    label: 'Obecny SectionHeader',
+    consequence:
+      'Duży tytuł z podtytułem i pełnym odstępem: najwyraźniejszy, ale zabiera najwięcej wysokości, zanim zacznie się treść.',
+    facts: 'tytuł 36 px · 300 · podtytuł 18 px pod spodem',
+  },
+  {
+    key: 'B',
+    label: 'Mała etykieta wersalikami',
+    consequence:
+      'Najniższa zwykła belka, szara notka po prawej w tej samej linii. Spokojna, ale nazwę sekcji słabiej widać przy szybkim przewijaniu.',
+    facts: 'etykieta 14 px · 400 · 0,14 em · notka 13 px',
+    variant: 'caps',
+  },
+  {
+    key: 'C',
+    label: 'Cienka większa etykieta',
+    consequence:
+      'Nazwa sekcji dalej wygląda jak tytuł, tylko cienki i przygaszony, notka po prawej. Trzy razy niższa od obecnej.',
+    facts: 'etykieta 26 px · 300 · przygaszona · notka 13 px',
+    variant: 'thin',
+  },
+  {
+    key: 'D',
+    label: 'Etykieta na linii sekcji',
+    consequence:
+      'Nazwa i notka siedzą na samej linii siatki i nie zabierają wysokości. Przerywają linię, więc to wyjątek od zasady ciągłych linii.',
+    facts: 'etykieta 14 px · 400 · 0,14 em · na linii',
+    variant: 'on-line',
+  },
+]
+---
+
+<TypeQuestion
+  id="T4"
+  question="Jak ma wyglądać nagłówek sekcji, żeby zajmował mało miejsca?"
+  options={options}
+  recommendation="C dla głównych sekcji strony: zostaje hierarchia przy jednej trzeciej wysokości. B dla sekcji drugorzędnych, jeśli potrzebny jest drugi poziom."
+  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka sekcji; karty pod spodem są przycięte."
+>
+  {
+    options.map((option) => (
+      <OptionStrip
+        optionKey={option.key}
+        label={option.label}
+        facts={option.facts}
+        measure="wysokość nagłówka sekcji"
+      >
+        {option.variant === 'on-line' && <div class="t4-previous" />}
+        {option.variant ? (
+          <SectionLabel
+            variant={option.variant}
+            label={series.title}
+            note={series.note}
+          />
+        ) : (
+          <div data-tb-cost>
+            <SectionHeader headline={series.title} subhead={series.tagline} />
+          </div>
+        )}
+        <div class="t4-crop">
+          <div class="line-grid">
+            {posts.map(({ post, partLabel }) => (
+              <PostCard
+                title={post.data.title}
+                date={post.data.date}
+                category={post.data.category}
+                excerpt={post.data.excerpt}
+                link={`/blog/${post.slug}`}
+                partLabel={partLabel}
+              />
+            ))}
+          </div>
+        </div>
+      </OptionStrip>
+    ))
+  }
+</TypeQuestion>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* The end of the section above, so the label has a line to sit on. */
+  .t4-previous {
+    height: 2rem;
+    border-bottom: 1px solid $border-color;
+  }
+
+  /* The 1px top padding keeps the grid's own top line inside the clip. */
+  .t4-crop {
+    position: relative;
+    max-height: 17rem;
+    margin-top: -1px;
+    padding-top: 1px;
+    overflow-y: clip;
+  }
+
+  /* Fades the cut edge so the crop reads as a crop, not as broken text. */
+  .t4-crop::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 11;
+    height: 4rem;
+    background: linear-gradient(to bottom, transparent, var(--color-surface));
+    pointer-events: none;
+  }
+
+  @include tablet {
+    .t4-crop {
+      max-height: 26rem;
+    }
+  }
+</style>

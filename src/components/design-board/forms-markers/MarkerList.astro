@@ -1,0 +1,129 @@
+---
+/**
+ * Board demo, F2: the part list of a series card (markup of SeriesCard) with one
+ * draft or review marker style. Every variant draws its own bar left of the row;
+ * `current` copies the committed DraftBadge edge (1px, two different inks), because
+ * the working tree may already carry a newer one.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+export type MarkerState = 'published' | 'review' | 'draft'
+
+export interface MarkerPart {
+  title: string
+  slug: string
+  part: number
+  state: MarkerState
+}
+
+interface Props {
+  variant: 'current' | 'wide' | 'wide-label' | 'thin'
+  seriesTitle: string
+  parts: MarkerPart[]
+}
+
+const { variant, seriesTitle, parts } = Astro.props
+const STATE_LABEL: Record<MarkerState, string> = {
+  published: '',
+  review: 'Review',
+  draft: 'Draft',
+}
+---
+
+<div class="marker-card">
+  <div class="flex items-center gap-x-1 text-label uppercase text-fg-subtle">
+    <SiteIcon name="layers" size="sm" />
+    <span>Series</span>
+  </div>
+  <h3 class="mt-2 text-fg">{seriesTitle}</h3>
+
+  <ul class="mt-5 w-full space-y-1">
+    {
+      parts.map((part) => (
+        <li>
+          <a
+            href={`/blog/${part.slug}`}
+            class="marker-row relative -mx-2 flex items-start gap-x-2 px-2 py-1 text-sm transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
+          >
+            <span class="w-4 shrink-0 text-right text-xs tabular-nums text-fg-subtle">
+              {part.part}
+            </span>
+            <span class="line-clamp-2 min-w-0 flex-1 text-fg-secondary">{part.title}</span>
+            {part.state !== 'published' && (
+              <span
+                class={`marker marker--${variant} marker--${part.state}`}
+                title={STATE_LABEL[part.state]}
+              >
+                <span class="sr-only">{STATE_LABEL[part.state]}</span>
+              </span>
+            )}
+            {part.state !== 'published' && variant === 'wide-label' && (
+              <span class="marker-label" aria-hidden="true">
+                {STATE_LABEL[part.state]}
+              </span>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  /* Inset like the real series card, so a marker never sits on the cell line. */
+  .marker-card {
+    width: 100%;
+    padding: 0.5rem 1rem 1rem;
+  }
+
+  .marker {
+    --marker-ink: color-mix(in srgb, var(--color-text) 22%, transparent);
+    position: absolute;
+    top: 0.3em;
+    bottom: 0.3em;
+    left: -0.5rem;
+    width: 2px;
+    background: var(--marker-ink);
+    pointer-events: none;
+  }
+
+  .marker--thin,
+  .marker--current {
+    width: 1px;
+  }
+
+  /* A: the committed look. Draft takes the hover-line grey, review a brighter one. */
+  .marker--current.marker--draft {
+    --marker-ink: var(--color-line-strong);
+  }
+
+  .marker--current.marker--review {
+    --marker-ink: var(--color-text-subtle);
+  }
+
+  /* Draft: dashed. Review: solid. Same translucent ink, same width. */
+  .marker--draft {
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--marker-ink) 0 4px,
+      transparent 4px 8px
+    );
+  }
+
+  /* C: the state name, at the row's right edge, only while the row is hovered or focused. */
+  .marker-label {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    opacity: 0;
+    transition: opacity var(--motion-fast) var(--ease-standard);
+  }
+
+  .marker-row:hover .marker-label,
+  .marker-row:focus-visible .marker-label {
+    opacity: 1;
+  }
+</style>

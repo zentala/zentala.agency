@@ -1,0 +1,238 @@
+---
+/**
+ * One button in one of the four compared looks (question I2). Dev-only copy of the
+ * button styles of each era, so the looks can sit side by side; the site keeps one Button.
+ * `hover` pins the hover state so it shows without a pointer.
+ */
+import BoardIcon from './BoardIcon.astro'
+import type { BoardIconSpec } from './board-icons'
+
+export type ButtonLook = 'A' | 'B' | 'C' | 'D'
+/** A: primary, secondary, outline. B: primary, secondary, accent. C: primary, accent, secondary. D: primary, secondary. */
+export type ButtonKind = 'primary' | 'secondary' | 'outline' | 'accent'
+
+interface Props {
+  look: ButtonLook
+  kind: ButtonKind
+  text: string
+  href?: string
+  icon?: BoardIconSpec | null
+  arrow?: BoardIconSpec | null
+  hover?: boolean
+}
+
+const { look, kind, text, href = '/contact', icon, arrow, hover = false } = Astro.props
+const nudges = look === 'C' || look === 'D'
+---
+
+<a
+  href={href}
+  class:list={['bb', `bb--${look}`, `bb--${look}-${kind}`, hover && 'is-hover']}
+>
+  {icon && <BoardIcon spec={icon} class="bb__icon" />}
+  <span>{text}</span>
+  {arrow && <BoardIcon spec={arrow} class:list={['bb__arrow', nudges && 'arrow-nudge']} />}
+</a>
+
+<style lang="scss">
+  .bb {
+    /* Values of the earlier looks that no token holds any more. */
+    --bb-legacy-weight: 600;
+    --bb-legacy-blue-hover: rgb(29 78 216);
+    --bb-legacy-outline: rgb(255 255 255 / 0.3);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .bb.is-hover :global(.arrow-nudge) {
+    transform: translateX(4px);
+  }
+
+  /* A: the original site. Bold label, solid blue main action, no motion. */
+  .bb--A {
+    padding: 0.75rem 2rem;
+    font-weight: var(--bb-legacy-weight);
+    color: var(--color-text);
+
+    :global(.bb__icon) {
+      margin-right: 0.5rem;
+    }
+
+    :global(.bb__arrow) {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .bb--A-primary {
+    background-color: var(--color-accent-solid);
+
+    &:hover,
+    &.is-hover {
+      background-color: var(--bb-legacy-blue-hover);
+    }
+  }
+
+  .bb--A-secondary {
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-line);
+
+    &:hover,
+    &.is-hover {
+      background-color: var(--color-line-strong);
+    }
+  }
+
+  .bb--A-outline {
+    border: 1px solid var(--bb-legacy-outline);
+    color: rgb(255 255 255 / 0.9);
+
+    &:hover,
+    &.is-hover {
+      border-color: rgb(255 255 255 / 0.6);
+      background-color: var(--color-text);
+      color: var(--color-surface);
+    }
+  }
+
+  /* B: end of wave 5. Bold label, solid white main action, solid blue accent. */
+  .bb--B {
+    padding: 0.75rem 2rem;
+    border: 1px solid transparent;
+    font-weight: var(--bb-legacy-weight);
+
+    :global(.bb__icon) {
+      margin-right: 0.5rem;
+    }
+
+    :global(.bb__arrow) {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .bb--B-primary {
+    border-color: var(--color-text);
+    background-color: var(--color-text);
+    color: var(--color-surface);
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-text-secondary);
+      background-color: var(--color-text-secondary);
+    }
+  }
+
+  .bb--B-secondary {
+    border-color: var(--color-line-strong);
+    color: var(--color-text);
+
+    &:hover,
+    &.is-hover {
+      background-color: var(--color-surface-hover);
+    }
+  }
+
+  .bb--B-accent {
+    border-color: var(--color-accent-solid);
+    background-color: var(--color-accent-solid);
+    color: var(--color-text);
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-accent);
+    }
+  }
+
+  /* C: the current Button. Neutral outline, faint fill, chevron nudges. */
+  .bb--C {
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.625rem 1.5rem;
+    border: 1px solid transparent;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .bb--C-primary,
+  .bb--C-accent {
+    border-color: var(--color-text-subtle);
+    background-color: rgb(255 255 255 / 0.04);
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-text);
+      background-color: rgb(255 255 255 / 0.08);
+    }
+  }
+
+  .bb--C-accent :global(.board-icon) {
+    color: var(--color-accent);
+  }
+
+  .bb--C-secondary {
+    border-color: var(--color-line-strong);
+    color: var(--color-text-secondary);
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-text-subtle);
+      color: var(--color-text);
+      background-color: rgb(255 255 255 / 0.04);
+    }
+  }
+
+  /* D: proposal. Thin blue line on the main action, no fill, quiet icon, blue chevron that moves. */
+  .bb--D {
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid transparent;
+    font-weight: 400;
+    color: var(--color-text);
+
+    :global(.bb__icon) {
+      color: var(--color-text-muted);
+      transition: color var(--motion-fast) var(--ease-standard);
+    }
+
+    &:hover :global(.bb__icon),
+    &.is-hover :global(.bb__icon) {
+      color: var(--color-text);
+    }
+  }
+
+  .bb--D-primary {
+    border-color: color-mix(in srgb, var(--color-accent) 70%, transparent);
+
+    :global(.bb__arrow) {
+      color: var(--color-accent);
+    }
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-accent);
+    }
+  }
+
+  .bb--D-secondary {
+    border-color: var(--color-line-strong);
+    color: var(--color-text-secondary);
+
+    :global(.bb__arrow) {
+      color: var(--color-text-subtle);
+    }
+
+    &:hover,
+    &.is-hover {
+      border-color: var(--color-text-subtle);
+      color: var(--color-text);
+    }
+  }
+</style>

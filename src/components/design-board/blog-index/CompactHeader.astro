@@ -1,0 +1,45 @@
+---
+/**
+ * Compact section header for the proposed /blog: one short row, a small caps
+ * title on the left and a grey note on the right. It owns the line below it.
+ */
+interface Props {
+  title: string
+  note?: string
+}
+
+const { title, note } = Astro.props
+---
+
+<div class="compact-header px-responsive">
+  <h3 class="compact-header__title">{title}</h3>
+  {note && <p class="compact-header__note">{note}</p>}
+</div>
+
+<style>
+  .compact-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .compact-header__title {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .compact-header__note {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    text-align: right;
+  }
+</style>

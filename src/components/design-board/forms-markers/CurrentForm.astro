@@ -1,0 +1,64 @@
+---
+/**
+ * Board demo, F1 option A: the /contact form as it is now. The real ThemedInput
+ * and ThemedTextarea, and the submit cell copied from ContactForm (which has
+ * fixed ids, so it cannot be mounted twice on one page).
+ */
+import ThemedInput from '@/components/ThemedInput.astro'
+import ThemedTextarea from '@/components/ThemedTextarea.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+---
+
+<div class="current-frame">
+  <form class="line-grid current-form" novalidate data-board-form>
+    <ThemedInput type="text" id="f1a-fname" placeholder="First name" icon="user" required />
+    <ThemedInput type="text" id="f1a-lname" placeholder="Last name" icon="user" />
+    <ThemedInput type="email" id="f1a-email" placeholder="Email" icon="envelope-simple" required />
+    <ThemedInput type="tel" id="f1a-phone" placeholder="Phone" icon="phone" />
+    <ThemedTextarea id="f1a-msg" placeholder="Your message" icon="chat-circle" />
+    <button type="submit" class="current-form__submit">
+      <span>Send message</span>
+      <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+    </button>
+  </form>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* Closes the right and bottom line of a line grid that stands alone in a board cell. */
+  .current-frame {
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .current-form {
+    --cols-wide: 2;
+    --cols-medium: 2;
+    --cols-narrow: 1;
+  }
+
+  .current-form > :global(:nth-child(5)),
+  .current-form > :global(:nth-child(6)) {
+    grid-column: 1 / -1;
+  }
+
+  .current-form__submit {
+    @include cell-interactive;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    min-height: 3.5rem;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-weight: 400;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+</style>

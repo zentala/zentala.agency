@@ -1,0 +1,158 @@
+---
+/**
+ * I1, contexts "/contact card" and "capabilities card": the large decorative icon of a
+ * card, with the real card copy, one cell per icon system.
+ */
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import BoardButton from './BoardButton.astro'
+import { describeBoardIcon } from './board-icons'
+import { ICON_SYSTEMS, systemIcon } from './icon-systems'
+
+const CAL_URL = 'http://cal.com/zentala'
+---
+
+<BoardCell wide heading="/contact: ikona karty „Schedule Meeting”" />
+{
+  ICON_SYSTEMS.map((system) => {
+    const spec = systemIcon(system, 'contactCard', 'book-call')
+    const inHeading = system.contactPlacement === 'heading'
+    return (
+      <BoardCell
+        flush
+        option={`${system.key} · ${system.label}`}
+        caption={spec ? describeBoardIcon(spec) : undefined}
+      >
+        <div class="board-card" style={`--bg-opacity: ${system.backgroundOpacity}`}>
+          {spec && !inHeading && <BoardIcon spec={spec} class="board-card__bg" />}
+          <div class="board-card__head">
+            <h3 class="board-card__title">Schedule Meeting</h3>
+            {spec && inHeading && <BoardIcon spec={spec} class="board-card__head-icon" />}
+          </div>
+          <p class="board-card__text">
+            Let's discuss your needs in a 20-minute free consultation call.
+          </p>
+          <BoardButton
+            look="C"
+            kind="primary"
+            text="Book a Call"
+            href={CAL_URL}
+            icon={systemIcon(system, 'button', 'book-call')}
+            arrow={systemIcon(system, 'buttonArrow', 'arrow-next')}
+          />
+        </div>
+      </BoardCell>
+    )
+  })
+}
+
+<BoardCell wide heading="/about/capabilities: duża ikona w tle karty (cienka, ale większa)" />
+{
+  ICON_SYSTEMS.map((system) => {
+    const spec = systemIcon(system, 'cardBackground', 'strategy')
+    return (
+      <BoardCell
+        flush
+        option={`${system.key} · ${system.label}`}
+        caption={spec ? describeBoardIcon(spec) : undefined}
+      >
+        <div class="board-card" style={`--bg-opacity: ${system.backgroundOpacity}`}>
+          {spec && <BoardIcon spec={spec} class="board-card__bg" />}
+          <span class="board-card__number">01</span>
+          <h3 class="board-card__title board-card__title--offer">
+            Strategic Innovation Consulting
+          </h3>
+          <p class="board-card__text board-card__text--offer">
+            We will help you identify opportunities to use the latest technologies to
+            increase the growth and efficiency of your business.
+          </p>
+        </div>
+      </BoardCell>
+    )
+  })
+}
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* Clips the decorative icon inside the cell; the cell itself stays unclipped. */
+  .board-card {
+    position: relative;
+    flex: 1;
+    overflow: clip;
+    isolation: isolate;
+    @include padding-responsive('md');
+    padding-top: 1.5rem;
+  }
+
+  .board-card :global(.board-card__bg) {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: -1;
+    color: var(--color-text);
+    opacity: var(--bg-opacity);
+    pointer-events: none;
+    transition: opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .board-card:hover :global(.board-card__bg) {
+    opacity: calc(var(--bg-opacity) * 2);
+  }
+
+  .board-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .board-card__head :global(.board-card__head-icon) {
+    color: var(--color-text);
+    opacity: 0.12;
+  }
+
+  .board-card__title {
+    font-size: var(--text-h2);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .board-card__title--offer {
+    position: relative;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .board-card__text {
+    margin-bottom: 1.5rem;
+    font-size: var(--text-lead);
+    color: var(--color-text-secondary);
+  }
+
+  .board-card__text--offer {
+    font-size: var(--text-h4);
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+  }
+
+  .board-card__number {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    z-index: -1;
+    font-size: 8rem;
+    font-weight: 300;
+    line-height: 1;
+    opacity: 0.05;
+    color: var(--color-text);
+  }
+
+  @include mobile {
+    .board-card :global(.board-card__bg) {
+      max-width: 45%;
+      height: auto;
+    }
+  }
+</style>

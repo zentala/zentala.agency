@@ -1,0 +1,36 @@
+---
+/**
+ * Draws one icon from any of the compared sets. Dev-only: the design board needs
+ * several sets next to each other, which the site renderer (SiteIcon) forbids.
+ */
+import { resolveBoardIcon, type BoardIconSpec } from './board-icons'
+
+interface Props {
+  spec: BoardIconSpec
+  class?: string
+}
+
+const { spec, class: className } = Astro.props
+const icon = resolveBoardIcon(spec)
+const width = Math.round((spec.size * icon.width) / icon.height)
+---
+
+<svg
+  class:list={['board-icon', spec.hairline && 'board-icon--hairline', className]}
+  width={width}
+  height={spec.size}
+  viewBox={`0 0 ${icon.width} ${icon.height}`}
+  aria-hidden="true"
+  set:html={icon.body}
+/>
+
+<style>
+  .board-icon {
+    flex-shrink: 0;
+  }
+
+  /* The stroke keeps its pixel width however large the icon is drawn. */
+  .board-icon--hairline :global(*) {
+    vector-effect: non-scaling-stroke;
+  }
+</style>

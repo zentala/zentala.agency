@@ -1,5 +1,5 @@
 ---
-title: 'One Interface, Three Audiences — Why Your Agent and Your Developer Need the Same Thing'
+title: 'One Interface, Two Audiences: Human and Agentic'
 date: '2026-08-26'
 category: 'DevEx'
 excerpt: 'A human and an AI agent fail in the same way: give either one a pile of unstructured information and watch the cost explode. That shared weakness is the design brief for everything I build.'
@@ -8,6 +8,8 @@ published: false
 series: 'multi-interface'
 part: 1
 ---
+
+<!-- TODO(owner): body still argues three audiences; rewrite to two (human, agentic) in the review layer -->
 
 ## Part 1 of the multi-interface series
 

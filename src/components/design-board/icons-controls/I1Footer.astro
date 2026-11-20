@@ -1,0 +1,108 @@
+---
+/**
+ * I1, context "footer": the real Logo with the three social icons, one full-width
+ * row per icon system, laid out like the footer band.
+ */
+import Logo from '@/components/Logo.astro'
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import { describeBoardIcon } from './board-icons'
+import { ICON_SYSTEMS, systemIcon } from './icon-systems'
+
+const FOOTER_LOGO_HEIGHT = 44
+const SOCIAL = [
+  { name: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/zentala/' },
+  { name: 'github', label: 'GitHub', href: 'https://github.com/zentala' },
+  { name: 'email', label: 'Email', href: 'mailto:zentala@gmail.com' },
+] as const
+
+const logoProps = {
+  link: '/',
+  color: '#FFFFFF',
+  type: 'full',
+  width: '240px',
+  height: `${FOOTER_LOGO_HEIGHT}px`,
+} as const
+---
+
+<BoardCell wide heading="Stopka: ikony obok logo (mają pasować wagą do logo)" />
+{
+  ICON_SYSTEMS.map((system) => {
+    const style = system.contexts.footer
+    const icons = SOCIAL.map((item) => ({
+      ...item,
+      spec: systemIcon(system, 'footer', item.name),
+    }))
+    /* The original icons scaled with the logo; the current ones are a fixed 24px. */
+    const scales = system.key !== 'B'
+    return (
+      <BoardCell
+        wide
+        option={`${system.key} · ${system.label}`}
+        caption={style ? describeBoardIcon({ ...style, name: '' }) : undefined}
+      >
+        <div class="footer-logo-social board-footer">
+          <div>
+            <Logo {...logoProps} />
+          </div>
+          <div
+            class:list={[
+              'board-footer__icons',
+              `board-footer__icons--${system.key}`,
+              scales && 'board-footer__icons--scaled',
+            ]}
+            style={style ? `--icon-ratio: ${style.size / FOOTER_LOGO_HEIGHT}` : undefined}
+          >
+            {icons.map(
+              (icon) =>
+                icon.spec && (
+                  <a href={icon.href} target="_blank" rel="noopener noreferrer">
+                    <BoardIcon spec={icon.spec} />
+                    <span class="sr-only">{icon.label}</span>
+                  </a>
+                ),
+            )}
+          </div>
+        </div>
+      </BoardCell>
+    )
+  })
+}
+
+<style lang="scss">
+  .board-footer {
+    padding-block: 0.5rem;
+  }
+
+  .board-footer__icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-text-muted);
+
+    a {
+      display: inline-flex;
+      color: inherit;
+      transition: color var(--motion-fast) var(--ease-standard);
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  .board-footer__icons--scaled :global(.board-icon) {
+    height: calc(var(--logo-size) * var(--icon-ratio));
+    width: auto;
+  }
+
+  /* The original footer drew its icons in gray-300. */
+  .board-footer__icons--A {
+    color: rgb(209 213 219);
+  }
+
+  .board-footer__icons--C,
+  .board-footer__icons--D {
+    color: var(--color-text-secondary);
+  }
+</style>

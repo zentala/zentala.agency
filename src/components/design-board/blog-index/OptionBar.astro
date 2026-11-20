@@ -1,0 +1,74 @@
+---
+/**
+ * Label above one rendered option of a design-board question: the option
+ * letter, its name and its one-line consequence.
+ */
+interface Props {
+  questionId: string
+  letter: string
+  name: string
+  consequence: string
+  recommended?: boolean
+}
+
+const { questionId, letter, name, consequence, recommended = false } =
+  Astro.props
+---
+
+<section class="section-full" data-board-option={`${questionId}-${letter}`}>
+  <div class="container-bordered">
+    <div class="option-bar px-responsive">
+      <p class="option-bar__id">
+        {questionId}
+        <span class="option-bar__letter">{letter}</span>
+      </p>
+      <p class="option-bar__text">
+        <span class="text-fg">{name}</span>
+        <span class="text-fg-muted">{consequence}</span>
+      </p>
+      {
+        recommended && (
+          <p class="option-bar__pick text-label uppercase">Rekomendowana</p>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .option-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1.25rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    background-color: var(--color-surface-raised);
+  }
+
+  .option-bar__id {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  .option-bar__letter {
+    margin-left: 0.25rem;
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .option-bar__text {
+    display: flex;
+    flex: 1 1 20rem;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    font-size: var(--text-sm);
+  }
+
+  .option-bar__pick {
+    color: var(--color-accent);
+  }
+</style>

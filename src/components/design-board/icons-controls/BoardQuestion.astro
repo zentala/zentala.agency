@@ -1,0 +1,122 @@
+---
+/**
+ * One owner question on the design board: id, the question, the options with their
+ * consequence, the recommendation, and a line grid that holds the rendered options.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+
+export interface BoardOption {
+  key: string
+  label: string
+  consequence: string
+}
+
+interface Props {
+  id: string
+  question: string
+  options: readonly BoardOption[]
+  recommendation: string
+  /** Columns of the option grid above 1000px. */
+  columns?: number
+}
+
+const { id, question, options, recommendation, columns = 4 } = Astro.props
+---
+
+<Section id={`board-${id.toLowerCase()}`}>
+  <header class="board-question">
+    <p class="board-question__id">{id}</p>
+    <h2 class="board-question__title">{question}</h2>
+    <ul class="board-question__options">
+      {
+        options.map((option) => (
+          <li>
+            <span class="board-question__key">{option.key}</span>
+            <span>
+              <span class="board-question__label">{option.label}.</span>{' '}
+              {option.consequence}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="board-question__recommendation">
+      <span class="board-question__key">Rekomendacja</span>
+      <span>{recommendation}</span>
+    </p>
+  </header>
+  <div class="line-grid" style={`--cols-wide: ${columns}`}>
+    <slot />
+  </div>
+</Section>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .board-question {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    border-bottom: 1px solid $border-color;
+    background-color: var(--color-surface);
+  }
+
+  .board-question__id {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .board-question__title {
+    font-size: var(--text-h2);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--color-text);
+    max-width: 44ch;
+  }
+
+  .board-question__options {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 0.5rem;
+    max-width: 90ch;
+    color: var(--color-text-muted);
+  }
+
+  .board-question__options li,
+  .board-question__recommendation {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .board-question__options li {
+    grid-template-columns: 1.5rem 1fr;
+  }
+
+  .board-question__key {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .board-question__label {
+    color: var(--color-text);
+  }
+
+  .board-question__recommendation {
+    margin-top: 1.5rem;
+    max-width: 90ch;
+    color: var(--color-text-secondary);
+  }
+
+  @include mobile {
+    .board-question__recommendation {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

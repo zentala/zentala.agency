@@ -1,0 +1,223 @@
+---
+/**
+ * A static copy of the site header (logo, tagline, nav) for the board. `current`
+ * repeats the values of `src/components/Header.astro`; the other variants change
+ * only weight, size, tracking, case and the logo size. The font comes from the
+ * `--tb-font` custom property of an ancestor.
+ */
+import Logo from '@/components/Logo.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { CURRENT_NAV, NAV_LINKS, TAGLINE } from './data'
+
+export type HeaderVariant = 'current' | 'lighter' | 'icons' | 'proposal'
+
+interface Props {
+  variant?: HeaderVariant
+  /** In-page anchor the nav links point at, so a click stays on the board. */
+  anchor: string
+}
+
+const { variant = 'current', anchor } = Astro.props
+
+const LOGO_SIZE: Record<HeaderVariant, { width: string; height: string }> = {
+  current: { width: '200px', height: '40px' },
+  lighter: { width: '200px', height: '40px' },
+  icons: { width: '200px', height: '40px' },
+  proposal: { width: '160px', height: '32px' },
+}
+---
+
+<div class="mock-header" data-variant={variant} data-tb-cost>
+  <div class="mock-header__brand">
+    <Logo type="full" color="currentColor" {...LOGO_SIZE[variant]} />
+    <span class="mock-header__tagline">{TAGLINE}</span>
+  </div>
+  <span class="mock-header__burger" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </span>
+  <nav class="mock-header__nav" aria-label={`Wariant nawigacji: ${variant}`}>
+    {
+      NAV_LINKS.map((link) => (
+        <a
+          href={`#${anchor}`}
+          aria-current={link.text === CURRENT_NAV ? 'page' : undefined}
+        >
+          {variant === 'icons' && <SiteIcon name={link.icon} size="sm" />}
+          {link.text}
+        </a>
+      ))
+    }
+  </nav>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .mock-header {
+    --nav-size: 1rem;
+    --nav-weight: 500;
+    --nav-track: 0.26rem;
+    --nav-case: uppercase;
+    --nav-gap: 2.5rem;
+    --tagline-size: 1rem;
+    --tagline-weight: 500;
+    --tagline-track: 0.26rem;
+    --tagline-color: var(--color-text);
+    --tagline-gap: 40px;
+
+    @include px-responsive('md');
+    @include py-responsive('sm');
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $border-color;
+    font-family: var(--tb-font, inherit);
+    color: var(--color-text);
+  }
+
+  .mock-header[data-variant='lighter'] {
+    --nav-size: 0.875rem;
+    --nav-weight: 400;
+    --nav-track: 0.14em;
+    --tagline-size: 0.875rem;
+    --tagline-weight: 400;
+    --tagline-track: 0.14em;
+    --tagline-color: var(--color-text-muted);
+  }
+
+  .mock-header[data-variant='icons'] {
+    --nav-size: 0.8125rem;
+    --nav-weight: 400;
+    --nav-track: 0.1em;
+    --nav-gap: 2rem;
+    --tagline-size: 0.75rem;
+    --tagline-weight: 400;
+    --tagline-track: 0.14em;
+    --tagline-color: var(--color-text-muted);
+  }
+
+  .mock-header[data-variant='proposal'] {
+    --nav-size: 0.9375rem;
+    --nav-weight: 400;
+    --nav-track: 0;
+    --nav-case: none;
+    --nav-gap: 2rem;
+    --tagline-size: var(--text-label);
+    --tagline-weight: 400;
+    --tagline-track: var(--tracking-label);
+    --tagline-color: var(--color-text-subtle);
+    --tagline-gap: 24px;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .mock-header__brand {
+    display: flex;
+    align-items: center;
+  }
+
+  /* The real header leaves the inline line box under the logo; the proposal drops it. */
+  .mock-header[data-variant='proposal'] .mock-header__brand > :global(div) {
+    line-height: 0;
+  }
+
+  .mock-header__tagline {
+    margin-left: var(--tagline-gap);
+    font-size: var(--tagline-size);
+    font-weight: var(--tagline-weight);
+    letter-spacing: var(--tagline-track);
+    text-transform: uppercase;
+    color: var(--tagline-color);
+  }
+
+  .mock-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem var(--nav-gap);
+    font-size: var(--nav-size);
+  }
+
+  .mock-header__nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: var(--nav-weight);
+    letter-spacing: var(--nav-track);
+    text-transform: var(--nav-case);
+    color: var(--color-text-muted);
+    transition: color var(--motion-fast);
+  }
+
+  .mock-header__nav a:hover,
+  .mock-header__nav a:focus-visible,
+  .mock-header__nav a[aria-current='page'] {
+    color: var(--color-text);
+  }
+
+  .mock-header__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 1.75rem;
+    height: 1.25rem;
+  }
+
+  .mock-header__burger span {
+    height: 3px;
+    background-color: var(--color-text);
+  }
+
+  .mock-header[data-variant='proposal'] .mock-header__burger span {
+    height: 1px;
+  }
+
+  /* As in Header.astro: the tagline moves under the logo and fades. */
+  @media (max-width: 1200px) {
+    .mock-header[data-variant='current'] {
+      .mock-header__brand {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .mock-header__tagline {
+        position: relative;
+        top: -4px;
+        margin-left: 0;
+        margin-bottom: -4px;
+        font-size: 0.82rem;
+        opacity: 0.5;
+      }
+    }
+
+    .mock-header:not([data-variant='current']) .mock-header__tagline {
+      display: none;
+    }
+  }
+
+  @media (min-width: 771px) and (max-width: 999px) {
+    .mock-header {
+      --nav-gap: 1.5rem;
+    }
+  }
+
+  /* On a phone the links live in the menu; the board lists them under the logo row. */
+  @include tablet {
+    .mock-header__burger {
+      display: flex;
+    }
+
+    .mock-header__nav {
+      flex-basis: 100%;
+      margin-top: 1rem;
+      --nav-gap: 1.25rem;
+    }
+  }
+
+  @include mobile {
+    .mock-header__tagline {
+      display: none;
+    }
+  }
+</style>

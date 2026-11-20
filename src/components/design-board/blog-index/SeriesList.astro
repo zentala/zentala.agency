@@ -1,0 +1,209 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import { formatDate } from '@/lib/blog/format-date'
+import { formatShortDate, type BoardSeries } from './data'
+
+/**
+ * One series as a static grid cell that lists every part as a table row.
+ * - `date`: date left, title right, drafts marked with the edge bar.
+ * - `number`: part number left, title, status word right (Start, New, Draft).
+ * - `combined`: part number left, title, date right; the status replaces the date.
+ * In every variant the first row carries "Start" instead of a separate line.
+ */
+interface Props {
+  series: BoardSeries
+  variant: 'date' | 'number' | 'combined'
+}
+
+const { series, variant } = Astro.props
+const START_LABEL = 'Start'
+
+const rows = series.parts.map((part, index) => {
+  const isDraft = part.data.published === false
+  const draftWord = part.data.review === true ? 'Review' : 'Draft'
+  const isNewest = series.isFresh && part.slug === series.newestSlug
+  return {
+    slug: part.slug,
+    title: part.data.title,
+    number: String(part.data.part ?? index + 1).padStart(2, '0'),
+    isFirst: index === 0,
+    isDraft,
+    isReview: part.data.review === true,
+    datetime: formatDate(part.data.date).datetime,
+    dateLabel: formatShortDate(part.data.date),
+    status: isDraft ? draftWord : isNewest ? 'New' : undefined,
+    isNewest,
+  }
+})
+---
+
+<div class={`series-list series-list--${variant} px-responsive pb-8 pt-6`}>
+  <div class="series-list__head">
+    <h4 class="series-list__name">
+      <a href={`/series/${series.slug}`}>{series.title}</a>
+    </h4>
+    <p class="series-list__count">{series.parts.length} parts</p>
+  </div>
+
+  <ol class="series-list__rows">
+    {
+      rows.map((row) => (
+        <li>
+          <a href={`/blog/${row.slug}`} class="series-row group">
+            {variant === 'date' ? (
+              <time class="series-row__lead" datetime={row.datetime}>
+                {row.dateLabel}
+              </time>
+            ) : (
+              <span class="series-row__lead">
+                <span class="sr-only">Part </span>
+                {row.number}
+              </span>
+            )}
+            <span class="series-row__title">
+              {row.title}
+              {variant === 'date' && row.isDraft && (
+                <DraftBadge placement="edge" review={row.isReview} />
+              )}
+            </span>
+            {row.isFirst ? (
+              <span class="series-row__start">
+                {START_LABEL}
+                <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+              </span>
+            ) : variant === 'combined' && !row.status ? (
+              <time class="series-row__trail" datetime={row.datetime}>
+                {row.dateLabel}
+              </time>
+            ) : variant !== 'date' && row.status ? (
+              <span
+                class:list={[
+                  'series-row__trail',
+                  { 'series-row__trail--new': row.isNewest },
+                ]}
+              >
+                {row.status}
+              </span>
+            ) : null}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .series-list {
+    container-type: inline-size;
+  }
+
+  .series-list__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .series-list__name {
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .series-list__name a {
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .series-list__name a:hover {
+    color: var(--color-text-secondary);
+  }
+
+  .series-list__count {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .series-list__rows {
+    margin-top: 1rem;
+  }
+
+  .series-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--lead-width) minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 0.75rem;
+    margin: 0 -0.5rem;
+    padding: 0.3125rem 0.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  .series-row:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-text);
+  }
+
+  .series-list--date {
+    --lead-width: 5.75rem;
+  }
+
+  .series-list--number,
+  .series-list--combined {
+    --lead-width: 1.5rem;
+  }
+
+  .series-row__lead,
+  .series-row__trail,
+  .series-row__start {
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .series-row__lead,
+  .series-row__trail {
+    color: var(--color-text-subtle);
+  }
+
+  .series-row__trail--new {
+    color: var(--color-text-secondary);
+  }
+
+  .series-row__title {
+    position: relative;
+  }
+
+  .series-row__start {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    color: var(--color-text);
+  }
+
+  .series-list li:first-child .series-row {
+    color: var(--color-text);
+  }
+
+  /* Narrow cell: dates on the right go away; a date on the left moves above the title. */
+  @container (max-width: 21rem) {
+    .series-list--combined time.series-row__trail {
+      display: none;
+    }
+
+    .series-list--date .series-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .series-list--date .series-row__lead {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

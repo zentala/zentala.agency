@@ -1,0 +1,99 @@
+---
+import { buildCover, largestBlockIndex } from './cover'
+
+/**
+ * Generated cover for a post: a monochrome line-grid plan seeded by the slug.
+ * Decorative (aria-hidden). The cover owns its bottom line; the cell around it
+ * owns the other three.
+ */
+interface Props {
+  seed: string
+  /** Short text set in the largest block, for example a part number. */
+  label?: string
+  size?: 'regular' | 'wide'
+}
+
+const { seed, label, size = 'regular' } = Astro.props
+const LATTICE = { regular: { cols: 12, rows: 4 }, wide: { cols: 20, rows: 5 } }
+const { cols, rows } = LATTICE[size]
+const blocks = buildCover(seed, cols, rows)
+const labelIndex = label ? largestBlockIndex(blocks) : -1
+---
+
+<div class={`slug-cover slug-cover--${size}`} aria-hidden="true">
+  <div class="slug-cover__plan" style={`--plan-cols: ${cols}; --plan-rows: ${rows}`}>
+    {
+      blocks.map((block, index) => (
+        <span
+          class={`slug-cover__block slug-cover__block--tone-${block.tone}`}
+          style={`grid-column: ${block.col + 1} / span ${block.colSpan}; grid-row: ${block.row + 1} / span ${block.rowSpan}`}
+        >
+          {index === labelIndex && (
+            <span class="slug-cover__label">{label}</span>
+          )}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .slug-cover {
+    height: 9rem;
+    overflow: clip;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .slug-cover--wide {
+    height: 14rem;
+  }
+
+  /* Same model as .line-grid: blocks draw left and top, the plan overlaps the cell lines. */
+  .slug-cover__plan {
+    display: grid;
+    grid-template-columns: repeat(var(--plan-cols), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--plan-rows), minmax(0, 1fr));
+    height: calc(100% + 1px);
+    margin: -1px 0 0 -1px;
+  }
+
+  .slug-cover__block {
+    display: flex;
+    align-items: flex-end;
+    min-width: 0;
+    min-height: 0;
+    border-left: 1px solid var(--color-line);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .slug-cover__block--tone-1 {
+    background-color: color-mix(in srgb, var(--color-text) 4%, transparent);
+  }
+
+  .slug-cover__block--tone-2 {
+    background-color: color-mix(in srgb, var(--color-text) 9%, transparent);
+  }
+
+  .slug-cover__block--tone-3 {
+    background-color: color-mix(in srgb, var(--color-text) 16%, transparent);
+  }
+
+  .slug-cover__label {
+    padding: 0 0.5rem 0.25rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 770px) {
+    .slug-cover {
+      height: 6rem;
+    }
+
+    .slug-cover--wide {
+      height: 8rem;
+    }
+  }
+</style>

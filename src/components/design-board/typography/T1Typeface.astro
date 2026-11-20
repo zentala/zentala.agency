@@ -1,0 +1,66 @@
+---
+/** T1: which typeface. The same header and content, at today's sizes, in three fonts. */
+import MockHeader from './MockHeader.astro'
+import OptionStrip from './OptionStrip.astro'
+import Specimen from './Specimen.astro'
+import TypeQuestion from './TypeQuestion.astro'
+import type { TypographySamples } from './data'
+
+interface Props {
+  samples: TypographySamples
+}
+
+const { samples } = Astro.props
+const ID = 'T1'
+const ANCHOR = 'board-t1'
+
+const options = [
+  {
+    key: 'A',
+    label: 'Obecny: bez webfontu (Segoe UI na Windows)',
+    consequence:
+      'Nic się nie ładuje, ale każdy system pokazuje inny font. Segoe nie ma wagi 500, więc przeglądarka rysuje menu jako Semibold; wagi 200 też nie ma.',
+    facts: 'Segoe UI: Light 300, Regular 400, Semibold 600',
+    font: "'Segoe UI', system-ui, sans-serif",
+  },
+  {
+    key: 'B',
+    label: 'Inter (zmienny, hostowany u nas)',
+    consequence:
+      'Ten sam wygląd na każdym systemie, wagi 100–900 i oś optyczna: duże tytuły same robią się cieńsze i ciaśniejsze, mały tekst zostaje wyraźny. Koszt: plik ok. 73 kB i drugi, 133 kB, na stronach z polskimi znakami.',
+    facts: 'Inter Variable: wagi 100–900, oś optyczna 14–32',
+    font: "'Board Inter', sans-serif",
+  },
+  {
+    key: 'C',
+    label: 'Geist (zmienny, hostowany u nas)',
+    consequence:
+      'Bardziej geometryczny i techniczny, bliższy literom logo. Węższy, bez osi optycznej, więc długi tekst bloga czyta się odrobinę gorzej. Koszt: plik ok. 29 kB i drugi, 17 kB, na stronach z polskimi znakami.',
+    facts: 'Geist Variable: wagi 100–900',
+    font: "'Board Geist', sans-serif",
+  },
+]
+---
+
+<TypeQuestion
+  id={ID}
+  question="Jaki krój pisma ma mieć strona?"
+  options={options}
+  recommendation="B, Inter: jedyny z trzech, który ma prawdziwą wagę 500 i 200 oraz sam dopasowuje grubość kreski do rozmiaru, czego potrzebuje jasny tekst na czerni."
+  note="W każdej opcji ta sama treść i dzisiejsze rozmiary oraz wagi; zmienia się tylko font."
+>
+  {
+    options.map((option) => (
+      <OptionStrip
+        optionKey={option.key}
+        label={option.label}
+        facts={option.facts}
+      >
+        <div style={`--tb-font: ${option.font}`}>
+          <MockHeader variant="current" anchor={ANCHOR} />
+          <Specimen scale="current" samples={samples} />
+        </div>
+      </OptionStrip>
+    ))
+  }
+</TypeQuestion>

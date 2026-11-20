@@ -1,0 +1,123 @@
+---
+/**
+ * The owner's design decision board (dev only, /mockups/design-board): a short
+ * intro, an index of every question, then the four designers' sections. Nothing
+ * here changes the site; the owner's picks become DESIGN.md rows first.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import BlogIndexBoard from './blog-index/BlogIndexBoard.astro'
+import TypographyBoard from './typography/TypographyBoard.astro'
+import IconsControlsBoard from './icons-controls/IconsControlsBoard.astro'
+import FormsMarkersBoard from './forms-markers/FormsMarkersBoard.astro'
+import { BOARD_INDEX, boardAnchor } from './board-index'
+---
+
+<Section id="design-board">
+  <div class="board-intro">
+    <h1 class="board-intro__title">Tablica decyzji o wyglądzie</h1>
+    <p class="board-intro__text">
+      Ostatnia fala zmieniła ikony, przyciski i kolory naraz, bez pokazania
+      wariantów, i część rzeczy wyszła gorzej niż przedtem. Tu każda decyzja ma
+      2–4 wersje na prawdziwej treści strony; opcja A to zawsze stan obecny albo
+      wcześniejszy. Odpisz skrótem, np.
+      <span class="board-intro__sample">B1-C, T1-B, I2-D</span>, albo skomentuj
+      wybraną wersję paskiem uwag na tej stronie.
+    </p>
+  </div>
+  <nav class="board-index line-grid" aria-label="Pytania">
+    {
+      BOARD_INDEX.map((group) => (
+        <div class="board-index__group">
+          <p class="board-index__name">{group.name}</p>
+          <ul>
+            {group.questions.map((item) => (
+              <li>
+                <a class="board-index__link" href={boardAnchor(item.id)}>
+                  <span class="board-index__id">{item.id}</span>
+                  <span>{item.question}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </nav>
+</Section>
+
+<BlogIndexBoard />
+<TypographyBoard />
+<IconsControlsBoard />
+<FormsMarkersBoard />
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  /* Index links land below the fixed site header. */
+  :global([id^='board-']) {
+    scroll-margin-top: 6rem;
+  }
+
+  .board-intro {
+    @include px-responsive('md');
+    padding-block: 2rem;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .board-intro__title {
+    font-size: var(--text-h2);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--color-text);
+  }
+
+  .board-intro__text {
+    margin-top: 0.75rem;
+    max-width: 72ch;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .board-intro__sample {
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .board-index {
+    --cols-wide: 4;
+  }
+
+  .board-index__group {
+    @include px-responsive('md');
+    padding-block: 1.25rem;
+  }
+
+  .board-index__name {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-bottom: 0.5rem;
+  }
+
+  .board-index__link {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+    padding-block: 0.25rem;
+    font-size: var(--text-sm);
+    line-height: 1.45;
+    color: var(--color-text-muted);
+    transition: color var(--motion-fast) var(--ease-standard);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text);
+    }
+  }
+
+  .board-index__id {
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

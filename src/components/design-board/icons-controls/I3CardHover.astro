@@ -1,0 +1,207 @@
+---
+/**
+ * I3: card hover. Real capability cards as line-grid cells, one row per option.
+ * The middle card of each row has its hover pinned, so the state shows without a pointer.
+ * Every option is square: no radius anywhere.
+ */
+import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import { getSystem, systemIcon } from './icon-systems'
+
+const OPTIONS: readonly BoardOption[] = [
+  {
+    key: 'A',
+    label: 'Przed zmianami',
+    consequence:
+      'Tło karty ciemnieje na granatowo-szare, ikona w tle mocno jaśnieje; linie się nie zmieniają.',
+  },
+  {
+    key: 'B',
+    label: 'Obecnie',
+    consequence:
+      'Neutralne rozjaśnienie tła i jaśniejsza szara ramka na liniach siatki; zero koloru.',
+  },
+  {
+    key: 'C',
+    label: 'Cienka niebieska linia',
+    consequence:
+      'Ramka 1 px w przygaszonym niebieskim dokładnie na liniach siatki, bez zmiany tła; jedyny wariant z kolorem.',
+  },
+  {
+    key: 'D',
+    label: 'Samo tło',
+    consequence:
+      'Tylko delikatne rozjaśnienie tła i ikony; najspokojniejszy, ale najsłabiej widać, co jest klikalne.',
+  },
+]
+
+const CARDS = [
+  {
+    number: '01',
+    title: 'Strategic Innovation Consulting',
+    description:
+      'We will help you identify opportunities to use the latest technologies to increase the growth and efficiency of your business.',
+    icon: 'strategy',
+  },
+  {
+    number: '12',
+    title: 'Internet of Things (IoT)',
+    description:
+      'We do not design PCB boards, but we know thousands of ready-to-use components, which we know how to program and efficiently connect them into functional prototypes.',
+    icon: 'iot',
+  },
+  {
+    number: '09',
+    title: 'Cloud Solutions',
+    description:
+      'Instead of configuring complex servers that later need to be administered, we set up infrastructure in the cloud, significantly reducing the amount of necessary maintenance work.',
+    icon: 'cloud',
+  },
+] as const
+
+/** One icon for every option, so only the hover differs: the thin 128px icon of the original site. */
+const iconSystem = getSystem('A')
+const PINNED_INDEX = 1
+---
+
+<BoardQuestion
+  id="I3"
+  question="Jak karta ma reagować na najechanie myszą?"
+  options={OPTIONS}
+  recommendation="C. Ramka trafia dokładnie w linie siatki, więc jest kwadratowa i nic się nie przesuwa, a niebieski pojawia się tylko jako cienka linia na czas hovera. Jeśli niebieski ma zostać wyłącznie w linkach i przyciskach: B."
+  columns={3}
+>
+  {
+    OPTIONS.map((option) => (
+      <>
+        <BoardCell
+          wide
+          option={`${option.key} · ${option.label}`}
+          caption="środkowa karta: hover pokazany na stałe"
+        />
+        {CARDS.map((card, index) => (
+          <a
+            href="/about/capabilities"
+            class:list={[
+              'hover-card',
+              `hover-card--${option.key}`,
+              index === PINNED_INDEX && 'is-hover',
+            ]}
+          >
+            <div class="hover-card__clip">
+              <BoardIcon
+                spec={systemIcon(iconSystem, 'cardBackground', card.icon)!}
+                class="hover-card__bg"
+              />
+              <span class="hover-card__number">{card.number}</span>
+              <h3 class="hover-card__title">{card.title}</h3>
+              <p class="hover-card__text">{card.description}</p>
+            </div>
+          </a>
+        ))}
+      </>
+    ))
+  }
+</BoardQuestion>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* As a direct-child link of the line grid, the card already has the current hover (B):
+     neutral wash plus the line-strong overlay. The other options override that. */
+  .hover-card {
+    --hover-icon-opacity: var(--icon-bg-max-opacity);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hover-card__clip {
+    position: relative;
+    flex: 1;
+    overflow: clip;
+    isolation: isolate;
+    @include padding-responsive('md');
+  }
+
+  .hover-card :global(.hover-card__bg) {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: -1;
+    color: var(--color-text);
+    opacity: 0.06;
+    transition: opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .hover-card:hover :global(.hover-card__bg),
+  .hover-card.is-hover :global(.hover-card__bg) {
+    opacity: var(--hover-icon-opacity);
+  }
+
+  .hover-card__number {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    z-index: -1;
+    font-size: 8rem;
+    font-weight: 300;
+    line-height: 1;
+    opacity: 0.05;
+    color: var(--color-text);
+  }
+
+  .hover-card__title {
+    margin: 0.5rem 0 1rem;
+    font-size: var(--text-h2);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .hover-card__text {
+    font-size: var(--text-h4);
+    color: var(--color-text-muted);
+  }
+
+  /* B and D share the neutral wash; pinned state repeats what :hover does. */
+  .hover-card--B.is-hover,
+  .hover-card--D.is-hover {
+    background-color: var(--color-surface-hover);
+  }
+
+  .hover-card--B.is-hover::after,
+  .hover-card--C.is-hover::after {
+    opacity: 1;
+  }
+
+  /* A: the original card. Blue-gray fill (gray-900), bright icon, no line change. */
+  .hover-card--A {
+    --hover-icon-opacity: 0.32;
+
+    &:not(:focus-visible)::after {
+      border-color: transparent;
+    }
+
+    &:hover,
+    &.is-hover {
+      background-color: rgb(17 24 39);
+    }
+  }
+
+  /* C: a thin, muted blue line on the grid lines; the surface does not change. */
+  .hover-card--C {
+    &:not(:focus-visible)::after {
+      border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  /* D: surface only. */
+  .hover-card--D:not(:focus-visible)::after {
+    border-color: transparent;
+  }
+</style>

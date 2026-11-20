@@ -1,0 +1,81 @@
+---
+/**
+ * A static cell of the option grid: the option key, a short spec caption and the
+ * rendered sample. `wide` spans the whole row (context headings, full-width samples).
+ */
+interface Props {
+  option?: string
+  caption?: string
+  wide?: boolean
+  /** A row heading for one context; renders no sample padding. */
+  heading?: string
+  flush?: boolean
+}
+
+const { option, caption, wide = false, heading, flush = false } = Astro.props
+---
+
+<div class:list={['board-cell', wide && 'board-cell--wide', flush && 'board-cell--flush']}>
+  {heading && <p class="board-cell__heading">{heading}</p>}
+  {
+    (option || caption) && (
+      <p class="board-cell__meta">
+        {option && <span class="board-cell__option">{option}</span>}
+        {caption && <span class="board-cell__caption">{caption}</span>}
+      </p>
+    )
+  }
+  <slot />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .board-cell {
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    @include padding-responsive('sm');
+  }
+
+  .board-cell--wide {
+    grid-column: 1 / -1;
+  }
+
+  .board-cell--flush {
+    padding: 0;
+    gap: 0;
+  }
+
+  .board-cell--flush > .board-cell__meta {
+    @include px-responsive('sm');
+    padding-top: 1rem;
+  }
+
+  .board-cell__heading {
+    font-size: var(--text-lead);
+    color: var(--color-text);
+  }
+
+  .board-cell__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .board-cell__option {
+    color: var(--color-accent);
+  }
+
+  .board-cell__caption {
+    color: var(--color-text-subtle);
+  }
+</style>

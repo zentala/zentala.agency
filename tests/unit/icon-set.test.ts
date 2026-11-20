@@ -16,6 +16,13 @@ const RENDERERS = new Set([
 ])
 const SOURCE_EXT = /\.(astro|tsx|ts|jsx|mdx)$/
 
+/**
+ * The dev-only design board (/mockups/design-board) shows the owner other icon sets side
+ * by side so he can choose one; it must name them. The mockup registry imports it only in
+ * DEV, and the prod-bundle audit keeps it out of dist.
+ */
+const COMPARISON_BOARD = 'components/design-board/'
+
 /** Files allowed to contain an inline <svg>, each with the reason. Keys are paths relative to src. */
 const INLINE_SVG_ALLOWLIST: Record<string, string> = {
   'components/Logo.astro': 'the site logo: brand artwork, not a UI icon',
@@ -39,6 +46,7 @@ const files = listSources(SRC)
     text: readFileSync(file, 'utf8'),
   }))
   .filter((file) => !file.path.startsWith('content/'))
+  .filter((file) => !file.path.startsWith(COMPARISON_BOARD))
 
 const offenders = (test: (file: { path: string; text: string }) => boolean) =>
   files.filter(test).map((file) => file.path)

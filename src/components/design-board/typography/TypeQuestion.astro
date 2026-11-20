@@ -1,0 +1,129 @@
+---
+/**
+ * One owner question of the typography board: id, the question, the options with
+ * their consequence and the recommendation. The rendered options go in the slot,
+ * each inside an `OptionStrip`, stacked at full width so headers and grids keep
+ * their real size.
+ */
+export interface TypeOption {
+  key: string
+  label: string
+  consequence: string
+}
+
+interface Props {
+  id: string
+  question: string
+  options: readonly TypeOption[]
+  recommendation: string
+  /** What the reader should know before comparing, for example the font used. */
+  note?: string
+}
+
+const { id, question, options, recommendation, note } = Astro.props
+---
+
+<section
+  class="section-full"
+  id={`board-${id.toLowerCase()}`}
+  data-board-question={id}
+>
+  <div class="container-bordered">
+    <div class="type-question">
+      <p class="type-question__id">{id}</p>
+      <h2 class="type-question__title">{question}</h2>
+      <ul class="type-question__options">
+        {
+          options.map((option) => (
+            <li>
+              <span class="type-question__key">{option.key}</span>
+              <span>
+                <span class="type-question__label">{option.label}.</span>{' '}
+                {option.consequence}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="type-question__recommendation">
+        <span class="type-question__key">Rekomendacja</span>
+        <span>{recommendation}</span>
+      </p>
+      {note && <p class="type-question__note">{note}</p>}
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .type-question {
+    @include px-responsive('md');
+    @include py-responsive('md');
+  }
+
+  .type-question__id {
+    margin-bottom: 0.5rem;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .type-question__title {
+    max-width: 44ch;
+    font-size: var(--text-h2);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--color-text);
+  }
+
+  .type-question__options {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 90ch;
+    margin-top: 1.5rem;
+    color: var(--color-text-muted);
+  }
+
+  .type-question__options li,
+  .type-question__recommendation {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .type-question__recommendation {
+    grid-template-columns: 7.5rem 1fr;
+    max-width: 90ch;
+    margin-top: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .type-question__key {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .type-question__label {
+    color: var(--color-text);
+  }
+
+  .type-question__note {
+    max-width: 90ch;
+    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  @include mobile {
+    .type-question__recommendation {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+/**
+ * One rendered option: a bar with the option key and its facts, then the option at
+ * full width. With `measure`, the bar shows the rendered height of the element
+ * marked `data-tb-cost` inside the option, so the vertical cost is a number.
+ */
+interface Props {
+  optionKey: string
+  label: string
+  /** Short facts about the option: sizes, weights, tracking. */
+  facts?: string
+  /** Label of the measured height, for example "wysokość nagłówka". */
+  measure?: string
+}
+
+const { optionKey, label, facts, measure } = Astro.props
+---
+
+<div class="option-strip" data-tb-option={optionKey}>
+  <div class="option-strip__bar">
+    <span class="option-strip__key">{optionKey}</span>
+    <span class="option-strip__label">{label}</span>
+    {facts && <span class="option-strip__facts">{facts}</span>}
+    {
+      measure && (
+        <span class="option-strip__cost">
+          {measure}: <span data-tb-cost-out>…</span>
+        </span>
+      )
+    }
+  </div>
+  <div class="option-strip__body">
+    <slot />
+  </div>
+</div>
+
+<script>
+  /* Writes the rendered height of each option's `data-tb-cost` element into its bar. */
+  const writeCosts = () => {
+    document
+      .querySelectorAll<HTMLElement>('[data-tb-option]')
+      .forEach((option) => {
+        const out = option.querySelector('[data-tb-cost-out]')
+        const target = option.querySelector<HTMLElement>('[data-tb-cost]')
+        if (!out || !target) return
+        out.textContent = `${Math.round(target.getBoundingClientRect().height)} px`
+      })
+  }
+  writeCosts()
+  window.addEventListener('load', writeCosts)
+  window.addEventListener('resize', writeCosts)
+  document.fonts?.ready.then(writeCosts)
+</script>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .option-strip__bar {
+    @include px-responsive('md');
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    background-color: var(--color-surface-raised);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .option-strip__key {
+    min-width: 1rem;
+    color: var(--color-accent);
+  }
+
+  .option-strip__label {
+    color: var(--color-text);
+  }
+
+  .option-strip__facts {
+    color: var(--color-text-subtle);
+  }
+
+  .option-strip__cost {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  .option-strip__body {
+    position: relative;
+  }
+</style>

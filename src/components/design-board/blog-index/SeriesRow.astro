@@ -1,0 +1,32 @@
+---
+import SeriesCard from '@/components/cards/SeriesCard.astro'
+import SeriesList from './SeriesList.astro'
+import type { BoardSeries } from './data'
+
+/** The series of the blog side by side, three per row, in one presentation. */
+interface Props {
+  series: BoardSeries[]
+  variant: 'card' | 'date' | 'number' | 'combined'
+}
+
+const { series, variant } = Astro.props
+---
+
+<div class="line-grid line-grid--fill-last">
+  {
+    series.map((item) =>
+      variant === 'card' ? (
+        <SeriesCard
+          title={item.title}
+          slug={item.slug}
+          parts={item.parts}
+          newestSlug={item.newestSlug}
+          isFresh={item.isFresh}
+          hiddenInProduction={item.hiddenInProduction}
+        />
+      ) : (
+        <SeriesList series={item} variant={variant} />
+      ),
+    )
+  }
+</div>

@@ -1,0 +1,90 @@
+---
+/**
+ * Board demo, F3 options B and C: the icon mosaic of CardIconMosaic with a
+ * configurable grid (more cells, or bigger cells and icons). Square frames,
+ * no dots; the same faint glow and downward fade as the current mosaic.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+interface Props {
+  icons: string[]
+  columns: number
+  /** Frame size in rem and icon size in whole px. */
+  cell: number
+  icon: number
+}
+
+const { icons, columns, cell, icon } = Astro.props
+const vars = `--mi-cols: ${columns}; --mi-cell: ${cell}rem; --mi-icon: ${icon}px`
+---
+
+<div class="mi" style={vars} aria-hidden="true">
+  <div class="mi__glow"></div>
+  <div class="mi__grid">
+    {
+      icons.map((name) => (
+        <span class="mi__cell">
+          <SiteIcon name={name} size="lg" class="mi__icon" />
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .mi {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
+    mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
+  }
+
+  .mi__glow {
+    position: absolute;
+    left: 50%;
+    top: 18%;
+    width: 130%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 42%,
+      transparent 68%
+    );
+  }
+
+  .mi__grid {
+    position: absolute;
+    left: 50%;
+    top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(var(--mi-cols), var(--mi-cell));
+    gap: 0.75rem;
+    transform: translateX(-50%);
+  }
+
+  .mi__cell {
+    display: grid;
+    place-items: center;
+    width: var(--mi-cell);
+    height: var(--mi-cell);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+    transition:
+      border-color var(--motion-base) var(--ease-standard),
+      color var(--motion-base) var(--ease-standard);
+  }
+
+  .mi__cell :global(.mi__icon) {
+    width: var(--mi-icon);
+    height: var(--mi-icon);
+  }
+
+  :global(.group):hover .mi__cell {
+    border-color: rgba(255, 255, 255, 0.16);
+    color: var(--color-text-secondary);
+  }
+</style>

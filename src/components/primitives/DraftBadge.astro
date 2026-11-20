@@ -7,11 +7,11 @@ import { SHOW_DRAFTS } from '@/config/blog'
  * and never takes layout space, so a page is as tall in dev as in production:
  * - `corner`: a tag pinned to the top-right corner of the nearest positioned
  *   ancestor (cards, post hero); it sits in that box's padding.
- * - `edge`: a 2px bar just left of the nearest positioned ancestor (list rows).
+ * - `edge`: a 2px translucent bar just left of the nearest positioned ancestor (list rows).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
- * States, all neutral: a plain draft is a thin dashed bar or tag; `review` (a
+ * States, all neutral: a plain draft is a 2px dashed bar or tag; `review` (a
  * draft the agent judges ready for the owner's publication review) is a thin
- * solid, slightly brighter bar or tag labelled "Review"; `label` replaces the
+ * solid bar (also 2px, translucent) or tag labelled "Review"; `label` replaces the
  * text for other dev-only notes, e.g. a series that production would hide.
  */
 interface Props {
@@ -90,20 +90,21 @@ const state = review ? 'review' : 'draft'
   }
 
   .draft-edge {
+    --draft-edge-color: rgb(255 255 255 / 0.22);
     position: absolute;
     top: 0.3em;
     bottom: 0.3em;
     left: -0.5rem;
-    width: 1px;
+    width: 2px;
     background: repeating-linear-gradient(
       to bottom,
-      var(--color-line-strong) 0 4px,
+      var(--draft-edge-color) 0 4px,
       transparent 4px 8px
     );
     pointer-events: none;
   }
 
   .draft-edge--review {
-    background: var(--color-text-subtle);
+    background: var(--draft-edge-color);
   }
 </style>

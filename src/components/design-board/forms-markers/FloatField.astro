@@ -1,0 +1,174 @@
+---
+/**
+ * Board demo: a form field with a floating label (Material v1 behaviour).
+ * The label rests where the value goes; on focus or when filled it moves up, small.
+ * The control fills the whole field and owns the padding, so a textarea's resize
+ * handle sits in the very corner. The icon is as tall as label plus value.
+ * `variant`: `grid` (a line-grid cell, shared cell overlay), `line` (bottom line
+ * only), `accent` (a line-grid cell whose focus is a thin accent line).
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+interface Props {
+  id: string
+  label: string
+  icon: string
+  variant: 'grid' | 'line' | 'accent'
+  type?: 'text' | 'email' | 'tel'
+  multiline?: boolean
+  required?: boolean
+  class?: string
+}
+
+const {
+  id,
+  label,
+  icon,
+  variant,
+  type = 'text',
+  multiline = false,
+  required = false,
+  class: className = '',
+} = Astro.props
+
+const Control = multiline ? 'textarea' : 'input'
+---
+
+<div class:list={['ff', `ff--${variant}`, multiline && 'ff--multiline', className]}>
+  <Control
+    id={id}
+    name={id}
+    type={multiline ? undefined : type}
+    rows={multiline ? 5 : undefined}
+    placeholder=" "
+    autocomplete="off"
+    required={required}
+    class="ff__control"
+  />
+  <label for={id} class="ff__label">{label}</label>
+  <SiteIcon name={icon} size="lg" class="ff__icon" />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .ff {
+    --ff-pad-x: 1.25rem;
+    --ff-icon: 32px;
+    --ff-text-x: calc(var(--ff-pad-x) + var(--ff-icon) + 0.875rem);
+    position: relative;
+    cursor: text;
+  }
+
+  .ff__control {
+    display: block;
+    width: 100%;
+    height: 4rem;
+    padding: 1.625rem var(--ff-pad-x) 0.875rem var(--ff-text-x);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    appearance: none;
+    outline: none;
+  }
+
+  .ff--multiline .ff__control {
+    height: auto;
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  .ff__label {
+    position: absolute;
+    left: var(--ff-text-x);
+    top: 1.25rem;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transform-origin: left top;
+    transition:
+      transform var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  /* Floated: 11px (the label size) at the top of the field. */
+  .ff__control:focus ~ .ff__label,
+  .ff__control:not(:placeholder-shown) ~ .ff__label {
+    transform: translateY(-0.5rem) scale(0.6875);
+    letter-spacing: 0.04em;
+  }
+
+  .ff :global(.ff__icon) {
+    position: absolute;
+    left: var(--ff-pad-x);
+    top: 1rem;
+    width: var(--ff-icon);
+    height: var(--ff-icon);
+    color: var(--color-text-subtle);
+    pointer-events: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  /* B: a cell of the line grid; hover and focus are the shared cell overlay. */
+  .ff--grid {
+    @include cell-interactive;
+  }
+
+  .ff--grid .ff__control:focus ~ :global(.ff__icon) {
+    color: var(--color-text-secondary);
+  }
+
+  /* C: no cell, a bottom line only; focus turns the line and the label accent. */
+  .ff--line {
+    --ff-pad-x: 0rem;
+    border-bottom: 1px solid var(--color-line-strong);
+    transition: border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .ff--line:hover {
+    border-bottom-color: var(--color-text-subtle);
+  }
+
+  .ff--line:has(.ff__control:focus) {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* D: a cell of the line grid; focus is a 1px accent line on the cell's bottom line. */
+  .ff--accent {
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .ff--accent:hover {
+    background-color: var(--color-surface-hover);
+  }
+
+  .ff--accent::after {
+    content: '';
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    height: 1px;
+    background: var(--color-accent);
+    opacity: 0;
+    pointer-events: none;
+    z-index: var(--z-cell-hover);
+    transition: opacity var(--motion-fast) var(--ease-standard);
+  }
+
+  .ff--accent:has(.ff__control:focus)::after {
+    opacity: 1;
+  }
+
+  .ff--line .ff__control:focus ~ .ff__label,
+  .ff--accent .ff__control:focus ~ .ff__label,
+  .ff--line .ff__control:focus ~ :global(.ff__icon),
+  .ff--accent .ff__control:focus ~ :global(.ff__icon) {
+    color: var(--color-accent);
+  }
+</style>

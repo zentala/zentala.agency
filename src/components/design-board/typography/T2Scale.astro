@@ -1,0 +1,71 @@
+---
+/** T2: which size and weight system. The same content in one font, three systems. */
+import OptionStrip from './OptionStrip.astro'
+import Specimen, { type SpecimenScale } from './Specimen.astro'
+import TypeQuestion from './TypeQuestion.astro'
+import type { TypographySamples } from './data'
+
+interface Props {
+  samples: TypographySamples
+}
+
+const { samples } = Astro.props
+
+const options: {
+  key: string
+  label: string
+  consequence: string
+  facts: string
+  scale: SpecimenScale
+}[] = [
+  {
+    key: 'A',
+    label: 'Obecny',
+    consequence:
+      'Tytuł strony 96 px, potem 36, 24 i 18–20 px: duże skoki bez jednej skali. Wszystkie tytuły w wadze 300, tekst kart 18 px z ciasną interlinią 24 px.',
+    facts:
+      '96 / 36 / 24 / 20 / 18 / 14 px · tytuły 300 · tekst 400 · etykiety 11 px',
+    scale: 'current',
+  },
+  {
+    key: 'B',
+    label: 'Propozycja: jedna skala ok. 1,25',
+    consequence:
+      'Waga 300 tylko od 32 px w górę, mniejsze tytuły i tekst 400, etykiety 500. Interlinia tekstu 1,6–1,7, duże tytuły lekko ściśnięte. Tytuł strony mniejszy, więc więcej miejsca na treść.',
+    facts:
+      '72 / 32 / 22 / 18 / 16 / 13 px · tytuły 300 i 400 · tekst 400 · etykiety 12 px',
+    scale: 'proposal',
+  },
+  {
+    key: 'C',
+    label: 'Lżejsza',
+    consequence:
+      'Tytuły 200, tekst 300, wszystko o stopień większe. Wygląda najdelikatniej, ale tekst poniżej 18 px robi się na czerni cienki i męczy przy dłuższym czytaniu.',
+    facts:
+      '80 / 36 / 24 / 19 / 17 / 13 px · tytuły 200 i 300 · tekst 300 · etykiety 12 px',
+    scale: 'light',
+  },
+]
+---
+
+<TypeQuestion
+  id="T2"
+  question="Jaki system rozmiarów i wag?"
+  options={options}
+  recommendation="B: cienka kreska zostaje tam, gdzie litery są duże, a mały tekst trzyma wagę 400; hierarchię robi rozmiar i kolor, nie pogrubienie."
+  note="Wszystkie trzy opcje są pokazane w Inter (rekomendacja T1), żeby porównywać tylko rozmiary i wagi. Prawdziwy stan dzisiejszy w foncie systemowym to opcja A w T1."
+>
+  {
+    options.map((option) => (
+      <OptionStrip
+        optionKey={option.key}
+        label={option.label}
+        facts={option.facts}
+      >
+        <div style="--tb-font: 'Board Inter', sans-serif">
+          <Specimen scale={option.scale} samples={samples} />
+        </div>
+      </OptionStrip>
+    ))
+  }
+</TypeQuestion>
