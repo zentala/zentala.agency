@@ -23,6 +23,14 @@
     --tw-prose-th-borders: var(--color-line);
     --tw-prose-td-borders: var(--color-line);
 
+    /* No bold: the typography plugin's 600-700 weights stop at 500. */
+    strong,
+    b,
+    th,
+    code {
+      font-weight: 500;
+    }
+
     // Dodatkowe style dla elementów markdown
     h1,
     h2,
@@ -50,7 +58,7 @@
     }
 
     a {
-      @apply text-blue-400 underline hover:text-blue-300;
+      @apply text-accent no-underline transition-colors duration-fast hover:text-accent-hover;
     }
 
     ul,
@@ -136,9 +144,9 @@
       @apply mb-6 text-lg leading-relaxed md:text-xl md:leading-[1.7];
     }
 
-    /* Links: keep strong affordance on dark UI */
+    /* Links: accent blue, no underline; brighter blue on hover. */
     a {
-      @apply text-fg underline decoration-white/40 decoration-1 underline-offset-4 transition-colors duration-fast hover:text-fg-secondary hover:decoration-white/80;
+      @apply text-accent no-underline transition-colors duration-fast hover:text-accent-hover;
     }
 
     /* Lists: consistent indentation + spacing, including nested lists */

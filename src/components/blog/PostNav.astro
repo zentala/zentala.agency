@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 /**
  * End-of-article navigation, shown at every width, as its own section after the post
@@ -40,9 +41,10 @@ const hasPair = Boolean(previous || next)
           seriesPosts.length > 1 ? (
             <a
               href={`/series/${seriesSlug}`}
-              class={`${textLinkClass} text-accent hover:text-accent-hover hover:underline`}
+              class={`${textLinkClass} inline-flex items-center gap-1 text-accent hover:text-accent-hover`}
             >
-              All {seriesPosts.length} parts →
+              All {seriesPosts.length} parts
+              <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
             </a>
           ) : (
             <span />
@@ -51,8 +53,9 @@ const hasPair = Boolean(previous || next)
           <p class={labelClass}>{related.length > 0 ? 'Related posts' : ''}</p>
         )
       }
-      <a href="/blog" class={`${textLinkClass} text-fg-muted hover:text-fg`}>
-        ← All posts
+      <a href="/blog" class={`${textLinkClass} inline-flex items-center gap-1 text-fg-muted hover:text-fg`}>
+        <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+        All posts
       </a>
     </div>
 
@@ -61,8 +64,9 @@ const hasPair = Boolean(previous || next)
         <div class="line-grid" style="--cols-wide: 2">
           {previous && (
             <a href={`/blog/${previous.slug}`} class={cellClass} rel="prev">
-              <span class={labelClass}>
-                ← Previous part
+              <span class={`${labelClass} inline-flex items-center gap-1`}>
+                <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+                Previous part
                 {previous.data.published === false && (
                   <DraftBadge
                     placement="inline"
@@ -82,7 +86,8 @@ const hasPair = Boolean(previous || next)
               rel="next"
             >
               <span class={labelClass}>
-                Next part →
+                Next part
+                <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
                 {next.data.published === false && (
                   <DraftBadge placement="inline" review={next.data.review} />
                 )}

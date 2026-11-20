@@ -82,39 +82,13 @@ const isCurrent = (href: string) =>
   // Medium desktop nav adjustments
   .desktop-nav {
     a {
-      @apply relative text-fg transition-colors duration-fast;
+      @apply text-fg-muted transition-colors duration-fast;
 
-      // Underline is an overlay: it draws on top, so layout never shifts
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -4px;
-        height: 1px;
-        background: currentColor;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--motion-base) var(--ease-standard);
-      }
-
+      // No underline: hover and the current page are a brighter colour
       &:hover,
-      &:focus-visible {
-        @apply text-fg-secondary;
-
-        &::after {
-          transform: scaleX(1);
-        }
-      }
-
-      &[aria-current='page']::after {
-        transform: scaleX(1);
-        opacity: 0.4;
-      }
-
-      &[aria-current='page']:hover::after,
-      &[aria-current='page']:focus-visible::after {
-        opacity: 1;
+      &:focus-visible,
+      &[aria-current='page'] {
+        @apply text-fg;
       }
     }
 

@@ -46,7 +46,7 @@ const isDev = import.meta.env.DEV
     position: relative;
 
     &:hover {
-      background: #111827;
+      background: var(--color-surface-hover);
     }
 
     // Dev mode label (top-right corner)
@@ -54,10 +54,10 @@ const isDev = import.meta.env.DEV
       position: absolute;
       top: 4px;
       right: 4px;
-      background: rgba(96, 165, 250, 0.9); // blue-400
-      color: #000;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text-subtle);
       font-size: 10px;
-      font-weight: 600;
+      font-weight: 400;
       padding: 2px 6px;
       border-radius: 3px;
       z-index: 100;

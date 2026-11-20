@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import Hero from '../../components/Hero.astro'
+import SiteIcon from '../../components/primitives/SiteIcon.astro'
 
 const heroProps = {
   title: 'Case Study',
@@ -195,7 +196,7 @@ const heroProps = {
         >
           <p class="mb-1 text-sm text-fg-muted">Standing time / day</p>
           <p class="text-3xl font-light text-fg">
-            8% <span class="text-success">&rarr;</span> 22%
+            8% <SiteIcon name="caret-right" size="sm" class="inline text-success" /> 22%
           </p>
         </div>
         <div
@@ -203,7 +204,7 @@ const heroProps = {
         >
           <p class="mb-1 text-sm text-fg-muted">Position changes / day</p>
           <p class="text-3xl font-light text-fg">
-            1.2 <span class="text-success">&rarr;</span> 4.8
+            1.2 <SiteIcon name="caret-right" size="sm" class="inline text-success" /> 4.8
           </p>
         </div>
         <div
@@ -211,7 +212,7 @@ const heroProps = {
         >
           <p class="mb-1 text-sm text-fg-muted">Longest sitting session</p>
           <p class="text-3xl font-light text-fg">
-            3.5h <span class="text-success">&rarr;</span> 52min
+            3.5h <SiteIcon name="caret-right" size="sm" class="inline text-success" /> 52min
           </p>
         </div>
       </div>

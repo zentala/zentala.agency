@@ -70,16 +70,17 @@ if (!steps?.length) {
         border-color: var(--color-text-secondary);
       }
 
-      /* Arrow to the next step: below on narrow screens, to the right on wide. */
+      /* Chevron to the next step (no shaft): below on narrow screens, to the right on wide. */
       .flow__step:not(:last-child)::after {
-        content: '↓';
+        content: '';
         position: absolute;
         left: 50%;
-        top: calc(100% + 0.125rem);
-        transform: translateX(-50%);
-        color: var(--color-text-muted);
-        font-size: 1rem;
-        line-height: 1.5rem;
+        top: calc(100% + 0.375rem);
+        width: 0.5rem;
+        height: 0.5rem;
+        border-right: 1px solid var(--color-text-muted);
+        border-bottom: 1px solid var(--color-text-muted);
+        transform: translateX(-50%) rotate(45deg);
       }
 
       .flow__label {
@@ -112,10 +113,9 @@ if (!steps?.length) {
         }
 
         .flow__step:not(:last-child)::after {
-          content: '→';
           left: calc(100% + 0.875rem);
           top: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%) rotate(-45deg);
         }
       }
   }

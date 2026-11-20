@@ -7,6 +7,7 @@ import PostNav from '../../components/blog/PostNav.astro'
 import PostToc from '../../components/blog/PostToc.astro'
 import SeriesRail from '../../components/blog/SeriesRail.astro'
 import ShareButtons from '../../components/blog/ShareButtons.astro'
+import SiteIcon from '../../components/primitives/SiteIcon.astro'
 import DraftBadge from '../../components/primitives/DraftBadge.astro'
 import { SHOW_AUTHOR } from '@/config/blog'
 import { partLabel } from '@/lib/blog/part-label'
@@ -157,7 +158,7 @@ const summaryClass =
                     alt={`Avatar of ${author.name}`}
                   />
                   <span class="text-fg">
-                    <span class="font-semibold">{author.name}</span>
+                    <span class="font-medium">{author.name}</span>
                     <span class="ml-2 text-fg-muted">{authorRole}</span>
                   </span>
                 </div>
@@ -217,9 +218,10 @@ const summaryClass =
           <div class="blog-aside__sticky">
             <a
               href="/blog"
-              class="block text-sm font-light text-fg-muted no-underline transition-colors duration-fast ease-standard hover:text-fg"
+              class="inline-flex items-center gap-1 text-sm font-light text-fg-muted no-underline transition-colors duration-fast ease-standard hover:text-fg"
             >
-              ← All posts
+              <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+              All posts
             </a>
             <p class="mt-3 text-sm text-fg-subtle">{readingMinutes} min read</p>
 

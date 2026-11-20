@@ -11,7 +11,7 @@
 
 // Footer heading styling
 .footer-heading {
-  @apply relative mb-6 font-semibold uppercase;
+  @apply relative mb-6 font-medium uppercase;
   letter-spacing: 0.26rem;
 
   // Responsive mobile spacing to match footer-about
@@ -43,10 +43,6 @@
   // Social media links styling
   a {
     @apply text-fg-muted transition-colors duration-fast hover:text-fg;
-
-    &:hover::after {
-      display: none !important; // Disable underline effect
-    }
   }
 }
 
@@ -108,18 +104,6 @@ footer {
       @apply text-fg;
       cursor: pointer;
       background: transparent;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: -1px;
-        bottom: 2px;
-        width: 100%;
-        height: 8px;
-        background-color: currentColor;
-        opacity: 0.2;
-        z-index: -1;
-      }
     }
   }
 }

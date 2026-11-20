@@ -41,7 +41,6 @@ export default {
           hover: 'var(--color-accent-hover)',
           solid: 'var(--color-accent-solid)',
         },
-        warn: 'var(--color-warn)',
         success: 'var(--color-success)',
         danger: 'var(--color-danger)',
       },

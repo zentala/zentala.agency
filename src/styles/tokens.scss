@@ -2,9 +2,9 @@
 :root {
   // Surfaces
   --color-surface: #000;
-  --color-surface-raised: #0b0f17;
-  // Hover wash: the accent at 10% over the surface. Text on it stays above 17:1 for white.
-  --color-surface-hover: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+  --color-surface-raised: #0d0d0d;
+  // Hover wash: white at 4% over the surface, neutral. Text on it stays above 18:1 for white.
+  --color-surface-hover: color-mix(in srgb, #fff 4%, var(--color-surface));
 
   // Lines
   --color-line: #1f2937;
@@ -18,11 +18,10 @@
   --color-text-muted: rgba(255, 255, 255, 0.6);
   --color-text-subtle: rgba(255, 255, 255, 0.55);
 
-  // Accent and status
+  // Accent (links and tiny highlights only) and status
   --color-accent: #60a5fa;
   --color-accent-hover: #93c5fd;
   --color-accent-solid: #2563eb;
-  --color-warn: #f59e0b;
   --color-success: #34d399;
   --color-danger: #f87171;
   --icon-bg-max-opacity: 0.12;

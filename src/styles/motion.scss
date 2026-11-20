@@ -25,6 +25,30 @@
   outline-offset: -2px;
 }
 
+// The one arrow behaviour: a chevron (SiteIcon 'caret-right') with class arrow-nudge
+// moves 4px right while its link, button or .group parent is hovered or focused.
+.arrow-nudge,
+.arrow-nudge-back {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .arrow-nudge,
+  .arrow-nudge-back {
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  :is(a, button, .group):is(:hover, :focus-visible) .arrow-nudge,
+  .arrow-nudge:is(:hover, :focus-visible) {
+    transform: translateX(4px);
+  }
+
+  :is(a, button, .group):is(:hover, :focus-visible) .arrow-nudge-back,
+  .arrow-nudge-back:is(:hover, :focus-visible) {
+    transform: translateX(-4px);
+  }
+}
+
 // One place for reduced motion. Colour changes stay, with no visible duration.
 @media (prefers-reduced-motion: reduce) {
   *,

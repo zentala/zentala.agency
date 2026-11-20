@@ -1,4 +1,5 @@
 ---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import type { BannerProps } from '../types'
 
 interface SimpleBannerProps {
@@ -22,7 +23,10 @@ const {
 <a href={linkHref} class={`banner banner-simple ${className}`}>
   <h3>{title}</h3>
   <p>{description}</p>
-  <span class="banner-link" aria-hidden="true">{linkText}</span>
+  <span class="banner-link" aria-hidden="true">
+    {linkText}
+    <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+  </span>
 </a>
 
 <style lang="scss">
@@ -66,10 +70,8 @@ const {
     }
 
     .banner-link {
-      @apply inline-block text-fg transition-colors duration-fast ease-standard;
+      @apply inline-flex items-center gap-1 text-fg transition-colors duration-fast ease-standard;
       font-size: 1.125rem; // text-lg
-      position: relative;
-      padding-bottom: 2px;
 
       @include tablet {
         font-size: 1rem; // text-base
@@ -81,22 +83,6 @@ const {
 
       &:hover {
         @apply text-fg-secondary;
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 1px;
-        background-color: currentColor;
-        opacity: 0.6;
-        transition: opacity var(--motion-fast) var(--ease-standard);
-      }
-
-      &:hover::after {
-        opacity: 1;
       }
     }
   }

@@ -17,6 +17,15 @@
 
 // Twoje niestandardowe style
 @layer base {
+  a {
+    text-decoration: none;
+  }
+
+  b,
+  strong {
+    font-weight: 500;
+  }
+
   body {
     @apply bg-black text-gray-900;
   }
