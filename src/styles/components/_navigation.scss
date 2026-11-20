@@ -23,7 +23,7 @@
   }
 
   .mobile-nav {
-    @apply fixed left-0 hidden w-full bg-surface;
+    @apply fixed left-0 hidden w-full bg-surface-raised;
     border-bottom: 1px solid $border-color;
     z-index: 1100; /* Higher than header (50) and overlay (400) */
 

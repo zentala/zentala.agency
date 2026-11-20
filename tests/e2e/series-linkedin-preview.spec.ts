@@ -9,6 +9,8 @@ import { test, expect } from '@playwright/test'
 // variants named in ORCHESTRATOR.md T08 without needing two servers.
 
 const SERIES_SLUG = 'agent-native-harness'
+/** Has three published parts, so the thin-series rule keeps it in production. */
+const VISIBLE_SERIES_SLUG = 'developer-experience'
 const SERIES_PART_1_SLUG = 'trzasanie-drzewem-pomyslow-agenta-pytaniami'
 const UNPUBLISHED_SERIES_SLUGS = [
   SERIES_PART_1_SLUG,
@@ -30,11 +32,20 @@ const PUBLISHED_SLUG = 'how-to-deal-with-resistance-when-implementing-dev-portal
 
 test.describe('Series index — mode aware', () => {
   test('series route lists the published parts of the series', async ({ page }) => {
-    // Published parts keep their series route alive in every build; drafts
-    // join the list only in a preview build.
-    const response = await page.goto(`/series/${SERIES_SLUG}`)
+    // A series with at least two published parts keeps its route in every
+    // build (thin-series rule, docs/agents/blog-content.md).
+    const response = await page.goto(`/series/${VISIBLE_SERIES_SLUG}`)
     expect(response?.status()).toBe(200)
-    expect(await page.locator('.post-card').count()).toBeGreaterThanOrEqual(1)
+    expect(await page.locator('.post-card').count()).toBeGreaterThanOrEqual(2)
+  })
+
+  test('a series with fewer than two published parts has no route in production', async ({
+    page,
+  }) => {
+    const probe = await page.goto(`/blog/${SERIES_PART_1_SLUG}`)
+    const isPreviewBuild = probe?.status() !== 404
+    const response = await page.goto(`/series/${SERIES_SLUG}`)
+    expect(response?.status()).toBe(isPreviewBuild ? 200 : 404)
   })
 
   test('unpublished series articles follow the same visibility as the preview build', async ({
