@@ -27,6 +27,20 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
    - Tests scroll indicator
    - Tests UI interactions
 
+4. **`line-geometry.spec.ts`** - guard for the one line model (DESIGN.md section 3)
+   - Routes come from `dist/**/index.html` at test time (redirect stubs are replaced by their destination, `/linkedin-preview/*` is excluded as a mock of LinkedIn's UI, a not-built path covers the 404 page)
+   - Per route at 1920, 1450, 768, 390 (1280 for `/`, `/blog`, `/about/capabilities`, `/portfolio`): no doubled line, no vertical line at the viewport edge at 1450px and below, no floating vertical segment (`FLOATING_SEGMENT_CHECK`), containers (`.container-bordered`, `.container-padded`, `.container-header`, `.container-footer-small`) span the viewport at 1450px and below
+   - Hover at 1920 on every route with an interactive cell changes no layout rect
+5. **`bento-showcase.spec.ts`**, **`series-linkedin-preview.spec.ts`** - critical specs of the bento grid and the series/LinkedIn preview pages
+
+### Critical specs in `just check`
+
+`just check` runs `blog-post`, `bento-showcase`, `series-linkedin-preview` and `line-geometry` on chromium against `npm run preview` of a build made with `PUBLIC_PLAYWRIGHT_TEST=true`. Run the build first; `line-geometry` reads `dist/`.
+
+### Line geometry rule
+
+A new route is covered automatically. A new kind of line needs an allowlist entry or a fix, never a silent exclusion. The allowlists live at the top of `line-geometry.spec.ts` (`EXCLUDED_ROUTE_PREFIXES`, `PROSE_WIDGET_SELECTOR`, `HIDDEN_WIDGETS_CSS`); each entry needs a reason in a comment.
+
 ## Running Tests
 
 ### Local Development
