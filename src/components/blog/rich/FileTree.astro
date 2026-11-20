@@ -24,7 +24,7 @@ if (!nodes?.length) {
 }
 ---
 
-<ul class="file-tree">
+<ul class="file-tree" data-prose-widget>
   {
     nodes.map((node) => (
       <li class="file-tree__row" style={`--depth: ${node.depth}`}>
@@ -53,7 +53,7 @@ if (!nodes?.length) {
         gap: 0.125rem;
         margin: 0;
         padding: 0.375rem 0 0.375rem calc(var(--depth) * 1.25rem);
-        border-bottom: 1px solid rgb(17 24 39);
+        border-bottom: 1px solid var(--color-line);
       }
 
       .file-tree__row:last-child {
@@ -61,7 +61,7 @@ if (!nodes?.length) {
       }
 
       .file-tree__name {
-        color: rgb(243 244 246);
+        color: var(--color-text);
         padding: 0;
         border: 0;
         background: none;
@@ -71,7 +71,7 @@ if (!nodes?.length) {
       }
 
       .file-tree__note {
-        color: rgb(156 163 175);
+        color: var(--color-text-muted);
         font-size: 0.8125rem;
         font-weight: 300;
         line-height: 1.45;

@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { expect, test, type Page } from '@playwright/test'
+import { measureLines } from './lib/line-analysis'
 
 /**
  * Line geometry guard (DESIGN.md section 3, "one line model").
@@ -28,16 +29,6 @@ const CONTAINER_SELECTOR =
 const INTERACTIVE_CELL =
   ':is(.cards-grid, .line-grid) > :is(a, .cell-interactive, .card-container--hover)'
 const CONTAINER_SIDE_LINES_MIN_WIDTH = 1451
-/** Dev and runtime widgets that are not page lines. */
-const HIDDEN_WIDGETS_CSS =
-  'astro-dev-toolbar, [class*=chat], [id*=chat], [id*=agentation], [data-agentation] { display: none !important } iframe { visibility: hidden !important }'
-
-/** Floating-segment check: ON fails a route that has a vertical line joining nothing. */
-const FLOATING_SEGMENT_CHECK = true
-const FLOATING_MIN_LENGTH = 80
-/** Prose widgets draw their own boxes; their lines are not grid lines. */
-const PROSE_WIDGET_SELECTOR =
-  'table, pre, code, blockquote, .li-card, input, textarea, select, button, [class*=li-card]'
 
 function listHtmlFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -69,161 +60,6 @@ function discoverRoutes(): string[] {
 }
 
 const ROUTES = discoverRoutes()
-
-interface Rect {
-  x: number
-  y: number
-  w: number
-  h: number
-}
-
-interface LineReport {
-  adjacentHorizontal: string[]
-  adjacentVertical: string[]
-  floatingVertical: string[]
-  lineAtLeftEdge: boolean
-  lineAtRightEdge: boolean
-}
-
-interface AnalyzeInput {
-  dataUrl: string
-  excluded: Rect[]
-  checkFloating: boolean
-  floatingMinLength: number
-}
-
-/** Runs inside the page: finds runs of line-coloured pixels in a screenshot. */
-async function analyzeLines(input: AnalyzeInput): Promise<LineReport> {
-  const LINE_COLOURS = [
-    [31, 41, 55],
-    [55, 65, 81],
-  ]
-  const MIN_RUN = 48
-  const MIN_OVERLAP = 8
-  const JOIN_TOLERANCE = 2
-  const img = await new Promise<HTMLImageElement>((resolve) => {
-    const image = new Image()
-    image.onload = () => resolve(image)
-    image.src = input.dataUrl
-  })
-  const canvas = document.createElement('canvas')
-  canvas.width = img.width
-  canvas.height = img.height
-  const ctx = canvas.getContext('2d')!
-  ctx.drawImage(img, 0, 0)
-  const { data, width, height } = ctx.getImageData(0, 0, img.width, img.height)
-  const isLine = (x: number, y: number) => {
-    const o = (y * width + x) * 4
-    return LINE_COLOURS.some(
-      ([r, g, b]) => data[o] === r && data[o + 1] === g && data[o + 2] === b,
-    )
-  }
-  type Run = { at: number; from: number; to: number }
-  const collect = (
-    outer: number,
-    inner: number,
-    pick: (a: number, b: number) => boolean,
-  ) => {
-    const runs: Run[] = []
-    for (let a = 0; a < outer; a++) {
-      let start = -1
-      for (let b = 0; b <= inner; b++) {
-        const on = b < inner && pick(a, b)
-        if (on && start < 0) start = b
-        if (!on && start >= 0) {
-          if (b - start >= MIN_RUN) runs.push({ at: a, from: start, to: b })
-          start = -1
-        }
-      }
-    }
-    return runs
-  }
-  const horizontal = collect(height, width, (y, x) => isLine(x, y))
-  const vertical = collect(width, height, (x, y) => isLine(x, y))
-  const overlap = (a: Run, b: Run) =>
-    Math.min(a.to, b.to) - Math.max(a.from, b.from)
-  const adjacent = (runs: Run[]) => {
-    const byPosition = new Map<number, Run[]>()
-    runs.forEach((r) =>
-      byPosition.set(r.at, [...(byPosition.get(r.at) ?? []), r]),
-    )
-    const touches = (r: Run, at: number) =>
-      (byPosition.get(at) ?? []).some((o) => overlap(r, o) >= MIN_OVERLAP)
-    const found: string[] = []
-    for (const r of runs)
-      for (const q of byPosition.get(r.at + 1) ?? []) {
-        // A filled area is thicker than 2px; only a bare pair counts as a doubled line
-        if (
-          overlap(r, q) >= MIN_OVERLAP &&
-          !touches(r, r.at - 1) &&
-          !touches(q, q.at + 1)
-        )
-          found.push(`${r.at}/${q.at} overlap ${overlap(r, q)}px`)
-      }
-    return found
-  }
-  const edgeHasLine = (x: number) => vertical.some((r) => r.at === x)
-  const inExcluded = (x: number, y: number) =>
-    input.excluded.some(
-      (r) =>
-        x >= r.x - JOIN_TOLERANCE &&
-        x <= r.x + r.w + JOIN_TOLERANCE &&
-        y >= r.y - JOIN_TOLERANCE &&
-        y <= r.y + r.h + JOIN_TOLERANCE,
-    )
-  // An end joins when a horizontal line crosses its column there, or the page ends
-  const endJoins = (x: number, y: number, pageEdge: boolean) =>
-    pageEdge ||
-    horizontal.some(
-      (h) =>
-        Math.abs(h.at - y) <= JOIN_TOLERANCE &&
-        x >= h.from - JOIN_TOLERANCE &&
-        x <= h.to + JOIN_TOLERANCE,
-    )
-  const floating = (): string[] =>
-    vertical
-      .filter((r) => r.to - r.from >= input.floatingMinLength)
-      .filter((r) => !inExcluded(r.at, (r.from + r.to) / 2))
-      .filter(
-        (r) =>
-          !endJoins(r.at, r.from, r.from <= JOIN_TOLERANCE) &&
-          !endJoins(r.at, r.to, r.to >= height - JOIN_TOLERANCE),
-      )
-      .map((r) => `x=${r.at} y=${r.from}-${r.to} (${r.to - r.from}px)`)
-  return {
-    adjacentHorizontal: adjacent(horizontal),
-    adjacentVertical: adjacent(vertical),
-    floatingVertical: input.checkFloating ? floating() : [],
-    lineAtLeftEdge: edgeHasLine(0),
-    lineAtRightEdge: edgeHasLine(width - 1),
-  }
-}
-
-async function measureLines(page: Page): Promise<LineReport> {
-  // The fixed header and widgets would repeat or hide lines in a full-page capture
-  await page.addStyleTag({
-    content: `header, .fixed { position: absolute !important } ${HIDDEN_WIDGETS_CSS} a[class*="bg-gray-800"], button { visibility: hidden !important }`,
-  })
-  const excluded = await page.evaluate((selector) => {
-    return [...document.querySelectorAll(selector)].map((el) => {
-      const r = el.getBoundingClientRect()
-      return {
-        x: r.left + window.scrollX,
-        y: r.top + window.scrollY,
-        w: r.width,
-        h: r.height,
-      }
-    })
-  }, PROSE_WIDGET_SELECTOR)
-  const shot = await page.screenshot({ fullPage: true })
-  const dataUrl = `data:image/png;base64,${shot.toString('base64')}`
-  return page.evaluate(analyzeLines, {
-    dataUrl,
-    excluded,
-    checkFloating: FLOATING_SEGMENT_CHECK,
-    floatingMinLength: FLOATING_MIN_LENGTH,
-  })
-}
 
 const layoutSnapshot = (page: Page) =>
   page.evaluate((selector) => {

@@ -46,15 +46,8 @@ if (!definition?.trim()) {
   .term {
     position: relative;
     cursor: help;
-    text-decoration: underline dotted rgb(156 163 175);
+    text-decoration: underline dotted var(--color-text-muted);
     text-underline-offset: 0.25em;
-    outline: none;
-  }
-
-  .term:focus-visible {
-    outline: 2px solid rgb(96 165 250);
-    outline-offset: 2px;
-    border-radius: 0.125rem;
   }
 
   .term__bubble {
@@ -65,10 +58,10 @@ if (!definition?.trim()) {
     width: max-content;
     max-width: min(22rem, calc(100vw - 2rem));
     padding: 0.625rem 0.75rem;
-    border: 1px solid rgb(55 65 81);
-    border-radius: 0.375rem;
-    background: rgb(17 24 39);
-    color: rgb(229 231 235);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+    color: var(--color-text-secondary);
     font-size: 0.875rem;
     font-weight: 300;
     font-style: normal;
@@ -88,4 +81,4 @@ if (!definition?.trim()) {
 </style>
 
 {/* Keep this element last and on one line: any whitespace around it renders as a space before the next character. */}
-<span class="term" tabindex="0" data-term><slot /><span class="term__bubble" role="tooltip">{definition}</span></span>
+<span class="term" tabindex="0" data-term data-prose-widget><slot /><span class="term__bubble" role="tooltip">{definition}</span></span>

@@ -11,7 +11,7 @@ interface Props {
 const { summary } = Astro.props
 ---
 
-<details class="disclosure">
+<details class="disclosure" data-prose-widget>
   <summary class="disclosure__summary">{summary}</summary>
   <div class="disclosure__body"><slot /></div>
 </details>
@@ -19,9 +19,9 @@ const { summary } = Astro.props
 <style lang="scss">
   .disclosure {
     margin: 1.5rem 0;
-    border-left: 2px solid rgb(55 65 81);
-    background: rgb(17 24 39 / 0.35);
-    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: 1px solid var(--color-line-strong);
+    background: var(--color-surface-raised);
+    border-radius: var(--radius-none);
   }
 
   .disclosure__summary {
@@ -29,12 +29,12 @@ const { summary } = Astro.props
     align-items: baseline;
     gap: 0.625rem;
     padding: 0.875rem 1.25rem;
-    color: rgb(209 213 219);
+    color: var(--color-text-secondary);
     font-size: 1rem;
     font-weight: 400;
     cursor: pointer;
     list-style: none;
-    transition: color 200ms ease;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .disclosure__summary::-webkit-details-marker {
@@ -45,7 +45,7 @@ const { summary } = Astro.props
     content: '+';
     flex: none;
     width: 1ch;
-    color: rgb(156 163 175);
+    color: var(--color-text-muted);
     font-family: ui-monospace, monospace;
   }
 
@@ -54,12 +54,7 @@ const { summary } = Astro.props
   }
 
   .disclosure__summary:hover {
-    color: white;
-  }
-
-  .disclosure__summary:focus-visible {
-    outline: 2px solid rgb(96 165 250);
-    outline-offset: 2px;
+    color: var(--color-text);
   }
 
   .disclosure__body {
@@ -69,6 +64,6 @@ const { summary } = Astro.props
   .disclosure__body :global(p),
   .disclosure__body :global(li) {
     font-size: 1.0625rem;
-    color: rgb(209 213 219);
+    color: var(--color-text-secondary);
   }
 </style>

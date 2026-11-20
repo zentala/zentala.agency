@@ -13,7 +13,7 @@ interface Props {
 const { label, caption } = Astro.props
 ---
 
-<figure class="rich-figure not-prose">
+<figure class="rich-figure not-prose" data-prose-widget>
   {label && <p class="rich-figure__label">{label}</p>}
   <div class="rich-figure__body"><slot /></div>
   <figcaption class="rich-figure__caption">{caption}</figcaption>
@@ -22,16 +22,16 @@ const { label, caption } = Astro.props
 <style lang="scss">
   .rich-figure {
     margin: 2.5rem 0;
-    border: 1px solid rgb(31 41 55);
-    border-radius: 0.5rem;
-    background: rgb(3 7 18 / 0.6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-none);
+    background: transparent;
   }
 
   .rich-figure .rich-figure__label {
     margin: 0;
     padding: 0.625rem 1.25rem;
-    border-bottom: 1px solid rgb(31 41 55);
-    color: rgb(156 163 175);
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-text-muted);
     font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.08em;
@@ -45,8 +45,8 @@ const { label, caption } = Astro.props
 
   .rich-figure__caption {
     padding: 0.75rem 1.25rem;
-    border-top: 1px solid rgb(31 41 55);
-    color: rgb(156 163 175);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-text-muted);
     font-size: 0.875rem;
     font-weight: 300;
     line-height: 1.5;
