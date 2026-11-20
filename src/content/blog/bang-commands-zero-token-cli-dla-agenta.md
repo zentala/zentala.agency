@@ -5,6 +5,7 @@ category: 'DevEx'
 excerpt: "Some of what an AI agent does needs no judgment at all — open a file, check a secret, tear down a worktree. We stopped paying a skill load and a model turn for that work. It runs as a plain script now: the agent calls it once, cheap; you call the same script yourself with a `!` prefix, for free."
 authorRole: 'DevEx Consultant'
 published: false
+review: true
 series: 'agent-native-harness'
 part: 5
 linkedinPost: "Not every 'skill' an AI agent has needs to burn tokens.\n\nThe rule we landed on: if a task's whole body can be written as pseudocode with no \"decide whether…\" step inside it, it does not belong in a skill — it belongs in a plain script.\n\nTen scripts I run daily, one PATH folder, one prefix (!name = zero tokens for me, Bash: name = one cheap call for the agent):\n\n1. open-md — render + open a markdown file\n2. open-diff — side-by-side diff as a local page\n3. resolve — any address → every other form\n4. secret-has — is a secret SET, never its value\n5. wt-add — create a git worktree, apply setup\n6. wt-remove — tear one down, junction-safe\n7. wt-list — inventory of live worktrees\n8. agents-say — tell other agents what I'm doing\n9. review-log — review freshness by tree hash\n10. feedback — append to the feedback log, no server needed\n\nFull article on the blog, link in the first comment."

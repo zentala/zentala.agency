@@ -14,6 +14,7 @@ export interface PostProps {
   link: string
   partLabel?: string
   isDraft?: boolean
+  isReview?: boolean
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   link,
   partLabel,
   isDraft = false,
+  isReview = false,
 } = Astro.props
 
 // Pobieramy dane autora
@@ -50,7 +52,7 @@ if (!author) {
     class="padding-responsive-md post-card relative flex h-full flex-col items-start"
   >
     <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
-    {isDraft && <DraftBadge />}
+    {isDraft && <DraftBadge review={isReview} />}
     {
       SHOW_AUTHOR && (
         <div class="flex items-center gap-x-2">

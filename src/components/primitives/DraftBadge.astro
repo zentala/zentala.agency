@@ -9,25 +9,41 @@ import { SHOW_DRAFTS } from '@/config/blog'
  *   ancestor (cards, post hero); it sits in that box's padding.
  * - `edge`: a 2px bar just left of the nearest positioned ancestor (list rows).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
+ * States: a plain draft is warn amber; `review` (a draft the agent judges ready
+ * for the owner's publication review) is accent blue with the label "Review";
+ * `label` replaces the text for other dev-only notes (amber), e.g. a series
+ * that production would hide.
  */
 interface Props {
   placement?: 'corner' | 'edge' | 'inline'
+  review?: boolean
+  label?: string
 }
 
-const { placement = 'corner' } = Astro.props
-const hint = 'Draft: hidden in production'
+const { placement = 'corner', review = false, label } = Astro.props
+const text = label ?? (review ? 'Review' : 'Draft')
+const hint = label
+  ? `${label}: dev only`
+  : review
+    ? 'Ready for review by the owner: hidden in production until approved'
+    : 'Draft: hidden in production'
+const icon = review ? 'lucide:eye' : 'lucide:pencil-line'
+const state = review ? 'review' : 'draft'
 ---
 
 {
   SHOW_DRAFTS &&
     (placement === 'edge' ? (
-      <span class="draft-edge" title={hint}>
-        <span class="sr-only">Draft</span>
+      <span class={`draft-edge draft-edge--${state}`} title={hint}>
+        <span class="sr-only">{text}</span>
       </span>
     ) : (
-      <span class={`draft-tag draft-tag--${placement}`} title={hint}>
-        <Icon name="lucide:pencil-line" class="draft-tag__icon" />
-        Draft
+      <span
+        class={`draft-tag draft-tag--${placement} draft-tag--${state}`}
+        title={hint}
+      >
+        <Icon name={icon} class="draft-tag__icon" />
+        {text}
       </span>
     ))
 }
@@ -65,6 +81,14 @@ const hint = 'Draft: hidden in production'
     pointer-events: none;
   }
 
+  .draft-tag--review {
+    color: var(--color-accent);
+  }
+
+  .draft-tag--corner.draft-tag--review {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
   .draft-tag--inline {
     margin-left: 0.5rem;
   }
@@ -77,5 +101,9 @@ const hint = 'Draft: hidden in production'
     width: 2px;
     background: var(--color-warn);
     pointer-events: none;
+  }
+
+  .draft-edge--review {
+    background: var(--color-accent);
   }
 </style>

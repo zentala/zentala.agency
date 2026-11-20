@@ -5,6 +5,7 @@ category: 'DevEx'
 excerpt: "Several coding agents on one repo is how you get more done without switching context; it is also how one agent's file rides along in another's commit. Here is the whole coordination layer: a holder file, one hook, one settings entry. An afternoon's work, no daemon."
 authorRole: 'DevEx Consultant'
 published: false
+review: true
 series: 'agent-native-harness'
 part: 15
 ---

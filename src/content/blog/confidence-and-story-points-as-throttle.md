@@ -5,6 +5,7 @@ category: 'DevEx'
 excerpt: "Every finding my agents produce carries two numbers: a confidence and a Fibonacci story point. Those two numbers decide what gets fixed without asking me, what lands in the backlog for my judgement, how big a task an implementer may take, and how much of an epic an orchestrator may swallow. Two integers, four control surfaces."
 authorRole: 'DevEx Consultant'
 published: false
+review: true
 series: 'agent-native-harness'
 part: 8
 ---

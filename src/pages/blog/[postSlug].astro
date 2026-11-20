@@ -141,7 +141,11 @@ const summaryClass =
   <section class="section-full">
     <div class="container-bordered">
       <div class="px-responsive py-responsive-lg relative">
-        {post.data.published === false && <DraftBadge />}
+        {
+          post.data.published === false && (
+            <DraftBadge review={post.data.review} />
+          )
+        }
         <div class="blog-hero mx-auto flex max-w-6xl flex-col">
           <div class="blog-hero__content">
             {

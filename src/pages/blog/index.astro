@@ -4,13 +4,14 @@ import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 import SeriesCard from '../../components/cards/SeriesCard.astro'
 import { buildFeed } from '@/lib/blog/feed'
-import { getVisiblePosts } from '@/lib/blog/visibility'
+import { getThinSeries, getVisiblePosts } from '@/lib/blog/visibility'
 
 const FRESH_DAYS = 14
 const BLOG_DESCRIPTION =
   'Architecture and strategy notes on agent-native tooling, developer experience and information architecture.'
 
 const posts = await getVisiblePosts()
+const thinSeries = await getThinSeries()
 
 const seriesDescriptions = await getCollection('series-descriptions')
 const seriesTitleBySlug = new Map(
@@ -35,6 +36,8 @@ const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
                 excerpt={entry.post.data.excerpt}
                 authorVersion={entry.post.data.author}
                 link={`/blog/${entry.post.slug}`}
+                isDraft={entry.post.data.published === false}
+                isReview={entry.post.data.review === true}
               />
             ) : (
               <SeriesCard
@@ -43,6 +46,7 @@ const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
                 parts={entry.parts}
                 newestSlug={entry.newestSlug}
                 isFresh={entry.isFresh}
+                hiddenInProduction={thinSeries.get(entry.slug)}
               />
             ),
           )

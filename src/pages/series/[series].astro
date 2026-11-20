@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 import PostCta from '../../components/PostCta.astro'
-import { Icon } from 'astro-icon/components'
+import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
 import { partLabel } from '@/lib/blog/part-label'
@@ -86,35 +86,26 @@ const breadcrumbJsonLd = {
 >
   <section class="section-full">
     <div class="container-bordered">
-      <div class="padding-responsive-md border-b border-line">
-        <div
-          class="flex items-center gap-x-1 text-xs uppercase tracking-wide text-fg-subtle"
-        >
-          <Icon
-            name="lucide:layers"
-            class="h-3.5 w-3.5"
-            style="stroke-width: 1.5;"
-          />
-          <span>Series</span>
-        </div>
-        <h1 class="mt-2 text-4xl font-light text-fg">{headline}</h1>
-        {
-          description?.data.tagline && (
-            <p class="mt-2 text-lg text-fg-muted">{description.data.tagline}</p>
-          )
-        }
+      <SectionHeader
+        tag="h1"
+        eyebrow="Series"
+        eyebrowIcon="lucide:layers"
+        headline={headline}
+        subhead={description?.data.tagline}
+        compact
+      >
         {
           Content ? (
-            <div class="mt-4 max-w-[70ch] text-base leading-[1.65] text-fg-secondary [&_p+p]:mt-4">
+            <div class="max-w-[70ch] text-base leading-[1.65] text-fg-secondary [&_p+p]:mt-4">
               <Content />
             </div>
           ) : (
-            <p class="mt-4 max-w-[70ch] text-base leading-[1.65] text-fg-secondary">
+            <p class="max-w-[70ch] text-base leading-[1.65] text-fg-secondary">
               {posts.length} part{posts.length === 1 ? '' : 's'} in this series.
             </p>
           )
         }
-      </div>
+      </SectionHeader>
       <div class="cards-grid line-grid--fill-last">
         {
           posts.map((post) => (
@@ -132,6 +123,7 @@ const breadcrumbJsonLd = {
                   : partLabel(post.data.part, visibleParts)
               }
               isDraft={post.data.published === false}
+              isReview={post.data.review === true}
             >
               {SHOW_DRAFTS && post.data.linkedinPost && (
                 <a

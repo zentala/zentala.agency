@@ -76,10 +76,29 @@ needs them (`src/components/blog/rich/`).
 | `author` | no | Defaults to `pawel-zentala` (`src/content/authors/zentala.yaml`) |
 | `authorRole` | no | e.g. `'DevEx Consultant'` |
 | `published` | no | `false` keeps a post out of the production build while leaving it visible in `npm run dev` — draft posts stay `false` until reviewed |
+| `review` | no | `true` marks a draft the agent judges ready for the owner's publication review; meaningful only with `published: false`. Dev shows it with a blue "Review" marker instead of the amber "Draft" one. It publishes nothing; see "Publication needs the owner's separate review" |
 | `series` | no | One of the four slugs above; a series page only materializes if at least one post carries its slug (`getStaticPaths` groups by posts, not by the description file) |
 | `part` | no | A number, only meaningful alongside `series` |
 | `linkedinPost` | no | **Legacy.** Older posts still carry the LinkedIn companion inline as an escaped string. New posts use the sidecar file below instead — see "Surface sidecars" |
 | `imageUrl` / `bannerEnd` | no | Optional visual fields |
+
+### Publication needs the owner's separate review
+
+Operator decision, 2026-11-20. An agent may set `review: true` on a draft it
+judges ready (checked against the `authorship` editor checklist). Only the
+owner's explicit approval sets `published: true`; an agent never does, and never
+removes `published: false` on its own judgment.
+
+### Thin-series rule
+
+In production (drafts hidden) a series counts as a series only with at least
+two published parts. Fewer, and the series has no card on `/blog`, no
+`/series/<slug>` page, no series rail and no "Part n of m" label; its published
+parts show as standalone posts. Drafts never count. In dev everything stays
+visible, and a series that production would hide carries the corner tag "Hidden
+in production (n published)" on its card. The rule lives in
+`src/lib/blog/visibility.ts` (`selectVisiblePosts`, `findThinSeries`), covered by
+`tests/unit/blog-visibility.test.ts`.
 
 ### Surface sidecars — one topic, several surfaces, kept close together
 

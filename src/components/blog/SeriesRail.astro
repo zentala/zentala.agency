@@ -38,7 +38,9 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
           {post.slug === currentSlug ? (
             <span class="text-fg" aria-current="page">
               Part {post.data.part}: {post.data.title}
-              {post.data.published === false && <DraftBadge placement="edge" />}
+              {post.data.published === false && (
+                <DraftBadge placement="edge" review={post.data.review} />
+              )}
             </span>
           ) : (
             <a
@@ -46,7 +48,9 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
               class="text-fg-muted no-underline hover:text-fg"
             >
               Part {post.data.part}: {post.data.title}
-              {post.data.published === false && <DraftBadge placement="edge" />}
+              {post.data.published === false && (
+                <DraftBadge placement="edge" review={post.data.review} />
+              )}
             </a>
           )}
         </li>

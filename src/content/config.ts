@@ -28,6 +28,9 @@ const blogCollection = defineCollection({
     authorRole: z.string().optional(),
     bannerEnd: z.string().optional(),
     published: z.boolean().optional(),
+    // A draft the agent judges ready for the owner's publication review.
+    // Meaningful only with published: false; never publishes anything itself.
+    review: z.boolean().optional(),
     series: z.string().optional(),
     part: z.number().optional(),
     linkedinPost: z.string().optional(),

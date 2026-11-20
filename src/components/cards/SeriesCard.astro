@@ -10,9 +10,11 @@ export interface SeriesCardProps {
   parts: CollectionEntry<'blog'>[]
   newestSlug: string
   isFresh: boolean
+  /** Dev only: published parts of a series that production would hide. */
+  hiddenInProduction?: number
 }
 
-const { title, slug, parts, newestSlug, isFresh } =
+const { title, slug, parts, newestSlug, isFresh, hiddenInProduction } =
   Astro.props as SeriesCardProps
 
 const VISIBLE_EDGE_COUNT = 3
@@ -26,6 +28,13 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
   >
     <a href={`/series/${slug}`} class="absolute inset-0 z-0" aria-label={title}
     ></a>
+    {
+      hiddenInProduction !== undefined && (
+        <DraftBadge
+          label={`Hidden in production (${hiddenInProduction} published)`}
+        />
+      )
+    }
 
     <div class="card-content-wrapper flex w-full flex-col">
       <div
@@ -93,7 +102,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                     <span class="line-clamp-2 text-fg-secondary">
                       {part.data.title}
                     </span>
-                    {part.data.published === false && <DraftBadge placement="edge" />}
+                    {part.data.published === false && <DraftBadge placement="edge" review={part.data.review} />}
                     {isNewest && (
                       <time
                         datetime={date.datetime}

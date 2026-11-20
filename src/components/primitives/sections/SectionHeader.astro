@@ -7,6 +7,9 @@
  * - Bottom border separator
  * - Responsive typography
  * - Optional text alignment
+ * - Default slot: rich body content under the subhead (series intro, category text)
+ * - `compact`: the plain header padding even with an eyebrow (listing pages);
+ *   `eyebrowIcon`: a small lucide icon before the eyebrow text
  *
  * Usage:
  * <SectionHeader
@@ -17,12 +20,15 @@
  * />
  */
 
+import { Icon } from 'astro-icon/components'
 import CardBackgroundIcon from '../CardBackgroundIcon.astro'
 
 interface Props {
   headline: string
   subhead?: string
   eyebrow?: string
+  eyebrowIcon?: string
+  compact?: boolean
   icon?: string
   logoSrc?: string
   logoAlt?: string
@@ -35,6 +41,8 @@ const {
   headline,
   subhead,
   eyebrow,
+  eyebrowIcon,
+  compact = false,
   icon,
   logoSrc,
   logoAlt = '',
@@ -47,15 +55,30 @@ const HeadingTag = tag
 <div
   class:list={[
     'section-header',
-    (eyebrow || icon || logoSrc) && 'section-header--feature',
+    !compact && (eyebrow || icon || logoSrc) && 'section-header--feature',
+    compact && eyebrow && 'section-header--compact-eyebrow',
   ]}
   data-align={align}
 >
   {icon && <CardBackgroundIcon icon={icon} />}
   {logoSrc && <img src={logoSrc} alt={logoAlt} class="section-header__logo" />}
-  {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
+  {
+    eyebrow && (
+      <p class="section-eyebrow">
+        {eyebrowIcon && <Icon name={eyebrowIcon} class="section-eyebrow__icon" />}
+        {eyebrow}
+      </p>
+    )
+  }
   <HeadingTag class="section-headline">{headline}</HeadingTag>
   {subhead && <p class="section-subhead">{subhead}</p>}
+  {
+    Astro.slots.has('default') && (
+      <div class="section-header__body">
+        <slot />
+      </div>
+    )
+  }
 </div>
 
 <style lang="scss">
@@ -134,6 +157,25 @@ const HeadingTag = tag
     margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
+  }
+
+  .section-eyebrow__icon {
+    display: inline-block;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-right: 0.25rem;
+    vertical-align: -0.125rem;
+    stroke-width: 1.5;
+  }
+
+  .section-header--compact-eyebrow .section-eyebrow {
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header__body {
+    position: relative;
+    z-index: 1;
+    margin-top: 1rem;
   }
 
   .section-headline {

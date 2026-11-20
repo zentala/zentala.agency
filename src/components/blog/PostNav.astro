@@ -64,7 +64,10 @@ const hasPair = Boolean(previous || next)
               <span class={labelClass}>
                 ← Previous part
                 {previous.data.published === false && (
-                  <DraftBadge placement="inline" />
+                  <DraftBadge
+                    placement="inline"
+                    review={previous.data.review}
+                  />
                 )}
               </span>
               <span class={titleClass}>
@@ -81,7 +84,7 @@ const hasPair = Boolean(previous || next)
               <span class={labelClass}>
                 Next part →
                 {next.data.published === false && (
-                  <DraftBadge placement="inline" />
+                  <DraftBadge placement="inline" review={next.data.review} />
                 )}
               </span>
               <span class={titleClass}>
