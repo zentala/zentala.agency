@@ -14,16 +14,16 @@ const { type = 'text', id = 'name', placeholder = 'Empty' } = Astro.props
   }
 </style>
 
-<div class="relative float-label-input -m-px border border-gray-800">
+<div class="relative float-label-input border border-line">
   <input
     type={type}
     id={id}
     placeholder=" "
-    class="block w-full bg-black text-lg focus:outline-none focus:shadow-outline p-8 block focus:z-100 border m-px border-black focus:bg-gray-900 appearance-none leading-normal focus:border-blue-400"
+    class="block w-full bg-black text-lg text-fg p-8 focus:z-100 focus:bg-surface-hover appearance-none leading-normal"
   />
   <label
     for={id}
-    class="absolute top-8 left-6 text-gray-400 pointer-events-none transition text-lg duration-200 ease-in-out x-2 text-grey-darker"
+    class="absolute top-8 left-6 text-fg-muted pointer-events-none transition text-lg duration-200 ease-in-out"
   >
     {placeholder}
   </label>
