@@ -55,6 +55,14 @@ const options: {
     facts: 'etykieta 14 px · 400 · 0,14 em · na linii',
     variant: 'on-line',
   },
+  {
+    key: 'E',
+    label: 'Cienka etykieta z proporcją trzy czwarte',
+    consequence:
+      'Ta sama etykieta co w C, ale odstęp nad nią to trzy czwarte odstępu z boku, jak w komórkach. Proporcja jest dobra, wysokość rośnie prawie dwukrotnie względem C.',
+    facts: 'etykieta 26 px · 300 · góra 48 px przy 64 px z boku',
+    variant: 'thin-roomy',
+  },
 ]
 ---
 
@@ -62,8 +70,8 @@ const options: {
   id="T4"
   question="Jak ma wyglądać nagłówek sekcji, żeby zajmował mało miejsca?"
   options={options}
-  recommendation="C dla głównych sekcji strony: zostaje hierarchia przy jednej trzeciej wysokości. B dla sekcji drugorzędnych, jeśli potrzebny jest drugi poziom."
-  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka sekcji; karty pod spodem są przycięte."
+  recommendation="C dla głównych sekcji strony: zostaje hierarchia przy jednej trzeciej wysokości. B dla sekcji drugorzędnych, jeśli potrzebny jest drugi poziom. C ma nad tekstem mniej niż trzy czwarte odstępu z boku: to ten sam wyjątek dla belek co w S1-C, gdzie belka jest paskiem, a nie komórką. Jeśli w S1 wybierzesz D, wybierz tutaj E."
+  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka sekcji; karty pod spodem są przycięte. B i C mają nad tekstem 12 i 18 px przy 64 px z boku; E pokazuje ten sam nagłówek z proporcją z pytania S1."
 >
   {
     options.map((option) => (

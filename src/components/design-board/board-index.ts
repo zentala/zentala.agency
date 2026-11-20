@@ -15,10 +15,11 @@ export interface BoardIndexGroup {
 
 export const BOARD_INDEX: BoardIndexGroup[] = [
   {
-    name: 'Blog',
+    name: 'Blog i odstępy',
     questions: [
       { id: 'B1', question: 'Jak ma być zbudowana strona /blog?' },
       { id: 'B2', question: 'Jak ma wyglądać blok jednej serii?' },
+      { id: 'S1', question: 'Odstępy: proporcje i wcięcia nagłówków' },
     ],
   },
   {

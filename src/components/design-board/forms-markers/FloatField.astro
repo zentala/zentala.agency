@@ -76,10 +76,13 @@ const Control = multiline ? 'textarea' : 'input'
     outline: none;
   }
 
+  /* Lines that scroll up are clipped under the padding, so they never cover the floated label. */
   .ff--multiline .ff__control {
     height: auto;
     min-height: 9rem;
     resize: vertical;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
+    mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
   }
 
   .ff__label {

@@ -9,15 +9,23 @@ interface Props {
   name: string
   consequence: string
   recommended?: boolean
+  /** Compact side padding: the bar hangs left of the content column (S1, option B). */
+  hang?: boolean
 }
 
-const { questionId, letter, name, consequence, recommended = false } =
-  Astro.props
+const {
+  questionId,
+  letter,
+  name,
+  consequence,
+  recommended = false,
+  hang = false,
+} = Astro.props
 ---
 
 <section class="section-full" data-board-option={`${questionId}-${letter}`}>
   <div class="container-bordered">
-    <div class="option-bar px-responsive">
+    <div class:list={['option-bar', hang ? 'option-bar--hang' : 'px-responsive']}>
       <p class="option-bar__id">
         {questionId}
         <span class="option-bar__letter">{letter}</span>
@@ -35,7 +43,13 @@ const { questionId, letter, name, consequence, recommended = false } =
   </div>
 </section>
 
-<style>
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .option-bar--hang {
+    @include px-responsive('sm');
+  }
+
   .option-bar {
     display: flex;
     flex-wrap: wrap;
@@ -44,6 +58,11 @@ const { questionId, letter, name, consequence, recommended = false } =
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     background-color: var(--color-surface-raised);
+  }
+
+  .option-bar.option-bar--hang {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   .option-bar__id {

@@ -1,0 +1,123 @@
+---
+/**
+ * Measured numbers of one S1 option: top and side padding of the first header
+ * bar and the first content cell, and how far the bar text stands from the left
+ * edge of the real navbar logo. Filled in the browser, so it is true at any width.
+ */
+---
+
+<div class="s1-readout">
+  <p>
+    <span class="s1-readout__name">Belka</span>
+    góra <span data-s1-out="bar-top">…</span> · bok
+    <span data-s1-out="bar-side">…</span> · proporcja
+    <span data-s1-out="bar-ratio">…</span>
+  </p>
+  <p>
+    <span class="s1-readout__name">Komórka</span>
+    góra <span data-s1-out="cell-top">…</span> · bok
+    <span data-s1-out="cell-side">…</span> · proporcja
+    <span data-s1-out="cell-ratio">…</span>
+  </p>
+  <p>
+    <span class="s1-readout__name">Tekst belki</span>
+    <span data-s1-out="bar-offset">…</span>
+  </p>
+</div>
+
+<script>
+  const LOGO_SELECTOR = '.logo-container a > *:first-child'
+  /** The series cell is the padded content cell of the slice. */
+  const CELL_SELECTOR = '.series-list'
+  const px = (value: number) => `${Math.round(value)} px`
+  const ratio = (top: number, side: number) =>
+    side === 0 ? '–' : (top / side).toFixed(2).replace('.', ',')
+
+  /** Left edge of the first rendered text inside an element. */
+  const textLeft = (element: Element): number => {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!node.textContent?.trim()) continue
+      const range = document.createRange()
+      range.selectNodeContents(node)
+      const rect = [...range.getClientRects()].find((item) => item.width > 0)
+      if (rect) return rect.left
+    }
+    return element.getBoundingClientRect().left
+  }
+
+  const describeOffset = (offset: number) => {
+    if (Math.abs(offset) < 1) return 'na krawędzi logo'
+    const side = offset < 0 ? 'na lewo od logo' : 'na prawo od logo'
+    return `${px(Math.abs(offset))} ${side}`
+  }
+
+  const measureOption = (option: HTMLElement, logoLeft: number) => {
+    const bar = option.querySelector<HTMLElement>('[data-s1-bar]')
+    const cell = option.querySelector<HTMLElement>(CELL_SELECTOR)
+    if (!bar || !cell) return {}
+    const barTop = parseFloat(getComputedStyle(bar).paddingTop)
+    const barSide = parseFloat(getComputedStyle(bar).paddingLeft)
+    const cellTop = parseFloat(getComputedStyle(cell).paddingTop)
+    const cellSide = parseFloat(getComputedStyle(cell).paddingLeft)
+    return {
+      'bar-top': px(barTop),
+      'bar-side': px(barSide),
+      'bar-ratio': ratio(barTop, barSide),
+      'cell-top': px(cellTop),
+      'cell-side': px(cellSide),
+      'cell-ratio': ratio(cellTop, cellSide),
+      'bar-offset': describeOffset(textLeft(bar) - logoLeft),
+    }
+  }
+
+  const writeReadouts = () => {
+    const logo = document.querySelector(LOGO_SELECTOR)
+    if (!logo) return
+    const logoLeft = logo.getBoundingClientRect().left
+    document
+      .querySelectorAll<HTMLElement>('[data-s1-variant]')
+      .forEach((option) => {
+        Object.entries(measureOption(option, logoLeft)).forEach(
+          ([key, value]) => {
+            const out = option.querySelector(`[data-s1-out="${key}"]`)
+            if (out) out.textContent = value
+          },
+        )
+      })
+  }
+
+  writeReadouts()
+  window.addEventListener('load', writeReadouts)
+  window.addEventListener('resize', writeReadouts)
+</script>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .s1-readout {
+    @include px-responsive('md');
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 2rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $border-color;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.25rem;
+  }
+
+  .s1-readout__name {
+    margin-right: 0.5rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .s1-readout [data-s1-out] {
+    color: var(--color-text);
+  }
+</style>

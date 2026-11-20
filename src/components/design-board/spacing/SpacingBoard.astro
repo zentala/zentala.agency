@@ -1,0 +1,41 @@
+---
+/**
+ * Design board, group "spacing" (dev only): question S1, the proportion of top
+ * to side padding in content cells and where header bars stand against the
+ * navbar logo. Every option renders the same real slice of /blog.
+ */
+import BoardQuestion from '../blog-index/BoardQuestion.astro'
+import OptionBar from '../blog-index/OptionBar.astro'
+import { loadBoardData } from '../blog-index/data'
+import SpacingSlice from './SpacingSlice.astro'
+import { SPACING_OPTIONS } from './options'
+
+const data = await loadBoardData()
+
+const S1 = {
+  id: 'S1',
+  question: 'Odstępy: jaka proporcja w komórkach i gdzie stoją nagłówki?',
+  recommendation:
+    'C: logo, nagłówki i treść stoją na jednej pionowej linii, a komórki mają u góry tyle samo miejsca co z boków. Belka jest paskiem, nie komórką: jej wysokość wynika z tekstu, a bok z osi strony. B nie da się zrobić bez zerwania tej linii: tekst belki staje 40 px na lewo od logo (28 px przy szerokości 1440, 8 px na telefonie), więc w lewo musiałyby pójść także logo i menu. D wybierz, jeśli proporcja ma obowiązywać także w nagłówku: każdy nagłówek sekcji jest wtedy wyższy o 60 do 85 px.',
+  note: 'Niebieska przerywana linia to lewa krawędź logo w menu. Liczby pod każdą opcją mierzy przeglądarka dla bieżącej szerokości okna. Listy serii są skrócone do 4 części. Co dziś odstaje od logo na prawdziwych stronach: na /blog tytuły części w karcie serii (24 px w prawo, za numerem), na stronie głównej tekst kafli (32 px w lewo, na telefonie 8 px w prawo), na /about/capabilities numery kart (48 px w lewo).',
+}
+---
+
+<div data-design-board="spacing">
+  <BoardQuestion {...S1} />
+  {
+    SPACING_OPTIONS.map((option) => (
+      <>
+        <OptionBar
+          questionId="S1"
+          letter={option.letter}
+          name={option.name}
+          consequence={option.consequence}
+          recommended={option.recommended}
+          hang={option.variant === 'b'}
+        />
+        <SpacingSlice data={data} variant={option.variant} />
+      </>
+    ))
+  }
+</div>

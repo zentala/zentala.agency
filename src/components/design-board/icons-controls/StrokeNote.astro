@@ -1,0 +1,177 @@
+---
+/**
+ * I1 facts: why small icons look grey. Explains the rendered stroke width and lists it
+ * for every weight at the three small sizes, with the icons drawn at those sizes.
+ */
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import { mapIcon } from './icon-map'
+import { SMALL_SIZES, STROKE_ROWS, formatPx, isSubPixel, strokePx } from './stroke-math'
+
+/* EVIDENCE: Chromium at device pixel ratio 1, the calendar glyph on black, 2026-11-20:
+   share of lit pixels at 90% white or more. Phosphor Light 16 px: 0%. Regular 16 px: 81%.
+   Regular 20 px: 7%. Regular 24 px: 49%. Lucide stroke 1.5 at 16 px: 4%. */
+const SAMPLES = ['date', 'chat', 'arrow-next'] as const
+
+const rows = STROKE_ROWS.map((row) => {
+  const { set, ...options } = row.style
+  return {
+    ...row,
+    cells: SMALL_SIZES.map((size) => ({
+      px: strokePx({ ...row.style, size }) as number,
+      icons: SAMPLES.map((name) => mapIcon(name, set, { ...options, size })),
+    })),
+  }
+})
+---
+
+<BoardCell wide heading="Dlaczego duże ikony są dobre, a małe szare">
+  <div class="stroke-note">
+    <ul class="stroke-note__facts">
+      <li>
+        Ikona to rysunek na siatce, więc kreska kurczy się razem z ikoną. Ta sama waga
+        Light ma 6 px w ikonie 128 px i 0,75 px w ikonie 16 px.
+      </li>
+      <li>
+        Zwykły ekran nie zapali części piksela. Kreskę cieńszą niż 1 px rysuje szarym
+        pikselem zamiast białego, a kreskę leżącą między pikselami rozmywa na dwa.
+      </li>
+      <li>
+        Opcje A i B mają w małych ikonach kreskę 0,75–1,25 px, która nie trafia w piksele.
+        Pomiar na ikonie kalendarza 16 px: Phosphor Light ma 0% w pełni białych pikseli,
+        Lucide 4%, Phosphor Regular 81%.
+      </li>
+      <li>
+        Phosphor Regular jest ostry przy 16 px (kreska równo 1 px) i przy 24 px. Rozmiar
+        20 px, którego używają dziś przyciski, wypada między pikselami w każdej wadze.
+      </li>
+    </ul>
+    <table class="stroke-table">
+      <caption>Grubość kreski na ekranie. Szara liczba: kreska cieńsza niż 1 px.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Waga</th>
+          {SMALL_SIZES.map((size) => <th scope="col">{size} px</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              <th scope="row">
+                {row.label}
+                {row.note && <span class="stroke-table__note">{row.note}</span>}
+              </th>
+              {row.cells.map((cell) => (
+                <td>
+                  <span class="stroke-table__icons">
+                    {cell.icons.map((spec) => (
+                      <BoardIcon spec={spec} />
+                    ))}
+                  </span>
+                  <span class:list={['stroke-table__px', isSubPixel(cell.px) && 'is-thin']}>
+                    {formatPx(cell.px)}
+                  </span>
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</BoardCell>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .stroke-note {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 2rem 3rem;
+    align-items: start;
+
+    @include medium {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .stroke-note__facts {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 62ch;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .stroke-table {
+    width: 100%;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+
+    caption {
+      caption-side: bottom;
+      padding-top: 0.75rem;
+      text-align: left;
+      color: var(--color-text-subtle);
+    }
+
+    th {
+      font-weight: 400;
+      text-align: left;
+      color: var(--color-text-muted);
+    }
+
+    thead th {
+      padding-bottom: 0.5rem;
+      font-size: var(--text-label);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-text-subtle);
+    }
+
+    th,
+    td {
+      padding-block: 0.5rem;
+      padding-right: 1rem;
+      vertical-align: middle;
+    }
+  }
+
+  .stroke-table__note {
+    display: block;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .stroke-table__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 1.5rem;
+  }
+
+  .stroke-table__px {
+    display: block;
+    margin-top: 0.25rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text);
+  }
+
+  .stroke-table__px.is-thin {
+    color: var(--color-text-subtle);
+  }
+
+  @include mobile {
+    .stroke-table th,
+    .stroke-table td {
+      padding-right: 0.5rem;
+    }
+
+    .stroke-table__icons {
+      gap: 0.25rem;
+    }
+  }
+</style>

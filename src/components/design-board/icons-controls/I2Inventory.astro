@@ -1,0 +1,191 @@
+---
+/**
+ * I2 facts: which icons the buttons draw. One row per look with the set, weight, size
+ * and rendered stroke of the leading icon and of the chevron, read from the same data
+ * the buttons above use, then the meaning of each glyph.
+ */
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import { describeBoardIcon } from './board-icons'
+import { BUTTON_GLYPHS, LOOKS } from './button-looks'
+import { ICON_MAP } from './icon-map'
+import { getSystem, systemIcon } from './icon-systems'
+
+const rows = LOOKS.map((look) => {
+  const system = getSystem(look.icons)
+  const glyphs = BUTTON_GLYPHS.filter((glyph) => glyph.icon !== 'arrow-next')
+  return {
+    option: `${look.key} · ${look.label}`,
+    leading: look.leadingIcon
+      ? glyphs.map((glyph) => systemIcon(system, 'button', glyph.icon)!)
+      : [],
+    arrow: systemIcon(system, 'buttonArrow', 'arrow-next')!,
+  }
+})
+
+const glyphs = BUTTON_GLYPHS.map((glyph) => {
+  const entry = ICON_MAP.find((candidate) => candidate.name === glyph.icon)!
+  return { ...glyph, ph: entry.ph, lucide: entry.lucide }
+})
+---
+
+<BoardCell wide heading="Jakie ikony są w przyciskach">
+  <div class="inventory">
+    <table class="inventory__table">
+      <thead>
+        <tr>
+          <th scope="col">Opcja</th>
+          <th scope="col">Ikona z lewej</th>
+          <th scope="col">Strzałka z prawej</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              <th scope="row">{row.option}</th>
+              <td>
+                {row.leading.length > 0 ? (
+                  <>
+                    <span class="inventory__icons">
+                      {row.leading.map((spec) => (
+                        <BoardIcon spec={spec} />
+                      ))}
+                    </span>
+                    <span class="inventory__spec">{describeBoardIcon(row.leading[0])}</span>
+                  </>
+                ) : (
+                  <>
+                    <span class="inventory__icons" />
+                    <span class="inventory__spec">brak</span>
+                  </>
+                )}
+              </td>
+              <td>
+                <span class="inventory__icons">
+                  <BoardIcon spec={row.arrow} />
+                </span>
+                <span class="inventory__spec">{describeBoardIcon(row.arrow)}</span>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <div class="inventory__legend">
+      <p>
+        Prawdziwa strona rysuje dziś przyciski jak w opcji C: Phosphor Light 20 px z
+        lewej i szewron Phosphor Light 16 px z prawej. Obie kreski są cieńsze niż 1 px.
+      </p>
+      <ul>
+        {
+          glyphs.map((glyph) => (
+            <li>
+              <span class="inventory__noun">{glyph.noun}</span>
+              <span>
+                {glyph.usedBy}. Phosphor <code>{glyph.ph}</code>, w A i B Lucide{' '}
+                <code>{glyph.lucide}</code>.
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</BoardCell>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .inventory {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2rem 3rem;
+    align-items: start;
+
+    @include medium {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .inventory__table {
+    width: 100%;
+    font-size: var(--text-sm);
+
+    th {
+      font-weight: 400;
+      text-align: left;
+      color: var(--color-text-muted);
+    }
+
+    thead th {
+      font-size: var(--text-label);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-text-subtle);
+    }
+
+    th,
+    td {
+      padding-block: 0.5rem;
+      padding-right: 1rem;
+      vertical-align: top;
+    }
+  }
+
+  .inventory__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 1.5rem;
+    color: var(--color-text);
+  }
+
+  .inventory__spec {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-text-subtle);
+  }
+
+  .inventory__legend {
+    display: grid;
+    gap: 1rem;
+    max-width: 62ch;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+
+    ul {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    li {
+      display: grid;
+      grid-template-columns: 8.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    code {
+      font-weight: 400;
+      color: var(--color-text);
+    }
+  }
+
+  .inventory__noun {
+    color: var(--color-text);
+  }
+
+  @include mobile {
+    .inventory__legend li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .inventory__table th,
+    .inventory__table td {
+      padding-right: 0.5rem;
+    }
+  }
+</style>

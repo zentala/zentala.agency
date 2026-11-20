@@ -1,6 +1,7 @@
 import phIcons from '@iconify-json/ph/icons.json'
 import lucideIcons from '@iconify-json/lucide/icons.json'
 import simpleIcons from '@iconify-json/simple-icons/icons.json'
+import { formatPx, strokePx } from './stroke-math'
 
 /**
  * Icon lookup for the dev-only design board. It compares icon sets side by side, so it
@@ -103,11 +104,7 @@ export function describeBoardIcon(spec: BoardIconSpec): string {
     fa: 'Font Awesome',
   }
   const weight = spec.set === 'ph' ? ` ${spec.weight ?? 'regular'}` : ''
-  const stroke =
-    spec.set === 'lucide'
-      ? spec.hairline
-        ? ` kreska ${spec.stroke}px stała`
-        : ` kreska ${spec.stroke ?? 2}`
-      : ''
-  return `${SET_LABEL[spec.set]}${weight}${stroke} · ${spec.size}px`
+  const px = strokePx(spec)
+  const stroke = px === null ? '' : ` · kreska ${formatPx(px)}${spec.hairline ? ' stała' : ''}`
+  return `${SET_LABEL[spec.set]}${weight} · ${spec.size}px${stroke}`
 }

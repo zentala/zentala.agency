@@ -35,7 +35,9 @@ const coverLabel =
         />
       )
     }
-    <div class="px-responsive pointer-events-none flex flex-1 flex-col pb-8 pt-6">
+    <div
+      class="post-cell__body padding-responsive-md pointer-events-none flex flex-1 flex-col"
+    >
       <h4 class="post-cell__title">{title}</h4>
       <div class="mt-2">
         <PostMeta date={date} category={category} partLabel={partLabel} />

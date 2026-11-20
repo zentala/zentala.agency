@@ -24,7 +24,7 @@ const OPTIONS: readonly BoardOption[] = [
   },
   {
     key: 'C',
-    label: 'Cienka niebieska linia',
+    label: 'Cienka niebieska linia (odrzucone)',
     consequence:
       'Ramka 1 px w przygaszonym niebieskim dokładnie na liniach siatki, bez zmiany tła; jedyny wariant z kolorem.',
   },
@@ -69,7 +69,7 @@ const PINNED_INDEX = 1
   id="I3"
   question="Jak karta ma reagować na najechanie myszą?"
   options={OPTIONS}
-  recommendation="C. Ramka trafia dokładnie w linie siatki, więc jest kwadratowa i nic się nie przesuwa, a niebieski pojawia się tylko jako cienka linia na czas hovera. Jeśli niebieski ma zostać wyłącznie w linkach i przyciskach: B."
+  recommendation="B. Hover zostaje neutralny: tło lekko się rozjaśnia, a linie siatki tylko jaśnieją na szaro, bez koloru. C (niebieska linia) jest odrzucone, D jest za słabe, żeby było widać, co jest klikalne."
   columns={3}
 >
   {

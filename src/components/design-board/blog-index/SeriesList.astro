@@ -10,16 +10,18 @@ import { formatShortDate, type BoardSeries } from './data'
  * - `number`: part number left, title, status word right (Start, New, Draft).
  * - `combined`: part number left, title, date right; the status replaces the date.
  * In every variant the first row carries "Start" instead of a separate line.
+ * `limit` shows only the first parts (the count in the head stays the real one).
  */
 interface Props {
   series: BoardSeries
   variant: 'date' | 'number' | 'combined'
+  limit?: number
 }
 
-const { series, variant } = Astro.props
+const { series, variant, limit } = Astro.props
 const START_LABEL = 'Start'
 
-const rows = series.parts.map((part, index) => {
+const rows = series.parts.slice(0, limit).map((part, index) => {
   const isDraft = part.data.published === false
   const draftWord = part.data.review === true ? 'Review' : 'Draft'
   const isNewest = series.isFresh && part.slug === series.newestSlug
@@ -38,7 +40,7 @@ const rows = series.parts.map((part, index) => {
 })
 ---
 
-<div class={`series-list series-list--${variant} px-responsive pb-8 pt-6`}>
+<div class={`series-list series-list--${variant} padding-responsive-md`}>
   <div class="series-list__head">
     <h4 class="series-list__name">
       <a href={`/series/${series.slug}`}>{series.title}</a>

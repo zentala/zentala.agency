@@ -1,0 +1,187 @@
+---
+/**
+ * One S1 option on a real slice of /blog: a section header bar over a row of
+ * series cells, then a second bar over a row of post cells. The dashed guide
+ * marks the left edge of the navbar logo. The variant only changes padding
+ * (and, in `d`, the size of the section title).
+ */
+import PostCell from '../blog-index/PostCell.astro'
+import SeriesList from '../blog-index/SeriesList.astro'
+import type { BoardData } from '../blog-index/data'
+import SpacingReadout from './SpacingReadout.astro'
+import { SLICE_PARTS, SLICE_POSTS, type SpacingVariant } from './options'
+
+interface Props {
+  data: BoardData
+  variant: SpacingVariant
+}
+
+const { data, variant } = Astro.props
+const posts = data.latest.slice(0, SLICE_POSTS)
+const partCount = data.series.reduce((sum, item) => sum + item.parts.length, 0)
+---
+
+<div class="s1-slice" data-s1-variant={variant}>
+  <section class="section-full">
+    <div class="container-bordered">
+      <SpacingReadout />
+      <div class="s1-stage">
+        <div class="s1-guide" aria-hidden="true">
+          <span class="s1-guide__label">krawędź logo</span>
+        </div>
+        <div class="s1-bar" data-s1-bar>
+          <h3 class="s1-bar__title">Series</h3>
+          <p class="s1-bar__note">
+            {data.series.length} series, {partCount} parts
+          </p>
+        </div>
+        <div class="line-grid line-grid--fill-last">
+          {
+            data.series.map((item) => (
+              <SeriesList series={item} variant="combined" limit={SLICE_PARTS} />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-full">
+    <div class="container-bordered">
+      <div class="s1-stage">
+        <div class="s1-guide" aria-hidden="true"></div>
+        <div class="s1-bar">
+          <h3 class="s1-bar__title">Latest posts</h3>
+          <p class="s1-bar__note">{data.posts.length} posts</p>
+        </div>
+        <div class="cards-grid">
+          {
+            posts.map((post) => (
+              <PostCell post={post} partLabel={data.partLabelFor(post)} />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* The site's side padding (64, 48, 32, 24, 16 px) as a number the ratios use. */
+  .s1-slice {
+    --s1-side: #{$spacing-desktop};
+    --s1-ratio: 0.75;
+
+    @include large {
+      --s1-side: #{$spacing-large};
+    }
+
+    @include medium {
+      --s1-side: #{$spacing-medium};
+    }
+
+    @include tablet {
+      --s1-side: #{$spacing-tablet};
+    }
+
+    @include mobile {
+      --s1-side: #{$spacing-mobile};
+    }
+  }
+
+  .s1-stage {
+    position: relative;
+  }
+
+  /* Dashed guide one pixel left of the navbar logo's left edge. */
+  .s1-guide {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding-left: calc(var(--s1-side) - 1px);
+    pointer-events: none;
+  }
+
+  .s1-guide::before {
+    content: '';
+    display: block;
+    height: 100%;
+    border-left: 1px dashed
+      color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .s1-guide__label {
+    position: absolute;
+    bottom: 0.375rem;
+    left: calc(var(--s1-side) + 0.375rem);
+    color: var(--color-accent);
+    font-size: var(--text-label);
+    line-height: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .s1-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem var(--s1-side);
+    border-bottom: 1px solid $border-color;
+  }
+
+  .s1-bar__title {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .s1-bar__note {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    text-align: right;
+  }
+
+  /* A: the first-round board, with the top padding of content cells cut. */
+  [data-s1-variant='a'] {
+    :global(.series-list),
+    :global(.post-cell__body) {
+      padding-top: 1.5rem;
+      padding-bottom: 2rem;
+    }
+  }
+
+  /* B: bars take the compact (navbar) side scale and hang left of the content. */
+  [data-s1-variant='b'] .s1-bar {
+    @include px-responsive('sm');
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* D: top is three quarters of the side, in cells and in the section header. */
+  [data-s1-variant='d'] {
+    :global(.series-list),
+    :global(.post-cell__body) {
+      padding-top: calc(var(--s1-side) * var(--s1-ratio));
+    }
+
+    .s1-bar {
+      padding-top: calc(var(--s1-side) * var(--s1-ratio));
+      padding-bottom: calc(var(--s1-side) * var(--s1-ratio));
+    }
+
+    .s1-bar__title {
+      color: var(--color-text);
+      font-size: 1.625rem;
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 2rem;
+      text-transform: none;
+    }
+  }
+</style>

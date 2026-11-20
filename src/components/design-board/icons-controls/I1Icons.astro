@@ -1,9 +1,11 @@
 ---
 /**
- * I1: icon style per context. Four icon systems, each shown in the six places icons
- * appear (or could appear) on the site, at their real sizes.
+ * I1: icon style per context. Six icon systems, each shown in the six places icons
+ * appear (or could appear) on the site, at their real sizes, after a note on why
+ * small icons render grey.
  */
 import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
+import StrokeNote from './StrokeNote.astro'
 import I1Footer from './I1Footer.astro'
 import I1Cards from './I1Cards.astro'
 import I1Inline from './I1Inline.astro'
@@ -30,9 +32,21 @@ const OPTIONS: readonly BoardOption[] = [
   },
   {
     key: 'D',
-    label: 'Lucide, kreska ok. 1 px',
+    label: 'Lucide (odrzucone)',
     consequence:
-      'Zmiana zestawu. Kreska ma stałą grubość w pikselach, więc ikona w tle może być dowolnie duża i dalej cienka; ikony marek są w Lucide wycofywane.',
+      'Właściciel odrzucił ten zestaw po przeglądzie, zwłaszcza w małych rozmiarach. Zostaje tu tylko dla porównania.',
+  },
+  {
+    key: 'E',
+    label: 'Regular w ostrych rozmiarach',
+    consequence:
+      'Wagę wybiera rozmiar, nie miejsce: do 32 px zawsze Regular, w tle Thin 128 px jak przed zmianami. Ikona w przycisku maleje z 20 do 16 px, bo tam kreska ma równo 1 px.',
+  },
+  {
+    key: 'F',
+    label: 'Stała kreska 1,5 px',
+    consequence:
+      'Waga rośnie, gdy ikona maleje: Bold przy 16 px, Regular przy 24 px, Light przy 32 px. Kreska jest wszędzie ta sama, ale małe ikony robią się ciężkie.',
   },
 ]
 ---
@@ -41,8 +55,10 @@ const OPTIONS: readonly BoardOption[] = [
   id="I1"
   question="Który zestaw ikon i jaka waga w każdym miejscu strony?"
   options={OPTIONS}
-  recommendation="C. Zostaje jeden zestaw, który już jest w projekcie, a waga zależy od miejsca: pełne ikony w stopce pasują do logo, Regular daje ostrą kreskę 1 px przy 16 px, Thin wraca jako duża ikona w tle. Jeśli w tle wolisz naprawdę włosowatą kreskę z D, to jedyny powód, by rozważyć Lucide."
+  recommendation="E. Małe ikony są szare, bo kreska Light ma przy 16 px tylko 0,75 px; Regular ma tam równo 1 px i trafia w piksele, a duże ikony w tle zostają cienkie jak przed zmianami. C różni się od E pełnymi ikonami w stopce i ikoną 20 px w przycisku, która wypada między pikselami. F ma najrówniejszą kreskę, ale Bold przy 16 px jest za ciężki dla tej strony."
+  columns={3}
 >
+  <StrokeNote />
   <I1Footer />
   <I1Cards />
   <I1Inline />

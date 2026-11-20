@@ -2,7 +2,7 @@ import type { BoardIconSpec } from './board-icons'
 import { mapIcon, type SemanticIconName } from './icon-map'
 
 /**
- * The four icon systems compared in question I1. A system is one answer for the whole
+ * The icon systems compared in question I1. A system is one answer for the whole
  * site: which set, and which weight and size it uses in each context.
  */
 export type IconContext =
@@ -14,7 +14,7 @@ export type IconContext =
   | 'buttonArrow'
   | 'nav'
 
-export type SystemKey = 'A' | 'B' | 'C' | 'D'
+export type SystemKey = 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
 
 type ContextStyle = Omit<BoardIconSpec, 'name'>
 
@@ -84,7 +84,7 @@ export const ICON_SYSTEMS: readonly IconSystem[] = [
   },
   {
     key: 'D',
-    label: 'Lucide, kreska ok. 1 px',
+    label: 'Lucide (odrzucone)',
     backgroundOpacity: 0.1,
     contactPlacement: 'background',
     contexts: {
@@ -95,6 +95,36 @@ export const ICON_SYSTEMS: readonly IconSystem[] = [
       button: { set: 'lucide', stroke: 1.25, size: 20 },
       buttonArrow: { set: 'lucide', stroke: 1.5, size: 16 },
       nav: { set: 'lucide', stroke: 1.5, size: 16 },
+    },
+  },
+  {
+    key: 'E',
+    label: 'Regular w ostrych rozmiarach',
+    backgroundOpacity: 0.06,
+    contactPlacement: 'background',
+    contexts: {
+      footer: { set: 'ph', weight: 'regular', size: 32 },
+      cardBackground: { set: 'ph', weight: 'thin', size: 128 },
+      contactCard: { set: 'ph', weight: 'thin', size: 128 },
+      meta: { set: 'ph', weight: 'regular', size: 16 },
+      button: { set: 'ph', weight: 'regular', size: 16 },
+      buttonArrow: { set: 'ph', weight: 'regular', size: 16 },
+      nav: { set: 'ph', weight: 'regular', size: 16 },
+    },
+  },
+  {
+    key: 'F',
+    label: 'Stała kreska 1,5 px',
+    backgroundOpacity: 0.06,
+    contactPlacement: 'background',
+    contexts: {
+      footer: { set: 'ph', weight: 'light', size: 32 },
+      cardBackground: { set: 'ph', weight: 'thin', size: 128 },
+      contactCard: { set: 'ph', weight: 'thin', size: 128 },
+      meta: { set: 'ph', weight: 'bold', size: 16 },
+      button: { set: 'ph', weight: 'regular', size: 24 },
+      buttonArrow: { set: 'ph', weight: 'bold', size: 16 },
+      nav: { set: 'ph', weight: 'bold', size: 16 },
     },
   },
 ]
