@@ -9,22 +9,22 @@ import { test, expect } from '@playwright/test'
 // variants named in ORCHESTRATOR.md T08 without needing two servers.
 
 const SERIES_SLUG = 'agent-native-harness'
-/** Has three published parts, so the thin-series rule keeps it in production. */
+/** Has four published parts, so the thin-series rule keeps it in production. */
 const VISIBLE_SERIES_SLUG = 'developer-experience'
-const SERIES_PART_1_SLUG = 'trzasanie-drzewem-pomyslow-agenta-pytaniami'
+const SERIES_PART_1_SLUG = 'shaking-the-idea-tree'
 const UNPUBLISHED_SERIES_SLUGS = [
   SERIES_PART_1_SLUG,
-  'agenci-zostawiaja-feedback-o-toolingu',
-  'autogenerowanie-tresci-dla-agenta',
-  'rownolegle-agenty-w-jednym-repo-rejestr',
-  'bang-commands-zero-token-cli-dla-agenta',
-  'pm3-internal-domains-lokalny-deployment',
-  'progressive-disclosure-komunikacja-bez-przeciazenia',
+  'agents-leave-feedback-about-their-tooling',
+  'autogeneration-agent-writes-its-own-environment',
+  'parallel-agents-in-one-repo',
+  'bang-commands-zero-token-cli-for-agents',
+  'no-more-localhost-3000',
+  'the-context-ladder',
   'the-personal-knowledge-base-system',
 ]
 const LINKEDIN_DRAFT_SLUGS = [
-  'trzasanie-drzewem-pomyslow-agenta-pytaniami',
-  'bang-commands-zero-token-cli-dla-agenta',
+  'shaking-the-idea-tree',
+  'bang-commands-zero-token-cli-for-agents',
   'the-personal-knowledge-base-system',
 ]
 const PUBLISHED_SERIES_POST = 'devex-purpose'

@@ -17,9 +17,9 @@ explained from zero for them. Before drafting or editing any post, load the
 skill `authorship` (`~/.claude/skills/authorship/SKILL.md`) — it holds the
 reader-first rules and the editor's checklist this register runs on.
 
-### Four series, one split by question
+### Three series, one split by question
 
-The blog runs **four article series** (`src/content/series-descriptions/`),
+The blog runs **three article series** (`src/content/series-descriptions/`),
 and most new posts belong to one of them. The split is by the question a
 post answers, not by its topic:
 
@@ -27,20 +27,36 @@ post answers, not by its topic:
 |---|---|---|---|
 | **Agent-Native Harness** | `agent-native-harness` | **how** | the machinery that already runs: agent registry, bang commands, PM3, the knowledge base, the feedback loop, the main-branch lease |
 | **Multi-Interface** | `multi-interface` | **why** | UX, DX and AX as one discipline: content negotiation, Markdown/MDX as the substrate, agent-native architecture (A2A + MCP + API at once), addressing, brokers |
-| **Developer Experience** | `developer-experience` | **why it pays, how to start** | DevEx as a practice, why an internal developer portal is the usual first move, how a Backstage rollout survives contact with a real organization, and the turn where the same catalog data an internal portal built for humans turns out to be what an AI agent needs too |
-| **Information Architecture** | `information-architecture` | **how people and agents learn** | taxonomy, ontology, metadata and navigation as engineering concerns; documentation written for two readers at once (the next developer and the next agent); onboarding as continuous, not a first week |
+| **Developer Experience** | `developer-experience` | **why it pays, how to start, how people and agents learn** | DevEx as a practice, why an internal developer portal is the usual first move, how a Backstage rollout survives contact with a real organization, and the turn where the same catalog data an internal portal built for humans turns out to be what an AI agent needs too; plus the Information Architecture strand (parts 5-7): taxonomy, ontology, metadata and navigation as engineering concerns, documentation written for the next developer and the next agent, onboarding as continuous, not a first week. Part 4 closes the Backstage arc |
 
 Harness links to Multi-Interface as its justification; Multi-Interface links to
 Harness as its proof. A post that explains a mechanism goes to Harness. A post
-that argues a position goes to Multi-Interface. Developer Experience and
-Information Architecture each read standalone — read their full descriptions
-in `src/content/series-descriptions/*.md` before assigning a post to one, they
-carry more than the one-line "answers" column above.
+that argues a position goes to Multi-Interface. Developer Experience reads standalone — read its full description in
+`src/content/series-descriptions/developer-experience.md` before assigning a post
+to it; it carries more than the one-line "answers" column above. Information
+Architecture was a fourth series until 2026-11-20, when it was merged into
+Developer Experience (parts 5-7); `/series/information-architecture` redirects.
+It can be split out again once it has the posts to stand alone.
 
-A post that fits none of the four stays outside `series:` entirely (see
-`static-webistes-no-time.md`, `agenci-zostawiaja-feedback-o-toolingu.md` for
+A post that fits none of the three stays outside `series:` entirely (see
+`static-webistes-no-time.md`, `agents-leave-feedback-about-their-tooling.md` for
 examples already in the tree) — do not force a series assignment a post
 doesn't earn.
+
+### Slugs
+
+Slugs are English, kebab-case and match the post title (`bang-commands-zero-token-cli-for-agents`
+for "Bang Commands: A Zero-Token CLI for Your Agent"). The file name and the
+`_<slug>.li.md` sidecar carry the slug. When a title changes, update the slug
+in the same change: rename the file and its sidecar, fix every link and test
+that names it, and, if the post was published, add a redirect from the old URL in
+`astro.config.mjs` (`redirects`). Drafts need no redirect.
+
+### Questions to the owner
+
+Content questions to the owner move into the in-context review layer (E008):
+they sit next to the text they are about, as comments on the post, instead of
+on separate interview pages.
 
 ### Which blog, first
 
@@ -76,8 +92,8 @@ needs them (`src/components/blog/rich/`).
 | `author` | no | Defaults to `pawel-zentala` (`src/content/authors/zentala.yaml`) |
 | `authorRole` | no | e.g. `'DevEx Consultant'` |
 | `published` | no | `false` keeps a post out of the production build while leaving it visible in `npm run dev` — draft posts stay `false` until reviewed |
-| `review` | no | `true` marks a draft the agent judges ready for the owner's publication review; meaningful only with `published: false`. Dev shows it with a blue "Review" marker instead of the amber "Draft" one. It publishes nothing; see "Publication needs the owner's separate review" |
-| `series` | no | One of the four slugs above; a series page only materializes if at least one post carries its slug (`getStaticPaths` groups by posts, not by the description file) |
+| `review` | no | `true` marks a draft the agent judges ready for the owner's publication review; meaningful only with `published: false`. Dev shows it with a solid "Review" marker instead of the dashed "Draft" one. It publishes nothing; see "Publication needs the owner's separate review" |
+| `series` | no | One of the three slugs above; a series page only materializes if at least one post carries its slug (`getStaticPaths` groups by posts, not by the description file) |
 | `part` | no | A number, only meaningful alongside `series` |
 | `linkedinPost` | no | **Legacy.** Older posts still carry the LinkedIn companion inline as an escaped string. New posts use the sidecar file below instead — see "Surface sidecars" |
 | `imageUrl` / `bannerEnd` | no | Optional visual fields |
@@ -130,9 +146,9 @@ already treats the text as newline-separated paragraphs, so real markdown
 line breaks work exactly like the old escaped `\n\n` did.
 
 **LinkedIn's own constraints** (derived from the five `linkedinPost` bodies
-already written for this blog — `bang-commands-zero-token-cli-dla-agenta.md`,
+already written for this blog — `bang-commands-zero-token-cli-for-agents.md`,
 `the-lease-one-writer-at-a-time.md`, `the-personal-knowledge-base-system.md`,
-`trzasanie-drzewem-pomyslow-agenta-pytaniami.md`, and the sidecar for
+`shaking-the-idea-tree.md`, and the sidecar for
 `file-based-lease-for-parallel-agents.md` — not invented):
 
 - No headings, no tables — every one of the five is plain paragraphs plus,

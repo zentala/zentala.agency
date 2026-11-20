@@ -83,7 +83,7 @@ A local DNS server answers for `.lan`. For `.internal`, a registry on each machi
 
 A name resolves on your own machine first. If nothing local serves it, the lookup falls back to the network registry, so the same `.internal` name can mean your development copy on your machine and the released copy for everyone else. That is useful, and it is also a way to test the wrong copy: say which machine you looked from.
 
-The full mechanism is in [No More localhost:3000](/blog/pm3-internal-domains-lokalny-deployment).
+The full mechanism is in [No More localhost:3000](/blog/no-more-localhost-3000).
 
 </Disclosure>
 
@@ -124,7 +124,7 @@ From that one declaration the manager starts the process, holds the port for it,
 
 </Disclosure>
 
-The commands that cost no model tokens are covered in [Bang Commands](/blog/bang-commands-zero-token-cli-dla-agenta).
+The commands that cost no model tokens are covered in [Bang Commands](/blog/bang-commands-zero-token-cli-for-agents).
 
 ## 4. Secrets the agent uses and never reads
 
@@ -193,7 +193,7 @@ this session does not hold the lease.
 
 It names the rule, the reason and both ways forward. An agent that gets a bare "denied" rewords the command until the guard misses.
 
-Build it from [The File-Based Lease](/blog/file-based-lease-for-parallel-agents); the registry is in [Parallel Agents in One Repo](/blog/rownolegle-agenty-w-jednym-repo-rejestr).
+Build it from [The File-Based Lease](/blog/file-based-lease-for-parallel-agents); the registry is in [Parallel Agents in One Repo](/blog/parallel-agents-in-one-repo).
 
 ## 7. A plan the agent can find
 
@@ -268,7 +268,7 @@ Keep one source: a repository of policies and skills. A build step generates eac
   />
 </Figure>
 
-The same source holds what agents learn: a knowledge base that survives the end of a session, described in [The Personal Knowledge-Base System](/blog/the-personal-knowledge-base-system), and the generation step in [Autogeneration](/blog/autogenerowanie-tresci-dla-agenta).
+The same source holds what agents learn: a knowledge base that survives the end of a session, described in [The Personal Knowledge-Base System](/blog/the-personal-knowledge-base-system), and the generation step in [Autogeneration](/blog/autogeneration-agent-writes-its-own-environment).
 
 ## 10. Shared parts and gates
 
@@ -291,7 +291,7 @@ Then two gates, the same in every repository:
   />
 </Figure>
 
-Why each step needs a gate that a command can check is the subject of [The Software Factory Is Just an Automated SDLC](/blog/sdlc-jako-petla-ktora-automatyzujesz).
+Why each step needs a gate that a command can check is the subject of [The Software Factory Is Just an Automated SDLC](/blog/software-factory-is-an-automated-sdlc).
 
 ## Where to start
 

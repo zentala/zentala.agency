@@ -1,5 +1,6 @@
 ---
 import Logo from '../components/Logo.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { getCollection } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
 import '../styles/footer.scss'
@@ -75,28 +76,17 @@ const FOOTER_GROUPS: { label: string; links: FooterLink[] }[] = [
         <a
           href="https://www.linkedin.com/in/zentala/"
           target="_blank"
-          rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a
+          rel="noopener noreferrer"><SiteIcon name="linkedin-logo" size="lg" /><span class="sr-only">LinkedIn</span></a
         >
-        <!-- <a
-          href="https://www.facebook.com/zentala/"
-          target="_blank"
-          rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a
-        > -->
-        <!-- <a
-          href="https://www.instagram.com/pzentala/"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i class="fa-brands fa-instagram"></i></a
-        > -->
         <a
           href="https://github.com/zentala"
           target="_blank"
-          rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a
+          rel="noopener noreferrer"><SiteIcon name="github-logo" size="lg" /><span class="sr-only">GitHub</span></a
         >
         <a
           href="mailto:zentala@gmail.com"
           target="_blank"
-          rel="noopener noreferrer"><i class="fa-regular fa-envelope"></i></a
+          rel="noopener noreferrer"><SiteIcon name="envelope-simple" size="lg" /><span class="sr-only">Email</span></a
         >
       </div>
     </div>
@@ -180,6 +170,15 @@ const FOOTER_GROUPS: { label: string; links: FooterLink[] }[] = [
 
 <style lang="scss">
   @use '../styles/variables' as *;
+
+  /* Footer links stay calm: colour change only, no highlight bar or underline. */
+  footer a {
+    text-decoration: none;
+
+    &:hover::after {
+      content: none;
+    }
+  }
 
   .footer-ia {
     display: grid;
