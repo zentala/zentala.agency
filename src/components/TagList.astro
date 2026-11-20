@@ -1,4 +1,6 @@
 ---
+import TagGroup from '@/components/primitives/TagGroup.astro'
+
 interface Props {
   tags: string[]
   className?: string
@@ -7,15 +9,4 @@ interface Props {
 const { tags, className = '' } = Astro.props
 ---
 
-<div class={`flex gap-2 flex-wrap ${className}`}>
-  {
-    tags.map((tag) => (
-      <a
-        href={`/tag/${tag}`}
-        class="relative z-10 rounded-chip bg-surface-raised px-3 py-1.5 text-label font-semibold uppercase text-fg-subtle transition-colors duration-fast ease-standard hover:text-fg-secondary"
-      >
-        #{tag}
-      </a>
-    ))
-  }
-</div>
+<TagGroup tags={tags} hrefPrefix="/tag/" class={className} tagClass="relative z-10" />

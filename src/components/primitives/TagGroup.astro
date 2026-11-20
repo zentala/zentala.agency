@@ -8,6 +8,8 @@ export interface TagGroupProps {
   theme?: 'chip' | 'simple' | 'label'
   prefix?: string
   hrefPrefix?: string
+  /** Show a technology logo on tags that have one. */
+  tech?: boolean
 }
 
 const {
@@ -17,12 +19,11 @@ const {
   theme = 'chip',
   prefix = '#',
   hrefPrefix,
+  tech = false,
 } = Astro.props as TagGroupProps
-
-const wrapperClass = `flex flex-wrap gap-1.5 ${className}`.trim()
 ---
 
-<div class={wrapperClass}>
+<div class:list={['flex flex-wrap gap-1.5', className]}>
   {
     tags.map((tag: string) => (
       <Tag
@@ -30,6 +31,7 @@ const wrapperClass = `flex flex-wrap gap-1.5 ${className}`.trim()
         prefix={prefix}
         href={hrefPrefix ? `${hrefPrefix}${tag}` : undefined}
         theme={theme}
+        tech={tech ? tag : undefined}
         class={tagClass}
       />
     ))

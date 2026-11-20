@@ -1,6 +1,7 @@
 ---
 import CardContainer from './CardContainer.astro'
-import Badge from '../primitives/Badge.astro'
+import Tag from '../primitives/Tag.astro'
+import SiteIcon from '../primitives/SiteIcon.astro'
 
 export interface PortfolioItemProps {
   title: string
@@ -36,15 +37,20 @@ const target =
     tags && tags.length > 0 && (
       <div class="portfolio-item__tags">
         {tags.map((tag: string) => (
-          <Badge variant="tech" size="sm">
-            {tag}
-          </Badge>
+          <Tag theme="label" text={tag} tech={tag} />
         ))}
       </div>
     )
   }
 
-  {linkTitle && <p class="portfolio-item__link-title">→ {linkTitle}</p>}
+  {
+    linkTitle && (
+      <p class="portfolio-item__link-title">
+        {linkTitle}
+        <SiteIcon name="caret-right" size="sm" class="portfolio-item__chevron" />
+      </p>
+    )
+  }
 </CardContainer>
 
 <style lang="scss">
@@ -68,13 +74,27 @@ const target =
   }
 
   .portfolio-item__link-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     margin-top: 1rem;
     font-size: 0.875rem; /* text-sm */
     color: var(--color-accent);
+    text-decoration: none;
   }
 
-  :global(.card-container):hover .portfolio-item__link-title {
-    text-decoration: underline;
+  .portfolio-item__link-title :global(.portfolio-item__chevron) {
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  :global(.card-container):hover .portfolio-item__link-title :global(.portfolio-item__chevron) {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.card-container):hover .portfolio-item__link-title :global(.portfolio-item__chevron) {
+      transform: none;
+    }
   }
 
   .portfolio-item__image {

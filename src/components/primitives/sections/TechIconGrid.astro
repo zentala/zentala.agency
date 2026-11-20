@@ -1,0 +1,95 @@
+---
+/**
+ * TechIconGrid - a line-grid of technology logos. Cells are static (no link, no hover wash): a logo is
+ * muted until the cell is hovered or focused, then takes its brand colour mixed toward white so it
+ * stays subtle. The name sits in the tooltip, the accessible label and a quiet caption on hover/focus.
+ * Data and its sources: src/data/tech-icons.ts.
+ */
+import Section from './Section.astro'
+import TechIcon from '@/components/primitives/TechIcon.astro'
+import { TECH_ICONS, type TechIconEntry } from '@/data/tech-icons'
+
+export interface Props {
+  /** Defaults to every logo in src/data/tech-icons.ts. */
+  items?: TechIconEntry[]
+  /** Column count above 1000px. */
+  columns?: 4 | 5
+  id?: string
+}
+
+const { items = TECH_ICONS, columns = 5, id } = Astro.props
+---
+
+<Section id={id}>
+  <div class="line-grid" style={`--cols-wide: ${columns}; --cols-medium: 4; --cols-narrow: 3`}>
+    {
+      items.map((item) => (
+        <div
+          class="tech-cell"
+          style={`--brand: ${item.brand}`}
+          title={item.name}
+          aria-label={item.name}
+          role="img"
+          tabindex="0"
+        >
+          <TechIcon name={item.slug} size="lg" class="tech-cell__logo" />
+          <span class="tech-cell__name">{item.name}</span>
+        </div>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .tech-cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 6.5rem;
+    color: var(--color-text-muted);
+    outline: none;
+  }
+
+  .tech-cell :global(.tech-cell__logo) {
+    opacity: 0.8;
+    transition:
+      color var(--motion-base) var(--ease-standard),
+      opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .tech-cell__name {
+    position: absolute;
+    bottom: 0.625rem;
+    left: 0;
+    right: 0;
+    padding: 0 0.5rem;
+    text-align: center;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .tech-cell:hover :global(.tech-cell__logo),
+  .tech-cell:focus-visible :global(.tech-cell__logo) {
+    color: color-mix(in srgb, var(--brand) 75%, white);
+    opacity: 1;
+  }
+
+  .tech-cell:hover .tech-cell__name,
+  .tech-cell:focus-visible .tech-cell__name {
+    opacity: 1;
+  }
+
+  .tech-cell:focus-visible {
+    background-color: var(--color-surface-raised);
+  }
+
+  @media (max-width: 1000px) {
+    .tech-cell {
+      min-height: 5.5rem;
+    }
+  }
+</style>

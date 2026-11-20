@@ -1,34 +1,20 @@
 ---
 /**
- * Badge - small square label (4px radius, surface-raised fill, no border).
- * `tech` is the muted technology tag; `accent` is the accent-coloured variant.
+ * Badge - a Tag without the hash: `tech` is the muted technology label (with its logo when one exists),
+ * `accent` the accent-coloured one. Kept for existing callers; the look lives in Tag.
  */
+import Tag from '@/components/primitives/Tag.astro'
+
 export interface Props {
   variant?: 'tech' | 'accent'
+  /** Kept for existing callers; every tag has one height. */
   size?: 'sm' | 'md'
+  /** Technology name; shows a logo when one exists. */
+  tech?: string
   class?: string
 }
 
-const { variant = 'tech', size = 'sm', class: className = '' } = Astro.props
-
-const variantClass = {
-  tech: 'text-fg-muted',
-  accent: 'text-accent',
-}[variant]
-
-const sizeClass = {
-  sm: 'px-1.5 py-0.5',
-  md: 'px-2 py-1',
-}[size]
+const { variant = 'tech', tech, class: className = '' } = Astro.props
 ---
 
-<span
-  class:list={[
-    'inline-block rounded-chip bg-surface-raised text-label font-semibold uppercase',
-    variantClass,
-    sizeClass,
-    className,
-  ]}
->
-  <slot />
-</span>
+<Tag theme="label" accent={variant === 'accent'} tech={tech} class={className}><slot /></Tag>
