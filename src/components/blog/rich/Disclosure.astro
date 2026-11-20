@@ -1,0 +1,74 @@
+---
+/**
+ * Collapsed detail inside an article: short text stays on the surface,
+ * the longer explanation opens on click. Native <details>, no script.
+ */
+interface Props {
+  /** The always-visible line the reader clicks. */
+  summary: string
+}
+
+const { summary } = Astro.props
+---
+
+<details class="disclosure">
+  <summary class="disclosure__summary">{summary}</summary>
+  <div class="disclosure__body"><slot /></div>
+</details>
+
+<style lang="scss">
+  .disclosure {
+    margin: 1.5rem 0;
+    border-left: 2px solid rgb(55 65 81);
+    background: rgb(17 24 39 / 0.35);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  .disclosure__summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    color: rgb(209 213 219);
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    list-style: none;
+    transition: color 200ms ease;
+  }
+
+  .disclosure__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure__summary::before {
+    content: '+';
+    flex: none;
+    width: 1ch;
+    color: rgb(156 163 175);
+    font-family: ui-monospace, monospace;
+  }
+
+  .disclosure[open] > .disclosure__summary::before {
+    content: '−';
+  }
+
+  .disclosure__summary:hover {
+    color: white;
+  }
+
+  .disclosure__summary:focus-visible {
+    outline: 2px solid rgb(96 165 250);
+    outline-offset: 2px;
+  }
+
+  .disclosure__body {
+    padding: 0 1.25rem 0.5rem 2.5rem;
+  }
+
+  .disclosure__body :global(p),
+  .disclosure__body :global(li) {
+    font-size: 1.0625rem;
+    color: rgb(209 213 219);
+  }
+</style>

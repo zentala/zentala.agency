@@ -50,6 +50,21 @@ are written **here**, straight away. Everything else goes to `log.zentala.pl`
 (repo `zntl-portal`). That repo's `src/content/ideas/` is the workshop and stays
 the source: drafts may be **moved here as files, never summarized**.
 
+### How an article gets written — draft on the site, no `.plan/` planning
+
+Operator decision, 2026-11-19. An article does **not** go through planning in
+`.plan/`: no epic, no tasks, no `HANDOFF.md`.
+
+1. Write the article straight away in `src/content/blog/` with
+   `published: false`.
+2. Show Paweł the working local link, `http://zentala.internal/blog/<slug>/`.
+3. Iterate on his remarks in the same file until he publishes it.
+
+Planning in `.plan/` is for technical and UX work only, for example a new
+diagram component an article needs. That work runs separately, the normal
+way, and the article does not wait for it: build article blocks as the draft
+needs them (`src/components/blog/rich/`).
+
 ### Frontmatter contract (`src/content/config.ts`, `blogCollection`)
 
 | Field | Required | Meaning |

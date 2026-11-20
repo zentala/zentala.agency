@@ -1,0 +1,310 @@
+---
+title: 'A Tour of My Software Factory: Ten Layers Under the Agents'
+date: '2026-11-19'
+category: 'Harness'
+excerpt: 'One coding agent on a laptop needs nothing but a prompt. Ten agents working at once need a machine, names, a process owner, a way to hold secrets, a rule for who writes where, a place to plan, roles, shared instructions and gates. Here are the ten layers, what each one fixes, and the order to build them in.'
+authorRole: 'DevEx Consultant'
+published: false
+series: 'agent-native-harness'
+part: 16
+---
+
+import Term from '../../components/blog/rich/Term.astro'
+import Disclosure from '../../components/blog/rich/Disclosure.astro'
+import Figure from '../../components/blog/rich/Figure.astro'
+import Flow from '../../components/blog/rich/Flow.astro'
+import FileTree from '../../components/blog/rich/FileTree.astro'
+import BoxGrid from '../../components/blog/rich/BoxGrid.astro'
+
+{/* NOTE(intent): a map of the whole setup. Each layer is short on the surface and links to the part that explains it in depth. */}
+{/* CAVEAT: host names are public placeholders. Never replace them with real names, addresses or locations. */}
+
+One coding agent on a laptop needs a prompt and a repository. Ten agents working at the same time need everything the laptop never gave the first one: memory to run in, names to reach services by, someone who owns the processes, a way to use a password without reading it, a rule for who writes where, a place to keep the plan, a division of labour, one set of instructions, and gates that say when work is done.
+
+Each of those is a layer. None is large. The model is the same in every setup; the layers are the difference between an agent that helps and a group of agents that ships.
+
+<Figure label="The whole stack" caption="Ten layers, bottom to top. Lower layers are infrastructure; upper layers are agreements written as files.">
+  <BoxGrid
+    boxes={[
+      { title: '1 · Machine', sub: 'a Linux box that only runs agents' },
+      { title: '2 · Names', sub: '.lan hosts, .internal services' },
+      { title: '3 · Processes', sub: 'one owner for every process, port and log' },
+      { title: '4 · Secrets', sub: 'used by agents, never read by them' },
+      { title: '5 · Sessions', sub: 'visible terminals, reachable from a phone' },
+      { title: '6 · Writes', sub: 'worktrees, one writer on main' },
+      { title: '7 · Plan', sub: 'a fixed tree of files in the repository' },
+      { title: '8 · Roles', sub: 'owner, manager, implementer, verifier' },
+      { title: '9 · Instructions', sub: 'one source, generated per client' },
+      { title: '10 · Gates', sub: 'packages, one check, deploy by push' },
+    ]}
+  />
+</Figure>
+
+## 1. A machine that only runs agents
+
+Agents do not need a graphics card. They need memory. Every session brings a language server, a dev server, a test runner and a browser, and the machine runs out of RAM long before it runs out of CPU.
+
+So the agents get their own box: Linux, because the same hardware fits more sessions on it, and as much RAM as the budget allows. It runs agents, not models. Inference stays with the provider; buying hardware to run models is a different purchase with a different payback.
+
+The workstation keeps only the work that has to happen on it: browser extensions, desktop apps. Everything else is developed on the agents machine.
+
+<Figure label="Layer 1" caption="Hosts by job. The agents machine is the only one where agents run; the others are reached by name.">
+  <BoxGrid
+    mono
+    boxes={[
+      { title: 'agents.lan', sub: 'agents, dev services, terminal sessions', highlight: true, items: ['status.agents.lan', 'secrets.agents.lan'] },
+      { title: 'workstation', sub: 'browser extensions and desktop apps only' },
+      { title: 'git.our.lan', sub: 'the forge: repositories, package registry, CI runner' },
+      { title: 'vault.our.lan', sub: 'passwords, on a machine with no agents' },
+      { title: 'ha.home.lan', sub: 'smart home, on its own network segment' },
+    ]}
+  />
+</Figure>
+
+## 2. Names instead of ports
+
+`localhost:3000` means a different thing in every session, and an agent that reads it from one log pastes it into another. Give every host and every service a name.
+
+Two suffixes carry the whole scheme. A <Term definition="A name for a machine on the local network, such as agents.lan. It always points at the same host.">`.lan`</Term> name is a machine. A <Term definition="A name for a service, such as status.agents.lan or shop.internal. It points at whatever host currently runs that service, through a reverse proxy.">`.internal`</Term> name is a service, wherever it currently runs. A person and an agent use the same address, and it survives a restart on a different port.
+
+<Figure label="Layer 2" caption="A .lan name says where something runs. An .internal name says what it is, and can move between machines without anyone changing a link.">
+  <BoxGrid
+    mono
+    boxes={[
+      { title: '*.lan', sub: 'a machine, or a service tied to one machine', items: ['agents.lan', 'git.our.lan', 'photos.our.lan', 'ha.home.lan'] },
+      { title: '*.internal', sub: 'a service, wherever it runs today', highlight: true, items: ['shop.internal', 'docs.internal', 'status.internal'] },
+    ]}
+  />
+</Figure>
+
+<Disclosure summary="How the names resolve">
+
+A local DNS server answers for `.lan`. For `.internal`, a registry on each machine maps a name to a local port, a reverse proxy serves it, and browsers find the proxy through a proxy auto-config file. A service that registers a name gets it for as long as it runs.
+
+A name resolves on your own machine first. If nothing local serves it, the lookup falls back to the network registry, so the same `.internal` name can mean your development copy on your machine and the released copy for everyone else. That is useful, and it is also a way to test the wrong copy: say which machine you looked from.
+
+The full mechanism is in [No More localhost:3000](/blog/pm3-internal-domains-lokalny-deployment).
+
+</Disclosure>
+
+## 3. One owner for every process
+
+An agent that runs `npm run dev &` leaves a process nobody owns. The next agent starts a second copy, the port moves, and the first agent tests against a server that no longer serves its code.
+
+A process manager owns every long-running process. A service is declared once, in a file in the repository:
+
+```yaml
+services:
+  - name: dev
+    cmd: npm run dev -- --port 4300 --host
+    port: 4300
+    domain: shop.internal
+    health: { type: http, port: 4300 }
+```
+
+From that one declaration the manager starts the process, holds the port for it, waits for the health check, registers the domain, and keeps the log. The agent gets four verbs: start, stop, restart, read the log.
+
+<Figure label="Layer 3" caption="The agent never spawns a server. It asks the manager, and the manager is the only place that knows what runs where.">
+  <Flow
+    steps={[
+      { label: 'Agent', note: 'start shop/dev' },
+      { label: 'Process manager', note: 'spawns, holds the port, streams the log', highlight: true },
+      { label: 'Health check', note: 'HTTP 200 on the port' },
+      { label: 'Domain', note: 'shop.internal is registered' },
+    ]}
+  />
+</Figure>
+
+<Disclosure summary="What this removes">
+
+- Two servers on one port: a port is reserved for the service that declared it. If something unknown already listens there, the start is refused and reported; nothing is killed.
+- Lost logs: every service writes to one place, so "read the log" has one answer.
+- Orphans: a process started for a worktree is tied to that worktree and dies with it.
+- "It works" from a status code: a service counts as up when the health check passes, and as working when its page renders in a browser.
+
+</Disclosure>
+
+The commands that cost no model tokens are covered in [Bang Commands](/blog/bang-commands-zero-token-cli-dla-agenta).
+
+## 4. Secrets the agent uses and never reads
+
+An agent that can read a token can print it: into a log, a commit, an issue. The fix is not a better instruction. The agent must not hold the value at all.
+
+A <Term definition="A small local service that stores secrets and hands them to a command at run time. The agent passes a name, never a value.">secret broker</Term> stands between the agent and the secret. The person types the value into a local browser page once. After that the agent can ask two things: is the secret set, and run this command with the secret injected. It gets back SET or MISSING, and the command's output.
+
+<Figure label="Layer 4" caption="The value goes from the person to the store to the process. It never enters the agent's context.">
+  <Flow
+    steps={[
+      { label: 'Person', note: 'types the value in a local page, once' },
+      { label: 'Broker', note: 'stores it under a name', highlight: true },
+      { label: 'Agent', note: 'asks by name: set? run with it' },
+      { label: 'Process', note: 'receives the value as an environment variable' },
+    ]}
+  />
+</Figure>
+
+A second guard covers the leak the broker cannot: a secret that reached the context some other way. A hook checks every file write, every staged commit and every outgoing request body for the shapes of real credentials, and blocks the call.
+
+## 5. Sessions you can see, from anywhere
+
+Ten agents in ten hidden background processes are ten things you cannot check. Each agent runs in a visible terminal pane inside a <Term definition="A terminal multiplexer built for coding agents: it opens agents in panes and tabs, lets one agent read or steer another, and reports each agent's state.">terminal host</Term>. You can read any of them, type into any of them, and so can a coordinating agent.
+
+Beside it runs a self-hosted <Term definition="A web application on your own machine where agents are started and followed from a browser. A local daemon connects it to the agents; nothing leaves your network.">web workspace</Term> for the same agents. The agents machine sits on a private network, so from outside you connect through a VPN and open the workspace in a browser. Checking on a long task becomes a glance, not a trip back to the desk.
+
+<Figure label="Layer 5" caption="Two windows onto the same agents: terminal panes at the desk, a browser everywhere else. Both stay inside the private network.">
+  <Flow
+    steps={[
+      { label: 'Phone or laptop', note: 'outside the house' },
+      { label: 'VPN', note: 'the only way in' },
+      { label: 'Web workspace', note: 'on agents.lan, through a local daemon', highlight: true },
+      { label: 'Agent sessions', note: 'also visible as terminal panes' },
+    ]}
+  />
+</Figure>
+
+{/* CAVEAT: use from a phone browser is not verified (no test run found, fact check 2026-11-19). Confirm before publishing or cut "phone". */}
+{/* CAVEAT: the dictation said the web workspace orchestrates agents inside the terminal host. The source shows two separate tools; no link between them was found. */}
+
+## 6. One writer on main, everyone else in a worktree
+
+Two agents in one checkout do not crash. One agent's staged file rides along in the other's commit, and neither sees an error.
+
+Three parts stop it. Every task gets its own <Term definition="A second working directory of the same repository, on its own branch, with its own index. Two worktrees cannot overwrite each other's files.">worktree</Term>. The main checkout accepts writes from one session at a time, the one that holds a short-lived <Term definition="A time-limited right to write, held by one session and recorded in a file. It expires on its own if the holder goes quiet.">lease</Term>. A registry shows who is working where.
+
+<Figure label="Layer 6" caption="Work happens in worktrees. Main is where finished work lands, one session at a time.">
+  <BoxGrid
+    boxes={[
+      { title: 'main checkout', sub: 'merge-only', highlight: true, items: ['one writer, holding the lease', 'a write without the lease is refused by a hook'] },
+      { title: 'worktree A', sub: 'agent 1, branch feat/a', items: ['writes freely', 'no lease needed'] },
+      { title: 'worktree B', sub: 'agent 2, branch feat/b', items: ['writes freely', 'no lease needed'] },
+      { title: 'registry', sub: 'observes, blocks nothing', items: ['branch, worktree, claimed files', 'messages between agents'] },
+    ]}
+  />
+</Figure>
+
+The refusal is the interface. This is what an agent reads when it writes to main without the lease:
+
+```text
+Main checkout write blocked by the single-writer lease rule:
+this session does not hold the lease.
+  Take it:        lease acquire <repo> --purpose commit --session <id>
+  Or work apart:  create a worktree
+```
+
+It names the rule, the reason and both ways forward. An agent that gets a bare "denied" rewords the command until the guard misses.
+
+Build it from [The File-Based Lease](/blog/file-based-lease-for-parallel-agents); the registry is in [Parallel Agents in One Repo](/blog/rownolegle-agenty-w-jednym-repo-rejestr).
+
+## 7. A plan the agent can find
+
+A plan that lives in a chat is gone when the context is. The plan lives in the repository, in a tree whose shape is the same in every project, so "plan an epic" needs no further instruction.
+
+<Figure label="Layer 7" caption="The same tree in every repository. An agent that has seen one knows where everything is in all of them.">
+  <FileTree
+    nodes={[
+      { name: '.plan/', depth: 0, note: 'working memory of the project' },
+      { name: 'STATE.md', depth: 1, note: 'where the work stands right now' },
+      { name: 'BACKLOG.md', depth: 1, note: 'found but not yet planned' },
+      { name: 'DECIDE.md', depth: 1, note: 'what waits for the human, one line each' },
+      { name: 'VISION.md', depth: 1, note: 'what the product is for' },
+      { name: 'ADR/', depth: 1, note: 'decisions, numbered, never deleted' },
+      { name: 'epics/', depth: 1, note: 'one folder per piece of work' },
+      { name: 'INDEX.md', depth: 2, note: 'the only place a status is true' },
+      { name: 'E012-…/', depth: 2 },
+      { name: 'PLAN.md', depth: 3, note: 'what and why' },
+      { name: 'HANDOFF.md', depth: 3, note: 'tasks, order, how to verify' },
+      { name: 'JOURNAL.md', depth: 3, note: 'findings, written as they happen' },
+      { name: 'tasks/', depth: 3, note: 'one file per task' },
+      { name: 'worktrees/', depth: 1, note: 'where parallel agents work' },
+    ]}
+  />
+</Figure>
+
+<Disclosure summary="Three rules that make the tree work">
+
+- **Plan to a file, execute from a file.** The session that writes the plan does not carry it out. A fresh agent takes `HANDOFF.md` and starts cold, which proves the plan is complete.
+- **One place per fact.** A status lives in `INDEX.md` and nowhere else. A copy drifts within hours.
+- **Write findings when they happen.** An error goes into `JOURNAL.md` before the fix is tried. Written afterwards, it loses the detail the next agent needs.
+
+</Disclosure>
+
+More in [The Filesystem Is Your Agent Interface](/blog/filesystem-is-your-agents-interface) and [The Backlog Is a Data Structure for Self-Improvement](/blog/backlog-as-a-self-improvement-structure).
+
+## 8. Roles, and a queue for the human
+
+An agent that plans, builds and approves its own work approves it. Split the jobs.
+
+<Figure label="Layer 8" caption="Four roles, each a separate session. Nobody certifies their own work, and the human is asked only through the queue.">
+  <Flow
+    steps={[
+      { label: 'Product owner', note: 'talks to the human, owns scope, accepts' },
+      { label: 'Delivery manager', note: 'delegates, integrates, pushes' },
+      { label: 'Implementer', note: 'builds one task in a worktree' },
+      { label: 'Verifier', note: 'clean context, checks the source', highlight: true },
+    ]}
+    returnNote="A failed check goes back to the implementer. An unchecked item counts as failed, never as passed."
+  />
+</Figure>
+
+Two details carry most of the weight. The verifier answers per acceptance criterion with one of three words: pass, fail, or <Term definition="The verifier could not inspect the thing: no access, a timeout, a missing page. It blocks 'done' exactly like a failure does.">not checked</Term>. And the agents never stop to ask the human in chat: a question goes on one line into `DECIDE.md`, with options and a recommendation, and the work that does not depend on it continues.
+
+Task size is the throttle; see [Confidence and Story Points](/blog/confidence-and-story-points-as-throttle).
+
+## 9. One source of instructions
+
+Every agent client reads its own folder of instructions. Edit them by hand and within a month the clients disagree about how to commit.
+
+Keep one source: a repository of policies and skills. A build step generates each client's view from it. Nobody edits a generated file; a change is a request to the source, and it ships to every client at once.
+
+<Figure label="Layer 9" caption="Policies and skills are written once and generated into every client. The generated files are outputs, not places to edit.">
+  <Flow
+    steps={[
+      { label: 'Harness source', note: 'policies, skills, hooks', highlight: true },
+      { label: 'Build', note: 'renders one view per client' },
+      { label: 'Client folders', note: 'instructions each agent loads at start' },
+      { label: 'Agent session', note: 'same rules, whichever client runs it' },
+    ]}
+    returnNote="An agent that hits a bad rule files a request against the source."
+  />
+</Figure>
+
+The same source holds what agents learn: a knowledge base that survives the end of a session, described in [The Personal Knowledge-Base System](/blog/the-personal-knowledge-base-system), and the generation step in [Autogeneration](/blog/autogenerowanie-tresci-dla-agenta).
+
+## 10. Shared parts and gates
+
+Ten agents in ten repositories write the same button ten times. A part used twice becomes a package in a private registry on your own forge, and every project installs it from there.
+
+Then two gates, the same in every repository:
+
+- **`just check`** runs types, lint, tests and the end-to-end test of the main workflow. The command has the same name everywhere, so no agent has to work out the stack first. Work that has not passed it is not done.
+- **Deploy is a push.** A runner on the forge builds and publishes the pushed commit. No agent logs in to a server to copy files.
+
+<Figure label="Layer 10" caption="The only road from a worktree to production. Every arrow is a command, not a judgement.">
+  <Flow
+    steps={[
+      { label: 'Worktree', note: 'task done' },
+      { label: 'just check', note: 'types, lint, tests, e2e', highlight: true },
+      { label: 'Independent review', note: 'pass per criterion' },
+      { label: 'Merge and push', note: 'main, with the lease' },
+      { label: 'Runner', note: 'builds and deploys the commit' },
+    ]}
+  />
+</Figure>
+
+Why each step needs a gate that a command can check is the subject of [The Software Factory Is Just an Automated SDLC](/blog/sdlc-jako-petla-ktora-automatyzujesz).
+
+## Where to start
+
+Not at layer 1. Build in the order the pain arrives:
+
+| When this happens | Build |
+|---|---|
+| A second agent starts in the same repository | Layer 6: worktrees and the lease |
+| A dev server is running and nobody knows which | Layer 3: the process manager, then layer 2 |
+| A plan is lost with a context window | Layer 7: the plan tree |
+| An agent declares its own work finished | Layer 8: a separate verifier |
+| Two clients follow different rules | Layer 9: one source |
+| An agent needs a token | Layer 4, before you paste it once |
+| The laptop runs out of memory | Layer 1 |
+
+Each layer is an afternoon to a few days. None needs the others to pay for itself.

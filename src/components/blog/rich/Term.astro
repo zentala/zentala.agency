@@ -1,0 +1,91 @@
+---
+/**
+ * Inline term with a definition shown on hover, keyboard focus and tap.
+ * The definition stays in the DOM, so search engines and agents read it.
+ */
+interface Props {
+  /** Plain-language definition shown in the bubble. */
+  definition: string
+}
+
+const { definition } = Astro.props
+
+if (!definition?.trim()) {
+  throw new Error('Term: "definition" is required and must not be empty')
+}
+---
+
+<script>
+  const VIEWPORT_MARGIN_PX = 8
+
+  /** Shift the bubble sideways so it never leaves the viewport. */
+  function clampBubble(term: HTMLElement) {
+    const bubble = term.querySelector<HTMLElement>('.term__bubble')
+    if (!bubble) return
+    bubble.style.setProperty('--term-shift', '0px')
+    const rect = bubble.getBoundingClientRect()
+    const overflowRight = rect.right - (window.innerWidth - VIEWPORT_MARGIN_PX)
+    const overflowLeft = VIEWPORT_MARGIN_PX - rect.left
+    if (overflowRight > 0) {
+      bubble.style.setProperty('--term-shift', `${-overflowRight}px`)
+    } else if (overflowLeft > 0) {
+      bubble.style.setProperty('--term-shift', `${overflowLeft}px`)
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-term]').forEach((term) => {
+    term.addEventListener('pointerenter', () => clampBubble(term))
+    term.addEventListener('focus', () => clampBubble(term))
+    term.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') term.blur()
+    })
+  })
+</script>
+
+<style lang="scss">
+  .term {
+    position: relative;
+    cursor: help;
+    text-decoration: underline dotted rgb(156 163 175);
+    text-underline-offset: 0.25em;
+    outline: none;
+  }
+
+  .term:focus-visible {
+    outline: 2px solid rgb(96 165 250);
+    outline-offset: 2px;
+    border-radius: 0.125rem;
+  }
+
+  .term__bubble {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.375rem);
+    z-index: 30;
+    width: max-content;
+    max-width: min(22rem, calc(100vw - 2rem));
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(55 65 81);
+    border-radius: 0.375rem;
+    background: rgb(17 24 39);
+    color: rgb(229 231 235);
+    font-size: 0.875rem;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.45;
+    text-decoration: none;
+    white-space: normal;
+    transform: translateX(var(--term-shift, 0px));
+    /* display, not visibility: a hidden bubble must not widen the page. */
+    display: none;
+    pointer-events: none;
+  }
+
+  .term:hover .term__bubble,
+  .term:focus .term__bubble {
+    display: block;
+  }
+</style>
+
+{/* Keep this element last and on one line: any whitespace around it renders as a space before the next character. */}
+<span class="term" tabindex="0" data-term><slot /><span class="term__bubble" role="tooltip">{definition}</span></span>
