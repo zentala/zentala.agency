@@ -88,6 +88,12 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
     </main>
     <Footer />
 
+    <script>
+      if (import.meta.env.DEV) {
+        import('@/dev/heading-switch')
+      }
+    </script>
+
     <!-- Chat huba — RESTORED 2026-08-26.
          Was disabled the same day: the host answered 200 with
          `content-type: text/html` (the SPA fallback), so the browser parsed

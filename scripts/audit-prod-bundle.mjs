@@ -34,6 +34,10 @@ const FORBIDDEN_JS_HTML = [
   'agentation',
   'dev/agentation',
   '/__agentation',
+  'heading-switch',
+  'data-headings',
+  'zdr:font',
+  'Inter Variable',
 ]
 
 const FORBIDDEN_CSS = [
@@ -41,6 +45,10 @@ const FORBIDDEN_CSS = [
   '/api/dev/',
   'agentation',
   '/__agentation',
+  'heading-switch',
+  'data-headings',
+  'zdr:font',
+  'Inter Variable',
 ]
 
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.css', '.html'])
@@ -72,6 +80,10 @@ const FORBIDDEN_RUNTIME = [
   'agentation',
   'dev/agentation',
   '/__agentation',
+  'heading-switch',
+  'data-headings',
+  'zdr:font',
+  'Inter Variable',
 ]
 
 function collectReferences(html, htmlPath) {
