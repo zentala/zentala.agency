@@ -1,19 +1,31 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
+/**
+ * A quiet aside. Neutral for every variant: the variant changes only the thin
+ * glyph and the label word, never the colour.
+ */
 interface Props {
-  icon?: string // Lucide icon name (without 'lucide:' prefix)
+  icon?: string // short SiteIcon name; overrides the variant's glyph
   title?: string
   variant?: 'default' | 'info' | 'success' | 'warning'
 }
 
-const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
+const VARIANT_ICON = {
+  default: 'lightbulb',
+  info: 'info',
+  success: 'check-circle',
+  warning: 'warning',
+} as const
+
+const { icon, title, variant = 'default' } = Astro.props
+const glyph = icon ?? VARIANT_ICON[variant]
 ---
 
 <div class={`note-box note-box--${variant}`}>
-  <Icon name={`lucide:${icon}`} class="note-box__icon" />
+  <SiteIcon name={glyph} size="md" class="note-box__icon" />
   <div class="note-box__content">
-    {title && <strong class="note-box__title">{title}</strong>}
+    {title && <p class="note-box__title">{title}</p>}
     <slot />
   </div>
 </div>
@@ -22,35 +34,24 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
   @use '../../styles/variables' as *;
 
   .note-box {
-    --note-accent: var(--color-accent);
     max-width: 900px;
     margin: 3rem auto 2rem;
-    padding: 2rem;
-    background: color-mix(in srgb, var(--color-line) 30%, transparent);
-    border-left: 3px solid var(--note-accent);
+    padding: 1.5rem 2rem;
+    border-left: 1px solid var(--color-line-strong);
     display: flex;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1.25rem;
 
     @include mobile {
-      flex-direction: column;
       margin: 2rem auto 1.5rem;
-      padding: 1.5rem;
+      padding: 1.25rem 1.5rem;
       gap: 1rem;
-      align-items: center;
     }
 
     &__icon {
       flex-shrink: 0;
-      color: var(--note-accent);
-      width: 24px;
-      height: 24px;
-      stroke-width: 1;
-
-      @include mobile {
-        width: 20px;
-        height: 20px;
-      }
+      margin-top: 0.2rem;
+      color: var(--color-text-subtle);
     }
 
     &__content {
@@ -58,36 +59,27 @@ const { icon = 'lightbulb', title, variant = 'default' } = Astro.props
       color: var(--color-text-secondary);
 
       p {
-        font-size: 1.125rem;
+        font-size: 1rem;
         line-height: 1.6;
         color: var(--color-text-secondary);
         margin: 0;
         text-align: left;
+      }
 
-        strong {
-          color: var(--color-text);
-        }
-
-        @include mobile {
-          font-size: 1rem;
-          text-align: center;
-        }
+      strong {
+        font-weight: 500;
+        color: var(--color-text);
       }
     }
 
     &__title {
       display: block;
-      color: var(--note-accent);
-      font-size: 1.125rem;
-      margin-bottom: 0.5rem;
-    }
-
-    &--success {
-      --note-accent: var(--color-success);
-    }
-
-    &--warning {
-      --note-accent: var(--color-warn);
+      color: var(--color-text-muted);
+      font-size: var(--text-label);
+      font-weight: 400;
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      margin: 0 0 0.5rem;
     }
   }
 </style>

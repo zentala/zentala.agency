@@ -16,6 +16,7 @@ import SectionContent from '../../components/primitives/sections/SectionContent.
 import SectionImage from '../../components/primitives/sections/SectionImage.astro'
 import BentoCentralStage from '../../components/primitives/sections/bento/BentoCentralStage.astro'
 import BentoStageState from '../../components/primitives/sections/bento/BentoStageState.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import Logo from '../../components/Logo.astro'
 import TagGroup from '../../components/primitives/TagGroup.astro'
 import PhaseLabel from '../../components/primitives/PhaseLabel.astro'
@@ -200,7 +201,7 @@ const bentoStates = {
         <div class="space-y-3 border-l border-line-strong pl-6 md:space-y-4">
           <div>
             <span
-              class="text-label font-semibold uppercase text-fg-subtle"
+              class="text-label font-medium uppercase text-fg-subtle"
               >Step 01</span
             >
             <p class="text-base text-fg-secondary md:text-lg">
@@ -209,7 +210,7 @@ const bentoStates = {
           </div>
           <div>
             <span
-              class="text-label font-semibold uppercase text-fg-subtle"
+              class="text-label font-medium uppercase text-fg-subtle"
               >Step 02</span
             >
             <p class="text-base text-fg-secondary md:text-lg">
@@ -218,7 +219,7 @@ const bentoStates = {
           </div>
           <div>
             <span
-              class="text-label font-semibold uppercase text-fg-subtle"
+              class="text-label font-medium uppercase text-fg-subtle"
               >Step 03</span
             >
             <p class="text-base text-fg-secondary md:text-lg">
@@ -254,7 +255,7 @@ const bentoStates = {
         </h3>
         <div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
           <div>
-            <p class="text-label font-semibold uppercase text-fg-subtle">
+            <p class="text-label font-medium uppercase text-fg-subtle">
               Multi-Agent Systems
             </p>
             <p class="text-xs text-fg-secondary md:text-sm">
@@ -262,7 +263,7 @@ const bentoStates = {
             </p>
           </div>
           <div>
-            <p class="text-label font-semibold uppercase text-fg-subtle">
+            <p class="text-label font-medium uppercase text-fg-subtle">
               LLM Integration
             </p>
             <p class="text-xs text-fg-secondary md:text-sm">
@@ -297,7 +298,7 @@ const bentoStates = {
               class="mt-4 text-xs leading-relaxed text-fg-secondary md:text-sm lg:text-base"
             >
               I don't do everything. I focus on
-              <strong class="font-semibold text-fg">prototyping</strong>,
+              <strong class="font-medium text-fg">prototyping</strong>,
               providing the shortest path from idea to minimal viable product
               release.
             </p>
@@ -314,10 +315,10 @@ const bentoStates = {
       >
         <CardIconMosaic
           icons={[
-            'lucide:radar',
-            'lucide:bot',
-            'lucide:layout-grid',
-            'lucide:house',
+            'radar',
+            'bot',
+            'layout-grid',
+            'house',
           ]}
         />
         <div
@@ -334,9 +335,10 @@ const bentoStates = {
             enterprises, and a smart home built into my own walls.
           </p>
           <span
-            class="mt-3 text-label font-semibold uppercase text-fg-subtle transition-colors duration-fast ease-standard group-hover:text-fg-secondary"
+            class="mt-3 inline-flex items-center gap-1 text-label font-medium uppercase text-fg-subtle transition-colors duration-fast ease-standard group-hover:text-fg-secondary"
           >
-            See the portfolio →
+            See the portfolio
+            <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
           </span>
         </div>
       </a>
@@ -372,10 +374,6 @@ const bentoStates = {
     <!-- Row 4: Col 2 - Orchestrating AI (1:1) -->
     <BentoCard colSpan={1} rowSpan={1} padding="sm" class="group">
       <!-- hoverState={bentoStates.ai} -->
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/5 group-hover:to-purple-500/5 group-hover:opacity-100"
-      >
-      </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10">
           <h3>AI-Accelerated Delivery</h3>
@@ -407,18 +405,7 @@ const bentoStates = {
       <div
         class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.02] transition-[opacity,transform] duration-slow ease-standard group-hover:translate-x-2 group-hover:opacity-[0.08]"
       >
-        <svg
-          width="120"
-          height="120"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="0.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="text-fg"
-          ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
-        >
+        <SiteIcon name="caret-right" size="lg" class="h-[120px] w-[120px] text-fg" />
       </div>
       <SectionContent context="grid" prose={true}>
         <div class="relative z-10 max-w-[85%]">
@@ -433,9 +420,10 @@ const bentoStates = {
             users, gather feedback, and validate in the market.
           </p>
           <span
-            class="mt-3 inline-block text-label font-semibold uppercase text-fg-muted transition-colors duration-fast ease-standard group-hover:text-fg"
+            class="mt-3 inline-flex items-center gap-1 text-label font-medium uppercase text-fg-muted transition-colors duration-fast ease-standard group-hover:text-fg"
           >
-            Book a call →
+            Book a call
+            <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
           </span>
         </div>
       </SectionContent>

@@ -1,9 +1,12 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import Button from '../components/Button.astro'
 import CardContainer from '../components/cards/CardContainer.astro'
+import Section from '../components/primitives/sections/Section.astro'
+import SectionHeader from '../components/primitives/sections/SectionHeader.astro'
+import ContactForm from '../components/ContactForm.astro'
 
 const heroProps = {
   title: 'Contact',
@@ -33,7 +36,7 @@ const heroProps = {
               class="mr-4 h-24 w-24 rounded-full"
             />
             <div>
-              <h3 class="text-2xl font-semibold text-fg">Paweł Żentała</h3>
+              <h3 class="text-2xl font-medium text-fg">Paweł Żentała</h3>
               <p class="mt-1 text-fg-secondary">
                 <a
                   href="mailto:zentala@gmail.com"
@@ -54,7 +57,7 @@ const heroProps = {
           <div class="contact-card__head">
             <h2 class="contact-card__title">Schedule Meeting</h2>
             <span class="contact-card__icon" aria-hidden="true">
-              <Icon name="ph:calendar-blank-thin" />
+              <SiteIcon name="calendar" size="lg" />
             </span>
           </div>
           <p class="contact-card__text">
@@ -73,7 +76,7 @@ const heroProps = {
           <div class="contact-card__head">
             <h2 class="contact-card__title">Follow Me</h2>
             <span class="contact-card__icon" aria-hidden="true">
-              <Icon name="ph:briefcase-thin" />
+              <SiteIcon name="briefcase" size="lg" />
             </span>
           </div>
           <p class="contact-card__text">
@@ -91,6 +94,14 @@ const heroProps = {
       </div>
     </div>
   </section>
+
+  <Section id="write">
+    <SectionHeader
+      headline="Write to me"
+      subhead="Prefer text? Send a message and I will answer within a day or two."
+    />
+    <ContactForm />
+  </Section>
 </Layout>
 
 <style>

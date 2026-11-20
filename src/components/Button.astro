@@ -1,34 +1,95 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 interface Props {
   href: string
   text: string
   target?: string
-  /** primary: solid white. secondary: outlined. accent: solid blue, one main action per page. */
-  variant?: 'primary' | 'secondary' | 'accent'
-  icon?: string // Lucide icon name from astro-icon (left icon)
-  arrow?: boolean // Show arrow on right (default true)
+  /**
+   * primary: white text, light line, faint neutral fill (the main action).
+   * accent: as primary, with the chevron and icon in the blue accent.
+   * secondary: muted text, line border. ghost: text and chevron, no line.
+   */
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost'
+  icon?: string // short SiteIcon name (left icon)
+  arrow?: boolean // chevron on the right, nudges on hover and focus (default true)
 }
 
 const { href, text, target, variant = 'primary', icon, arrow = true } = Astro.props
-
-// Every variant has a 1px border so buttons in one row have equal height.
-const baseClasses =
-  'inline-flex items-center justify-center border px-8 py-3 font-semibold transition-colors duration-fast ease-standard focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
-
-const variantClasses = {
-  primary: 'border-white bg-white text-surface hover:border-fg-secondary hover:bg-fg-secondary',
-  secondary: 'border-line-strong text-fg hover:bg-surface-hover',
-  accent:
-    'border-accent-solid bg-accent-solid text-fg hover:border-accent hover:bg-accent-solid',
-} as const
-
-const buttonClasses = `${baseClasses} ${variantClasses[variant]}`
+const rel = target === '_blank' ? 'noopener noreferrer' : undefined
 ---
 
-<a href={href} target={target} class={buttonClasses}>
-  {icon && <Icon name={`lucide:${icon}`} class="mr-2 h-5 w-5" style="stroke-width: 1.5;" />}
+<a href={href} target={target} rel={rel} class={`button button--${variant}`}>
+  {icon && <SiteIcon name={icon} size="md" class="button__icon" />}
   <span>{text}</span>
-  {arrow && <Icon name="lucide:chevron-right" class="ml-2 h-4 w-4" style="stroke-width: 2;" />}
+  {arrow && <SiteIcon name="caret-right" size="sm" class="button__arrow arrow-nudge" />}
 </a>
+
+<style>
+  /* Every variant has a 1px border (transparent for ghost) so buttons in one row share a height. */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.625rem 1.5rem;
+    border: 1px solid transparent;
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--color-text);
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .button:hover {
+    text-decoration: none;
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .button--primary {
+    border-color: var(--color-text-subtle);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .button--primary:hover,
+  .button--accent:hover {
+    border-color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .button--accent {
+    border-color: var(--color-text-subtle);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .button--accent :global(.site-icon) {
+    color: var(--color-accent);
+  }
+
+  .button--secondary {
+    border-color: var(--color-line-strong);
+    color: var(--color-text-secondary);
+  }
+
+  .button--secondary:hover {
+    border-color: var(--color-text-subtle);
+    color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .button--ghost {
+    color: var(--color-text-secondary);
+    padding-inline: 0.75rem;
+  }
+
+  .button--ghost:hover {
+    color: var(--color-text);
+  }
+</style>

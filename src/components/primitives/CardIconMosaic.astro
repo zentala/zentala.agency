@@ -1,16 +1,16 @@
 ---
 /**
- * Generated card artwork: a dot grid, a soft glow, and a mosaic of icons that
- * drift slowly. Built for tiles that have no photograph worth showing — it
+ * Generated card artwork: a faint glow and a mosaic of thin icons that drift
+ * very slowly. Built for tiles that have no photograph worth showing — it
  * fills the upper part of a card and leaves the lower part to the caption.
  *
  * Monochrome on purpose: the grid it sits in is black with gray-800 borders,
  * and a coloured plate would fight it.
  */
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 export interface Props {
-  /** Iconify names, e.g. `lucide:bot`. Four reads best; more still tiles. */
+  /** Short SiteIcon names, e.g. `robot`. Four reads best; more still tiles. */
   icons: string[]
   class?: string
 }
@@ -24,7 +24,7 @@ const { icons, class: className = '' } = Astro.props
     {
       icons.map((name, i) => (
         <span class="mosaic__cell" style={`--i: ${i}`}>
-          <Icon name={name} class="mosaic__icon" />
+          <SiteIcon name={name} size="lg" class="mosaic__icon" />
         </span>
       ))
     }
@@ -37,19 +37,8 @@ const { icons, class: className = '' } = Astro.props
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    /* Dot grid. Fades out downward so the caption below sits on clean black. */
-    background-image: radial-gradient(
-      circle at center,
-      rgba(255, 255, 255, 0.14) 1px,
-      transparent 1px
-    );
-    background-size: 22px 22px;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 45%,
-      transparent 88%
-    );
+    /* Fades out downward so the caption below sits on clean black. */
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
     mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
   }
 
@@ -62,12 +51,12 @@ const { icons, class: className = '' } = Astro.props
     transform: translate(-50%, -50%);
     background: radial-gradient(
       circle,
-      rgba(148, 163, 184, 0.3) 0%,
-      rgba(148, 163, 184, 0.09) 42%,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 42%,
       transparent 68%
     );
     transition: opacity 700ms ease;
-    opacity: 0.7;
+    opacity: 0.8;
   }
 
   .mosaic__grid {
@@ -80,7 +69,7 @@ const { icons, class: className = '' } = Astro.props
     /* The whole group floats as one. Per-cell vertical drift was tried and
        rejected: it breaks the 2x2 alignment in every frame, so a still of the
        page reads as a misaligned grid rather than as motion. */
-    animation: mosaic-float 11s ease-in-out infinite;
+    animation: mosaic-float 28s ease-in-out infinite;
   }
 
   @keyframes mosaic-float {
@@ -89,7 +78,7 @@ const { icons, class: className = '' } = Astro.props
       transform: translate(-50%, -50%);
     }
     50% {
-      transform: translate(-50%, calc(-50% - 7px));
+      transform: translate(-50%, calc(-50% - 4px));
     }
   }
 
@@ -98,29 +87,28 @@ const { icons, class: className = '' } = Astro.props
     place-items: center;
     width: 3.75rem;
     height: 3.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(2px);
-    color: rgba(255, 255, 255, 0.72);
+    background: none;
+    color: rgba(255, 255, 255, 0.6);
     /* Only the glow breathes per cell — never the position. Staggered so the
        four never pulse in unison. */
-    animation: mosaic-breathe 9s ease-in-out infinite;
-    animation-delay: calc(var(--i) * -2.2s);
+    animation: mosaic-breathe 20s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -5s);
     transition:
       border-color 500ms ease,
       color 500ms ease;
   }
 
   .mosaic__cell :global(.mosaic__icon) {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 24px;
+    height: 24px;
   }
 
   @keyframes mosaic-breathe {
     0%,
     100% {
-      opacity: 0.62;
+      opacity: 0.8;
     }
     50% {
       opacity: 1;
@@ -132,8 +120,8 @@ const { icons, class: className = '' } = Astro.props
     opacity: 1;
   }
   :global(.group):hover .mosaic__cell {
-    border-color: rgba(255, 255, 255, 0.28);
-    color: var(--color-text);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: var(--color-text-secondary);
   }
 
   /* Toggled by the script below when the mosaic leaves or enters the viewport. */
@@ -148,8 +136,8 @@ const { icons, class: className = '' } = Astro.props
       height: 3rem;
     }
     .mosaic__cell :global(.mosaic__icon) {
-      width: 1.3rem;
-      height: 1.3rem;
+      width: 20px;
+      height: 20px;
     }
   }
 

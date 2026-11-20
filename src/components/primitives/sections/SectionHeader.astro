@@ -9,7 +9,7 @@
  * - Optional text alignment
  * - Default slot: rich body content under the subhead (series intro, category text)
  * - `compact`: the plain header padding even with an eyebrow (listing pages);
- *   `eyebrowIcon`: a small lucide icon before the eyebrow text
+ *   `eyebrowIcon`: a small SiteIcon before the eyebrow text
  *
  * Usage:
  * <SectionHeader
@@ -20,7 +20,7 @@
  * />
  */
 
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import CardBackgroundIcon from '../CardBackgroundIcon.astro'
 
 interface Props {
@@ -65,7 +65,7 @@ const HeadingTag = tag
   {
     eyebrow && (
       <p class="section-eyebrow">
-        {eyebrowIcon && <Icon name={eyebrowIcon} class="section-eyebrow__icon" />}
+        {eyebrowIcon && <SiteIcon name={eyebrowIcon} size="sm" class="section-eyebrow__icon" />}
         {eyebrow}
       </p>
     )
@@ -153,7 +153,7 @@ const HeadingTag = tag
     font-size: var(--text-label);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
@@ -161,11 +161,8 @@ const HeadingTag = tag
 
   .section-eyebrow__icon {
     display: inline-block;
-    width: 0.875rem;
-    height: 0.875rem;
     margin-right: 0.25rem;
-    vertical-align: -0.125rem;
-    stroke-width: 1.5;
+    vertical-align: -0.2rem;
   }
 
   .section-header--compact-eyebrow .section-eyebrow {

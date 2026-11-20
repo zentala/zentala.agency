@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import PostCard from '../../components/cards/PostCard.astro'
 import PostCta from '../../components/PostCta.astro'
+import SiteIcon from '../../components/primitives/SiteIcon.astro'
 import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
@@ -89,7 +90,7 @@ const breadcrumbJsonLd = {
       <SectionHeader
         tag="h1"
         eyebrow="Series"
-        eyebrowIcon="lucide:layers"
+        eyebrowIcon="layers"
         headline={headline}
         subhead={description?.data.tagline}
         compact
@@ -129,9 +130,10 @@ const breadcrumbJsonLd = {
                 <a
                   slot="footer"
                   href={`/linkedin-preview/${post.slug}`}
-                  class="inline-block bg-surface-hover px-3 py-1 text-xs text-accent transition-colors duration-fast ease-standard hover:text-accent-hover"
+                  class="inline-flex items-center gap-1 bg-surface-hover px-3 py-1 text-xs text-accent transition-colors duration-fast ease-standard hover:text-accent-hover"
                 >
-                  LinkedIn draft →
+                  LinkedIn draft
+                  <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
                 </a>
               )}
             </PostCard>

@@ -21,18 +21,18 @@
 
 import SectionHeader from './primitives/sections/SectionHeader.astro'
 import Button from './Button.astro'
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 export type CTAButton = {
   href: string
   text: string
-  variant?: 'primary' | 'secondary' | 'accent'
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost'
   target?: string
   icon?: string
 }
 
 export type CTAFooterItem = {
-  icon?: string // Lucide icon name (without 'lucide:' prefix)
+  icon?: string // short SiteIcon name
   text: string
 }
 
@@ -78,7 +78,7 @@ const {
         <>
           <span class="cta__footer-item">
             {item.icon && (
-              <Icon name={`lucide:${item.icon}`} class="cta__footer-icon" />
+              <SiteIcon name={item.icon} size="sm" class="cta__footer-icon" />
             )}
             <span>{item.text}</span>
           </span>
@@ -114,6 +114,7 @@ const {
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 2rem;
+    padding-inline: 1.5rem;
     border: none;
 
     @include mobile {
@@ -145,8 +146,6 @@ const {
   }
 
   .cta__footer-icon {
-    width: 1rem;
-    height: 1rem;
     margin-right: 0.5rem;
     color: var(--color-text-subtle);
   }

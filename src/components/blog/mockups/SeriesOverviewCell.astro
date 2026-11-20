@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
 import { formatDate } from '@/lib/blog/format-date'
 
@@ -31,7 +31,7 @@ const latestDate = formatDate(latestPart.date)
     <div
       class="pointer-events-none flex w-full items-center gap-x-1 text-label uppercase text-fg-subtle"
     >
-      <Icon name="lucide:layers" class="h-3.5 w-3.5" style="stroke-width: 1.5;" />
+      <SiteIcon name="layers" size="sm" />
       <span>Series</span>
       <span class="ml-auto tabular-nums">
         {partCount}
@@ -45,9 +45,10 @@ const latestDate = formatDate(latestPart.date)
 
     <a
       href={`/blog/${firstPart.slug}`}
-      class="relative z-10 mt-6 text-sm text-accent underline-offset-4 transition-colors duration-fast ease-standard hover:text-accent-hover hover:underline"
+      class="relative z-10 mt-6 inline-flex items-center gap-1 text-sm text-accent transition-colors duration-fast ease-standard hover:text-accent-hover"
     >
-      Start with part 1 &rarr;
+      Start with part 1
+      <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
     </a>
 
     <div class="pointer-events-none relative mt-auto w-full pt-6">

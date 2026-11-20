@@ -1,0 +1,33 @@
+---
+/**
+ * The only way to render a UI icon. One set (Phosphor Light), filled outline
+ * paths, colour from `currentColor`. Sizes are whole pixels (16 / 20 / 24);
+ * fractional sizes blur the thin strokes. No stroke props: weight is the set's.
+ * Pass a short name (`calendar`, `caret-right`); `resolveIconName` maps it.
+ */
+import { Icon } from 'astro-icon/components'
+import { ICON_SIZES, resolveIconName, type IconSize } from '@/lib/siteIcon'
+
+export interface Props {
+  name: string
+  size?: IconSize
+  class?: string
+}
+
+const { name, size = 'md', class: className, ...rest } = Astro.props
+const px = ICON_SIZES[size]
+---
+
+<Icon
+  name={resolveIconName(name)}
+  size={px}
+  class:list={['site-icon', className]}
+  aria-hidden="true"
+  {...rest}
+/>
+
+<style>
+  .site-icon {
+    flex-shrink: 0;
+  }
+</style>

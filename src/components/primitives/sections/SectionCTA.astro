@@ -4,7 +4,8 @@
  *
  * - Top line and hover overlay from the shared line model (DESIGN.md section 3)
  * - Full-width layout
- * - Icon + text + arrow pattern, drawn as the shared button look (Button.astro variants)
+ * - Optional icon + text + chevron, drawn as the shared button look (Button.astro variants)
+ * - Optional background word: normal case, large, faint, cropped by the cell
  * - Hover states
  * - External link support
  *
@@ -17,16 +18,16 @@
  * />
  */
 
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 interface Props {
   href: string
   text: string
-  icon?: string // Lucide icon name
+  icon?: string // short SiteIcon name
   arrow?: boolean
-  variant?: 'primary' | 'secondary' | 'accent'
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost'
   external?: boolean
-  bgText?: string // Large background text (e.g., "PORTFOLIO")
+  bgText?: string // Large quiet background word in normal case (e.g. "Portfolio")
   class?: string
 }
 
@@ -53,9 +54,9 @@ const rel = external ? 'noopener noreferrer' : undefined
 >
   {bgText && <span class="section-cta__bg-text" aria-hidden="true">{bgText}</span>}
   <span class="section-cta__content">
-    {icon && <Icon name={`lucide:${icon}`} class="section-cta__icon" />}
+    {icon && <SiteIcon name={icon} size="md" class="section-cta__icon" />}
     <span class="section-cta__text">{text}</span>
-    {arrow && <Icon name="lucide:arrow-right" class="section-cta__arrow" />}
+    {arrow && <SiteIcon name="caret-right" size="sm" class="section-cta__arrow arrow-nudge" />}
   </span>
 </a>
 
@@ -70,7 +71,7 @@ const rel = external ? 'noopener noreferrer' : undefined
     justify-content: center;
     text-decoration: none;
     min-height: 120px;
-    overflow: clip; // Clip background text
+    overflow: clip; // crops the background word at the top and bottom of the cell
     @include px-responsive('md');
     @include py-responsive('md');
 
@@ -79,98 +80,95 @@ const rel = external ? 'noopener noreferrer' : undefined
     }
 
     &:hover {
-      .section-cta__arrow {
-        transform: translateX(4px);
-      }
+      text-decoration: none;
+    }
 
-      .section-cta__bg-text {
-        opacity: 0.15; // Slightly more visible on hover
-      }
+    &:hover .section-cta__bg-text {
+      opacity: 0.1;
     }
   }
 
-  // Large background text
+  // Quiet background word: normal font and case, larger than the cell is tall so it is cropped.
   .section-cta__bg-text {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 60px;
-    font-weight: 100;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.1); // decorative watermark
+    transform: translate(-50%, -46%);
+    font-size: 8rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-text);
+    opacity: 0.06;
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
+    text-transform: lowercase; // callers may still pass an upper-case word
     z-index: 0;
     transition: opacity var(--motion-fast) var(--ease-standard);
 
     @include mobile {
-      font-size: 40px;
+      font-size: 5rem;
     }
+  }
+
+  .section-cta__bg-text::first-letter {
+    text-transform: uppercase;
   }
 
   // The inner label is the button; the whole cell is the link.
   .section-cta__content {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     position: relative;
-    z-index: 1; // Above background text
+    z-index: 1; // above the background word
+    min-height: 3rem;
     border: 1px solid transparent;
-    padding: 0.75rem 2rem;
+    padding: 0.625rem 1.5rem;
+    color: var(--color-text);
     transition:
       background-color var(--motion-fast) var(--ease-standard),
       border-color var(--motion-fast) var(--ease-standard),
       color var(--motion-fast) var(--ease-standard);
   }
 
-  .section-cta__icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-  }
-
   .section-cta__text {
-    @apply text-lg font-normal;
-
-    @include mobile {
-      @apply text-base;
-    }
+    @apply text-base font-normal;
   }
 
-  .section-cta__arrow {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-    transition: transform var(--motion-fast) var(--ease-standard);
+  // Variants: same look as Button.astro. The cell overlay provides the focus ring.
+  .section-cta--primary .section-cta__content,
+  .section-cta--accent .section-cta__content {
+    border-color: var(--color-text-subtle);
+    background-color: rgba(255, 255, 255, 0.04);
   }
 
-  // Variants: same look as Button.astro. A solid white or solid blue label also needs a
-  // visible focus ring, which the cell overlay provides.
-  .section-cta--primary .section-cta__content {
-    background-color: var(--color-text);
+  .section-cta--primary:hover .section-cta__content,
+  .section-cta--accent:hover .section-cta__content {
     border-color: var(--color-text);
-    color: var(--color-surface);
+    background-color: rgba(255, 255, 255, 0.08);
   }
 
-  .section-cta--primary:hover .section-cta__content {
-    background-color: var(--color-text-secondary);
-    border-color: var(--color-text-secondary);
+  .section-cta--accent .section-cta__icon,
+  .section-cta--accent .section-cta__arrow {
+    color: var(--color-accent);
   }
 
   .section-cta--secondary .section-cta__content {
     border-color: var(--color-line-strong);
+    color: var(--color-text-secondary);
+  }
+
+  .section-cta--secondary:hover .section-cta__content {
+    border-color: var(--color-text-subtle);
     color: var(--color-text);
   }
 
-  .section-cta--accent .section-cta__content {
-    background-color: var(--color-accent-solid);
-    border-color: var(--color-accent-solid);
-    color: var(--color-text);
+  .section-cta--ghost .section-cta__content {
+    color: var(--color-text-secondary);
   }
 
-  .section-cta--accent:hover .section-cta__content {
-    border-color: var(--color-accent);
+  .section-cta--ghost:hover .section-cta__content {
+    color: var(--color-text);
   }
 </style>

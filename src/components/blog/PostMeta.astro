@@ -1,11 +1,11 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
 import { slugify } from '@/lib/blog/slug'
 
 /**
  * The single place a blog post's meta line gets built: part-in-series →
- * date → category, each with a lucide icon. Used by PostCard, the series
+ * date → category, each with a SiteIcon. Used by PostCard, the series
  * page, and the post hero, so the format only lives in one place.
  * `partLabel` comes from `@/lib/blog/part-label`.
  */
@@ -27,7 +27,7 @@ const {
 
 const textTone = tone === 'muted' ? 'text-fg-muted' : 'text-fg-subtle'
 const textSize = size === 'md' ? 'text-base' : 'text-sm'
-const iconSize = size === 'md' ? 'h-4 w-4' : 'h-3.5 w-3.5'
+const iconSize = 'sm'
 
 const { datetime, label } = formatDate(date)
 ---
@@ -38,17 +38,13 @@ const { datetime, label } = formatDate(date)
   {
     partLabel && (
       <span class="flex items-center gap-x-1">
-        <Icon
-          name="lucide:layers"
-          class={iconSize}
-          style="stroke-width: 1.5;"
-        />
+        <SiteIcon name="layers" size={iconSize} />
         {partLabel}
       </span>
     )
   }
   <span class="flex items-center gap-x-1">
-    <Icon name="lucide:calendar" class={iconSize} style="stroke-width: 1.5;" />
+    <SiteIcon name="calendar" size={iconSize} />
     <time datetime={datetime} data-blog-date>{label}</time>
   </span>
   {
@@ -57,7 +53,7 @@ const { datetime, label } = formatDate(date)
         href={`/category/${slugify(category)}`}
         class="pointer-events-auto relative z-10 flex items-center gap-x-1 transition-colors duration-fast ease-standard hover:text-fg-secondary"
       >
-        <Icon name="lucide:tag" class={iconSize} style="stroke-width: 1.5;" />
+        <SiteIcon name="tag" size={iconSize} />
         {category}
       </a>
     )

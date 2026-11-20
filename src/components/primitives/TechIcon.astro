@@ -1,0 +1,32 @@
+---
+/**
+ * Technology logo from simple-icons, for tech tags and the tech grid.
+ * Monochrome (`currentColor`) by default; `brand` takes the logo's brand hex
+ * (the iconify set carries no colours, so the caller supplies it). Whole-pixel sizes only, as for SiteIcon.
+ */
+import { Icon } from 'astro-icon/components'
+import simpleIcons from '@iconify-json/simple-icons/icons.json'
+import { ICON_SIZES, type IconSize } from '@/lib/siteIcon'
+
+export interface Props {
+  /** simple-icons slug, e.g. `astro`, `typescript`. */
+  name: string
+  size?: IconSize
+  brand?: string
+  class?: string
+}
+
+const { name, size = 'md', brand, class: className, ...rest } = Astro.props
+const known = simpleIcons.icons as Record<string, unknown>
+if (!(name in known)) throw new Error(`TechIcon: no simple-icons logo "${name}"`)
+const px = ICON_SIZES[size]
+---
+
+<Icon
+  name={`simple-icons:${name}`}
+  size={px}
+  class:list={['tech-icon', className]}
+  style={brand ? `color: ${brand}` : undefined}
+  aria-hidden="true"
+  {...rest}
+/>

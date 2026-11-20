@@ -1,18 +1,19 @@
 ---
-import { Icon } from 'astro-icon/components'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 export interface Props {
   icon: string
 }
 const { icon } = Astro.props
 
-const isIconifyName = icon.includes(':')
+/** A short icon name renders as an icon; anything else (an emoji, a glyph) renders as text. */
+const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
 ---
 
 <span class="card-background-icon">
   {
-    isIconifyName ? (
-      <Icon name={icon} class="card-background-icon__svg" />
+    isIconName ? (
+      <SiteIcon name={icon} size="lg" class="card-background-icon__svg" />
     ) : (
       icon
     )
@@ -41,7 +42,6 @@ const isIconifyName = icon.includes(':')
   .card-background-icon :global(.card-background-icon__svg) {
     width: 8rem;
     height: 8rem;
-    stroke-width: 0.75;
   }
 
   @media (max-width: 770px) {

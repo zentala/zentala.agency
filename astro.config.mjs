@@ -88,12 +88,13 @@ export default defineConfig({
     '/capabilities': '/about/capabilities',
     '/offer/backstage': '/about/capabilities/backstage',
     '/blog/index.old': '/blog',
+    '/series/information-architecture': '/series/developer-experience',
   },
   integrations: [
     tailwind(),
     agentationReviewIntegration,
     mdx(),
-    icon({ include: { lucide: ['*'], ph: ['*'] } }),
+    icon({ include: { ph: ['*'], 'simple-icons': ['*'] } }),
     react({ include: ['src/components/react-stuff/**/*'] }),
     sitemap({
       filter: (page) => !page.includes('/linkedin-preview/'),

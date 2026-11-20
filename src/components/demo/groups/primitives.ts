@@ -4,6 +4,20 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
   title: 'Primitives',
   items: [
     {
+      id: 'site-icon',
+      name: 'SiteIcon',
+      path: 'primitives/SiteIcon.astro',
+      purpose: 'The only UI icon: Phosphor Light, currentColor, whole-pixel sizes.',
+      props: 'name, size (sm 16; md 20, lg 24), class',
+    },
+    {
+      id: 'tech-icon',
+      name: 'TechIcon',
+      path: 'primitives/TechIcon.astro',
+      purpose: 'Technology logo from simple-icons, monochrome unless a brand colour is passed.',
+      props: 'name, size (sm; md, lg), brand (hex), class',
+    },
+    {
       id: 'badge',
       name: 'Badge',
       path: 'primitives/Badge.astro',
@@ -15,7 +29,7 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       name: 'Tag',
       path: 'primitives/Tag.astro',
       purpose: 'Hashtag-style label, a link when href is set.',
-      props: 'text, href, prefix (#), theme (pill; simple, label), class',
+      props: 'text, href, prefix (#), theme (chip; simple and label are the same chip), class',
     },
     {
       id: 'tag-group',

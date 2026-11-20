@@ -1,6 +1,8 @@
 ---
 import GalleryEntry from './GalleryEntry.astro'
 import GalleryCell from './GalleryCell.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import TechIcon from '@/components/primitives/TechIcon.astro'
 import Badge from '@/components/primitives/Badge.astro'
 import Tag from '@/components/primitives/Tag.astro'
 import TagGroup from '@/components/primitives/TagGroup.astro'
@@ -18,6 +20,24 @@ const LONG_TEXT =
 const TAGS = ['backstage', 'agents', 'devex']
 ---
 
+<GalleryEntry id="site-icon" cols={3}>
+  <GalleryCell label="sm 16"><SiteIcon name="database" size="sm" /></GalleryCell>
+  <GalleryCell label="md 20 (default)"><SiteIcon name="robot" /></GalleryCell>
+  <GalleryCell label="lg 24"
+    ><SiteIcon name="git-branch" size="lg" /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="tech-icon" cols={3}>
+  <GalleryCell label="astro, md"><TechIcon name="astro" /></GalleryCell>
+  <GalleryCell label="typescript, lg"
+    ><TechIcon name="typescript" size="lg" /></GalleryCell
+  >
+  <GalleryCell label="brand colour"
+    ><TechIcon name="react" size="lg" brand="#61DAFB" /></GalleryCell
+  >
+</GalleryEntry>
+
 <GalleryEntry id="badge" cols={3}>
   <GalleryCell label="tech, sm (default)"><Badge>Backstage</Badge></GalleryCell>
   <GalleryCell label="tech, md"><Badge size="md">TypeScript</Badge></GalleryCell
@@ -28,31 +48,31 @@ const TAGS = ['backstage', 'agents', 'devex']
 </GalleryEntry>
 
 <GalleryEntry id="tag" cols={3}>
-  <GalleryCell label="pill (default)"><Tag text="agents" /></GalleryCell>
-  <GalleryCell label="simple, link"
+  <GalleryCell label="chip (default)"><Tag text="agents" /></GalleryCell>
+  <GalleryCell label="chip, as link"
     ><Tag text="devex" theme="simple" href="/category/devex" /></GalleryCell
   >
-  <GalleryCell label="label, no prefix"
+  <GalleryCell label="chip, no hash"
     ><Tag text="Harness" theme="label" /></GalleryCell
   >
 </GalleryEntry>
 
 <GalleryEntry id="tag-group" cols={3}>
-  <GalleryCell label="pill (default)"><TagGroup tags={TAGS} /></GalleryCell>
-  <GalleryCell label="simple"
+  <GalleryCell label="chip (default)"><TagGroup tags={TAGS} /></GalleryCell>
+  <GalleryCell label="chip, theme simple"
     ><TagGroup tags={TAGS} theme="simple" /></GalleryCell
   >
-  <GalleryCell label="label, as links"
+  <GalleryCell label="chip, no hash, as links"
     ><TagGroup tags={TAGS} theme="label" hrefPrefix="/tag/" /></GalleryCell
   >
 </GalleryEntry>
 
 <GalleryEntry id="draft-badge" cols={3}>
-  <GalleryCell label="corner, draft (amber)">
+  <GalleryCell label="corner, draft">
     <p>A card or hero with a pinned marker.</p>
     <DraftBadge />
   </GalleryCell>
-  <GalleryCell label="corner, review (blue): draft ready for the owner">
+  <GalleryCell label="corner, review: draft ready for the owner">
     <p>The agent judged this draft ready to publish.</p>
     <DraftBadge review />
   </GalleryCell>
@@ -78,25 +98,22 @@ const TAGS = ['backstage', 'agents', 'devex']
   <GalleryCell label="phase 3"><PhaseLabel phase={3} /></GalleryCell>
 </GalleryEntry>
 
+<!-- NOTE(intent): NoteBox draws a left bar that lives in prose; inside a grid cell the line guard would read it as a floating line, so it sits in a data-prose-widget box, the documented exception. -->
 <GalleryEntry id="note-box" cols={2}>
   <GalleryCell label="default"
-    ><NoteBox title="Rule of thumb">Every line has one owner.</NoteBox
-    ></GalleryCell
+    ><div data-prose-widget style="width: 100%"><NoteBox title="Rule of thumb">Every line has one owner.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="info, own icon"
-    ><NoteBox variant="info" icon="info" title="Good to know"
-      >Drafts show only in dev.</NoteBox
-    ></GalleryCell
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="info" icon="info" title="Good to know"
+      >Drafts show only in dev.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="success"
-    ><NoteBox variant="success" icon="check" title="Done"
-      >The guard is green.</NoteBox
-    ></GalleryCell
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="success" icon="check" title="Done"
+      >The guard is green.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="warning, no title"
-    ><NoteBox variant="warning" icon="triangle-alert"
-      >Not published until the owner reviews it.</NoteBox
-    ></GalleryCell
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="warning" icon="triangle-alert"
+      >Not published until the owner reviews it.</NoteBox></div></GalleryCell
   >
 </GalleryEntry>
 
@@ -135,32 +152,32 @@ const TAGS = ['backstage', 'agents', 'devex']
 </GalleryEntry>
 
 <GalleryEntry id="card-background-icon" cols={3}>
-  <GalleryCell label="lucide set"
-    ><div style="position: relative; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="lucide:bot" />
+  <GalleryCell label="robot"
+    ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="bot" />
     </div></GalleryCell
   >
-  <GalleryCell label="phosphor set"
-    ><div style="position: relative; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="ph:handshake-thin" />
+  <GalleryCell label="handshake"
+    ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="handshake" />
     </div></GalleryCell
   >
-  <GalleryCell label="lucide set, other icon"
-    ><div style="position: relative; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="lucide:layers" />
+  <GalleryCell label="stack"
+    ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="layers" />
     </div></GalleryCell
   >
 </GalleryEntry>
 
-<GalleryEntry id="card-icon-mosaic" cols={2}>
+<GalleryEntry id="card-icon-mosaic" cols={3}>
   <GalleryCell label="four icons (reads best)">
     <div style="position: relative; height: 12rem; width: 100%">
       <CardIconMosaic
         icons={[
-          'lucide:radar',
-          'lucide:bot',
-          'lucide:layout-grid',
-          'lucide:house',
+          'radar',
+          'bot',
+          'layout-grid',
+          'house',
         ]}
       />
     </div>
@@ -169,12 +186,32 @@ const TAGS = ['backstage', 'agents', 'devex']
     <div style="position: relative; height: 12rem; width: 100%">
       <CardIconMosaic
         icons={[
-          'lucide:cpu',
-          'lucide:network',
-          'lucide:database',
-          'lucide:terminal',
-          'lucide:git-branch',
-          'lucide:server',
+          'cpu',
+          'network',
+          'database',
+          'terminal',
+          'git-branch',
+          'server',
+        ]}
+      />
+    </div>
+  </GalleryCell>
+  <GalleryCell label="twelve icons">
+    <div style="position: relative; height: 12rem; width: 100%">
+      <CardIconMosaic
+        icons={[
+          'cpu',
+          'network',
+          'database',
+          'terminal',
+          'git-branch',
+          'server',
+          'radar',
+          'bot',
+          'layout-grid',
+          'house',
+          'calendar',
+          'rocket',
         ]}
       />
     </div>
