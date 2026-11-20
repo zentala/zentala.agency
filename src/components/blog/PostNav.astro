@@ -3,9 +3,11 @@ import type { CollectionEntry } from 'astro:content'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
 
 /**
- * End-of-article navigation, shown at every width. A series post gets the
- * previous and next part plus a link to all parts; any other post gets
- * related posts from the same category, so a reader is never left at a dead end.
+ * End-of-article navigation, shown at every width, as its own section after the post
+ * body. A series post gets the previous and next part as line-grid cells plus a link to
+ * all parts; any other post gets related posts from the same category, so a reader is
+ * never left at a dead end. The cells are direct-child links, so the grid draws their
+ * lines and the hover/focus overlay (DESIGN.md section 3); no boxes of its own.
  */
 export interface PostNavProps {
   seriesSlug?: string
@@ -21,23 +23,44 @@ const currentIndex = seriesPosts.findIndex((post) => post.slug === currentSlug)
 const previous = currentIndex > 0 ? seriesPosts[currentIndex - 1] : undefined
 const next = currentIndex >= 0 ? seriesPosts[currentIndex + 1] : undefined
 
-const linkClass =
-  'group block border border-line p-5 no-underline transition-colors duration-fast ease-standard hover:border-line-strong hover:bg-surface-hover'
+const cellClass = 'block p-5 no-underline md:p-6'
 const labelClass = 'text-label uppercase text-fg-subtle'
 const titleClass = 'mt-2 block text-lg leading-snug text-fg'
+const textLinkClass = 'text-sm no-underline'
+const hasPair = Boolean(previous || next)
 ---
 
-<nav
-  class="mt-16 border-t border-line pt-8"
-  aria-label="More to read"
-  data-post-nav
->
-  {
-    seriesSlug && (
-      <>
-        <div class="grid gap-4 md:grid-cols-2">
-          {previous ? (
-            <a href={`/blog/${previous.slug}`} class={linkClass} rel="prev">
+<section class="section-full">
+  <nav class="container-bordered" aria-label="More to read" data-post-nav>
+    <div
+      class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-responsive py-5"
+    >
+      {
+        seriesSlug ? (
+          seriesPosts.length > 1 ? (
+            <a
+              href={`/series/${seriesSlug}`}
+              class={`${textLinkClass} text-accent hover:text-accent-hover hover:underline`}
+            >
+              All {seriesPosts.length} parts →
+            </a>
+          ) : (
+            <span />
+          )
+        ) : (
+          <p class={labelClass}>{related.length > 0 ? 'Related posts' : ''}</p>
+        )
+      }
+      <a href="/blog" class={`${textLinkClass} text-fg-muted hover:text-fg`}>
+        ← All posts
+      </a>
+    </div>
+
+    {
+      seriesSlug && hasPair && (
+        <div class="line-grid" style="--cols-wide: 2">
+          {previous && (
+            <a href={`/blog/${previous.slug}`} class={cellClass} rel="prev">
               <span class={labelClass}>
                 ← Previous part
                 {previous.data.published === false && (
@@ -48,13 +71,11 @@ const titleClass = 'mt-2 block text-lg leading-snug text-fg'
                 Part {previous.data.part}: {previous.data.title}
               </span>
             </a>
-          ) : (
-            <span class="hidden md:block" aria-hidden="true" />
           )}
           {next && (
             <a
               href={`/blog/${next.slug}`}
-              class={`${linkClass} md:text-right`}
+              class={`${cellClass} ${previous ? 'md:text-right' : ''}`}
               rel="next"
             >
               <span class={labelClass}>
@@ -69,43 +90,23 @@ const titleClass = 'mt-2 block text-lg leading-snug text-fg'
             </a>
           )}
         </div>
-        {seriesPosts.length > 1 && (
-          <p class="mt-6 text-sm">
-            <a
-              href={`/series/${seriesSlug}`}
-              class="text-accent no-underline hover:text-accent-hover hover:underline"
-            >
-              All {seriesPosts.length} parts →
-            </a>
-          </p>
-        )}
-      </>
-    )
-  }
-  {
-    !seriesSlug && related.length > 0 && (
-      <>
-        <p class={`mb-4 ${labelClass}`}>Related posts</p>
-        <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
+      )
+    }
+    {
+      !seriesSlug && related.length > 0 && (
+        <div class="line-grid line-grid--fill-last">
           {related.map((post) => (
-            <li>
-              <a href={`/blog/${post.slug}`} class={`${linkClass} h-full`}>
-                <span class="block text-base leading-snug text-fg">
-                  {post.data.title}
-                </span>
-                <span class="mt-2 line-clamp-3 block text-sm text-fg-muted">
-                  {post.data.excerpt}
-                </span>
-              </a>
-            </li>
+            <a href={`/blog/${post.slug}`} class={cellClass}>
+              <span class="block text-base leading-snug text-fg">
+                {post.data.title}
+              </span>
+              <span class="mt-2 line-clamp-3 block text-sm text-fg-muted">
+                {post.data.excerpt}
+              </span>
+            </a>
           ))}
-        </ul>
-      </>
-    )
-  }
-  <p class="mt-6 text-sm">
-    <a href="/blog" class="text-fg-muted no-underline hover:text-fg">
-      ← All posts
-    </a>
-  </p>
-</nav>
+        </div>
+      )
+    }
+  </nav>
+</section>
