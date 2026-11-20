@@ -33,6 +33,13 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
    - Hover at 1920 on every route with an interactive cell changes no layout rect
 5. **`bento-showcase.spec.ts`**, **`series-linkedin-preview.spec.ts`** - critical specs of the bento grid and the series/LinkedIn preview pages
 
+### What the line guard does not cover
+
+- Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are never in `dist/`, so the guard cannot see them. Check them by hand with the same pixel analysis at 1920, 1450, 1280, 768 and 390. `analyzeLines` is not exported from the spec; copy its logic into a scratch script.
+- A page taller than about 16k px must be measured in chunks: Chrome paints black rectangles in a taller screenshot, which gives false floating-line findings.
+- Article blocks in `src/components/blog/rich/` carry `data-prose-widget`; the guard skips them for the doubled-line and the floating-segment check (`PROSE_WIDGET_SELECTOR`). A new kind of in-prose box takes the same attribute.
+- Series with fewer than 2 published parts are not built, so their routes drop out of the list.
+
 ### Critical specs in `just check`
 
 `just check` runs `blog-post`, `bento-showcase`, `series-linkedin-preview` and `line-geometry` on chromium against `npm run preview` of a build made with `PUBLIC_PLAYWRIGHT_TEST=true`. Run the build first; `line-geometry` reads `dist/`.

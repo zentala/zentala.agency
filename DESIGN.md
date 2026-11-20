@@ -2,14 +2,14 @@
 
 ## TLDR
 
-Dark, square, line-grid site: black surface, 1px gray-800 lines, one blue accent, light-weight type. All colour, type, radius, motion and breakpoint values come from tokens (CSS custom properties in `src/styles/tokens.scss`, mirrored in `tailwind.config.js`). All lines come from one line model (section 3): cells draw only their left and top line, hover is an overlay on lines that already exist. Anything not in this file is a design decision: record it in the Decisions table (section 10) first, then implement it. This file is the reference; to build a page, section or card, load the agent skill [line-grid-layout](.agents/skills/line-grid-layout/SKILL.md) (procedure, recipes, failure modes). Incomplete last rows of variable-length card grids use `line-grid--fill-last` (section 4); blog helpers and components are named in section 5.
+Dark, square, line-grid site: black surface, 1px gray-800 lines, one blue accent, light-weight type. All colour, type, radius, motion and breakpoint values come from tokens (CSS custom properties in `src/styles/tokens.scss`, mirrored in `tailwind.config.js`). All lines come from one line model (section 3): cells draw only their left and top line, hover is an overlay on lines that already exist. Anything not in this file is a design decision: record it in the Decisions table (section 10) first, then implement it. This file is the reference; to build a page, section or card, load the agent skill [line-grid-layout](.agents/skills/line-grid-layout/SKILL.md) (procedure, recipes, failure modes). Incomplete last rows of variable-length card grids use `line-grid--fill-last` (section 4); blog helpers and components are named in section 5. Every component is shown, with its variants, in the dev-only gallery at `/demo` (`src/pages/demo/[...slug].astro`, `src/components/demo/`); owner-facing mockups of undecided changes live at `/mockups/<name>` (dev only, registry `src/components/blog/mockups/registry.ts`). Neither ships to production and neither is covered by the line guard (section 9).
 
 ## 1. Visual direction
 
 - Black (`#000`) surface; content is defined by 1px lines, not by shadows or radii.
 - White type, light weight (300) for page titles and hero text.
-- Single accent `#60a5fa`; filled buttons use `#2563eb`.
-- Cards and containers are square. Radii only on chips, avatars, code and inputs.
+- Single accent `#60a5fa`; solid blue `#2563eb` is for one main action per page (Button `accent`).
+- Cards and containers are square. Chips, tags and badges are square too (4px); pills (`--radius-full`) are for avatars only.
 - Dev-only affordances (bento span labels, DRAFT badges, version-history panel) never render in production.
 
 ## 2. Tokens
@@ -21,8 +21,8 @@ Source of truth: `src/styles/tokens.scss` (`:root`). SCSS aliases in `src/styles
 | Role                  | CSS variable             | Value                                                   | Tailwind             |
 | --------------------- | ------------------------ | ------------------------------------------------------- | -------------------- |
 | Surface               | `--color-surface`        | `#000`                                                  | `bg-surface`         |
-| Surface raised        | `--color-surface-raised` | `#0a0a0a` (blue-tint option `#0b0f17` awaits the owner) | `bg-surface-raised`  |
-| Surface hover         | `--color-surface-hover`  | `#111827`                                               | `bg-surface-hover`   |
+| Surface raised        | `--color-surface-raised` | `#0b0f17` (slightly blue: chips, code, inputs, popovers) | `bg-surface-raised`  |
+| Surface hover         | `--color-surface-hover`  | `color-mix(in srgb, var(--color-accent) 10%, var(--color-surface))`, about `rgb(10,17,25)` (accent wash) | `bg-surface-hover`   |
 | Line                  | `--color-line`           | `#1f2937`                                               | `border-line`        |
 | Line strong (hover)   | `--color-line-strong`    | `#374151`                                               | `border-line-strong` |
 | Line focus            | `--line-focus`           | `rgba(255,255,255,.55)`                                 |                      |
@@ -49,7 +49,7 @@ Source of truth: `src/styles/tokens.scss` (`:root`). SCSS aliases in `src/styles
 | `text-blue-300`, `#93c5fd`                                                            | `text-accent-hover`                                                       |
 | `bg-black`, `#000`                                                                    | `bg-surface` / `var(--color-surface)` (or transparent inside a grid cell) |
 | `bg-gray-900`, `#111827`                                                              | `bg-surface-hover`                                                        |
-| `#0a0a0a`                                                                             | `bg-surface-raised`                                                       |
+| `#0a0a0a`, `#0b0f17`                                                                  | `bg-surface-raised`                                                       |
 | `#1f2937`, `border-gray-800`, `$border-color`                                         | `var(--color-line)` / `border-line`                                       |
 | `#374151`, `border-gray-700`, `$border-color-hover`                                   | `var(--color-line-strong)` / `border-line-strong`                         |
 | amber-500, `#f59e0b`                                                                  | `text-warn`                                                               |
@@ -81,7 +81,7 @@ Source of truth: `src/styles/tokens.scss` (`:root`). SCSS aliases in `src/styles
 
 ### Radii
 
-`--radius-none` 0 (cards, containers); `--radius-sm` 4px (chips, code, inputs); `--radius-full` 9999px (avatars; pills only if approved).
+`--radius-none` 0 (cards, containers, article widgets); `--radius-sm` 4px (chips, tags, badges, code, inputs; Tailwind `rounded-chip`); `--radius-full` 9999px (avatars only, never a chip).
 
 ### Motion
 
@@ -89,6 +89,8 @@ Source of truth: `src/styles/tokens.scss` (`:root`). SCSS aliases in `src/styles
 - Easing: `--ease-standard` `cubic-bezier(.2,.8,.2,1)`, `--ease-enter` `cubic-bezier(.16,1,.3,1)`. Tailwind: `ease-standard|enter`.
 - Properties that may transition: `color`, `background-color`, `border-color`, `box-shadow`, `opacity`, and the `transform` of inner glyphs (arrows, icons, image zoom inside a clipped wrapper). Never `transition: all`.
 - Shared keyframes: `appear` (opacity plus `translateY(8px)`), in `src/styles/motion.scss`.
+- Hero reveal: `.hero-reveal` fades up 8px over `--motion-slow` with `--ease-enter`; `--reveal-index` (0 or 1) staggers by 60ms; CSS only, first viewport only, `animation: none` under reduced motion.
+- Ambient loops (`CardIconMosaic`) pause off-screen through an IntersectionObserver (class `.is-paused`) and never run under reduced motion.
 - Z-index for hover: `--z-cell-hover` (2) is the only one.
 
 ### Breakpoints
@@ -184,18 +186,28 @@ Props verified against the source files on 2026-11-20. Files are in `src/compone
 | Component | Draws | Props (default; options) | Example |
 | --- | --- | --- | --- |
 | `Section` | section (`section-grid` plus `container-bordered`) | `id`, `class` | `<Section id="cta">` |
-| `SectionHeader` | header block with the line below it | `headline`, `subhead`, `eyebrow`, `icon`, `logoSrc`, `logoAlt`, `tag` (`h2`; `h1`, `h3`), `align` (`left`; `center`), `interactive` (deprecated, no effect) | `<SectionHeader headline="Services" subhead="..." />` |
+| `SectionHeader` | header block with the line below it | `headline`, `subhead`, `eyebrow`, `icon`, `logoSrc`, `logoAlt`, `eyebrowIcon`, `compact` (false; plain header padding when an eyebrow is set), default slot (body under the subhead), `tag` (`h2`; `h1`, `h3`), `align` (`left`; `center`), `interactive` (deprecated, no effect) | `<SectionHeader headline="Services" subhead="..." />` |
 | `SectionGrid` | `.line-grid` of equal cells | `columns` (3; 2 to 5) | `<SectionGrid columns={4}>` |
 | `SectionContent` | one cell or a full block of prose | `context` (`auto`, which resolves to `full`; `full`, `grid`), `prose` (true) | `<SectionContent context="grid" prose={false}>` |
 | `SectionBento` | bento `.line-grid`, 4 / 2 / 1 columns, filler off | `rowHeight` (`1fr`) | `<SectionBento rowHeight="1fr">` |
 | `BentoCard` | bento cell | `colSpan` (1; 1 to 4), `rowSpan` (1; 1 to 3), `padding` (`md`; `none`, `sm`, `lg`) | `<BentoCard colSpan={2} rowSpan={2}>` |
-| `SectionCTA` | standalone block (`line-block`) | `href`, `text`, `icon`, `arrow` (true), `variant` (`primary`; `secondary`, `outline`), `external`, `bgText`, `class` | `<SectionCTA href="/contact" text="Get started" />` |
+| `SectionCTA` | standalone block (`line-block`) | `href`, `text`, `icon`, `arrow` (true), `variant` (`primary`; `secondary`, `accent`, `outline`), `external`, `bgText`, `class` | `<SectionCTA href="/contact" text="Get started" />` |
 | `SectionBlockQuote` | standalone block (`line-block`) | `quote`, `author`, `role`, `variant` (`default`; `large`, `minimal`), `class` | `<SectionBlockQuote quote="..." author="..." />` |
 | `SectionImage` | image cell or background | `src`, `alt`, `class`, `loading` (`lazy`), `aspectRatio` (`square`; `16/9`, `4/3`, `auto`), `objectFit` (`cover`), `background`, `animateIn`, `hoverZoom` (true), `overlayPosition` (`bottom-left`) | `<SectionImage src="..." alt="..." />` |
 | `CardContainer` (`src/components/cards/`) | grid cell, a link when `href` is set | `href`, `hasHover` (true when `href`), `backgroundIcon`, `class`, `target` (`_self`) | `<CardContainer href="/x">` |
+| `Button` (`src/components/`) | link styled as a button | `href`, `text`, `target`, `variant` (`primary`; `secondary`, `accent`, `outline`, `light`), `icon`, `arrow` (true) | `<Button href="/contact" text="Contact" variant="accent" />` |
+| `Tag`, `TagGroup` (`src/components/primitives/`) | square chip, row of chips | `Tag`: `text`, `href`, `prefix` (`#`), `theme` (`chip`; `simple`, `label`), `class`. `TagGroup`: `tags`, `theme`, `prefix`, `hrefPrefix`, `class`, `tagClass` | `<TagGroup tags={['a', 'b']} />` |
+| `Badge` (`src/components/primitives/`) | square chip | `variant` (`tech`; `accent`), `size` (`sm`; `md`), `class` | `<Badge variant="accent">New</Badge>` |
+| `DraftBadge` (`src/components/primitives/`) | dev-only marker, no layout space | `placement` (`corner`; `edge`, `inline`), `review` (false), `label` | `<DraftBadge review />` |
 | `Banner` (`src/components/banners/`) | standalone block (`line-block`) | `variant` (`simple`, `simpleWithImage`), `title`, `description`, `linkText`, `linkHref`, `image`, `class` | `<Banner variant="simple" ... />` |
 
 A `line-block` component needs a `container-bordered` parent. Header and Footer are page chrome: the header draws its own bottom line (`container-header`, lines only) and the footer bands use `section-bordered`.
+
+### Component gallery and mockups (dev only)
+
+- **`/demo`** is the component gallery (`src/pages/demo/[...slug].astro`, `src/components/demo/`): every component with file path, purpose, props and rendered variants, in ordinary line-grid sections, with sample content from the real blog collection (`samples.ts`). Add each new or changed component in the same change: a row in `src/components/demo/manifest.ts` (or a file in `groups/`) and a `<GalleryEntry>` in the matching `Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails when a component has no entry; it checks existence, not that the variants are current.
+- **`/mockups/<name>`** (`src/pages/mockups/[mockup].astro`) shows owner-facing mockups of undecided changes: one entry in `src/components/blog/mockups/registry.ts` plus its component. `getStaticPaths` returns `[]` outside DEV, so nothing is built. The gallery test exempts the `mockups/` directory; when the owner accepts a mockup, move the component out so the test requires a gallery entry. The mockup markers `MockupNotice` and `MockupDevLabel` are square warn chips like `DraftBadge`.
+- **Heading switch (C5 mockup):** `src/dev/heading-switch.ts`, loaded in DEV only from `Layout.astro`, reads `?headings=300|200|off`, remembers it in localStorage and sets `html[data-headings]`. Headings are already weight 300 (`font-light`), so the 300 variant only enlarges them; no Inter webfont file is loaded, so 200 cannot render thin. That the loader is absent from `dist/` (`scripts/audit-prod-bundle.mjs`) is not yet verified on a build.
 
 ### Page anatomy
 
@@ -216,29 +228,29 @@ A `line-block` component needs a `container-bordered` parent. Header and Footer 
  Footer                         section-bordered bands own their lines
 ```
 
-Applied on: `/`, `/portfolio`, `/about/capabilities`, `/blog`, series, category, `/contact`, backstage, `/demo` and the zntl-desk case study. The blog post page uses a three-cell `.line-grid` at xl (left rail, article, right rail) with PostNav as its own section.
+Applied on: `/`, `/portfolio`, `/about/capabilities`, `/blog`, series, category, `/contact`, `/about/capabilities/backstage`, the dev-only `/demo` gallery and the zntl-desk case study. The blog post page uses a three-cell `.line-grid` at xl (left rail, article, right rail) with PostNav as its own section.
 
 ## 5. Component rules
 
 - **Cards** (PostCard, SeriesCard, OfferCard, PortfolioItem, CardContainer): no borders, no `overflow: hidden`, no fixed aspect-ratio (`min-height`), interactive overlay from the mixin, titles wrap (`line-clamp-2`), excerpt line-clamp, one title size per grid.
-- **Badges and meta:** one DraftBadge (icon plus uppercase text-xs, warn colour); one `formatDate` (en-GB, UTC, with `<time>`); one part label ('Part n of N' only when contiguous, else 'Part n'); the category display name is the badge text and is used in the h1, the document title and the slug.
+- **Badges and meta:** one DraftBadge (icon plus uppercase text-xs; props `placement` `corner|edge|inline`, `review`, `label`; a plain draft is warn amber, `review` is accent blue with the label "Review" and an eye icon, `label` replaces the text of an amber dev note); one `formatDate` (en-GB, UTC, with `<time>`); one part label ('Part n of N' only when contiguous, else 'Part n'); the category display name is the badge text and is used in the h1, the document title and the slug.
 - **Blog helpers** (`src/lib/blog/`): `formatDate`, `partLabel`, `slugify`, `isVisiblePost` / `getVisiblePosts` (one visibility rule, `SHOW_DRAFTS`), plus the `DraftBadge` primitive. Pages never inline these rules.
 - **Blog components** (`src/components/blog/`): `PostMeta` (`tone="muted"` for the post hero at 14px `text-fg-muted`; listings keep `subtle`), `SeriesRail`, `PostNav`, `PostToc`, `ShareButtons`.
 - **Background icons** (`CardBackgroundIcon`): .06 at rest, hover capped at `--icon-bg-max-opacity` (.12); decorative icons never exceed it.
-- **Tags and labels:** the one label style; 4px square chips.
+- **Tags and labels:** the one label style; 4px square chips (`--radius-sm`) filled with `surface-raised`, no border (a bordered chip in a grid cell draws a dangling line). `Tag` and `TagGroup` themes are `chip` (default), `simple`, `label`; `Badge` is the same square chip. A chip row outside a grid sits in a padded block: borderless chip filled with text colour at 8%, accent wash at 12% on hover (`CategoryChips` in the mockup).
 - **CTA cells and quotes:** the same overlay hover; no `translateY`, scale or z-index jumps; the arrow nudges `translateX(4px)`.
-- **SectionHeader:** the `interactive` prop is deprecated and has no effect (the 1.1x scale was removed). Centred subheads centre their box (`margin-inline: auto`).
-- **Buttons:** primary solid white, secondary outlined (colours pending the owner); all CTAs use the shared Button/CTA component.
+- **SectionHeader:** `eyebrowIcon`, `compact` and the default slot are in section 4; the `interactive` prop is deprecated and has no effect (the 1.1x scale was removed). Centred subheads centre their box (`margin-inline: auto`).
+- **Buttons:** `Button` variants `primary` (solid white, dark text), `secondary` (outlined, `line-strong` border, white text) and `accent` (solid `#2563eb`, one main action per page); `light` and `outline` are aliases of primary and secondary for old callers. Every variant has a 1px border so buttons in a row have equal height. Solid white and solid blue get a 2px white outline at 2px offset on `focus-visible`. All CTAs use the shared Button/CTA component.
 - **Inputs:** `surface-raised` fill, line border, focus uses the focus ring; buttons and fields in a row have equal height.
 - **Links:** accent, hover accent-hover, underline on hover for arrow links (including the PortfolioItem link title).
 
 ## 6. Interaction states
 
-- **Hover:** overlay `line-strong` plus `surface-hover` background, 150ms.
+- **Hover:** overlay `line-strong` plus `surface-hover` background (the accent wash), 150ms.
 - **Focus-visible:** the same overlay in `line-focus` on cells; global 1px inset ring for everything else. Every hover affordance has a focus and touch equivalent.
 - **Active:** no scale.
 - **Reduced motion:** one global block in `motion.scss` sets animation and transition durations to `.01ms`, iteration count 1, `scroll-behavior: auto`, and zeroes transforms on `[data-motion]`. Colour changes stay. JS-driven zoom must check `prefers-reduced-motion` itself.
-- **Reveal (if approved):** 8px fade-up (`appear`), 60ms stagger, first viewport only, never starts hidden without JS.
+- **Reveal (approved, C8):** 8px fade-up, 60ms stagger, first viewport only (`.hero-reveal` in `Hero.astro`), never starts hidden without JS. Nothing below the fold animates on scroll.
 
 ## 7. Responsive
 
@@ -246,7 +258,7 @@ Applied on: `/`, `/portfolio`, `/about/capabilities`, `/blog`, series, category,
 - Container side lines only at 1451px and above; below, `overflow-x: clip` hides the outer line.
 - Header 56px at 390.
 - Post navigation is available below 1280px (details and end-of-article block).
-- Verify at 1920, 1440, 1280, 1024, 768 and 390.
+- Verify at 1920, 1450, 1280, 1024, 768 and 390 (1450 is the widest width without container side lines).
 
 ## 8. Accessibility
 
@@ -268,9 +280,11 @@ Applied on: `/`, `/portfolio`, `/about/capabilities`, `/blog`, series, category,
 
 What the guard measures now. Routes come from `dist/`, so a new page is covered without editing the spec.
 
-- **Routes:** every `dist/**/index.html`. A redirect stub is replaced by its destination. `/linkedin-preview/*` is excluded (it mocks a third-party UI). One unbuilt path stands in for the 404 page.
+- **Routes:** every `dist/**/index.html`. A redirect stub is replaced by its destination. `/linkedin-preview/*` is excluded (it mocks a third-party UI). The redirects `/capabilities` and `/offer/backstage` are set in `astro.config.mjs`. One unbuilt path stands in for the 404 page.
 - **Widths:** 1920, 1450, 768 and 390 on all routes; 1280 on the four core routes (`/`, `/blog`, `/about/capabilities`, `/portfolio`).
-- **Checks:** no two parallel line segments 1px apart; no vertical line at the viewport edge at 1450px and below; no vertical segment of 80px or more that joins no other line (prose widgets such as table, pre, code, blockquote, form controls and LinkedIn cards are excluded); containers span the viewport at 1450px and below; hovering the first interactive cell changes no layout rect (at 1920).
+- **Checks:** no two parallel line segments 1px apart; no vertical line at the viewport edge at 1450px and below; no vertical segment of 80px or more that joins no other line (prose widgets such as table, pre, code, blockquote, form controls, LinkedIn cards and `[data-prose-widget]` article blocks are excluded); containers span the viewport at 1450px and below; hovering the first interactive cell changes no layout rect (at 1920).
+- **Not covered:** dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`, for example `/blog/software-factory-tour`) are never in `dist/`, so the guard cannot see them. Check them by hand with the same pixel analysis. A page taller than about 16k px must be chunked: Chrome paints black rectangles in a taller screenshot, which gives false floating-line findings. Series with fewer than 2 published parts are not built in production, so the route list shrinks.
+- **Prose widgets:** article blocks in `src/components/blog/rich/` carry `data-prose-widget`; the guard skips those rects for the doubled-line and the floating-segment check (`PROSE_WIDGET_SELECTOR` in the spec).
 - **Not measured:** the overlay colour on the line pixels, focus geometry, 1024px, screenshots. Those stay manual: measure and look at 1920, 1450, 1280, 1024, 768 and 390.
 
 ## 10. Decisions
@@ -279,7 +293,7 @@ Append-only: add a row before you add a new look or token to code. A change to a
 
 ### Pending owner rows
 
-Blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), heading weight (C5), chip shape (C6), surface tint and buttons (C7), ambient motion (C8).
+Blog index structure (C1: the mockup at `/mockups/blog-series` awaits the owner's pick), about/mission fate (C3), heading weight and size (C5: the dev switch awaits the pick; if 300 wins, replace `zoom` with token steps of about `--text-h3` 1.7rem, `--text-h2` 2.1rem, `--text-h1-page` 2.55rem).
 
 ### Table
 
@@ -326,7 +340,6 @@ Blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), 
 | 2026-11-19 | Bento cards are transparent cells with `cell-interactive`; the central stage keeps the focus overlay only | Opaque bordered cards | Its hover drives the stage state |
 | 2026-11-19 | Bento state layers use `--motion-slow` and `--ease-standard` (600ms) | 500ms and 700ms ease | Motion tokens |
 | 2026-11-19 | Bento decor clipped by an inner `overflow-clip` wrapper; decor arrow nudges `translate-x-2` | `overflow-hidden` on the cell; animated `right` | No cell overflow, no layout animation |
-| 2026-11-19 | Tag `label` and `simple` chips fg-muted on tint, fg-subtle on black; `pill` stays rounded-full (C6 open) | Hard-coded greys | Tokens |
 | 2026-11-19 | Logo colour is `var(--color-text)`; h2 'Your Hands-On CTO' uses `--text-h2` | Hex literal; 28px | Tokens |
 | 2026-11-19 | `SectionImage` background variant renders a `.section-image__bg` child; entrance 600ms `--ease-enter` | scale(1.1) entrance | Shared `appear` motion |
 | 2026-11-19 | `NoteBox` variants set one `--note-accent`; default and info use the accent | Own colour per variant | Tokens |
@@ -366,10 +379,28 @@ Blog index structure (C1), about/mission/faq fate (C3), nav and footer IA (C4), 
 | 2026-11-20 | Allowed decorative exceptions inside bento cells: the 24x24 ring in BentoAboutMe, the CardIconMosaic `mosaic__cell` boxes, the `border-l border-line-strong` quote rail and the `border-l-2` hover rail | None (flagged as deviations in the audit) | They are decorative or quote bars, not grid lines |
 | 2026-11-20 | Bento inner content boxes are plain blocks with no radius and no own border | Rounded `border border-line` boxes | The cell's own grid lines are enough; a nested box added a second outline |
 | 2026-11-20 | Form boxes keep a full `border-line` outline; form controls are an allowed exception to the grid | `border-gray-800` plus `-m-px` and an inner `border-black` trick | The token border plus the global focus ring is enough with equal-height controls |
-| 2026-11-20 | Button secondary and outline variants use line and surface tokens | `border-gray-700 bg-gray-800` and `border-white/30` | Tokens keep them in sync with the theme |
 | 2026-11-20 | Footer bands use `section-bordered`; no new shared class was added | Own borders in the footer | The existing class already owns the line below a band |
 | 2026-11-20 | Floating-segment check is on in the guard | No check for vertical segments that join no other line | Catches post rails, PostNav boxes and case-study boxes automatically; prose widgets are excluded because they draw their own boxes |
 | 2026-11-20 | The guard derives its route list from `dist/` at test time (redirect stubs replaced by their destination, `/linkedin-preview/` excluded) | A hard-coded 4-route list | A new page is covered without editing the spec |
 | 2026-11-20 | Agent instructions: `AGENTS.md` is canonical, `CLAUDE.md` is `@AGENTS.md`, the how-to is the repo skill `.agents/skills/line-grid-layout` | `.claude/CLAUDE.md` plus `.claude/CLAUDE.THEMING.md` | One source for every client; reference (this file) is kept apart from procedure (the skill) |
 | 2026-11-20 | `.claude/CLAUDE.THEMING.md` is retired; the bento span notation lives in `docs/design/bento-notation.md` | THEMING.md as a live design guide | It teaches the removed transparent-border model and deleted components |
 | 2026-11-20 | This table keeps rows that describe live behaviour; superseded rows move to `docs/design/decisions-history.md` | One ever-growing table | Readability; the history stays one link away |
+| 2026-11-20 | Surface raised is `#0b0f17` (slightly blue); hover is an accent wash `color-mix(accent 10%, surface)` (about `rgb(10,17,25)`) | `#0a0a0a`; solid `#111827` | C7. Text on the wash stays far above the 6.3:1 floor; same hue family as the accent |
+| 2026-11-20 | Chips, tags and badges are square (`--radius-sm`), filled with `surface-raised`, no border; `--radius-full` is for avatars only. `Tag` theme `pill` is renamed `chip`; `Badge` is the same square chip; `CardIconMosaic` tiles use `--radius-sm` | `rounded-full` and bordered pills; theme `pill`; an empty `Badge`; 0.75rem tiles | C6. A bordered chip in a grid cell draws a dangling line |
+| 2026-11-20 | Buttons: `primary` solid white with dark text, `secondary` outlined (`line-strong` border, white text), `accent` solid `#2563eb` for one main action per page; `light` and `outline` stay as aliases, `filled` is gone; every variant has a 1px border (equal height, 50px measured) | `primary` bg-blue-600, bordered raised `secondary`, `outline`, `filled`, `light` | C7 |
+| 2026-11-20 | Solid white and solid blue buttons get a 2px white outline at 2px offset on `focus-visible` | The global 1px inset ring | The 55% white ring is invisible on a white button |
+| 2026-11-20 | `SectionCTA` keeps a transparent full-width link cell (`line-block` plus `cell-interactive`) and draws the button look on its inner label | A solid full-width band | A white or blue band would dominate the page and an opaque cell breaks the line model (not seen in a render: no page uses it yet) |
+| 2026-11-20 | Hero text fades up 8px (`.hero-reveal`, `--reveal-index`, 60ms stagger, `--motion-slow`, `--ease-enter`), first viewport only, off under reduced motion | No entrance | C8. The home hero in `src/sections/home/` still needs the class |
+| 2026-11-20 | `CardIconMosaic` ambient loops pause off-screen (IntersectionObserver, `.is-paused`) and never run under reduced motion | Loops always running | C8 |
+| 2026-11-20 | Review-ready draft marker: accent blue, label "Review", eye icon, 40% blue corner border, 2px blue edge bar (`DraftBadge` `review`); plain drafts stay amber | One amber draft marker | C2. Told apart at a glance with an existing token; only the owner sets `published: true` |
+| 2026-11-20 | Dev-only note "Hidden in production (n published)" is a `DraftBadge` with a custom `label`; series with fewer than 2 published parts are hidden in production (`src/lib/blog/visibility.ts`) | No marker for thin series | C2. The author sees in dev what production hides; it takes no layout space |
+| 2026-11-20 | `SectionHeader` gains a default slot, `eyebrowIcon` and `compact`; series and category headers use it (eyebrow style, `section-subhead`: text-lg, `fg-secondary`, mt-4) | Hand-built `border-b border-line` header blocks; `text-xs` eyebrow and `text-fg-muted` tagline | One primitive owns the line under the header; `compact` avoids the 7rem banner padding on listing pages |
+| 2026-11-20 | Dev-only mockups at `/mockups/<name>` from `registry.ts`; the real page stays untouched until the owner accepts. Mockup label is a square 4px warn chip (`MockupDevLabel`: "Mockup", "Draft copy") | Ad-hoc mockup pages | C1 and C5 need a reversible comparison; the label follows `DraftBadge` and adds no colour |
+| 2026-11-20 | C1 mockup series cell: eyebrow (layers icon, part count), `card-title` h3, tagline, accent "Start with part 1" link, "Latest" block pinned to the bottom, existing overlay and stretched link; series row `--cols-wide: 4`, `--cols-medium: 2`, `--cols-narrow: 1`, no `fill-last` | `SeriesCard` list of parts in a feed cell | A series is an entry point, not a list; 4 cells always fill a 4 or 2 column row |
+| 2026-11-20 | Category chips outside a grid: borderless 4px chip, text colour at 8%, accent wash 12% on hover, 2px focus outline at offset 2px, in a padded block | Rounded bordered `Tag` pill | C6. Never inside a cell |
+| 2026-11-20 | C5 dev heading switch: `zoom: 1.13` on `main :is(h1,h2,h3)` through `--headings-scale`; the 200 variant also sets nav links to weight 400; footer headings and navbar excluded | Sizes edited in tokens, utilities and SCSS in many places | One multiplier compares the variants at every breakpoint; side effect: heading margins scale 13%. If 300 wins, use real token steps |
+| 2026-11-20 | `/demo` is the dev-only component gallery: line-grid sections, meta block a plain div, `PostNav` in a named `after` slot, `ContactForm` in a `data-prose-widget` box, no second Hero, cell and meta padding `clamp(1rem, 2.5vw, 2rem)`, sample content from the real blog collection | Old `demo.astro` with ad-hoc containers | Passes the same line checks as real pages; stacked grids and nested sections double lines |
+| 2026-11-20 | The gallery test exempts `src/components/blog/mockups/` as a directory (`EXEMPT_DIRS`) and matches components by path relative to `src/components` | Per-file exemptions; basename matching (two `BentoCard` files) | Mockup components arrive often; each exemption has a reason |
+| 2026-11-20 | Footer: Blog, Offer, Company and Elsewhere as four equal 2-column groups beside a 4-column About block (12-column grid, scoped `.footer-ia`; 2 columns on tablet, 1 on mobile), reusing `.footer-heading` | 5/2/3/2 column layout with four text items | C4: one route per topic, external blogs under "Elsewhere". `FOOTER_GROUPS` in `Footer.astro` assumes `/series/<slug>` exists for every slug with a visible post |
+| 2026-11-20 | Canonical routes `/about/capabilities` and `/about/capabilities/backstage`; `/capabilities` and `/offer/backstage` redirect in `astro.config.mjs` | Stub pages | C4. Moving Backstage under `/offer/` stays open |
+| 2026-11-20 | Article blocks (`BoxGrid`, `Flow`, `FileTree`, `Figure`, `Disclosure`, `Term`) are prose widgets: root carries `data-prose-widget` and the guard skips them for doubled-line and floating checks; box = square 1px `--color-line-strong` on `--color-surface-raised`, `--radius-none`; highlighted steps `--color-text-secondary`; `Figure` frame transparent with `--color-line`; `Disclosure` bar 1px `line-strong`; no dashed lines; `Term` underline dotted `--color-text-muted` with the global focus ring | Raw grays, 0.375-0.5rem radii, translucent navy fills, 2px bar, dashed separators, local blue outline | C6, C7 and the 2026-11-19 blockquote decision: tokens only, one line weight, one focus ring |
