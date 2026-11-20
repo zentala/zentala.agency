@@ -1,0 +1,27 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import Banner from '@/components/banners/Banner.astro'
+import BannerSimple from '@/components/banners/variants/Simple.astro'
+import BannerSimpleWithImage from '@/components/banners/variants/SimpleWithImage.astro'
+
+const BANNER_IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
+const bannerCopy = {
+  title: 'Running agents in parallel?',
+  description: 'The series on the harness that keeps them apart.',
+  linkText: 'Read the series',
+  linkHref: '/series/agent-native-harness',
+}
+---
+
+<GalleryEntry id="banner" bare>
+  <Banner variant="simple" {...bannerCopy} />
+  <Banner variant="simpleWithImage" {...bannerCopy} image={BANNER_IMAGE} />
+</GalleryEntry>
+
+<GalleryEntry id="banner-simple" bare>
+  <BannerSimple {...bannerCopy} />
+</GalleryEntry>
+
+<GalleryEntry id="banner-simple-with-image" bare>
+  <BannerSimpleWithImage {...bannerCopy} image={BANNER_IMAGE} />
+</GalleryEntry>

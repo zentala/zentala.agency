@@ -1,0 +1,244 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import SectionGrid from '@/components/primitives/sections/SectionGrid.astro'
+import SectionContent from '@/components/primitives/sections/SectionContent.astro'
+import SectionImage from '@/components/primitives/sections/SectionImage.astro'
+import SectionCTA from '@/components/primitives/sections/SectionCTA.astro'
+import SectionBlockQuote from '@/components/primitives/sections/SectionBlockQuote.astro'
+import SectionBento from '@/components/primitives/sections/SectionBento.astro'
+import BentoCardSections from '@/components/primitives/sections/BentoCard.astro'
+import BentoCard from '@/components/primitives/sections/bento/BentoCard.astro'
+import BentoCentralStage from '@/components/primitives/sections/bento/BentoCentralStage.astro'
+import BentoStageState from '@/components/primitives/sections/bento/BentoStageState.astro'
+
+const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
+---
+
+<!-- NOTE(intent): Section and SectionHeader cannot nest inside a Section without doubling the line below them, so their live examples are the ones this page already uses: every entry is a Section with a SectionHeader, and the group headers use the feature variant. -->
+<GalleryEntry id="section" cols={1}>
+  <GalleryCell label="live example">
+    <p>
+      Every entry on this page is a <code class="font-mono">Section</code>. The
+      line below it is the section's own; the grids inside draw the rest.
+    </p>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="section-header" cols={1}>
+  <GalleryCell label="live examples">
+    <p>
+      Default: the header of every entry (headline plus subhead). Feature: the
+      group headers (eyebrow plus icon). Centered: the index header. A Section
+      may hold only one header, so these are not repeated here.
+    </p>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="section-grid" bare>
+  <SectionGrid columns={4}>
+    <SectionContent context="grid" prose={false}
+      >columns=4: first cell</SectionContent
+    >
+    <SectionContent context="grid" prose={false}>second</SectionContent>
+    <SectionContent context="grid" prose={false}>third</SectionContent>
+    <SectionContent context="grid" prose={false}>fourth</SectionContent>
+  </SectionGrid>
+  <SectionGrid columns={2}>
+    <SectionContent context="grid" prose={false}
+      >columns=2: first cell</SectionContent
+    >
+    <SectionContent context="grid" prose={false}>second</SectionContent>
+  </SectionGrid>
+</GalleryEntry>
+
+<GalleryEntry id="section-content" cols={3}>
+  <SectionContent context="grid">
+    <h3>grid, prose</h3>
+    <p>Compact padding for a cell, prose typography.</p>
+  </SectionContent>
+  <SectionContent context="grid" prose={false}>
+    <strong>grid, no prose</strong>
+    <p>Plain body: no prose rules.</p>
+  </SectionContent>
+  <SectionContent context="full">
+    <h3>full</h3>
+    <p>Generous padding, max width 960px, centered.</p>
+  </SectionContent>
+</GalleryEntry>
+
+<GalleryEntry id="section-image" cols={3}>
+  <GalleryCell label="square (default)">
+    <div style="width: 100%">
+      <SectionImage src={IMAGE} alt="Paweł Żentała" />
+    </div>
+  </GalleryCell>
+  <GalleryCell label="16/9, no hover zoom">
+    <div style="width: 100%">
+      <SectionImage
+        src={IMAGE}
+        alt="Paweł Żentała"
+        aspectRatio="16/9"
+        hoverZoom={false}
+      />
+    </div>
+  </GalleryCell>
+  <GalleryCell label="4/3, contain">
+    <div style="width: 100%">
+      <SectionImage
+        src={IMAGE}
+        alt="Paweł Żentała"
+        aspectRatio="4/3"
+        objectFit="contain"
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="section-cta" bare>
+  <SectionCTA
+    href="/contact"
+    text="primary: get started"
+    icon="rocket"
+    variant="primary"
+  />
+  <SectionCTA
+    href="/portfolio"
+    text="secondary: see the portfolio"
+    variant="secondary"
+  />
+  <SectionCTA
+    href="https://cal.com/zentala"
+    text="secondary, external, background text"
+    variant="secondary"
+    external
+    bgText="CONTACT"
+  />
+  <SectionCTA href="/blog" text="primary, no arrow" arrow={false} />
+</GalleryEntry>
+
+<GalleryEntry id="section-block-quote" bare>
+  <SectionBlockQuote
+    quote="Every line has exactly one owner."
+    author="Paweł Żentała"
+    role="DevEx consultant"
+  />
+  <SectionBlockQuote
+    variant="large"
+    quote="Show the owner a mockup before the real page changes."
+    author="Design rule"
+  />
+  <SectionBlockQuote variant="minimal" quote="Minimal: only the text." />
+</GalleryEntry>
+
+<GalleryEntry id="section-bento" bare>
+  <SectionBento rowHeight="12rem">
+    <BentoCardSections colSpan={2} rowSpan={2}>
+      <SectionContent context="grid"
+        ><h3>2 x 2</h3><p>colSpan 2, rowSpan 2.</p></SectionContent
+      >
+    </BentoCardSections>
+    <BentoCardSections
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCardSections
+    >
+  </SectionBento>
+</GalleryEntry>
+
+<GalleryEntry id="bento-card-sections" bare>
+  <SectionBento rowHeight="10rem">
+    <BentoCardSections padding="none"
+      ><SectionContent context="grid" prose={false}>padding none</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections padding="sm"
+      ><SectionContent context="grid" prose={false}>padding sm</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections padding="md"
+      ><SectionContent context="grid" prose={false}
+        >padding md (default)</SectionContent
+      ></BentoCardSections
+    >
+    <BentoCardSections padding="lg"
+      ><SectionContent context="grid" prose={false}>padding lg</SectionContent
+      ></BentoCardSections
+    >
+  </SectionBento>
+</GalleryEntry>
+
+<GalleryEntry id="bento-card" bare>
+  <SectionBento rowHeight="10rem">
+    <BentoCard colSpan={2} padding="lg"
+      ><SectionContent context="grid"
+        ><h3>2 x 1, padding lg</h3><p>
+          The cell overlay comes from the shared mixin.
+        </p></SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="sm"
+      ><SectionContent context="grid" prose={false}>1 x 1, sm</SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="none"
+      ><SectionImage
+        src={IMAGE}
+        alt="Paweł Żentała"
+        aspectRatio="auto"
+      /></BentoCard
+    >
+  </SectionBento>
+</GalleryEntry>
+
+<GalleryEntry id="bento-central-stage" bare>
+  <SectionBento rowHeight="10rem">
+    <BentoCentralStage>
+      <BentoStageState
+        state="default"
+        class="active flex h-full items-center justify-center bg-surface"
+      >
+        <span class="text-fg-muted">default state</span>
+      </BentoStageState>
+    </BentoCentralStage>
+    <BentoCard padding="sm"
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="sm"
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="sm"
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="sm"
+      ><SectionContent context="grid" prose={false}>1 x 1</SectionContent
+      ></BentoCard
+    >
+  </SectionBento>
+</GalleryEntry>
+
+<GalleryEntry id="bento-stage-state" cols={1}>
+  <GalleryCell label="shown inside the stage above">
+    <p>
+      The stage holds one <code class="font-mono">BentoStageState</code> per hover
+      state. The one marked <code class="font-mono">active</code> is visible; the
+      home bento script swaps them when a card with a <code class="font-mono"
+        >hoverState</code
+      > is hovered or focused.
+    </p>
+  </GalleryCell>
+</GalleryEntry>

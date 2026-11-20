@@ -1,0 +1,89 @@
+---
+/**
+ * One gallery section: the component name, path, purpose and props (read from the
+ * manifest by `id`), then its examples. Built from the line model.
+ * - Default: the slot holds cells (GalleryCell, or cards directly) in a `.line-grid`.
+ *   `cols` sets the columns; 3 closes an incomplete last row with `line-grid--fill-last`,
+ *   so every child of a 3-column entry must be a `div`.
+ * - `bare`: the slot holds standalone blocks or grids (line-block, SectionGrid,
+ *   SectionBento), which draw their own top line. The meta block above draws none.
+ * - Slot `after`: a component that is a section of its own (PostNav); it follows the Section.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import { GALLERY_ITEMS } from './manifest'
+
+interface Props {
+  id: string
+  cols?: 1 | 2 | 3 | 4
+  bare?: boolean
+}
+
+const { id, cols = 3, bare = false } = Astro.props
+
+const item = GALLERY_ITEMS.find((candidate) => candidate.id === id)
+if (!item) throw new Error(`GalleryEntry: no manifest row with id "${id}"`)
+
+const COLUMNS_STYLE = {
+  1: '--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1',
+  2: '--cols-wide: 2; --cols-medium: 2; --cols-narrow: 1',
+  3: undefined,
+  4: '--cols-wide: 4; --cols-medium: 2; --cols-narrow: 1',
+} as const
+---
+
+<Section id={id}>
+  <SectionHeader headline={item.name} subhead={item.purpose} tag="h2" />
+  <div class="gallery-meta">
+    <p class="gallery-meta__row">
+      <span class="gallery-meta__key">File</span>
+      <code class="font-mono">src/components/{item.path}</code>
+    </p>
+    <p class="gallery-meta__row">
+      <span class="gallery-meta__key">Props</span>
+      <code class="font-mono">{item.props}</code>
+    </p>
+  </div>
+  {
+    !Astro.slots.has('default') ? null : bare ? (
+      <slot />
+    ) : (
+      <div
+        class:list={['line-grid', cols === 3 && 'line-grid--fill-last']}
+        style={COLUMNS_STYLE[cols]}
+      >
+        <slot />
+      </div>
+    )
+  }
+</Section>
+<slot name="after" />
+
+<style>
+  .gallery-meta {
+    padding: clamp(1rem, 2.5vw, 2rem);
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .gallery-meta__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted, inherit);
+  }
+
+  .gallery-meta__key {
+    min-width: 3.5rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle, inherit);
+  }
+
+  .gallery-meta code {
+    overflow-wrap: anywhere;
+  }
+</style>

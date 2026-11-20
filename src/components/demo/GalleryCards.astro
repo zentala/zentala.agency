@@ -1,0 +1,104 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import { loadGallerySamples } from './samples'
+import CardContainer from '@/components/cards/CardContainer.astro'
+import OfferCard from '@/components/cards/OfferCard.astro'
+import PortfolioItem from '@/components/cards/PortfolioItem.astro'
+import PostCard from '@/components/cards/PostCard.astro'
+import SeriesCard from '@/components/cards/SeriesCard.astro'
+import { partLabel } from '@/lib/blog/part-label'
+
+const { post, seriesSlug, seriesTitle, seriesParts } =
+  await loadGallerySamples()
+const visiblePartNumbers = seriesParts.flatMap((part) =>
+  part.data.part === undefined ? [] : [part.data.part],
+)
+const postProps = {
+  title: post.data.title,
+  date: post.data.date,
+  category: post.data.category,
+  excerpt: post.data.excerpt,
+  authorVersion: post.data.author,
+  link: `/blog/${post.slug}`,
+}
+const newestSlug = seriesParts[seriesParts.length - 1].slug
+---
+
+<!-- NOTE(intent): card entries put cards straight in the grid; each card is a grid cell and must not sit inside another cell. -->
+<GalleryEntry id="card-container" cols={2}>
+  <CardContainer href="/portfolio">
+    <h3>Link card</h3>
+    <p>With href: an anchor, hover and focus overlay on the line pixels.</p>
+  </CardContainer>
+  <CardContainer>
+    <h3>Static card</h3>
+    <p>No href: a plain div, no hover, no focus.</p>
+  </CardContainer>
+  <CardContainer href="/blog" backgroundIcon="lucide:layers">
+    <h3>Link card, background icon</h3>
+    <p>backgroundIcon adds the faint icon, clipped inside the card.</p>
+  </CardContainer>
+  <CardContainer backgroundIcon="ph:handshake-thin">
+    <h3>Static card, background icon</h3>
+    <p>Same icon on a card without a link.</p>
+  </CardContainer>
+</GalleryEntry>
+
+<GalleryEntry id="offer-card" cols={2}>
+  <OfferCard
+    number="01"
+    title="Harness engineering"
+    description="The machinery around coding agents: registry, leases, knowledge base, feedback loop."
+    icon="lucide:bot"
+    href="/offer/harness-engineering"
+  />
+  <OfferCard
+    number="02"
+    title="Backstage rollout"
+    description="An internal developer portal that survives contact with a real organisation."
+    icon="lucide:layout-grid"
+  />
+</GalleryEntry>
+
+<GalleryEntry id="portfolio-item" cols={2}>
+  <PortfolioItem
+    key="gallery-link"
+    title="Backstage developer portal"
+    subtitle="Built from scratch for a national railway operator."
+    link="/about/capabilities/backstage"
+    linkTitle="Read the case"
+    tags={['backstage', 'typescript', 'devex']}
+  />
+  <PortfolioItem
+    key="gallery-static"
+    title="Merch robot"
+    subtitle="An NFC table and a robot for brand stores."
+    tags={['iot', 'nfc']}
+  />
+</GalleryEntry>
+
+<GalleryEntry id="post-card" cols={3}>
+  <PostCard {...postProps} />
+  <PostCard
+    {...postProps}
+    partLabel={partLabel(post.data.part ?? 1, visiblePartNumbers)}
+  />
+  <PostCard {...postProps} isDraft />
+</GalleryEntry>
+
+<GalleryEntry id="series-card" cols={2}>
+  <SeriesCard
+    title={seriesTitle}
+    slug={seriesSlug}
+    parts={seriesParts}
+    newestSlug={newestSlug}
+    isFresh={false}
+  />
+  <SeriesCard
+    title={seriesTitle}
+    slug={seriesSlug}
+    parts={seriesParts}
+    newestSlug={newestSlug}
+    isFresh
+  />
+</GalleryEntry>

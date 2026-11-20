@@ -1,0 +1,139 @@
+---
+/**
+ * Component gallery, dev only: every component with its variants, rendered with the
+ * real layout and styles. Not built for production (getStaticPaths is empty there).
+ * Add a component here, in the manifest and in a Gallery* file, in the same change
+ * that creates it: tests/unit/component-gallery.test.ts fails otherwise.
+ * NOTE(intent): a group header is a SectionHeader in a bare container-bordered, not a
+ * Section: a Section's own bottom line would sit right next to the header's line.
+ */
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import GalleryLineGrid from '@/components/demo/GalleryLineGrid.astro'
+import GalleryPrimitives from '@/components/demo/GalleryPrimitives.astro'
+import GalleryCards from '@/components/demo/GalleryCards.astro'
+import GalleryBlog from '@/components/demo/GalleryBlog.astro'
+import GalleryRich from '@/components/demo/GalleryRich.astro'
+import GalleryBanners from '@/components/demo/GalleryBanners.astro'
+import GalleryGeneral from '@/components/demo/GalleryGeneral.astro'
+import { GALLERY_GROUPS } from '@/components/demo/manifest'
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { slug: undefined } }] : []
+}
+
+const GROUP_ICONS: Record<string, string> = {
+  'Line-grid primitives': 'lucide:layout-grid',
+  Primitives: 'lucide:shapes',
+  Cards: 'lucide:square-stack',
+  Blog: 'lucide:newspaper',
+  Banners: 'lucide:flag',
+  General: 'lucide:blocks',
+}
+
+const groupId = (title: string) =>
+  `group-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+const totalCount = GALLERY_GROUPS.reduce(
+  (sum, group) => sum + group.items.length,
+  0,
+)
+---
+
+<Layout
+  title="Component gallery"
+  description="Every component with its variants, rendered with the real layout. Dev only."
+  noindex
+>
+  <Hero
+    eyebrow="Dev only"
+    title="Component gallery"
+    subtitle={`${totalCount} components, every variant, real props`}
+  />
+
+  <Section id="index">
+    <SectionHeader
+      headline="Index"
+      subhead="Each section shows the component name, its file, one line of purpose, the props it takes and rendered examples. A new or changed component is added here in the same change; the unit test fails otherwise."
+      align="center"
+    />
+    <div class="line-grid">
+      {
+        GALLERY_GROUPS.map((group) => (
+          <div class="padding-responsive-md gallery-index">
+            <h3 class="gallery-index__title">
+              <a href={`#${groupId(group.title)}`}>{group.title}</a>
+            </h3>
+            <ul class="gallery-index__list">
+              {group.items.map((item) => (
+                <li>
+                  <a href={`#${item.id}`}>{item.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  {
+    GALLERY_GROUPS.map((group) => (
+      <>
+        <div id={groupId(group.title)} class="container-bordered">
+          <SectionHeader
+            eyebrow={`${group.items.length} components`}
+            icon={GROUP_ICONS[group.title]}
+            headline={group.title}
+          />
+        </div>
+        {group.title === 'Line-grid primitives' && <GalleryLineGrid />}
+        {group.title === 'Primitives' && <GalleryPrimitives />}
+        {group.title === 'Cards' && <GalleryCards />}
+        {group.title === 'Blog' && (
+          <>
+            <GalleryBlog />
+            <GalleryRich />
+          </>
+        )}
+        {group.title === 'Banners' && <GalleryBanners />}
+        {group.title === 'General' && <GalleryGeneral />}
+      </>
+    ))
+  }
+</Layout>
+
+<style>
+  .gallery-index {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+  }
+
+  .gallery-index__title {
+    margin: 0;
+    font-size: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-subtle);
+  }
+
+  .gallery-index__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery-index a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .gallery-index a:hover {
+    color: var(--color-text);
+  }
+</style>

@@ -44,6 +44,12 @@ Load before you create or change a page, section, card, grid, banner, CTA, or an
 
 Primitives and props are tabulated in DESIGN.md section 4 ("Primitives and props").
 
+## Show it in the gallery and to the owner
+
+- Every new or changed component goes into the gallery at `/demo` (dev only; owner link http://zentala.internal/demo) in the same change: a row in `src/components/demo/manifest.ts` (or `groups/`), and a `<GalleryEntry id="...">` with one example per variant and realistic props in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails when a component file has no import, no row or no entry; an exemption needs a reason in its `EXEMPT` map.
+- Entry layout: cells (`GalleryCell`, or cards directly) go in the entry's `.line-grid`; `cols={3}` closes the last row, so keep its children `div`s. Standalone blocks and grids (`line-block`, `SectionGrid`, `SectionBento`) use `bare`. A component that is a section of its own (`PostNav`) goes in the `after` slot. Never nest a `Section` or another grid with its own lines inside a cell: the lines double.
+- For a new look, show the owner a mockup first at `/mockups/<name>` (dev only, `src/pages/mockups/[mockup].astro`). The real page changes only after the owner accepts it.
+
 ## Recipes
 
 Full code, copied from real files, is in [page-recipes.md](page-recipes.md): a new page, a new section, a new card component, a standalone CTA or banner.
@@ -62,10 +68,19 @@ Shortest page: `Layout` > `Hero` > `section-full` > `container-bordered` > `card
 ## Verify
 
 1. `just check` (lint, build, unit tests, prod-bundle audit, critical e2e). It includes `tests/e2e/line-geometry.spec.ts`.
-2. The guard builds its route list from `dist/**/index.html` at test time: a new page is covered without editing the spec. Redirect stubs are replaced by their destination, `/linkedin-preview/` is excluded, and one unbuilt path covers the 404 page. At 1920, 1450, 768 and 390 it fails on doubled lines (two segments 1px apart), a vertical line at the viewport edge at 1450px and below, a floating vertical segment that joins no other line, containers narrower than the viewport at 1450px and below, and any layout rect change on hover. 1280 runs on the four core routes only. See [tests/e2e/README.md](../../../tests/e2e/README.md).
-3. Measure and look at the render at 1920, 1450, 1280, 1024, 768 and 390: no doubled line, no dangling segment, no line at the viewport edge at 1450px and below, hover and focus overlay on the line pixels, no layout shift. Reuse `analyzeLines` in the guard spec.
+2. The guard builds its route list from `dist/**/index.html` at test time: a new page is covered without editing the spec. Redirect stubs are replaced by their destination, `/linkedin-preview/` is excluded, and one unbuilt path covers the 404 page. At 1920, 1450, 768 and 390 it fails on doubled lines (two segments 1px apart), a vertical line at the viewport edge at 1450px and below, a floating vertical segment that joins no other line, containers narrower than the viewport at 1450px and below, and any layout rect change on hover. 1280 runs on the four core routes only, and 1024 is not in the guard. Dev-only routes (`/demo`, `/mockups/*`) and drafts are not in `dist/`, so the guard never sees them. See [tests/e2e/README.md](../../../tests/e2e/README.md).
+3. Measure and look at the render at 1920, 1450, 1280, 1024, 768 and 390: no doubled line, no dangling segment, no line at the viewport edge at 1450px and below, hover and focus overlay on the line pixels, no layout shift. For one page (dev-only routes, mockups, drafts included) run `node scripts/visual-check.mjs <url> [widths...]`; it uses `analyzeLines` from `tests/e2e/lib/line-analysis.ts`, the same module as the guard. Scratch scripts import that module and do not port the function.
 4. Tab through the cells with the keyboard.
 5. Get an independent visual review of rendered screenshots. Anything not rendered is NOT_CHECKED, not a pass.
+
+## Gotchas
+
+- `getStaticPaths` is hoisted and cannot read frontmatter constants.
+- Git Bash rewrites `/` arguments: use `MSYS_NO_PATHCONV=1`.
+- `networkidle` never settles in dev: `load` plus a 3 s wait.
+- Screenshot very tall pages (over ~16k px) in chunks; one capture gives false floating findings.
+- A bordered chip in a grid cell draws a dangling line: chip rows go outside the grid as borderless filled chips (DESIGN.md).
+- No webfont is loaded unless the owner accepts Inter (C5 pending): weight 200 cannot render in the system font.
 
 ## Failure modes seen in this project
 

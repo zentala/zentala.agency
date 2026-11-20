@@ -1,0 +1,43 @@
+---
+/**
+ * A static grid cell for one gallery example: a small variant caption above the
+ * rendered component. Transparent, no border, no hover: the parent line grid draws
+ * the lines. `relative` lets corner markers (DraftBadge) pin to the cell.
+ */
+interface Props {
+  label?: string
+}
+
+const { label } = Astro.props
+---
+
+<div class="gallery-cell">
+  {label && <p class="gallery-cell__label">{label}</p>}
+  <slot />
+</div>
+
+<style>
+  .gallery-cell {
+    position: relative;
+    padding: clamp(1rem, 2.5vw, 2rem);
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .gallery-cell > :global(p) {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .gallery-cell__label {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle);
+  }
+</style>

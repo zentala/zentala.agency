@@ -1,0 +1,106 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import BoxGrid from '@/components/blog/rich/BoxGrid.astro'
+import Disclosure from '@/components/blog/rich/Disclosure.astro'
+import Figure from '@/components/blog/rich/Figure.astro'
+import FileTree from '@/components/blog/rich/FileTree.astro'
+import Flow from '@/components/blog/rich/Flow.astro'
+import Term from '@/components/blog/rich/Term.astro'
+
+const boxes = [
+  {
+    title: 'mATX',
+    sub: 'Windows workstation',
+    items: ['Claude Code', 'PM3 dev services'],
+    highlight: true,
+  },
+  { title: 'mITX', sub: 'Linux agent host', items: ['Codex agents', 'Herdr'] },
+  {
+    title: 'server.lan',
+    sub: 'Deploy target',
+    items: ['Gitea runner', 'deployd'],
+  },
+]
+const flowSteps = [
+  { label: 'Claim', note: 'take the lease' },
+  { label: 'Edit', highlight: true },
+  { label: 'Verify', note: 'tests and review' },
+  { label: 'Release' },
+]
+const treeNodes = [
+  { name: 'src', depth: 0, note: 'all site code' },
+  { name: 'components', depth: 1 },
+  { name: 'primitives', depth: 2, note: 'Tag, Badge, NoteBox' },
+  { name: 'pages', depth: 1, note: 'file-based routes' },
+  { name: 'DESIGN.md', depth: 0, note: 'tokens, line model, decisions' },
+]
+---
+
+<GalleryEntry id="box-grid" cols={1}>
+  <GalleryCell label="default"><BoxGrid boxes={boxes} /></GalleryCell>
+  <GalleryCell label="mono"><BoxGrid boxes={boxes} mono /></GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="disclosure" cols={2}>
+  <GalleryCell label="closed">
+    <Disclosure summary="Why one writer at a time?">
+      <p>
+        Two agents on one checkout do not crash. They overwrite each other
+        quietly.
+      </p>
+    </Disclosure>
+  </GalleryCell>
+  <GalleryCell label="second example">
+    <Disclosure summary="What does it cost?">
+      <p>One lease file and a check before every write.</p>
+    </Disclosure>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="figure" cols={2}>
+  <GalleryCell label="label and caption">
+    <Figure
+      label="Layer 2"
+      caption="The registry shows who works where; the lease decides who may write."
+    >
+      <Flow
+        steps={[{ label: 'Registry' }, { label: 'Lease', highlight: true }]}
+      />
+    </Figure>
+  </GalleryCell>
+  <GalleryCell label="caption only">
+    <Figure caption="A frame needs only a caption.">
+      <p>Diagram content goes here.</p>
+    </Figure>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="file-tree" cols={1}>
+  <GalleryCell label="four levels, notes"
+    ><FileTree nodes={treeNodes} /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="flow" cols={1}>
+  <GalleryCell label="steps with notes and a highlight"
+    ><Flow steps={flowSteps} /></GalleryCell
+  >
+  <GalleryCell label="with a return note">
+    <Flow
+      steps={flowSteps}
+      returnNote="A failed check sends the work back to Edit."
+    />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="term" cols={1}>
+  <GalleryCell label="hover, focus or tap the term">
+    <p>
+      A <Term
+        definition="A file that names the one agent allowed to write to a checkout."
+        >lease</Term
+      > keeps parallel agents apart.
+    </p>
+  </GalleryCell>
+</GalleryEntry>

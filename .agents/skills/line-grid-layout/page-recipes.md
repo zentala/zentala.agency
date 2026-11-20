@@ -142,3 +142,39 @@ Clipping lives on an inner element, as `CardContainer` does:
 <div class="px-responsive">      <!-- horizontal: 64 to 16px; -lg and -xl variants exist -->
 <div class="py-responsive-lg">   <!-- heroes: 24 to 96px -->
 ```
+
+## New component: gallery entry
+
+Add the component to the gallery at `/demo` in the same change. A manifest row, in `src/components/demo/groups/<group>.ts`:
+
+```ts
+{
+  id: 'offer-card',
+  name: 'OfferCard',
+  path: 'cards/OfferCard.astro',
+  purpose: 'Numbered offer tile with a background icon.',
+  props: 'number, title, description, icon, href',
+}
+```
+
+And the entry with one example per variant, in the matching `src/components/demo/Gallery*.astro` (cards go straight into the grid, they are cells):
+
+```astro
+<GalleryEntry id="offer-card" cols={2}>
+  <OfferCard number="01" title="Harness engineering" description="..." icon="lucide:bot" href="/offer/harness-engineering" />
+  <OfferCard number="02" title="Backstage rollout" description="..." icon="lucide:layout-grid" />
+</GalleryEntry>
+```
+
+Other contents use `<GalleryCell label="variant">`. Standalone blocks use `<GalleryEntry bare>`. Import the component as `@/components/<path>.astro`: the guard `tests/unit/component-gallery.test.ts` matches that string.
+
+## Checking a page the guard cannot see
+
+Dev-only routes, mockups and drafts are not built into `dist/`. Run the dev server (PM3), then:
+
+```bash
+MSYS_NO_PATHCONV=1 node scripts/visual-check.mjs http://127.0.0.1:4300/mockups/<name>
+MSYS_NO_PATHCONV=1 node scripts/visual-check.mjs http://127.0.0.1:4300/blog/<draft-slug> 1920 1280 390
+```
+
+Default widths are 1920, 1450, 1280, 1024, 768 and 390. It prints doubled, edge, floating and horizontal-scroll findings per width and exits 1 on any. Then look at the screenshots; links handed to the owner use `http://zentala.internal`.

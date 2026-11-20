@@ -1,0 +1,185 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import Button from '@/components/Button.astro'
+import CTA from '@/components/CTA.astro'
+import PostCta from '@/components/PostCta.astro'
+import Quote from '@/components/Quote.astro'
+import Logo from '@/components/Logo.astro'
+import TagList from '@/components/TagList.astro'
+import TextBlockIcon from '@/components/TextBlockIcon.astro'
+import ThemedInput from '@/components/ThemedInput.astro'
+import ThemedTextarea from '@/components/ThemedTextarea.astro'
+import ContactForm from '@/components/ContactForm.astro'
+import TrustedMe from '@/components/TrustedMe.astro'
+
+const ctaButtons = [
+  { href: '/contact', text: 'Get started', variant: 'primary' },
+  {
+    href: 'https://cal.com/zentala',
+    text: 'Book a call',
+    variant: 'secondary',
+    target: '_blank',
+  },
+] as const
+const ctaFooter = [
+  { icon: 'map-pin', text: 'Warsaw, Poland' },
+  { text: 'Working worldwide' },
+]
+---
+
+<GalleryEntry id="button" cols={3}>
+  <GalleryCell label="primary: solid white (default)">
+    <Button href="/contact" text="Get started" />
+  </GalleryCell>
+  <GalleryCell label="secondary: outlined">
+    <Button href="/contact" text="Get started" variant="secondary" />
+  </GalleryCell>
+  <GalleryCell label="accent: solid blue, one main action per page">
+    <Button href="/contact" text="Get started" variant="accent" />
+  </GalleryCell>
+  <GalleryCell label="icon, no arrow">
+    <Button
+      href="https://cal.com/zentala"
+      text="Book a call"
+      icon="calendar"
+      arrow={false}
+      target="_blank"
+    />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="cta" cols={1}>
+  <GalleryCell label="headline, buttons, footer facts">
+    <div style="width: 100%">
+      <CTA
+        headline="Ready to build this in your team?"
+        subhead="Start with a free 30-minute call."
+        buttons={ctaButtons}
+        footerItems={ctaFooter}
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="post-cta" cols={2}>
+  <GalleryCell label="harness variant"
+    ><div style="width: 100%"><PostCta variant="harness" /></div></GalleryCell
+  >
+  <GalleryCell label="default"
+    ><div style="width: 100%"><PostCta /></div></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="quote" cols={3}>
+  <GalleryCell label="typographic, author and source">
+    <Quote
+      text="Implementing a developer portal is not only technical; it is also cultural."
+      author="Paweł Żentała"
+      source="Developer portal guide"
+    />
+  </GalleryCell>
+  <GalleryCell label="heavy marks, author">
+    <Quote
+      text="Innovation has always fascinated me."
+      author="Paweł Żentała"
+      quoteMarkVariant="heavy"
+    />
+  </GalleryCell>
+  <GalleryCell label="no author">
+    <Quote text="The future belongs to those who prepare for it today." />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="hero" cols={1}>
+  <GalleryCell label="live example: the header of this page">
+    <p>
+      Hero renders its own <code class="font-mono">section-grid</code> and an h1,
+      so it is not repeated inside a cell. The header of this page uses it with title,
+      subtitle and eyebrow; <a href="/portfolio">/portfolio</a> uses it without an
+      eyebrow.
+    </p>
+  </GalleryCell>
+</GalleryEntry>
+<GalleryEntry id="logo" cols={2}>
+  <GalleryCell label="full"
+    ><Logo
+      type="full"
+      width="200px"
+      height="40px"
+      color="var(--color-text)"
+    /></GalleryCell
+  >
+  <GalleryCell label="sygnet"
+    ><Logo
+      type="sygnet"
+      width="80px"
+      height="80px"
+      color="var(--color-text)"
+    /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="tag-list" cols={1}>
+  <GalleryCell label="tag links"
+    ><TagList tags={['backstage', 'agents', 'devex']} /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="text-block-icon" cols={1}>
+  <GalleryCell label="glyph, title, description">
+    <div style="width: 100%">
+      <TextBlockIcon
+        icon="*"
+        title="Light by default"
+        description="A short sentence under the title."
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="themed-input" cols={3}>
+  <GalleryCell label="text"
+    ><ThemedInput
+      type="text"
+      id="gallery-name"
+      placeholder="First name"
+    /></GalleryCell
+  >
+  <GalleryCell label="email"
+    ><ThemedInput
+      type="email"
+      id="gallery-email"
+      placeholder="Email"
+    /></GalleryCell
+  >
+  <GalleryCell label="phone"
+    ><ThemedInput
+      type="tel"
+      id="gallery-phone"
+      placeholder="Phone"
+    /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="themed-textarea" cols={1}>
+  <GalleryCell label="default"
+    ><ThemedTextarea
+      id="gallery-message"
+      placeholder="Your message"
+    /></GalleryCell
+  >
+</GalleryEntry>
+
+<!-- NOTE(intent): ContactForm is a cards-grid of its own; inside a cell its lines would join the page lines, so it sits in a data-prose-widget box, the documented exception for form widgets. -->
+<GalleryEntry id="contact-form" cols={1}>
+  <GalleryCell label="the whole form">
+    <div data-prose-widget style="width: 100%"><ContactForm /></div>
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="trusted-me" cols={1}>
+  <GalleryCell label="client strip (placeholder logos)"
+    ><div style="width: 100%"><TrustedMe /></div></GalleryCell
+  >
+</GalleryEntry>

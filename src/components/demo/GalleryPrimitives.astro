@@ -1,0 +1,182 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import Badge from '@/components/primitives/Badge.astro'
+import Tag from '@/components/primitives/Tag.astro'
+import TagGroup from '@/components/primitives/TagGroup.astro'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import PhaseLabel from '@/components/primitives/PhaseLabel.astro'
+import NoteBox from '@/components/primitives/NoteBox.astro'
+import TruncateText from '@/components/primitives/TruncateText.astro'
+import ImageCircle from '@/components/primitives/ImageCircle.astro'
+import CardBackgroundIcon from '@/components/primitives/CardBackgroundIcon.astro'
+import CardIconMosaic from '@/components/primitives/CardIconMosaic.astro'
+
+const AVATAR = 'https://cdn.zentala.agency/images/avatar.jpg'
+const LONG_TEXT =
+  'A line grid separates content with 1px lines that join into one continuous grid, so every line has exactly one owner and nothing doubles when a card is added or removed.'
+const TAGS = ['backstage', 'agents', 'devex']
+---
+
+<GalleryEntry id="badge" cols={3}>
+  <GalleryCell label="tech, sm (default)"><Badge>Backstage</Badge></GalleryCell>
+  <GalleryCell label="tech, md"><Badge size="md">TypeScript</Badge></GalleryCell
+  >
+  <GalleryCell label="accent, sm"
+    ><Badge variant="accent">New</Badge></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="tag" cols={3}>
+  <GalleryCell label="pill (default)"><Tag text="agents" /></GalleryCell>
+  <GalleryCell label="simple, link"
+    ><Tag text="devex" theme="simple" href="/category/devex" /></GalleryCell
+  >
+  <GalleryCell label="label, no prefix"
+    ><Tag text="Harness" theme="label" /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="tag-group" cols={3}>
+  <GalleryCell label="pill (default)"><TagGroup tags={TAGS} /></GalleryCell>
+  <GalleryCell label="simple"
+    ><TagGroup tags={TAGS} theme="simple" /></GalleryCell
+  >
+  <GalleryCell label="label, as links"
+    ><TagGroup tags={TAGS} theme="label" hrefPrefix="/tag/" /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="draft-badge" cols={3}>
+  <GalleryCell label="corner, draft (amber)">
+    <p>A card or hero with a pinned marker.</p>
+    <DraftBadge />
+  </GalleryCell>
+  <GalleryCell label="corner, review (blue): draft ready for the owner">
+    <p>The agent judged this draft ready to publish.</p>
+    <DraftBadge review />
+  </GalleryCell>
+  <GalleryCell label="corner, custom label">
+    <p>A dev-only note, for example a series production would hide.</p>
+    <DraftBadge label="Hidden: 1 part" />
+  </GalleryCell>
+  <GalleryCell label="inline, draft"
+    ><p>Short label <DraftBadge placement="inline" /></p></GalleryCell
+  >
+  <GalleryCell label="inline, review"
+    ><p>Short label <DraftBadge placement="inline" review /></p></GalleryCell
+  >
+  <GalleryCell label="edge: 2px bar left of a list row">
+    <p>List row</p>
+    <DraftBadge placement="edge" review />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="phase-label" cols={3}>
+  <GalleryCell label="phase 1"><PhaseLabel phase={1} /></GalleryCell>
+  <GalleryCell label="phase 2"><PhaseLabel phase={2} /></GalleryCell>
+  <GalleryCell label="phase 3"><PhaseLabel phase={3} /></GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="note-box" cols={2}>
+  <GalleryCell label="default"
+    ><NoteBox title="Rule of thumb">Every line has one owner.</NoteBox
+    ></GalleryCell
+  >
+  <GalleryCell label="info, own icon"
+    ><NoteBox variant="info" icon="info" title="Good to know"
+      >Drafts show only in dev.</NoteBox
+    ></GalleryCell
+  >
+  <GalleryCell label="success"
+    ><NoteBox variant="success" icon="check" title="Done"
+      >The guard is green.</NoteBox
+    ></GalleryCell
+  >
+  <GalleryCell label="warning, no title"
+    ><NoteBox variant="warning" icon="triangle-alert"
+      >Not published until the owner reviews it.</NoteBox
+    ></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="truncate-text" cols={3}>
+  <GalleryCell label="maxLength 60"
+    ><TruncateText text={LONG_TEXT} maxLength={60} /></GalleryCell
+  >
+  <GalleryCell label="maxLength 120, span"
+    ><TruncateText
+      text={LONG_TEXT}
+      maxLength={120}
+      element="span"
+    /></GalleryCell
+  >
+  <GalleryCell label="shorter than the limit"
+    ><TruncateText text="Short text stays whole." /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="image-circle" cols={3}>
+  <GalleryCell label="default, hover zoom"
+    ><div style="width: 6rem">
+      <ImageCircle src={AVATAR} alt="Paweł Żentała" />
+    </div></GalleryCell
+  >
+  <GalleryCell label="no hover zoom"
+    ><div style="width: 6rem">
+      <ImageCircle src={AVATAR} alt="Paweł Żentała" hoverZoom={false} />
+    </div></GalleryCell
+  >
+  <GalleryCell label="lazy"
+    ><div style="width: 4rem">
+      <ImageCircle src={AVATAR} alt="Paweł Żentała" loading="lazy" />
+    </div></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="card-background-icon" cols={3}>
+  <GalleryCell label="lucide set"
+    ><div style="position: relative; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="lucide:bot" />
+    </div></GalleryCell
+  >
+  <GalleryCell label="phosphor set"
+    ><div style="position: relative; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="ph:handshake-thin" />
+    </div></GalleryCell
+  >
+  <GalleryCell label="lucide set, other icon"
+    ><div style="position: relative; min-height: 8rem; width: 100%">
+      <CardBackgroundIcon icon="lucide:layers" />
+    </div></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="card-icon-mosaic" cols={2}>
+  <GalleryCell label="four icons (reads best)">
+    <div style="position: relative; height: 12rem; width: 100%">
+      <CardIconMosaic
+        icons={[
+          'lucide:radar',
+          'lucide:bot',
+          'lucide:layout-grid',
+          'lucide:house',
+        ]}
+      />
+    </div>
+  </GalleryCell>
+  <GalleryCell label="six icons">
+    <div style="position: relative; height: 12rem; width: 100%">
+      <CardIconMosaic
+        icons={[
+          'lucide:cpu',
+          'lucide:network',
+          'lucide:database',
+          'lucide:terminal',
+          'lucide:git-branch',
+          'lucide:server',
+        ]}
+      />
+    </div>
+  </GalleryCell>
+</GalleryEntry>

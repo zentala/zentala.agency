@@ -1,0 +1,105 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import { loadGallerySamples } from './samples'
+import PostMeta from '@/components/blog/PostMeta.astro'
+import PostNav from '@/components/blog/PostNav.astro'
+import PostToc from '@/components/blog/PostToc.astro'
+import SeriesRail from '@/components/blog/SeriesRail.astro'
+import ShareButtons from '@/components/blog/ShareButtons.astro'
+import { partLabel } from '@/lib/blog/part-label'
+
+const { post, seriesSlug, seriesTitle, seriesParts, related } =
+  await loadGallerySamples()
+const visiblePartNumbers = seriesParts.flatMap((part) =>
+  part.data.part === undefined ? [] : [part.data.part],
+)
+const middle = seriesParts[Math.min(1, seriesParts.length - 1)]
+const middleLabel = partLabel(middle.data.part ?? 1, visiblePartNumbers)
+const headings = [
+  { depth: 2, slug: 'the-problem', text: 'The problem' },
+  {
+    depth: 3,
+    slug: 'two-agents-one-checkout',
+    text: 'Two agents, one checkout',
+  },
+  { depth: 2, slug: 'the-mechanism', text: 'The mechanism' },
+  { depth: 2, slug: 'what-it-costs', text: 'What it costs' },
+]
+const postUrl = `https://zentala.agency/blog/${post.slug}/`
+---
+
+<GalleryEntry id="post-meta" cols={3}>
+  <GalleryCell label="sm, subtle (default)">
+    <PostMeta date={post.data.date} category={post.data.category} />
+  </GalleryCell>
+  <GalleryCell label="with part label">
+    <PostMeta
+      date={post.data.date}
+      category={post.data.category}
+      partLabel={middleLabel}
+    />
+  </GalleryCell>
+  <GalleryCell label="md, muted">
+    <PostMeta
+      date={post.data.date}
+      category={post.data.category}
+      size="md"
+      tone="muted"
+    />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="post-toc" cols={2}>
+  <GalleryCell label="h2 and h3 headings"
+    ><PostToc headings={headings} /></GalleryCell
+  >
+  <GalleryCell label="h2 only"
+    ><PostToc
+      headings={headings.filter((heading) => heading.depth === 2)}
+    /></GalleryCell
+  >
+</GalleryEntry>
+
+<GalleryEntry id="share-buttons" cols={1}>
+  <GalleryCell label="LinkedIn, Teams, email, copy link">
+    <ShareButtons postUrl={postUrl} title={post.data.title} />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="series-rail" cols={2}>
+  <GalleryCell label="middle part">
+    <SeriesRail
+      seriesSlug={seriesSlug}
+      seriesTitle={seriesTitle}
+      posts={seriesParts}
+      currentSlug={middle.slug}
+      currentLabel={middleLabel}
+    />
+  </GalleryCell>
+  <GalleryCell label="first part">
+    <SeriesRail
+      seriesSlug={seriesSlug}
+      seriesTitle={seriesTitle}
+      posts={seriesParts}
+      currentSlug={seriesParts[0].slug}
+      currentLabel={partLabel(
+        seriesParts[0].data.part ?? 1,
+        visiblePartNumbers,
+      )}
+    />
+  </GalleryCell>
+</GalleryEntry>
+
+<!-- NOTE(intent): PostNav is a section of its own (nav.container-bordered > section-full), so it follows the entry's Section instead of sitting inside it. -->
+<GalleryEntry id="post-nav">
+  <Fragment slot="after">
+    <PostNav
+      seriesSlug={seriesSlug}
+      seriesPosts={seriesParts}
+      related={related}
+      currentSlug={middle.slug}
+    />
+    <PostNav seriesPosts={[]} related={related} currentSlug={post.slug} />
+  </Fragment>
+</GalleryEntry>
