@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content'
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import PostCard from '@/components/cards/PostCard.astro'
+import MockupNotice from './MockupNotice.astro'
+import MockupDevLabel from './MockupDevLabel.astro'
+import SeriesOverviewCell from './SeriesOverviewCell.astro'
+import CategoryChips from './CategoryChips.astro'
+import { getVisiblePosts } from '@/lib/blog/visibility'
+import { partLabel } from '@/lib/blog/part-label'
+
+/**
+ * Mockup of decision C1: a series-first /blog. The real /blog is untouched.
+ * Dev only (see src/pages/mockups/[mockup].astro).
+ */
+const SERIES_ORDER = [
+  'agent-native-harness',
+  'multi-interface',
+  'developer-experience',
+  'information-architecture',
+]
+const LATEST_COUNT = 6
+const POSITIONING_DRAFT =
+  'How to build a repository where an AI agent really works: mechanisms that run here, failures included.'
+
+const posts = await getVisiblePosts()
+const descriptions = await getCollection('series-descriptions')
+
+type Post = (typeof posts)[number]
+
+const byDateDesc = (a: Post, b: Post) =>
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+
+const seriesCells = SERIES_ORDER.flatMap((slug) => {
+  const description = descriptions.find((entry) => entry.slug === slug)
+  const parts = posts
+    .filter((post) => post.data.series === slug)
+    .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
+  if (!description || parts.length === 0) return []
+  const latest = [...parts].sort(byDateDesc)[0]
+  return [
+    {
+      slug,
+      title: description.data.title,
+      promise: description.data.tagline,
+      partCount: parts.length,
+      firstPart: { slug: parts[0].slug, title: parts[0].data.title },
+      latestPart: {
+        slug: latest.slug,
+        title: latest.data.title,
+        date: latest.data.date,
+        isDraft: latest.data.published === false,
+      },
+    },
+  ]
+})
+
+const latestPosts = [...posts].sort(byDateDesc).slice(0, LATEST_COUNT)
+const categories = [...new Set(posts.map((post) => post.data.category))].sort()
+
+const partLabelFor = (post: Post) => {
+  const { series, part } = post.data
+  if (!series || part === undefined) return undefined
+  const visibleParts = posts.flatMap((other) =>
+    other.data.series === series && other.data.part !== undefined
+      ? [other.data.part]
+      : [],
+  )
+  return partLabel(part, visibleParts)
+}
+---
+
+<MockupNotice decision="C1" realHref="/blog" />
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="padding-responsive-md">
+      <h1 class="text-4xl font-light text-fg">Blog</h1>
+      <p class="mt-3 max-w-[60ch] text-lg text-fg-secondary">
+        {POSITIONING_DRAFT}
+      </p>
+      <p class="mt-3"><MockupDevLabel>Draft copy</MockupDevLabel></p>
+    </div>
+  </div>
+</section>
+
+<Section id="series">
+  <SectionHeader
+    headline="Series"
+    subhead="Four threads, each read in order. Start at part 1 or jump to the newest part."
+  />
+  <div
+    class="line-grid"
+    style="--cols-wide: 4; --cols-medium: 2; --cols-narrow: 1"
+  >
+    {seriesCells.map((cell) => <SeriesOverviewCell {...cell} />)}
+  </div>
+</Section>
+
+<Section id="latest">
+  <SectionHeader
+    headline="Latest posts"
+    subhead="The newest posts, series parts and standalone pieces together."
+  />
+  <div class="cards-grid line-grid--fill-last">
+    {
+      latestPosts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          date={post.data.date}
+          category={post.data.category}
+          excerpt={post.data.excerpt}
+          authorVersion={post.data.author}
+          link={`/blog/${post.slug}`}
+          partLabel={partLabelFor(post)}
+          isDraft={post.data.published === false}
+        />
+      ))
+    }
+  </div>
+</Section>
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="padding-responsive-md">
+      <h2 class="mb-4 text-label uppercase text-fg-subtle">Categories</h2>
+      <CategoryChips categories={categories} />
+    </div>
+  </div>
+</section>

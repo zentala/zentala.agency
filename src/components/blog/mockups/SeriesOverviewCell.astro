@@ -1,0 +1,70 @@
+---
+import { Icon } from 'astro-icon/components'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import { formatDate } from '@/lib/blog/format-date'
+
+/**
+ * One cell of the series row: title, promise, part count, a link to part 1 and
+ * the newest part. The whole cell links to the series page; the two inner links
+ * sit above that stretched link.
+ */
+export interface SeriesOverviewCellProps {
+  slug: string
+  title: string
+  promise?: string
+  partCount: number
+  firstPart: { slug: string; title: string }
+  latestPart: { slug: string; title: string; date: string; isDraft: boolean }
+}
+
+const { slug, title, promise, partCount, firstPart, latestPart } =
+  Astro.props as SeriesOverviewCellProps
+
+const latestDate = formatDate(latestPart.date)
+---
+
+<article class="cell-interactive">
+  <div class="padding-responsive-md relative flex h-full flex-col items-start">
+    <a href={`/series/${slug}`} class="absolute inset-0 z-0" aria-label={title}
+    ></a>
+
+    <div
+      class="pointer-events-none flex w-full items-center gap-x-1 text-label uppercase text-fg-subtle"
+    >
+      <Icon name="lucide:layers" class="h-3.5 w-3.5" style="stroke-width: 1.5;" />
+      <span>Series</span>
+      <span class="ml-auto tabular-nums">
+        {partCount}
+        {partCount === 1 ? 'part' : 'parts'}
+      </span>
+    </div>
+    <div class="card-content-wrapper pointer-events-none mt-2">
+      <h3>{title}</h3>
+      {promise && <p class="text-fg-secondary">{promise}</p>}
+    </div>
+
+    <a
+      href={`/blog/${firstPart.slug}`}
+      class="relative z-10 mt-6 text-sm text-accent underline-offset-4 transition-colors duration-fast ease-standard hover:text-accent-hover hover:underline"
+    >
+      Start with part 1 &rarr;
+    </a>
+
+    <div class="pointer-events-none relative mt-auto w-full pt-6">
+      <p class="text-label uppercase text-fg-subtle">Latest</p>
+      {latestPart.isDraft && <DraftBadge placement="edge" />}
+      <a
+        href={`/blog/${latestPart.slug}`}
+        class="pointer-events-auto relative z-10 mt-1 line-clamp-2 text-sm text-fg-secondary transition-colors duration-fast ease-standard hover:text-fg"
+      >
+        {latestPart.title}
+      </a>
+      <time
+        datetime={latestDate.datetime}
+        class="mt-1 block text-xs text-fg-subtle"
+      >
+        {latestDate.label}
+      </time>
+    </div>
+  </div>
+</article>

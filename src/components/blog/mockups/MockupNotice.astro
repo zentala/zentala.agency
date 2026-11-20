@@ -1,0 +1,28 @@
+---
+import MockupDevLabel from './MockupDevLabel.astro'
+
+/** Dev-only band at the top of a mockup page: which decision it shows and where the real page is. */
+interface Props {
+  decision: string
+  realHref: string
+}
+
+const { decision, realHref } = Astro.props as Props
+---
+
+<section class="section-full">
+  <div class="container-bordered">
+    <p
+      class="px-responsive flex flex-wrap items-center gap-x-3 gap-y-1 py-3 text-sm text-fg-secondary"
+    >
+      <MockupDevLabel>Mockup</MockupDevLabel>
+      <span>
+        Mockup of decision {decision} &mdash; <code>{realHref}</code> is
+        unchanged; compare at
+        <a href={realHref} class="text-accent hover:text-accent-hover">
+          {realHref}
+        </a>
+      </span>
+    </p>
+  </div>
+</section>

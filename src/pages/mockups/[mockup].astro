@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { MOCKUPS, type MockupName } from '@/components/blog/mockups/registry'
+
+/**
+ * Dev-only mockups at /mockups/<name>. getStaticPaths returns nothing in a
+ * production build, so no mockup ships; an unknown name is a 404.
+ * The list lives in the registry next to the mockup components.
+ */
+export function getStaticPaths() {
+  if (!import.meta.env.DEV) return []
+  return Object.keys(MOCKUPS).map((mockup) => ({ params: { mockup } }))
+}
+
+const { mockup } = Astro.params as { mockup: MockupName }
+const { title, Component } = MOCKUPS[mockup]
+---
+
+<Layout title={title} noindex>
+  <Component />
+</Layout>

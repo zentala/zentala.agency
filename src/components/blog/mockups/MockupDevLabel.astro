@@ -1,0 +1,24 @@
+---
+/**
+ * Small dev-only label for mockup pages: marks draft copy or a mockup note.
+ * Mockup pages exist only in the dev server, so this never ships.
+ */
+---
+
+<span class="mockup-dev-label"><slot /></span>
+
+<style>
+  .mockup-dev-label {
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px solid color-mix(in srgb, var(--color-warn) 40%, transparent);
+    border-radius: var(--radius-sm);
+    color: var(--color-warn);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+</style>
