@@ -1,0 +1,42 @@
+---
+/**
+ * The one call to action of the sketch: a heading, one sentence and one neutral
+ * Button (outlined, chevron that nudges). Left-aligned on the logo edge like the
+ * section headers, as a plain block so no extra line is drawn.
+ */
+import Button from '@/components/Button.astro'
+import { CAL_URL, CTA } from './copy'
+---
+
+<section class="section-full" id="cta">
+  <div class="container-bordered">
+    <div class="cap-cta padding-responsive-md">
+      <h2 class="cap-cta__title">{CTA.headline}</h2>
+      <p class="cap-cta__text">{CTA.subhead}</p>
+      <div class="cap-cta__action">
+        <Button href={CAL_URL} text={CTA.button} variant="primary" target="_blank" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cap-cta__title {
+    color: var(--color-text);
+    font-size: var(--text-h2);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .cap-cta__text {
+    margin-top: 1rem;
+    max-width: 56ch;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lead);
+    line-height: 1.6;
+  }
+
+  .cap-cta__action {
+    margin-top: 2rem;
+  }
+</style>

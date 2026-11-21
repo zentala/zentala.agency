@@ -9,6 +9,8 @@ interface Props {
   name: string
   consequence: string
   recommended?: boolean
+  /** Short neutral note on the right, for example the owner's earlier pick. */
+  status?: string
   /** Compact side padding: the bar hangs left of the content column (S1, option B). */
   hang?: boolean
 }
@@ -19,6 +21,7 @@ const {
   name,
   consequence,
   recommended = false,
+  status,
   hang = false,
 } = Astro.props
 ---
@@ -39,6 +42,7 @@ const {
           <p class="option-bar__pick text-label uppercase">Rekomendowana</p>
         )
       }
+      {status && <p class="option-bar__status text-label uppercase">{status}</p>}
     </div>
   </div>
 </section>
@@ -89,5 +93,9 @@ const {
 
   .option-bar__pick {
     color: var(--color-accent);
+  }
+
+  .option-bar__status {
+    color: var(--color-text-muted);
   }
 </style>

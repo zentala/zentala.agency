@@ -1,0 +1,89 @@
+---
+/**
+ * The 18 old capability cards condensed into six areas under the umbrella, each
+ * linking to the closest existing page. A Polish dev line under each area names
+ * the old cards it absorbs, so the owner can check that nothing was dropped. A
+ * body the owner has not confirmed carries the dev-only marker under it.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import CardContainer from '@/components/cards/CardContainer.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import Tag from '@/components/primitives/Tag.astro'
+import { AREAS } from './copy'
+import { CONFIRM_LABEL } from './notes'
+---
+
+<Section id="areas">
+  <SectionHeader headline={AREAS.headline} subhead={AREAS.subhead} />
+  <div class="line-grid">
+    {
+      AREAS.items.map((area) => (
+        <CardContainer href={area.href}>
+          <div class="area">
+            <h3 class="area__title">{area.title}</h3>
+            <p class="area__body">{area.body}</p>
+            {area.unconfirmed && (
+              <p class="area__confirm">
+                <Tag theme="label" text={CONFIRM_LABEL} />
+              </p>
+            )}
+            <p class="area__link">
+              <span>{area.linkLabel}</span>
+              <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+            </p>
+            <p class="area__dev">{area.devNote}</p>
+          </div>
+        </CardContainer>
+      ))
+    }
+  </div>
+</Section>
+
+<style lang="scss">
+  @use '../../styles/components/cards' as *;
+
+  .area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .area__title {
+    @extend %card-title-medium;
+  }
+
+  .area__body {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .area__confirm {
+    margin-top: 0.75rem;
+  }
+
+  .area__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  :global(a:hover) .area__link,
+  :global(a:focus-visible) .area__link {
+    color: var(--color-text);
+  }
+
+  /* Owner-facing note: plain quiet text, no rule or box (a box in a cell dangles). */
+  .area__dev {
+    margin-top: 0.75rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+</style>

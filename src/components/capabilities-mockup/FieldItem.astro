@@ -1,0 +1,45 @@
+---
+/**
+ * One breadth field of the T-shape: the field name and a short detail line,
+ * plus the dev-only marker when the owner has not confirmed the detail yet.
+ */
+import Tag from '@/components/primitives/Tag.astro'
+import type { Field } from './copy'
+import { CONFIRM_LABEL } from './notes'
+
+type Props = Field
+
+const { name, detail, unconfirmed } = Astro.props
+---
+
+<div class="field-item">
+  <h3 class="field-item__name">{name}</h3>
+  <p class="field-item__detail">{detail}</p>
+  {
+    unconfirmed && (
+      <p class="field-item__confirm">
+        <Tag theme="label" text={CONFIRM_LABEL} />
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .field-item__name {
+    color: var(--color-text);
+    font-size: var(--text-lead);
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .field-item__detail {
+    margin-top: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .field-item__confirm {
+    margin-top: 0.75rem;
+  }
+</style>

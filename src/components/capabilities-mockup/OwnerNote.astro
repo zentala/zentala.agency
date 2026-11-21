@@ -1,0 +1,96 @@
+---
+/**
+ * Dev-only band at the top of /mockups/capabilities: what the sketch is, what
+ * to compare (links to the two questions) and where the real page is. Polish,
+ * for the owner; nothing here is site copy.
+ */
+import MockupDevLabel from '@/components/blog/mockups/MockupDevLabel.astro'
+import { OWNER_NOTE, QUESTION_INDEX, REAL_PAGE } from './notes'
+---
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="owner-note padding-responsive-md">
+      <p><MockupDevLabel>Szkic</MockupDevLabel></p>
+      <p class="owner-note__title">{OWNER_NOTE.title}</p>
+      <p class="owner-note__text">{OWNER_NOTE.intro}</p>
+      <p class="owner-note__text">{OWNER_NOTE.compare}</p>
+      <ul class="owner-note__links">
+        {
+          QUESTION_INDEX.map((item) => (
+            <li>
+              <a href={`#board-${item.id.toLowerCase()}`}>
+                <span class="owner-note__id">{item.id}</span>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={REAL_PAGE}>
+            <span class="owner-note__id">Teraz</span>
+            {REAL_PAGE}
+          </a>
+        </li>
+      </ul>
+      <p class="owner-note__open">{OWNER_NOTE.open}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .owner-note {
+    background-color: var(--color-surface-raised);
+  }
+
+  .owner-note__title {
+    margin-top: 1rem;
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .owner-note__text {
+    margin-top: 0.75rem;
+    max-width: 72ch;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .owner-note__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-top: 1.25rem;
+    font-size: var(--text-sm);
+  }
+
+  .owner-note__links a {
+    color: var(--color-text-muted);
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .owner-note__links a:hover,
+  .owner-note__links a:focus-visible {
+    color: var(--color-text);
+  }
+
+  .owner-note__id {
+    margin-right: 0.5rem;
+    color: var(--color-accent);
+  }
+
+  .owner-note__open {
+    margin-top: 1.25rem;
+    max-width: 72ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  /* Index links land below the fixed site header. */
+  :global([id^='board-']) {
+    scroll-margin-top: 6rem;
+  }
+</style>

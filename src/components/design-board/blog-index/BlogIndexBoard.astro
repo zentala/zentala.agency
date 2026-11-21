@@ -17,16 +17,16 @@ const B1 = {
   id: 'B1',
   question: 'Jak ma być zbudowana strona /blog?',
   recommendation:
-    'C: siatka postów z generowanymi okładkami i komórką archiwum, serie niżej. D warto wybrać, jeśli najnowszy post ma dostać wyraźnie więcej miejsca.',
-  note: 'Na 390 px każda opcja układa się w jedną kolumnę: posty jeden pod drugim, potem archiwum, potem serie; okładki maleją do 96 px. W B, C i D nagłówki sekcji mają 44 px wysokości. Komórki mają znów pełny odstęp od góry, taki jak z boków; proporcje i położenie nagłówków rozstrzyga pytanie S1.',
+    'E: wybrana opcja C z trzema zmianami: serie też mają okładki, pod nazwą serii stoi krótki opis, a liczba części ma ikonę. Do potwierdzenia.',
+  note: 'Na 390 px każda opcja układa się w jedną kolumnę: posty jeden pod drugim, potem archiwum, potem serie; okładki maleją do 96 px. W B, C i D nagłówki sekcji mają 44 px wysokości. Komórki mają znów pełny odstęp od góry, taki jak z boków; proporcje i położenie nagłówków rozstrzyga pytanie S1. W E wiersze serii wyglądają jak w B2-E.',
 }
 
 const B2 = {
   id: 'B2',
   question: 'Jak ma wyglądać blok jednej serii?',
   recommendation:
-    'D: numer części po lewej, tytuł, data po prawej; "Start" stoi w pierwszym wierszu, a nazwa serii i liczba części w nagłówku.',
-  note: 'Każda opcja pokazuje trzy prawdziwe serie obok siebie. W wąskiej komórce (poniżej ok. 340 px) data z prawej znika, a data z lewej przechodzi nad tytuł.',
+    'E: wybrana opcja D bez osobnej kolumny statusu: znaczek (ikona i słowo albo ikona i data) stoi zaraz za tytułem. F to ten sam układ w samych szarościach, gdyby kolory z E były jeszcze za mocne.',
+  note: 'Każda opcja pokazuje trzy prawdziwe serie obok siebie. W wąskiej komórce (poniżej ok. 340 px) data z prawej znika, a data z lewej przechodzi nad tytuł. W danych bloga są trzy stany części: opublikowana, szkic (Draft) i do recenzji (Review); części planowanych nie ma. Na produkcji widać tylko opublikowane, więc każdy wiersz kończy się tam datą. W E i F znaczek stoi w tekście, zaraz za ostatnim słowem tytułu, więc tytuł ma całą szerokość wiersza. Długie tytuły nadal łamią się na 2, czasem 3 linie; gdy znaczek nie mieści się w linii, przechodzi w całości do następnej, przy lewej krawędzi tytułu.',
 }
 ---
 
@@ -54,7 +54,7 @@ const B2 = {
     letter="C"
     name="To samo z generowanymi okładkami"
     consequence="Każdy post dostaje okładkę wyliczoną z adresu (plan z linii siatki, numer części w największym polu); strona jest wyższa o 144 px na rząd."
-    recommended
+    status="Wybrana, tu bez zmian"
   />
   <IndexGrid data={data} covers />
 
@@ -65,6 +65,15 @@ const B2 = {
     consequence="Najnowszy post zajmuje dwie kolumny z dużą okładką; w siatce mieszczą się 4 posty zamiast 5 i komórka archiwum."
   />
   <IndexGrid data={data} covers featured />
+
+  <OptionBar
+    questionId="B1"
+    letter="E"
+    name="C ze zmianami: serie z okładką, opisem i ikoną przy liczbie części"
+    consequence='Posty jak w C. Każda seria dostaje okładkę wyliczoną z adresu serii, krótki opis pod nazwą i ikonę przy liczbie części; "Start" przechodzi z pierwszego wiersza do tej samej linii co liczba części. Blok serii jest wyższy o okładkę (144 px) i opis.'
+    recommended
+  />
+  <IndexGrid data={data} covers seriesBadges />
 
   <BoardQuestion {...B2} />
 
@@ -109,11 +118,36 @@ const B2 = {
     letter="D"
     name="Numer, tytuł i data w jednej tabeli"
     consequence="Kolejność po lewej, data po prawej; status zastępuje datę tylko tam, gdzie coś znaczy (Start, Draft)."
-    recommended
+    status="Wybrana, tu bez zmian"
   />
   <section class="section-full">
     <div class="container-bordered">
       <SeriesRow series={data.series} variant="combined" />
+    </div>
+  </section>
+
+  <OptionBar
+    questionId="B2"
+    letter="E"
+    name="D ze znaczkiem zaraz za tytułem, delikatne kolory"
+    consequence="Opublikowana część: ikona kalendarza i data w szarości tabeli. Szkic: ołówek i Draft w zgaszonym morskim. Do recenzji: oko i Review w zgaszonym niebieskim. Bez wypełnienia i ramki, tym samym krojem co tytuł; osobnej kolumny nie ma."
+    recommended
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="badges" palette="tint" />
+    </div>
+  </section>
+
+  <OptionBar
+    questionId="B2"
+    letter="F"
+    name="To samo w samych szarościach"
+    consequence="Układ jak w E, bez kolorów: stan odróżnia ikona i słowo. Szkic jest w szarości tabeli, Review o stopień jaśniejszy. Najspokojniejsza wersja, ale stan trudniej wyłapać jednym spojrzeniem."
+  />
+  <section class="section-full">
+    <div class="container-bordered">
+      <SeriesRow series={data.series} variant="badges" palette="neutral" />
     </div>
   </section>
 </div>

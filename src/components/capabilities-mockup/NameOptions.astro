@@ -1,0 +1,141 @@
+---
+/**
+ * Question N1 (dev only): the three umbrella-name candidates as one row of grid
+ * cells. Picking a cell writes its name into every `[data-umbrella-name]` on the
+ * page, so the owner compares each name in the real page header.
+ */
+import BoardQuestion from '@/components/design-board/blog-index/BoardQuestion.astro'
+import { N1, NAME_OPTIONS } from './notes'
+
+interface Props {
+  /** The name the page header shows on load. */
+  current: string
+}
+
+const { current } = Astro.props
+---
+
+<BoardQuestion {...N1} />
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="line-grid name-options">
+      {
+        NAME_OPTIONS.map((option) => (
+          <div class="name-option cell-interactive">
+            <p class="name-option__id">
+              {N1.id} <span class="name-option__letter">{option.letter}</span>
+            </p>
+            <button
+              type="button"
+              class="name-option__pick"
+              data-name-pick={option.name}
+              aria-pressed={option.name === current ? 'true' : 'false'}
+            >
+              {option.name}
+            </button>
+            <p class="name-option__consequence">{option.consequence}</p>
+            <p class="name-option__tags">
+              {option.recommended && (
+                <span class="name-option__pick-label">Rekomendowana</span>
+              )}
+              <span class="name-option__shown">W tytule strony</span>
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const picks = document.querySelectorAll<HTMLButtonElement>('[data-name-pick]')
+  const targets = document.querySelectorAll('[data-umbrella-name]')
+  picks.forEach((pick) =>
+    pick.addEventListener('click', () => {
+      targets.forEach((target) => (target.textContent = pick.dataset.namePick ?? ''))
+      picks.forEach((other) =>
+        other.setAttribute('aria-pressed', String(other === pick)),
+      )
+    }),
+  )
+</script>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .name-options {
+    --cols-wide: 3;
+    --cols-medium: 3;
+    --cols-narrow: 1;
+  }
+
+  .name-option {
+    @include padding-responsive('md');
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .name-option__id {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+  }
+
+  .name-option__letter {
+    margin-left: 0.25rem;
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  /* The button label is the name; its ::before stretches the click target over the cell. */
+  .name-option__pick {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+    text-align: left;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  .name-option__consequence {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+  }
+
+  .name-option__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin-top: auto;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .name-option__pick-label {
+    color: var(--color-accent);
+  }
+
+  .name-option__shown {
+    display: none;
+    color: var(--color-text-secondary);
+  }
+
+  .name-option:has([aria-pressed='true']) .name-option__shown {
+    display: inline;
+  }
+</style>

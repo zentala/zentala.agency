@@ -1,0 +1,92 @@
+---
+/**
+ * "What you get": three linked cells, each a claim plus one real example that
+ * backs it. No icons and no numbers: the example line is what sets a cell apart.
+ * An example the owner has not confirmed carries the dev-only marker above it,
+ * so the example lines stay on one baseline across the row.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import CardContainer from '@/components/cards/CardContainer.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import Tag from '@/components/primitives/Tag.astro'
+import { OUTCOMES } from './copy'
+import { CONFIRM_LABEL } from './notes'
+---
+
+<Section id="what-you-get">
+  <SectionHeader headline={OUTCOMES.headline} subhead={OUTCOMES.subhead} />
+  <div class="line-grid outcomes">
+    {
+      OUTCOMES.items.map((item) => (
+        <CardContainer href={item.href}>
+          <div class="outcome">
+            <h3 class="outcome__title">{item.title}</h3>
+            <p class="outcome__body">{item.body}</p>
+            <div class="outcome__foot">
+              {item.unconfirmed && (
+                <p class="outcome__confirm">
+                  <Tag theme="label" text={CONFIRM_LABEL} />
+                </p>
+              )}
+              <p class="outcome__proof">
+                {item.proof}&nbsp;<SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+              </p>
+            </div>
+          </div>
+        </CardContainer>
+      ))
+    }
+  </div>
+</Section>
+
+<style lang="scss">
+  @use '../../styles/components/cards' as *;
+
+  .outcomes {
+    --cols-wide: 3;
+    --cols-medium: 3;
+    --cols-narrow: 1;
+  }
+
+  .outcome {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .outcome__title {
+    @extend %card-title-medium;
+  }
+
+  .outcome__body {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .outcome__foot {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .outcome__confirm {
+    margin-bottom: 0.5rem;
+  }
+
+  /* The chevron follows the last word, whether the line wraps or not. */
+  .outcome__proof {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.45;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .outcome__proof :global(.site-icon) {
+    vertical-align: -0.2em;
+  }
+
+  :global(a:hover) .outcome__proof,
+  :global(a:focus-visible) .outcome__proof {
+    color: var(--color-text);
+  }
+</style>

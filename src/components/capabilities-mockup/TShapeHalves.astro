@@ -1,0 +1,79 @@
+---
+/**
+ * T1, option B: the same breadth and depth content as two halves of one row
+ * (breadth left, depth right), stacked at 770px and below. Items inside a half
+ * are separated by spacing only, so the half stays one cell with one set of lines.
+ */
+import FieldItem from './FieldItem.astro'
+import StackItem from './StackItem.astro'
+import { TSHAPE } from './copy'
+---
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="line-grid t-halves">
+      <div class="t-half">
+        <p class="t-half__label">{TSHAPE.breadth.label}</p>
+        <p class="t-half__caption">{TSHAPE.breadth.caption}</p>
+        <ul class="t-half__list">
+          {
+            TSHAPE.fields.map((field) => (
+              <li>
+                <FieldItem {...field} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="t-half">
+        <p class="t-half__label">{TSHAPE.depth.label}</p>
+        <p class="t-half__caption">{TSHAPE.depth.caption}</p>
+        <ul class="t-half__list">
+          {
+            TSHAPE.stack.map((layer) => (
+              <li>
+                <StackItem {...layer} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .t-halves {
+    --cols-wide: 2;
+    --cols-medium: 2;
+    --cols-narrow: 1;
+  }
+
+  .t-half {
+    @include padding-responsive('md');
+  }
+
+  .t-half__label {
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .t-half__caption {
+    margin-top: 0.5rem;
+    max-width: 44ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+  }
+
+  .t-half__list {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+</style>

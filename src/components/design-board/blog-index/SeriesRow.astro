@@ -1,15 +1,20 @@
 ---
 import SeriesCard from '@/components/cards/SeriesCard.astro'
+import SeriesBlock from './SeriesBlock.astro'
 import SeriesList from './SeriesList.astro'
 import type { BoardSeries } from './data'
 
-/** The series of the blog side by side, three per row, in one presentation. */
+/**
+ * The series of the blog side by side, three per row, in one presentation.
+ * `badges` is the owner's pick with his changes; `palette` sets its badge colours.
+ */
 interface Props {
   series: BoardSeries[]
-  variant: 'card' | 'date' | 'number' | 'combined'
+  variant: 'card' | 'date' | 'number' | 'combined' | 'badges'
+  palette?: 'tint' | 'neutral'
 }
 
-const { series, variant } = Astro.props
+const { series, variant, palette } = Astro.props
 ---
 
 <div class="line-grid line-grid--fill-last">
@@ -24,6 +29,8 @@ const { series, variant } = Astro.props
           isFresh={item.isFresh}
           hiddenInProduction={item.hiddenInProduction}
         />
+      ) : variant === 'badges' ? (
+        <SeriesBlock series={item} palette={palette} />
       ) : (
         <SeriesList series={item} variant={variant} />
       ),
