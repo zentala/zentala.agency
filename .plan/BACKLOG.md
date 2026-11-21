@@ -5,6 +5,51 @@ Bugs and small tasks found in passing. Entry format:
 
 ## Open
 
+- [ ] **Variant selectors and oversized shared files after wave 9** — the dev variant switcher's
+  `html[data-v-*]` rules (section header, card hover) ship in production CSS as dead selectors until
+  the owner picks defaults; `src/components/Header.astro` (318 lines) and `src/styles/variables.scss`
+  (527 lines) grew past the 250-line limit. After the picks: delete the losing variants and their
+  selectors, split the header's nav-icon and the card-hover blocks into partials. Found by the E007
+  wave 9 verifier, 2026-11-21. #task (Medium, 3)
+
+- [ ] **Outgoing links are never checked: a dead external link can sit on the site unnoticed** —
+  owner, 2026-11-21: a broken link on the site is unacceptable. Needed: a check of every outgoing
+  link at build time; a dead link is rendered as plain text (disabled) and reported (ntfy; note
+  `ntfy.internal` is LAN-only, so a GitHub Actions run cannot reach it and the check must also run
+  on a machine inside the LAN); a monitoring page listing every outgoing link with its last status.
+  Planned as E007-T36. #feature (High, 8)
+
+- [ ] **Posts, categories and series have no icons of their own** — owner idea, 2026-11-21: each
+  post, category and series could carry an icon like the capabilities cards (a factory for the
+  software-factory tour, a contract or handshake for the file-based lease). Needs an `icon` field
+  resolved through the icon map. Shown first on the design board (E007-T31). #idea (Medium, 5)
+
+- [ ] **Header is tall on every scroll position** — owner idea, 2026-11-21: tall at the top of
+  the page, shrinking to about 61 px on scroll, nav items with icons; optionally a full-screen
+  first view on chosen pages as a system feature. Shown first on the design board (E007-T33).
+  #idea (Medium, 5)
+
+- [ ] **Browser autofill makes form fields unreadable** — autofilled inputs get a light blue
+  background with white text. Style `:-webkit-autofill` (inset box-shadow plus text fill colour)
+  in the shared field. Found by the owner 2026-11-21. Fixed with the F1 field in E007-T32.
+  #bug (Medium, 1)
+
+- [ ] **Idea: rebuild /capabilities around product engineering** — the page lists many
+  separate services and reads as scattered. Proposed frame: one umbrella (working names:
+  "Digital Product Engineering", "Software & IoT Product Engineering"), with a T-shape:
+  the horizontal bar is breadth (UX, electronics, robotics, IoT, cloud, DevEx), the vertical
+  bar is depth (one TypeScript stack used to deliver all of it). What a client gets: products
+  built for people, problems solved through products, product and project thinking. Not
+  scheduled; owner idea of 2026-11-21. A dev-only design sketch is requested first
+  (`/mockups/capabilities`); related open items: /capabilities canonical URL and an IoT
+  sub-page (E007 HANDOFF, "Backlog after the design settles"). #idea (High, ?)
+
+- [ ] **Idea: "Support Desk Live", multi-role support-chat demo and workshop game** — customers,
+  consultants and a supervisor in one chat with an AI first line, moderation of employee messages and
+  supervisor escalation; client demo and live event game. Dictated 2026-11-19 in the agent-demo session;
+  proposal and verbatim dictation: [backlog/2026-11-19-support-desk-live-multi-role-demo.md](backlog/2026-11-19-support-desk-live-multi-role-demo.md).
+  (Medium, ?)
+
 - [ ] **Strona autora `/about/me` nie istnieje — każdy link z nazwiskiem prowadzi
   w 404** — `src/content/authors/zentala.yaml` miał `profileUrl: /about/me`,
   a w `src/pages/` są tylko `/about` i `/about/capabilities`. Doraźnie
@@ -33,7 +78,7 @@ Bugs and small tasks found in passing. Entry format:
   homepage, stopka — dalej jest samym tekstem. Do przejrzenia sekcja po sekcji.
   (Medium, 5)
 
-- [x] **E2E na CI: 50 testów failed, przebieg trwa 40 minut** — run
+- [ ] **E2E na CI: 50 testów failed, przebieg trwa 40 minut** — run
   [`32970968295`](https://github.com/zentala/zentala.agency/actions/runs/32970968295)
   (commit `4ead727`, 2026-08-26) skończył się `failure` po ~40 min, `50 failed`.
   Trzy skupiska, wszystkie wyglądają na realne, nie na infrastrukturę:
@@ -46,38 +91,6 @@ Bugs and small tasks found in passing. Entry format:
   z huba albo z zewnętrznego CDN-u ładowanego na stronie).
   Suita jest czerwona od dawna — dopóki jest, CI nie mówi nic o żadnej nowej
   zmianie. (Importance: High, Points: 8)
-
-  **Root cause potwierdzony 2026-09-14 (workflow standaryzacja):**
-  `#intro`/`#positioning`/`#focus` nie są flaky — są **martwe na pewno**, bo
-  `src/pages/index.astro:584-618` ma te sekcje w całości zakomentowane
-  (`<!-- <Section id="intro">...  -->`) od przebudowy homepage pod `vision.md`.
-  `tests/e2e/bento-showcase.spec.ts` testuje DOM, którego strona już nie
-  renderuje. To nie jest bug produkcyjny — to zaległy test do usunięcia lub
-  przepisania pod aktualny homepage (`BentoAboutMe` + `#cta`).
-  Fix: (a) usunąć `bento-showcase.spec.ts` albo przepisać go pod obecną
-  strukturę strony (`BentoAboutMe`, `Section#cta`); (b) `blog-post.spec.ts`
-  mierzy wysokość hero przez `boundingBox()` z tolerancją ±2px po
-  `waitForLoadState('networkidle')` — realny wyścig z ładowaniem fontów/layout
-  shift, nie infrastruktura; zamienić na CSS-based assertion (np. sprawdzić
-  wartość `clamp()`/CSS var zamiast zmierzonego px) albo dodać
-  `page.waitForFunction` na ustabilizowanie fontów przed pomiarem.
-  Dodatkowo: `playwright.config.ts` uruchamia 3 przeglądarki
-  (chromium/firefox/webkit) na 1 workerze w CI — to bez błędów i tak trwa
-  długo; rozważyć sharding (`--shard`) albo ograniczenie CI do chromium +
-  webkit tylko dla krytycznych speców.
-
-  **Naprawione 2026-09-15:** `bento-showcase.spec.ts` przepisany pod obecny
-  DOM homepage (`#bento-about-me` z `BentoAboutMe` + `#cta`), stary test
-  celujący w usunięte `#intro`/`#positioning`/`#focus` usunięty.
-  `blog-post.spec.ts`: usunięto 5 martwych testów `scrollIndicator`/`chevron`
-  (ta funkcja też została w całości usunięta z `[postSlug].astro`, nie ma już
-  `.blog-hero__scroll-indicator` ani `.blog-hero__chevron-*` w markupie);
-  zostały 2 testy wysokości hero, tolerancja podniesiona z ±2px do ±50px i
-  dodano `document.fonts.ready` przed pomiarem, żeby nie łapać wyścigu z
-  ładowaniem fontów. Zweryfikowane lokalnie: `npx playwright test
-  tests/e2e/bento-showcase.spec.ts tests/e2e/blog-post.spec.ts --project=chromium
-  --project=firefox --project=webkit` → 9 passed po `npm run build`.
-
 - [ ] **Workflow `E2E Tests` nie ma żadnego limitu czasu — może wisieć 6 godzin** —
   `.github/workflows/test.yml` nie deklaruje `timeout-minutes` na jobie `test`,
   więc obowiązuje domyślny limit GitHuba: 360 minut. Zaobserwowane 2026-08-26:
@@ -333,3 +346,8 @@ Bugs and small tasks found in passing. Entry format:
 
 - [ ] **Widok roboczy serii przy artykułach, nie w osobnym MD** — Paweł (2026-09-06): „potrzebuję planu contentu, który byłby na stronie, na której jest ten content (…) widzieć twój feedback w oknie z artykułem (…) zaznaczać tekst i komentować fragmenty, jak w Wordzie/Google Docs". Zakres: (1) na `zentala.internal` (dev) każdy wpis z `src/content/blog/` renderuje obok siebie **sidecar agenta** `src/content/blog/<slug>.review.md` (gotowość, co brakuje, propozycja tytułu/hooka, plan publikacji — to, co dziś siedzi w `~/.claude/skills/finanse/ref/plan-contentu-2026-2027.md` i `reports/2026-09-05-A-*.md`); (2) zaznaczenie fragmentu + komentarz Pawła zapisywany do `.plan/reviews/<slug>.json` (anchor = cytat + offset), czytany przez agenta w następnej sesji; (3) strona `/plan` z listą wpisów × status (szkic / w batchu / zaplanowany na datę / wydany) i licznikiem 4–8/mies. Komponent selekcja+komentarz idzie do **`ui-internal`** (reguła design-systemu), bo ten sam widok potrzebuje `zntl-portal` (backlog: „Ocenianie postów: gwiazdki + komentarz do agenta", High 13). Prior art: `mdview.internal` (repo `md-view`), KB goals 079/080 (agent-hq: pętla komentarza, showmd MDX viewer). Nie budować drugiego viewera — rozszerzyć istniejący. (High, 13 — split: sidecar render 3 / selekcja+komentarz w ui-internal 8 / strona plan 2)
   - **Doprecyzowanie Pawła (2026-09-06 13:00):** widok roboczy ma być **osobny** — nie `mdview.internal`, nie w `log.internal` (log.internal = pokazywanie jego tekstu i podglądu demo). Propozycja: nowa domena `content.internal` (albo `review.zentala.internal`) serwowana z repo zentala.agency, tryb dev.
+
+- [ ] **Add AGENTS.md (with CLAUDE.md = `@AGENTS.md`) stating: all site content is in English; the hub chat on this site is English by default (instructions, greeting, prompts) and replies in the visitor's language.** Operator request 2026-10-19 after the chat greeted in Polish. Also: adopt `@internal/hub-chat-astro` + `<ClientRouter />` so the chat survives navigation (instructions: cloudflare repo `.claude/skills/hub-chat-embed`, section "Astro sites: package + ClientRouter"), and make the header nav compress cleanly when the chat side panel pushes the page at ~1200 px. (Importance: High, Points: 5)
+
+- [ ] **Software factory article (dictation 2026-11-16)** → planned as [E006](./epics/E006-2026-11-16-software-factory-article/PLAN.md); status in [epics/INDEX.md](./epics/INDEX.md), operator decisions in [DECIDE.md](./DECIDE.md). The source brief stays untracked until E006-T1 gives it a private home.
+- [ ] **This repository is public and `.plan/` is tracked (59 files).** Found 2026-11-16 while planning E006. Decide whether `.plan/` moves to a private nested repository; until then nothing private may be written under `.plan/`, and `git add .` is unsafe here. Also: `src/content/blog/sdlc-jako-petla-ktora-automatyzujesz.md` (tracked, draft) carries private machine paths in its source links. (Importance: High, Points: 5)

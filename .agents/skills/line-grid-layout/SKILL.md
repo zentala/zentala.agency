@@ -55,7 +55,7 @@ Primitives and props are tabulated in DESIGN.md section 4 ("Primitives and props
 
 ## Show it in the gallery and to the owner
 
-- Every new or changed component goes into the gallery at `/demo` (dev only; owner link http://zentala.internal/demo) in the same change: a row in `src/components/demo/manifest.ts` (or `groups/`), and a `<GalleryEntry id="...">` with one example per variant and realistic props in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails when a component file has no import, no row or no entry; an exemption needs a reason in its `EXEMPT` map.
+- Every new or changed component goes into the gallery at `/demo` (dev only; owner link http://agency.internal/demo) in the same change: a row in `src/components/demo/manifest.ts` (or `groups/`), and a `<GalleryEntry id="...">` with one example per variant and realistic props in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails when a component file has no import, no row or no entry; an exemption needs a reason in its `EXEMPT` map.
 - Entry layout: cells (`GalleryCell`, or cards directly) go in the entry's `.line-grid`; `cols={3}` closes the last row, so keep its children `div`s. Standalone blocks and grids (`line-block`, `SectionGrid`, `SectionBento`) use `bare`. A component that is a section of its own (`PostNav`) goes in the `after` slot. Never nest a `Section` or another grid with its own lines inside a cell: the lines double.
 - For a new look, show the owner a mockup first at `/mockups/<name>` (dev only, `src/pages/mockups/[mockup].astro`). The real page changes only after the owner accepts it.
 

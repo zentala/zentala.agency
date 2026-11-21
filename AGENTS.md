@@ -40,7 +40,7 @@ just test       # unit tests        just typecheck
 - Check the render at 1920, 1450, 1280, 1024, 768 and 390 and look at it; green tests do not prove lines. The guard runs a subset for speed: 1920, 1450, 768 and 390 on every route, 1280 on the four core routes, and never 1024.
 - Dev-only routes (`/demo`, `/mockups/*`) and drafts (`published: false`) are not in `dist/`, so the guard cannot see them. Check them with `node scripts/visual-check.mjs <url> [widths...]` against the dev server (default widths: all six above); it shares `tests/e2e/lib/line-analysis.ts` with the guard. It needs Node 22.6 or newer (`.nvmrc` is 22). How to run the guard against a preview and the `astro preview` binding to `[::1]`: DESIGN.md section 9.
 - UI work follows the owner's global UI rules (mockup acceptance, independent visual review).
-- Component gallery: every new or changed component appears at `/demo` (dev only) with its variants, in the same change: add a row to `src/components/demo/manifest.ts` (or a file in `groups/`) and a `<GalleryEntry>` in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails otherwise. Show the owner components at http://zentala.internal/demo.
+- Component gallery: every new or changed component appears at `/demo` (dev only) with its variants, in the same change: add a row to `src/components/demo/manifest.ts` (or a file in `groups/`) and a `<GalleryEntry>` in the matching `src/components/demo/Gallery*.astro`. `tests/unit/component-gallery.test.ts` fails otherwise. Show the owner components at http://agency.internal/demo.
 - Owner-facing mockups live at `/mockups/<name>` (dev only, `src/pages/mockups/[mockup].astro`). The real page changes only after the owner accepts the mockup.
 
 ## Gotchas
@@ -84,7 +84,7 @@ src/
 - **Styling strategy:** quick prototype uses Tailwind classes; complex responsive uses SCSS with the mixins in `variables.scss`; shared styles go to `src/styles/components/`; component-specific styles go in the component's `<style>`.
 - **Naming:** components `PascalCase.astro`, utilities `camelCase.ts`, styles `_kebab-case.scss`, task docs `SCREAMING_SNAKE_CASE.md`.
 - **Config files:** `astro.config.mjs`, `tailwind.config.js`, `src/styles/variables.scss`, `.prettierrc` (single quotes, no semicolons, trailing commas), `.env.example`.
-- **Environment:** Windows 11, PowerShell 7.x, Node per `.nvmrc`, npm.
+- **Environment:** mITX, Fedora Linux, bash, Node per `.nvmrc`, npm (until 2026-11-21: mATX, Windows 11, PowerShell 7.x).
 - Spacing is responsive (16 to 64px) through the mixins and classes described in DESIGN.md section 2.
 
 ## Blog and content
@@ -94,13 +94,13 @@ src/
 - Drafts use `published: false` (visible in dev, absent in production).
 - Never set `published: true` without the owner's separate review. A draft you judge ready gets `review: true` (shown as the Review marker in dev); details in [docs/agents/blog-content.md](docs/agents/blog-content.md).
 
-## Local dev runs as `zentala.internal`, under PM3 — never `localhost:PORT`
+## Local dev runs on mITX as `agency.internal`, under PM3 — never `localhost:PORT`
 
-Three rules, one after the other (owner, 2026-08-26):
+Development moved from mATX (Windows) to mITX (Fedora Linux, also named `server.lan`) on 2026-11-21 (owner). Work on branch `dev`; `main` is the deployed branch (a push to `main` deploys to GitHub Pages, a push to `dev` deploys nothing). Three rules, one after the other (owner, 2026-08-26, domain updated 2026-11-21):
 
-1. **The local site is `http://zentala.internal`.** That is the address of the development copy of zentala.agency on this machine. It is registered in the `internal-domains` registry, proxied by Caddy on port 2080 and resolved through the PAC file. `astro.config.mjs` already allows the host (`vite.server.allowedHosts`).
-2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev` (`node node_modules/astro/astro.js dev --port 4300 --host`, health check on 4300; it injects the Agentation token through the password broker, see DESIGN.md and `pm3.yaml`). Start it with `pm3 start zentala-agency/dev` (that is what `just dev` does), never with a loose `npm run dev` in a shell: an unsupervised dev server dies with its terminal and nothing notices.
-3. **[CRITICAL] Every link handed to the owner is `http://zentala.internal`**, in chat, in a report, in a task file. Never `localhost:4321`, `localhost:4300` or `127.0.0.1:PORT`. A raw `host:port` is for the agent's own `curl` diagnostics only. Astro's startup banner prints `localhost`: do not copy it. If the dev server picked another port because 4300 was taken, that is a bug to fix, not a link to paste.
+1. **The development site is `http://agency.internal`**, served from the clone on mITX. `astro.config.mjs` allows the host (`vite.server.allowedHosts`). The old mATX address `zentala.internal` is retired.
+2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev` (`node node_modules/astro/astro.js dev --port 4300 --host`, health check on 4300, domain `agency.internal`). Start it with `pm3 start zentala-agency/dev` (that is what `just dev` does), never with a loose `npm run dev` in a shell: an unsupervised dev server dies with its terminal and nothing notices. The Agentation toolbar renders without sync on mITX (the Windows password broker that injected its token is not available there).
+3. **[CRITICAL] Every link handed to the owner is `http://agency.internal`**, in chat, in a report, in a task file. Never `localhost:4321`, `localhost:4300` or `127.0.0.1:PORT`. A raw `host:port` is for the agent's own `curl` diagnostics only. Astro's startup banner prints `localhost`: do not copy it. If the dev server picked another port because 4300 was taken, that is a bug to fix, not a link to paste.
 
 ## Git and commit rules
 
@@ -114,6 +114,8 @@ Three rules, one after the other (owner, 2026-08-26):
 <!-- CAVEAT(owner): rules 3 and 4 predate the owner's newer global push and merge decisions; kept unchanged until the owner decides which wins for this public repo. -->
 
 ## Planning
+
+At the start of every session read `.plan/STATE.md` (section "Resume here": where the work stopped, what waits for the owner, what to do with each answer) and `.plan/DECIDE.md`. The private part of `.plan/` is not in this public repository; on mITX it comes from the private Gitea repository `zentala/zentala.agency-plan`.
 
 Work is tracked in `.plan/`: epics in `.plan/epics/` (taskmd usage in [.plan/epics/CLAUDE.md](.plan/epics/CLAUDE.md)), plus `.plan/TASKS.md` and `.plan/BACKLOG.md`. The old `.claude/tasks/` system is legacy, kept for history.
 

@@ -11,7 +11,7 @@ default:
 setup:
     npm ci
 
-# start the dev server under PM3 (http://zentala.internal)
+# start the dev server under PM3 (http://agency.internal on mITX)
 dev:
     pm3 start dev
 

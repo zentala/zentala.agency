@@ -73,7 +73,7 @@ Operator decision, 2026-11-19. An article does **not** go through planning in
 
 1. Write the article straight away in `src/content/blog/` with
    `published: false`.
-2. Show Paweł the working local link, `http://zentala.internal/blog/<slug>/`.
+2. Show Paweł the working local link, `http://agency.internal/blog/<slug>/`.
 3. Iterate on his remarks in the same file until he publishes it.
 
 Planning in `.plan/` is for technical and UX work only, for example a new
