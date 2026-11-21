@@ -1,0 +1,42 @@
+---
+/**
+ * I1, post meta: the owner's pick (E, which in the meta row is the same icon as C)
+ * next to Phosphor Bold and Lucide 2, at today's sizes and at 16 px text with 18 px icons.
+ */
+import BoardCell from './BoardCell.astro'
+import I1MetaRow from './I1MetaRow.astro'
+import { describeBoardIcon, type BoardIconSpec } from './board-icons'
+
+type SetStyle = Omit<BoardIconSpec, 'name' | 'size'>
+
+const STYLES: readonly { option: string; picked?: boolean; style: SetStyle }[] = [
+  { option: 'E = C · Phosphor Regular', picked: true, style: { set: 'ph', weight: 'regular' } },
+  { option: 'Waga z F · Phosphor Bold', style: { set: 'ph', weight: 'bold' } },
+  { option: 'H · Lucide 2', style: { set: 'lucide', stroke: 2 } },
+]
+const ROWS = [
+  { textPx: 14, size: 16, pickedHere: true },
+  { textPx: 16, size: 18, pickedHere: false },
+]
+---
+
+<BoardCell
+  wide
+  heading="Meta wpisu: E, C i Lucide 2 (w meta E i C to ta sama ikona, Phosphor Regular)"
+/>
+{
+  ROWS.map((row) =>
+    STYLES.map((entry) => {
+      const style = { ...entry.style, size: row.size }
+      const picked = entry.picked && row.pickedHere
+      return (
+        <BoardCell
+          option={picked ? `${entry.option} · wybrane` : entry.option}
+          caption={`${describeBoardIcon({ ...style, name: '' })} · tekst ${row.textPx} px`}
+        >
+          <I1MetaRow style={style} textPx={row.textPx} title />
+        </BoardCell>
+      )
+    }),
+  )
+}

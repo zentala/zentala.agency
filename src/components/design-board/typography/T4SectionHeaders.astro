@@ -1,12 +1,12 @@
 ---
 /**
- * T4: compact section headers. Each candidate sits above the same three real post
- * cards (cropped), and its measured height shows what it costs before content starts.
+ * T4: the four section header variants of the one SectionHeader component, each with
+ * an icon and a note on the right, above the same three real post cards (cropped).
+ * The measured height shows what each costs before content starts.
  */
 import PostCard from '@/components/cards/PostCard.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import OptionStrip from './OptionStrip.astro'
-import SectionLabel, { type SectionLabelVariant } from './SectionLabel.astro'
 import TypeQuestion from './TypeQuestion.astro'
 import type { TypographySamples } from './data'
 
@@ -16,62 +16,56 @@ interface Props {
 
 const { samples } = Astro.props
 const { series, posts } = samples
+const SECTION_ICON = 'stack'
 
 const options: {
   key: string
   label: string
   consequence: string
   facts: string
-  variant?: SectionLabelVariant
+  variant: 'a' | 'b' | 'c' | 'd'
 }[] = [
   {
     key: 'A',
-    label: 'Obecny SectionHeader',
+    label: 'Obecny, z ikoną i notką po prawej',
     consequence:
-      'Duży tytuł z podtytułem i pełnym odstępem: najwyraźniejszy, ale zabiera najwięcej wysokości, zanim zacznie się treść.',
-    facts: 'tytuł 36 px · 300 · podtytuł 18 px pod spodem',
+      'Duży tytuł z podtytułem i pełnym odstępem: najwyraźniejszy, ale zabiera najwięcej wysokości, zanim zacznie się treść. Nowe: mała ikona przed tytułem i notka po prawej.',
+    facts: 'tytuł 36 px · 300 · ikona 24 px · podtytuł 18 px',
+    variant: 'a',
   },
   {
     key: 'B',
     label: 'Mała etykieta wersalikami',
     consequence:
-      'Najniższa zwykła belka, szara notka po prawej w tej samej linii. Spokojna, ale nazwę sekcji słabiej widać przy szybkim przewijaniu.',
-    facts: 'etykieta 14 px · 400 · 0,14 em · notka 13 px',
-    variant: 'caps',
+      'Najniższa zwykła belka. Spokojna, ale nazwę sekcji słabiej widać przy szybkim przewijaniu. Podtytuł schodzi do małej szarej linii.',
+    facts: 'etykieta 14 px · 400 · 0,14 em · ikona 16 px',
+    variant: 'b',
   },
   {
     key: 'C',
     label: 'Cienka większa etykieta',
     consequence:
-      'Nazwa sekcji dalej wygląda jak tytuł, tylko cienki i przygaszony, notka po prawej. Trzy razy niższa od obecnej.',
-    facts: 'etykieta 26 px · 300 · przygaszona · notka 13 px',
-    variant: 'thin',
+      'Nazwa sekcji dalej wygląda jak tytuł, tylko cienki i przygaszony. Dużo niższa od obecnej; podtytuł schodzi do małej szarej linii.',
+    facts: 'etykieta 26 px · 300 · przygaszona · ikona 24 px',
+    variant: 'c',
   },
   {
     key: 'D',
     label: 'Etykieta na linii sekcji',
     consequence:
-      'Nazwa i notka siedzą na samej linii siatki i nie zabierają wysokości. Przerywają linię, więc to wyjątek od zasady ciągłych linii.',
-    facts: 'etykieta 14 px · 400 · 0,14 em · na linii',
-    variant: 'on-line',
-  },
-  {
-    key: 'E',
-    label: 'Cienka etykieta z proporcją trzy czwarte',
-    consequence:
-      'Ta sama etykieta co w C, ale odstęp nad nią to trzy czwarte odstępu z boku, jak w komórkach. Proporcja jest dobra, wysokość rośnie prawie dwukrotnie względem C.',
-    facts: 'etykieta 26 px · 300 · góra 48 px przy 64 px z boku',
-    variant: 'thin-roomy',
+      'Nazwa i notka siedzą na samej linii siatki i nie zabierają wysokości. Przerywają linię, podtytuł znika, a tuż pod nagłówkiem strony górna połowa napisu chowa się pod belką.',
+    facts: 'etykieta 14 px · 400 · 0,14 em · ikona 16 px · na linii',
+    variant: 'd',
   },
 ]
 ---
 
 <TypeQuestion
   id="T4"
-  question="Jak ma wyglądać nagłówek sekcji, żeby zajmował mało miejsca?"
+  question="Nagłówek sekcji: cztery warianty jednego komponentu"
   options={options}
-  recommendation="C dla głównych sekcji strony: zostaje hierarchia przy jednej trzeciej wysokości. B dla sekcji drugorzędnych, jeśli potrzebny jest drugi poziom. C ma nad tekstem mniej niż trzy czwarte odstępu z boku: to ten sam wyjątek dla belek co w S1-C, gdzie belka jest paskiem, a nie komórką. Jeśli w S1 wybierzesz D, wybierz tutaj E."
-  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka sekcji; karty pod spodem są przycięte. B i C mają nad tekstem 12 i 18 px przy 64 px z boku; E pokazuje ten sam nagłówek z proporcją z pytania S1."
+  recommendation="C jako domyślny dla zwykłych sekcji, A dla sekcji otwierających stronę sprzedażową (tam mało treści ma dostać dużo miejsca), B dla drugiego poziomu. D zostawiłbym na listy, gdzie liczy się każdy piksel wysokości."
+  note="Wszystkie cztery to teraz jeden komponent SectionHeader z ustawieniem wariantu. Na prawdziwych stronach przełączysz je przyciskiem Warianty w lewym dolnym rogu (wiersz Nagłówek sekcji): najwięcej widać na /about/capabilities/backstage (8 nagłówków), stronach serii i kategorii oraz /contact. Strony /blog, /portfolio i /about/capabilities nie mają dziś żadnego nagłówka sekcji, a strona główna tylko jeden, w bloku z przyciskami na dole. Liczba po prawej to zmierzona wysokość nagłówka; karty pod spodem są przycięte."
 >
   {
     options.map((option) => (
@@ -81,18 +75,17 @@ const options: {
         facts={option.facts}
         measure="wysokość nagłówka sekcji"
       >
-        {option.variant === 'on-line' && <div class="t4-previous" />}
-        {option.variant ? (
-          <SectionLabel
+        {option.variant === 'd' && <div class="t4-previous" />}
+        <div data-tb-cost>
+          <SectionHeader
             variant={option.variant}
-            label={series.title}
-            note={series.note}
+            tag="h3"
+            headline={series.title}
+            subhead={series.tagline}
+            labelIcon={SECTION_ICON}
+            meta={series.note}
           />
-        ) : (
-          <div data-tb-cost>
-            <SectionHeader headline={series.title} subhead={series.tagline} />
-          </div>
-        )}
+        </div>
         <div class="t4-crop">
           <div class="line-grid">
             {posts.map(({ post, partLabel }) => (

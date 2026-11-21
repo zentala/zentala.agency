@@ -1,21 +1,38 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import BoardIcon from '../icons-controls/BoardIcon.astro'
+import BackdropIcon from './BackdropIcon.astro'
+import { textIcon } from './blog-icons'
 
 /**
  * Last cell of the proposed posts grid: a button-like link to the full archive.
  * The archive page does not exist yet, so the demo link stays on the board.
+ * `decorated` adds a small icon top right and a large icon behind the text, and
+ * makes the cell two columns wide where the grid has two columns, so the row closes.
  */
 interface Props {
   postCount: number
   shownCount: number
+  decorated?: boolean
 }
 
-const { postCount, shownCount } = Astro.props
+const { postCount, shownCount, decorated = false } = Astro.props
 const ARCHIVE_HREF = '#archive'
+const ARCHIVE_ICON = 'archive'
+const LABEL_TEXT_PX = 16
 ---
 
-<article class="cell-interactive">
+<article class:list={['cell-interactive', { 'archive-cell--decorated': decorated }]}>
   <a href={ARCHIVE_HREF} class="archive-cell group padding-responsive-md">
+    {decorated && <BackdropIcon name={ARCHIVE_ICON} />}
+    {
+      decorated && (
+        <BoardIcon
+          spec={textIcon(ARCHIVE_ICON, LABEL_TEXT_PX)}
+          class="archive-cell__icon"
+        />
+      )
+    }
     <span class="text-label uppercase text-fg-subtle">Archive</span>
     <span class="archive-cell__action">
       All {postCount} posts
@@ -27,14 +44,37 @@ const ARCHIVE_HREF = '#archive'
   </a>
 </article>
 
-<style>
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
   .archive-cell {
+    position: relative;
+    isolation: isolate;
     display: flex;
     height: 100%;
     min-height: 10rem;
     flex-direction: column;
     justify-content: center;
     gap: 0.5rem;
+  }
+
+  .archive-cell :global(.archive-cell__icon) {
+    align-self: flex-end;
+    margin-bottom: auto;
+    color: var(--color-text-muted);
+  }
+
+  /* The icon takes the top of the column; this keeps the text block centred. */
+  .archive-cell--decorated .archive-cell::after {
+    content: '';
+    margin-top: auto;
+    height: 1.125rem;
+  }
+
+  .archive-cell--decorated {
+    @include medium-only {
+      grid-column: span 2;
+    }
   }
 
   .archive-cell__action {

@@ -1,0 +1,39 @@
+---
+/**
+ * Gallery group "Technology logos": TechLogoWall in both layouts. Hover a logo to see
+ * its brand colour and the wall's inner glow; the warm brands (JavaScript, HTML,
+ * Prettier, Cloudflare) are in the first rows on purpose.
+ */
+import TechLogoWall from '@/components/primitives/TechLogoWall.astro'
+import GalleryEntry from '@/components/demo/GalleryEntry.astro'
+
+const WARM_AND_COOL = [
+  'javascript',
+  'html5',
+  'css3',
+  'typescript',
+  'prettier',
+  'cloudflare',
+  'npm',
+  'claude',
+  'github',
+  'notion',
+  'eslint',
+  'raspberrypi',
+  'sqlite',
+  'solid',
+  'rust',
+  'linux',
+]
+---
+
+<GalleryEntry id="tech-logo-wall" bare>
+  <TechLogoWall logos={WARM_AND_COOL} title="Cells layout, names on hover" />
+  <TechLogoWall
+    logos={WARM_AND_COOL.slice(0, 8)}
+    layout="field"
+    label="always"
+    size={24}
+    title="Field layout, names always shown"
+  />
+</GalleryEntry>

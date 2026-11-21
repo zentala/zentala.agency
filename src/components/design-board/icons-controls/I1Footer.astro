@@ -1,13 +1,15 @@
 ---
 /**
- * I1, context "footer": the real Logo with the three social icons, one full-width
- * row per icon system, laid out like the footer band.
+ * I1, context "footer": the real Logo with the three social marks of the real footer,
+ * laid out like the footer band. Two rows: the footer today and the owner's pick, the
+ * Font Awesome brand marks read from the local iconify packages.
  */
 import Logo from '@/components/Logo.astro'
 import BoardCell from './BoardCell.astro'
 import BoardIcon from './BoardIcon.astro'
 import { describeBoardIcon } from './board-icons'
-import { ICON_SYSTEMS, systemIcon } from './icon-systems'
+import { getSystem, systemIcon } from './icon-systems'
+import { CANDIDATE_SYSTEMS } from '../icon-sets/candidate-systems'
 
 const FOOTER_LOGO_HEIGHT = 44
 const SOCIAL = [
@@ -15,6 +17,15 @@ const SOCIAL = [
   { name: 'github', label: 'GitHub', href: 'https://github.com/zentala' },
   { name: 'email', label: 'Email', href: 'mailto:zentala@gmail.com' },
 ] as const
+
+const ROWS = [
+  { system: getSystem('B'), option: 'B · Obecnie', note: 'stała wysokość 24 px' },
+  {
+    system: CANDIDATE_SYSTEMS[0],
+    option: 'G · Wybrane: Font Awesome',
+    note: 'wysokość 0,75 logo, jak w starej stopce; znaki z lokalnej paczki, bez zestawu z CDN',
+  },
+]
 
 const logoProps = {
   link: '/',
@@ -25,32 +36,28 @@ const logoProps = {
 } as const
 ---
 
-<BoardCell wide heading="Stopka: ikony obok logo (mają pasować wagą do logo)" />
+<BoardCell wide heading="Stopka: znaki obok logo (wybrane: powrót do Font Awesome)" />
 {
-  ICON_SYSTEMS.map((system) => {
+  ROWS.map(({ system, option, note }) => {
     const style = system.contexts.footer
     const icons = SOCIAL.map((item) => ({
       ...item,
       spec: systemIcon(system, 'footer', item.name),
     }))
-    /* The original icons scaled with the logo; the current ones are a fixed 24px. */
-    const scales = system.key !== 'B'
+    /* The Font Awesome marks scale with the logo; the current ones are a fixed 24px. */
+    const scales = style?.set === 'fa'
     return (
       <BoardCell
         wide
-        option={`${system.key} · ${system.label}`}
-        caption={style ? describeBoardIcon({ ...style, name: '' }) : undefined}
+        option={option}
+        caption={style ? `${describeBoardIcon({ ...style, name: '' })} · ${note}` : undefined}
       >
         <div class="footer-logo-social board-footer">
           <div>
             <Logo {...logoProps} />
           </div>
           <div
-            class:list={[
-              'board-footer__icons',
-              `board-footer__icons--${system.key}`,
-              scales && 'board-footer__icons--scaled',
-            ]}
+            class:list={['board-footer__icons', scales && 'board-footer__icons--scaled']}
             style={style ? `--icon-ratio: ${style.size / FOOTER_LOGO_HEIGHT}` : undefined}
           >
             {icons.map(
@@ -91,20 +98,12 @@ const logoProps = {
     }
   }
 
-  .board-footer__icons--scaled :global(.board-icon) {
-    height: calc(var(--logo-size) * var(--icon-ratio));
-    width: auto;
-  }
-
-  /* The original footer drew its icons in gray-300. */
-  .board-footer__icons--A {
-    color: rgb(209 213 219);
-  }
-
-  .board-footer__icons--C,
-  .board-footer__icons--D,
-  .board-footer__icons--E,
-  .board-footer__icons--F {
+  .board-footer__icons--scaled {
     color: var(--color-text-secondary);
+
+    :global(.board-icon) {
+      height: calc(var(--logo-size) * var(--icon-ratio));
+      width: auto;
+    }
   }
 </style>

@@ -1,25 +1,19 @@
 import type { BoardIconSpec } from './board-icons'
-import { mapIcon, type SemanticIconName } from './icon-map'
+import { mapIcon, type IconContext, type SemanticIconName } from './icon-map'
+
+export type { IconContext }
 
 /**
  * The icon systems compared in question I1. A system is one answer for the whole
  * site: which set, and which weight and size it uses in each context.
  */
-export type IconContext =
-  | 'footer'
-  | 'cardBackground'
-  | 'contactCard'
-  | 'meta'
-  | 'button'
-  | 'buttonArrow'
-  | 'nav'
-
 export type SystemKey = 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
 
 type ContextStyle = Omit<BoardIconSpec, 'name'>
 
 export interface IconSystem {
-  key: SystemKey
+  /** A to F: the systems of the first board round. Later candidates use G and up. */
+  key: string
   label: string
   /** `null`: this system shows no icon in that context. */
   contexts: Record<IconContext, ContextStyle | null>
@@ -27,13 +21,6 @@ export interface IconSystem {
   backgroundOpacity: number
   /** Where the /contact card icon sits. */
   contactPlacement: 'background' | 'heading'
-}
-
-/** Font Awesome glyph names of the original footer, by semantic name. */
-const LEGACY_FOOTER_GLYPHS: Partial<Record<SemanticIconName, string>> = {
-  linkedin: 'linkedin',
-  github: 'github',
-  email: 'envelope',
 }
 
 export const ICON_SYSTEMS: readonly IconSystem[] = [
@@ -84,7 +71,7 @@ export const ICON_SYSTEMS: readonly IconSystem[] = [
   },
   {
     key: 'D',
-    label: 'Lucide (odrzucone)',
+    label: 'Lucide cienkie',
     backgroundOpacity: 0.1,
     contactPlacement: 'background',
     contexts: {
@@ -140,13 +127,6 @@ export function systemIcon(
 ): BoardIconSpec | null {
   const style = system.contexts[context]
   if (!style) return null
-  if (style.set === 'fa') {
-    const glyph = LEGACY_FOOTER_GLYPHS[name]
-    if (!glyph) throw new Error(`Design board: no legacy footer glyph for "${name}"`)
-    return { ...style, name: glyph }
-  }
-  if (style.set !== 'ph' && style.set !== 'lucide')
-    throw new Error(`Design board: set "${style.set}" has no semantic map`)
   const { set, ...options } = style
   return mapIcon(name, set, options)
 }

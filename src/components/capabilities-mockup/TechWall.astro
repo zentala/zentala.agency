@@ -1,0 +1,21 @@
+---
+/**
+ * W1, options B and C: "Technologies I use" under the T-shape, one TechLogoWall
+ * in either layout. The list lives in copy.ts, so both options show the same logos.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import TechLogoWall from '@/components/primitives/TechLogoWall.astro'
+import { TECH_WALL } from './copy'
+
+interface Props {
+  layout: 'cells' | 'field'
+}
+
+const { layout } = Astro.props
+---
+
+<Section id={`technologies-${layout}`}>
+  <SectionHeader headline={TECH_WALL.headline} subhead={TECH_WALL.subhead} />
+  <TechLogoWall logos={TECH_WALL.logos} layout={layout} title={TECH_WALL.headline} />
+</Section>

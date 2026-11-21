@@ -1,0 +1,142 @@
+---
+/**
+ * I1, the compared sets: one full-width row per candidate with live samples in the six
+ * places icons appear (footer, card background, /contact card, post meta, button, menu),
+ * all at the sizes of the size rule.
+ */
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import BoardButton from './BoardButton.astro'
+import I1MetaRow from './I1MetaRow.astro'
+import I1NavRow from './I1NavRow.astro'
+import { describeBoardIcon } from './board-icons'
+import { systemIcon } from './icon-systems'
+import { CANDIDATE_SYSTEMS } from '../icon-sets/candidate-systems'
+
+const MARKS = ['linkedin', 'github', 'email'] as const
+---
+
+<BoardCell
+  wide
+  heading="Zestawy w sześciu miejscach: stopka, tło karty, karta na /contact, meta, przycisk, menu"
+/>
+{
+  CANDIDATE_SYSTEMS.map((system) => {
+    const { meta, nav } = system.contexts
+    return (
+      <BoardCell
+        wide
+        option={`${system.key} · ${system.label}`}
+        caption={nav ? `menu i przycisk: ${describeBoardIcon({ ...nav, name: '' })}` : undefined}
+      >
+        <p class="set-strip__finding">{system.finding}</p>
+        <div class="set-strip" style={`--bg-opacity: ${system.backgroundOpacity}`}>
+          <div class="set-strip__place set-strip__place--row">
+            <p class="set-strip__label">Stopka</p>
+            <div class="set-strip__marks">
+              {MARKS.map((name) => (
+                <BoardIcon spec={systemIcon(system, 'footer', name)!} />
+              ))}
+            </div>
+          </div>
+          <div class="set-strip__place">
+            <p class="set-strip__label">Tło karty oferty</p>
+            <BoardIcon
+              spec={systemIcon(system, 'cardBackground', 'strategy')!}
+              class="set-strip__large"
+            />
+          </div>
+          <div class="set-strip__place">
+            <p class="set-strip__label">Karta na /contact</p>
+            <BoardIcon
+              spec={systemIcon(system, 'contactCard', 'book-call')!}
+              class="set-strip__large"
+            />
+          </div>
+          <div class="set-strip__place set-strip__place--row">
+            <p class="set-strip__label">Meta wpisu</p>
+            {meta && <I1MetaRow style={meta} textPx={14} />}
+            <p class="set-strip__label set-strip__label--next">Przycisk</p>
+            <BoardButton
+              look="C"
+              kind="primary"
+              text="Book a Call"
+              icon={systemIcon(system, 'button', 'book-call')}
+              arrow={systemIcon(system, 'buttonArrow', 'arrow-next')}
+            />
+          </div>
+          <div class="set-strip__place set-strip__place--wide">
+            <p class="set-strip__label">Menu</p>
+            {nav && <I1NavRow style={nav} label={`Menu, zestaw ${system.key}`} />}
+          </div>
+        </div>
+      </BoardCell>
+    )
+  })
+}
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .set-strip__finding {
+    max-width: 90ch;
+    color: var(--color-text-secondary);
+  }
+
+  .set-strip {
+    display: grid;
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+    gap: 2rem 4rem;
+    align-items: start;
+
+    @include medium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    @include mobile {
+      gap: 1.5rem 1rem;
+
+      .set-strip__place--row {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .set-strip__place {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .set-strip__place--wide {
+    grid-column: 1 / -1;
+  }
+
+  .set-strip__label {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .set-strip__label--next {
+    margin-top: 0.75rem;
+  }
+
+  .set-strip__marks {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-text-secondary);
+  }
+
+  .set-strip :global(.set-strip__large) {
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text);
+    opacity: var(--bg-opacity);
+  }
+</style>

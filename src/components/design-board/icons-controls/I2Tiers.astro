@@ -1,0 +1,136 @@
+---
+/**
+ * I2, option G: the four button tiers, drawn by the shared Button itself (prop `tier`),
+ * so the board shows the component the site would use. Rest and pinned hover, icon
+ * left, right and none, and the two places the owner named: the home hero and /contact.
+ */
+import Button from '@/components/Button.astro'
+import BoardCell from './BoardCell.astro'
+import BoardIcon from './BoardIcon.astro'
+import { TIERS } from './button-looks'
+import { mapIcon } from './icon-map'
+
+const CAL_URL = 'http://cal.com/zentala'
+const ICON_PX = 18
+const realBold = mapIcon('book-call', 'ph', { weight: 'bold', size: ICON_PX })
+const lucide = mapIcon('book-call', 'lucide', { stroke: 2, size: ICON_PX })
+---
+
+<BoardCell wide heading="G · Cztery typy przycisków (prawdziwy komponent Button)" />
+<BoardCell option="Cztery typy" caption="od najważniejszego do najcichszego">
+  <ul class="tier-list">
+    {
+      TIERS.map((item) => (
+        <li>
+          <Button tier={item.tier} href="/contact" text="Get started" />
+          <span class="tier-list__note">
+            <span class="tier-list__name">{item.name}.</span> {item.use}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</BoardCell>
+<BoardCell option="To samo po najechaniu" caption="pokazane na stałe: zmienia się tylko jasność tła">
+  <div class="tier-row tier-row--pinned">
+    {TIERS.map((item) => <Button tier={item.tier} href="/contact" text="Get started" />)}
+  </div>
+  <p class="tier-list__note">Na tej stronie przyciski z lewej reagują też na prawdziwy kursor.</p>
+</BoardCell>
+<BoardCell option="Ikona" caption="napis 16 px, ikona 18 px: z lewej, z prawej albo bez">
+  <div class="tier-row">
+    <Button tier="cta" href={CAL_URL} text="Book a Call" icon="calendar-plus" />
+    <Button tier="cta" href={CAL_URL} text="Book a Call" icon="calendar-plus" iconPosition="right" />
+    <Button tier="cta" href={CAL_URL} text="Book a Call" />
+  </div>
+  <div class="tier-row">
+    <Button tier="secondary" href="/portfolio" text="View Portfolio" icon="briefcase" />
+    <Button tier="secondary" href="/portfolio" text="View Portfolio" icon="briefcase" iconPosition="right" />
+    <Button tier="secondary" href="/portfolio" text="View Portfolio" />
+  </div>
+</BoardCell>
+<BoardCell option="Zestaw ikon" caption="ta sama ikona 18 px w trzech rysunkach">
+  <div class="tier-row">
+    <Button tier="primary" href={CAL_URL} text="Book a Call" icon="calendar-plus" arrow={false} />
+    <Button tier="primary" href={CAL_URL} text="Book a Call" arrow={false}>
+      <BoardIcon slot="icon" spec={realBold} />
+    </Button>
+    <Button tier="primary" href={CAL_URL} text="Book a Call" arrow={false}>
+      <BoardIcon slot="icon" spec={lucide} />
+    </Button>
+  </div>
+  <p class="tier-list__note">
+    Od lewej: komponent strony (Phosphor Light pogrubiony do kreski Bold), prawdziwy
+    Phosphor Bold (I1-G), Lucide 2 (I1-H).
+  </p>
+</BoardCell>
+<BoardCell option="Strona główna" caption="pierwszy ekran: jedno CTA i druga akcja">
+  <div class="tier-hero">
+    <p class="tier-hero__title">Hands-On CTO for Innovation Projects</p>
+    <div class="tier-row">
+      <Button tier="cta" href={CAL_URL} text="Schedule Discovery Call" icon="calendar-plus" />
+      <Button tier="secondary" href="/portfolio" text="View Portfolio" />
+    </div>
+  </div>
+</BoardCell>
+<BoardCell option="/contact" caption="CTA przy rozmowie, biały przycisk wysyła formularz">
+  <div class="tier-row">
+    <Button tier="cta" href={CAL_URL} text="Book a Call" icon="calendar-plus" />
+    <Button tier="secondary" href="https://linkedin.com/in/zentala" text="Add on LinkedIn" icon="linkedin" />
+  </div>
+  <div class="tier-row">
+    <Button tier="primary" type="button" text="Send message" icon="paper-plane-tilt" iconPosition="right" />
+  </div>
+</BoardCell>
+
+<style>
+  .tier-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .tier-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .tier-list__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .tier-list__name {
+    color: var(--color-text);
+  }
+
+  .tier-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Pins what :hover does, using the property each tier exposes. */
+  .tier-row--pinned :global(.button--tier) {
+    background-color: var(--button-fill-hover);
+  }
+
+  .tier-row--pinned :global(.arrow-nudge) {
+    transform: translateX(4px);
+  }
+
+  .tier-hero {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .tier-hero__title {
+    max-width: 18ch;
+    font-size: var(--text-h1-page);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--color-text);
+  }
+</style>

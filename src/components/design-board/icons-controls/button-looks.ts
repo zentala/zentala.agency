@@ -157,3 +157,20 @@ export function kindFor(look: LookSpec, group: ButtonGroup, sample: ButtonSample
   if (group.context === 'contact') return look.contact[sample.role === 'main' ? 0 : 1]
   return sample.role === 'main' ? look.main : look.second
 }
+
+/** The four tiers of the shared Button (owner answer to I2), in the order of importance. */
+export type ButtonTier = 'cta' | 'primary' | 'secondary' | 'tertiary'
+
+export const TIERS: readonly { tier: ButtonTier; name: string; use: string }[] = [
+  { tier: 'cta', name: 'CTA', use: 'jedna najważniejsza akcja na ekranie, np. umówienie rozmowy' },
+  { tier: 'primary', name: 'Główny', use: 'główna akcja bloku, np. wysłanie formularza' },
+  { tier: 'secondary', name: 'Drugi', use: 'akcja obok głównej' },
+  { tier: 'tertiary', name: 'Trzeci', use: 'akcja poboczna, najcichsza' },
+]
+
+export const TIERS_OPTION: BoardOption = {
+  key: 'G',
+  label: 'Cztery typy',
+  consequence:
+    'CTA z pełnym niebieskim tłem i białym napisem, główny biały z czarnym napisem, drugi i trzeci w dwóch szarościach. Żaden nie ma ramki; po najechaniu zmienia się tylko jasność tła. Ikona ma 18 px przy napisie 16 px i grubą kreskę.',
+}

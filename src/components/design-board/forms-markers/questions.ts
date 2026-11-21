@@ -15,24 +15,27 @@ export const F1: Question = {
   id: 'F1',
   question: 'Jak ma wyglądać pole formularza? (kliknij i wpisz coś, żeby zobaczyć ruch etykiety)',
   options: [
-    { key: 'A', label: 'Jak teraz', consequence: 'Etykieta zawsze mała u góry, przycisk na całą szerokość, uchwyt textarea odsunięty od rogu.' },
-    { key: 'B', label: 'Pływająca etykieta w siatce', consequence: 'Pola dzielą linie jak reszta strony; fokus to biała ramka komórki, bez koloru.' },
-    { key: 'C', label: 'Pływająca etykieta, dolna linia', consequence: 'Najbliżej Material v1, ale formularz wychodzi z siatki linii — jedyne takie miejsce na stronie.' },
-    { key: 'D', label: 'Siatka + niebieska linia', consequence: 'Pola w siatce jak B, a fokus to cienka niebieska linia pod polem i niebieska etykieta; przycisk z niebieską ramką.' },
+    { key: 'A', label: 'Jak teraz', consequence: 'Etykieta zawsze mała u góry, przycisk na całą szerokość. Zostaje tylko dla porównania.' },
+    { key: 'B', label: 'Pływająca etykieta w siatce', consequence: 'Wybrane. Pola dzielą linie jak reszta strony, także pionową między kolumnami.' },
+    { key: 'C', label: 'Pływająca etykieta, same linie poziome', consequence: 'To samo bez pionowej linii między kolumnami: spokojniej, ale pola w wierszu słabiej się oddzielają.' },
+    { key: 'D', label: 'Siatka z niebieską linią przy fokusie', consequence: 'Odrzucone: aktywne pole ma zostać neutralne. Zwinięte pod formularzem, do wglądu.' },
   ],
-  recommendation: 'D — zostaje w siatce linii, a niebieski pojawia się tylko jako 1 px pod aktywnym polem.',
+  recommendation:
+    'B, jak wybrałeś; C włączysz przyciskiem nad formularzem. W obu: formularz nie ma własnej ramki ani odstępu, jego linie są liniami komórki. Biały przycisk stoi z prawej na linii siatki, a po lewej jest blok z odstępem na zgodę i notę o prywatności. Aktywne pole tylko jaśnieje, bez niebieskiego. Pola wypełnione przez przeglądarkę zostają ciemne z jasnym tekstem.',
 }
 
 export const F2: Question = {
   id: 'F2',
   question: 'Jak oznaczać szkic i tekst do recenzji na listach części? (widoczne tylko w dev)',
   options: [
-    { key: 'A', label: 'Jak w ostatnim commicie', consequence: 'Kreska 1 px: przerywana dla szkicu, jaśniejsza ciągła dla recenzji; dwie różne jasności.' },
-    { key: 'B', label: '2 px, półprzezroczyste', consequence: 'Obie kreski tej samej szerokości i jasności; szkic przerywany, recenzja ciągła.' },
-    { key: 'C', label: '2 px + napis po najechaniu', consequence: 'Jak B, a po najechaniu z prawej pojawia się DRAFT / REVIEW; wiersz traci trochę szerokości, na dotyku napisu nie ma.' },
-    { key: 'D', label: '1 px, półprzezroczyste', consequence: 'Najcichsze; przy 1 px przerywaną trudno odróżnić od ciągłej.' },
+    { key: 'A', label: 'Jak w ostatnim commicie', consequence: 'Kreska 1 px przy lewej krawędzi wiersza, przed numerem. Zostaje dla porównania.' },
+    { key: 'B', label: 'Kreska 2 px, półprzezroczysta', consequence: 'Odrzucone: kreska stoi przy lewej krawędzi. Zwinięte pod listami, do wglądu.' },
+    { key: 'C', label: 'Kreska 2 px i napis po najechaniu', consequence: 'Odrzucone z tego samego powodu; nazwa stanu pojawia się dopiero pod kursorem.' },
+    { key: 'D', label: 'Kreska 1 px, półprzezroczysta', consequence: 'Odrzucone miejsce, została grubość: z niej powstało E.' },
+    { key: 'E', label: 'Linia między numerem a tytułem', consequence: 'Wybrane. Kreska 1 px stoi między numerem części a tytułem: przerywana dla szkicu, ciągła dla recenzji. Opublikowane części nie mają kreski, a tytuły zaczynają się w tej samej linii.' },
   ],
-  recommendation: 'B — 2 px, o które prosiłeś; przerywana i ciągła różnią się bez najeżdżania.',
+  recommendation:
+    'E, jak wybrałeś. Na szerszych wierszach serii nazwa stanu stoi dodatkowo zaraz po tytule, szarym tekstem tego samego kroju, bo sama kreska nie mówi, czy to szkic, czy recenzja.',
 }
 
 export const F3: Question = {

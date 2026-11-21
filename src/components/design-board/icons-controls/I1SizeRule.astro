@@ -1,0 +1,100 @@
+---
+/**
+ * I1, the size rule: an icon is about 2 px larger than the text next to it. Each place
+ * shows the pick or today's state first and the rule applied second.
+ */
+import BoardCell from './BoardCell.astro'
+import BoardButton from './BoardButton.astro'
+import I1MetaRow from './I1MetaRow.astro'
+import I1NavRow from './I1NavRow.astro'
+import type { BoardIconSpec } from './board-icons'
+import { mapIcon, placeFor } from './icon-map'
+
+type Style = Omit<BoardIconSpec, 'name'>
+
+const META_TODAY = placeFor('meta').style
+const META_LARGER: Style = { set: 'ph', weight: 'bold', size: 18 }
+const NAV_PICKED: Style = { set: 'ph', weight: 'bold', size: 16 }
+const NAV_RULE = placeFor('nav').style
+const BUTTON_TODAY: Style = { set: 'ph', weight: 'light', size: 20 }
+const ARROW_TODAY: Style = { set: 'ph', weight: 'light', size: 16 }
+
+const button = (icon: Style, arrow: Style) => {
+  const { set, ...options } = icon
+  const { set: arrowSet, ...arrowOptions } = arrow
+  return {
+    icon: mapIcon('book-call', set, options),
+    arrow: mapIcon('arrow-next', arrowSet, arrowOptions),
+  }
+}
+const buttonToday = button(BUTTON_TODAY, ARROW_TODAY)
+const buttonRule = button(placeFor('button').style, placeFor('buttonArrow').style)
+---
+
+<BoardCell wide heading="Reguła rozmiaru: ikona jest o 2 px większa niż tekst obok" />
+<BoardCell wide option="Meta wpisu" caption="tekst 14 px ma ikonę 16 px, więc reguła jest już spełniona">
+  <div class="rule-pair">
+    <div>
+      <p class="rule-pair__label">Dziś i wybrane: tekst 14 px, ikona 16 px Regular</p>
+      <I1MetaRow style={META_TODAY} textPx={14} />
+    </div>
+    <div>
+      <p class="rule-pair__label">Gdyby tekst urósł do 16 px: ikona 18 px Bold</p>
+      <I1MetaRow style={META_LARGER} textPx={16} />
+    </div>
+  </div>
+</BoardCell>
+<BoardCell wide option="Menu" caption="wybrana waga zostaje, ikona rośnie z 16 do 18 px">
+  <div class="rule-pair rule-pair--stacked">
+    <div>
+      <p class="rule-pair__label">Wybrane (F): tekst 16 px, ikona 16 px Bold</p>
+      <I1NavRow style={NAV_PICKED} label="Menu z ikonami 16 px" />
+    </div>
+    <div>
+      <p class="rule-pair__label">Z regułą: tekst 16 px, ikona 18 px Bold</p>
+      <I1NavRow style={NAV_RULE} label="Menu z ikonami 18 px" />
+    </div>
+  </div>
+</BoardCell>
+<BoardCell wide option="Przycisk" caption="ikona maleje z 20 do 18 px i dostaje grubszą kreskę">
+  <div class="rule-pair">
+    <div>
+      <p class="rule-pair__label">Dziś: tekst 16 px, ikona 20 px Light, strzałka 16 px</p>
+      <BoardButton look="C" kind="primary" text="Book a Call" {...buttonToday} />
+    </div>
+    <div>
+      <p class="rule-pair__label">Z regułą: tekst 16 px, ikona i strzałka 18 px Bold</p>
+      <BoardButton look="C" kind="primary" text="Book a Call" {...buttonRule} />
+    </div>
+  </div>
+</BoardCell>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .rule-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 3rem;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    @include medium {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .rule-pair--stacked {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rule-pair__label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

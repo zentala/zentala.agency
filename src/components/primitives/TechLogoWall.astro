@@ -1,0 +1,183 @@
+---
+/**
+ * TechLogoWall - a container-wide wall of technology logos generated from a list of simple-icons slugs or names
+ * (src/data/tech-icons.ts), so any view of the stack is one array. Logos are monochrome at rest. On hover a logo
+ * takes its real brand colour and the wall glows inside along its edges in that colour: each item paints the glow
+ * over the whole wall (the wall is the nearest positioned box), so no script is needed.
+ *
+ * Layouts: `cells` gives every logo a line-grid cell; `field` sets the logos on one open block, left-aligned on the
+ * content edge, with the content padding. Place it inside a `Section` after a `SectionHeader`, or in a
+ * `container-bordered`. Names stay in the accessibility tree; the visible label follows `label`.
+ */
+import TechIcon from '@/components/primitives/TechIcon.astro'
+import { resolveTechIcon } from '@/data/tech-icons'
+
+/** One column count for every width, or one per width band (above 1000px, 771-1000px, 770px and below). */
+export type WallColumns = number | { wide: number; medium?: number; narrow?: number }
+
+export interface Props {
+  /** simple-icons slugs or technology names, in display order. An unknown one fails the build. */
+  logos: string[]
+  /** Default 8; 771-1000px uses at most 6 and 770px and below at most 4 unless set. */
+  columns?: WallColumns
+  /** Logo size in whole px. */
+  size?: 24 | 32 | 40
+  /** `hover`: the name shows on hover, and always on touch screens; `always`; `none`: tooltip only. */
+  label?: 'hover' | 'always' | 'none'
+  layout?: 'cells' | 'field'
+  /** Accessible name of the list. */
+  title?: string
+}
+
+const {
+  logos,
+  columns = 8,
+  size = 32,
+  label = 'hover',
+  layout = 'cells',
+  title = 'Technologies',
+} = Astro.props
+
+const entries = logos.map(resolveTechIcon)
+const bands = typeof columns === 'number' ? { wide: columns } : columns
+const wide = bands.wide
+const medium = bands.medium ?? Math.min(wide, 6)
+const narrow = bands.narrow ?? Math.min(wide, 4)
+const style = `--cols-wide: ${wide}; --cols-medium: ${medium}; --cols-narrow: ${narrow}; --wall-logo: ${size}px`
+---
+
+{
+  entries.length > 0 && (
+    <ul
+      class:list={[
+        'logo-wall',
+        `logo-wall--${layout}`,
+        `logo-wall--label-${label}`,
+        layout === 'cells' && 'line-grid',
+      ]}
+      style={style}
+      aria-label={title}
+      role="list"
+    >
+      {entries.map((entry) => (
+        <li
+          class="logo-wall__item"
+          style={`--brand: ${entry.brand}`}
+          title={label === 'none' ? entry.name : undefined}
+        >
+          <TechIcon name={entry.slug} size="lg" class="logo-wall__logo" />
+          <span class:list={['logo-wall__name', label === 'none' && 'sr-only']}>{entry.name}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .logo-wall {
+    position: relative;
+  }
+
+  .logo-wall--field {
+    --cols: var(--cols-wide);
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+    @include padding-responsive('md');
+    @include line-block;
+
+    @include medium {
+      --cols: var(--cols-medium);
+    }
+
+    @include tablet {
+      --cols: var(--cols-narrow);
+      gap: 1.25rem 1rem;
+    }
+  }
+
+  .logo-wall__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-text-subtle);
+  }
+
+  /* More room above the logo than below the name: at rest the logo reads as centred. */
+  .logo-wall--cells .logo-wall__item {
+    padding: 2.25rem 0.75rem 1rem;
+  }
+
+  .logo-wall--field .logo-wall__item {
+    align-items: flex-start;
+  }
+
+  .logo-wall__item :global(.logo-wall__logo) {
+    width: var(--wall-logo);
+    height: var(--wall-logo);
+    transition: color var(--motion-base) var(--ease-standard);
+  }
+
+  /* Two lines are reserved, so a name that wraps never makes its row taller than the others. */
+  .logo-wall__name {
+    min-height: calc(2 * 1.35 * var(--text-label));
+    color: var(--color-text-muted);
+    font-size: var(--text-label);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-label);
+    text-align: center;
+    text-transform: uppercase;
+    transition:
+      opacity var(--motion-base) var(--ease-standard),
+      color var(--motion-base) var(--ease-standard);
+  }
+
+  .logo-wall--field .logo-wall__name {
+    text-align: left;
+  }
+
+  .logo-wall--label-hover .logo-wall__name {
+    opacity: 0;
+  }
+
+  /* The inner glow of the whole wall, in the brand colour of the hovered logo. */
+  .logo-wall__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 3.5rem -1rem color-mix(in srgb, var(--brand) 32%, transparent);
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .logo-wall__item:hover {
+    color: var(--brand);
+  }
+
+  .logo-wall__item:hover::before,
+  .logo-wall__item:hover .logo-wall__name {
+    opacity: 1;
+  }
+
+  .logo-wall__item:hover .logo-wall__name {
+    color: var(--color-text-secondary);
+  }
+
+  @media (hover: none) {
+    .logo-wall--label-hover .logo-wall__name {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-wall__item::before,
+    .logo-wall__name,
+    .logo-wall__item :global(.logo-wall__logo) {
+      transition: none;
+    }
+  }
+</style>

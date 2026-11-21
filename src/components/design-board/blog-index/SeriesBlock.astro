@@ -2,9 +2,11 @@
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
 import BoardIcon from '../icons-controls/BoardIcon.astro'
+import BackdropIcon from './BackdropIcon.astro'
 import SlugCover from './SlugCover.astro'
 import StatusBadge from './StatusBadge.astro'
 import { formatShortDate, type BoardSeries } from './data'
+import { textIcon } from './blog-icons'
 import { partStatus, smallIcon } from './status'
 
 /**
@@ -13,14 +15,19 @@ import { partStatus, smallIcon } from './status'
  * icon, then every part as a row. The status badge flows in the text, right
  * after the last word of the title, so the title keeps the whole row width.
  * `palette` picks the badge colours: `tint` (delicate cool hues) or `neutral`.
+ * `icon` replaces the cover with the series' own icon: small beside the name and
+ * large behind the block. The "Start" link carries a play icon.
  */
 interface Props {
   series: BoardSeries
   palette?: 'tint' | 'neutral'
+  icon?: string
 }
 
-const { series, palette = 'tint' } = Astro.props
+const { series, palette = 'tint', icon } = Astro.props
+const NAME_TEXT_PX = 24
 const COUNT_ICON = smallIcon('stack')
+const START_ICON = smallIcon('play')
 
 const rows = series.parts.map((part, index) => ({
   slug: part.slug,
@@ -34,11 +41,14 @@ const firstPart = series.parts[0]
 ---
 
 <div class={`series-block series-block--${palette}`}>
-  <SlugCover seed={series.slug} />
+  {icon ? <BackdropIcon name={icon} /> : <SlugCover seed={series.slug} />}
   <div class="series-block__body padding-responsive-md">
-    <h4 class="series-block__name">
-      <a href={`/series/${series.slug}`}>{series.title}</a>
-    </h4>
+    <div class="series-block__head">
+      <h4 class="series-block__name">
+        <a href={`/series/${series.slug}`}>{series.title}</a>
+      </h4>
+      {icon && <BoardIcon spec={textIcon(icon, NAME_TEXT_PX)} />}
+    </div>
     {series.tagline && <p class="series-block__tagline">{series.tagline}</p>}
     <div class="series-block__meta">
       <p class="series-block__count">
@@ -48,6 +58,7 @@ const firstPart = series.parts[0]
       {
         firstPart && (
           <a href={`/blog/${firstPart.slug}`} class="series-block__start group">
+            <BoardIcon spec={START_ICON} />
             Start
             <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
           </a>
@@ -96,6 +107,19 @@ const firstPart = series.parts[0]
     );
   }
 
+  .series-block {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .series-block__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--color-text-muted);
+  }
+
   .series-block__name {
     color: var(--color-text);
     font-size: var(--text-h3);
@@ -138,7 +162,7 @@ const firstPart = series.parts[0]
   }
 
   .series-block__start {
-    gap: 0.125rem;
+    gap: 0.25rem;
     color: var(--color-text);
   }
 

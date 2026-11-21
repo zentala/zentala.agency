@@ -9,7 +9,9 @@ export const GENERAL_GROUP: GalleryGroup = {
       path: 'Button.astro',
       purpose: 'Link styled as a button.',
       props:
-        'href, text, target, variant (primary; secondary, accent, ghost), icon, arrow (true)',
+        'href, text, target, variant (primary; secondary, accent, ghost), tier (none; cta, primary, secondary, tertiary: replaces variant), icon, iconPosition (left; right), arrow (true), type (none; submit, button: renders a button), slot icon',
+      note: 'The four tiers are under owner review; pages keep `variant` until he accepts them.',
+      noteHref: '/mockups/design-board#board-i2',
     },
     {
       id: 'cta',

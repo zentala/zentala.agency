@@ -5,6 +5,8 @@ import { BLOG_GROUP } from './groups/blog'
 import { BANNERS_GROUP } from './groups/banners'
 import { GENERAL_GROUP } from './groups/general'
 import { SECTIONS_GROUP } from './groups/sections'
+import { VARIANTS_GROUP } from './groups/variants'
+import { TECH_LOGOS_GROUP } from './groups/techLogos'
 
 /**
  * The gallery manifest: one row per component shown on /demo. `GalleryEntry` reads
@@ -41,6 +43,8 @@ export const GALLERY_GROUPS: GalleryGroup[] = [
   BANNERS_GROUP,
   GENERAL_GROUP,
   SECTIONS_GROUP,
+  VARIANTS_GROUP,
+  TECH_LOGOS_GROUP,
 ]
 
 export const GALLERY_ITEMS: GalleryItem[] = GALLERY_GROUPS.flatMap(

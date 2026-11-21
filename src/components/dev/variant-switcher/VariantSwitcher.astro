@@ -1,0 +1,187 @@
+---
+/**
+ * Dev-only variant switcher: a small fixed panel that sets `data-v-<axis>` attributes
+ * on `<html>` and keeps the choice in localStorage, so the owner can compare looks of
+ * shared components on real pages. Layout imports it only under DEV; nothing here
+ * reaches a production build. Axes: `axes.ts`.
+ */
+import './dev-variants.scss'
+import { VARIANT_AXES, VARIANT_STORAGE_KEY, variantAttribute } from './axes'
+
+const axes = VARIANT_AXES.map((item) => ({
+  ...item,
+  attribute: variantAttribute(item.id),
+}))
+const storageKey = VARIANT_STORAGE_KEY
+---
+
+<details class="vsw" data-vsw>
+  <summary class="vsw__toggle">
+    Warianty<span data-vsw-count></span>
+  </summary>
+  <div class="vsw__panel">
+    {
+      axes.map((item) => (
+        <div role="group" aria-label={item.label} data-vsw-axis={item.id}>
+          <p class="vsw__label">{item.label}</p>
+          <div class="vsw__options">
+            {item.options.map((option) => (
+              <button type="button" data-value={option.value} aria-pressed="false">
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+    <button type="button" class="vsw__reset" data-vsw-reset>
+      Przywróć obecny wygląd
+    </button>
+  </div>
+</details>
+
+<script is:inline define:vars={{ axes, storageKey }}>
+  const root = document.documentElement
+  const panel = document.querySelector('[data-vsw]')
+  const SCROLLED_AFTER_PX = 24
+
+  const read = () => {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey) || '{}')
+    } catch {
+      return {}
+    }
+  }
+
+  const apply = (state) => {
+    let changed = 0
+    for (const item of axes) {
+      const fallback = item.options[0].value
+      const known = item.options.some((option) => option.value === state[item.id])
+      const value = known ? state[item.id] : fallback
+      if (value === fallback) root.removeAttribute(item.attribute)
+      else root.setAttribute(item.attribute, value)
+      if (value !== fallback) changed += 1
+      panel
+        .querySelectorAll(`[data-vsw-axis="${item.id}"] button`)
+        .forEach((button) =>
+          button.setAttribute('aria-pressed', String(button.dataset.value === value)),
+        )
+    }
+    panel.querySelector('[data-vsw-count]').textContent = changed ? ` · ${changed}` : ''
+  }
+
+  const save = (state) => {
+    localStorage.setItem(storageKey, JSON.stringify(state))
+    apply(state)
+  }
+
+  panel.addEventListener('click', (event) => {
+    const button = event.target.closest('button')
+    if (!button) return
+    if (button.hasAttribute('data-vsw-reset')) return save({})
+    const axisId = button.closest('[data-vsw-axis]').dataset.vswAxis
+    save({ ...read(), [axisId]: button.dataset.value })
+  })
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') panel.removeAttribute('open')
+  })
+
+  /* Scroll flag for variants that react to scrolling (the shrinking header). */
+  const syncScrolled = () =>
+    root.toggleAttribute('data-scrolled', window.scrollY > SCROLLED_AFTER_PX)
+  window.addEventListener('scroll', syncScrolled, { passive: true })
+
+  apply(read())
+  syncScrolled()
+</script>
+
+<style lang="scss">
+  /* Above the mobile menu (1100); never in a production build. */
+  .vsw {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1200;
+    max-width: calc(100vw - 2rem);
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    color: var(--color-text-secondary);
+  }
+
+  .vsw__toggle,
+  .vsw__panel {
+    background-color: color-mix(in srgb, var(--color-text) 9%, var(--color-surface));
+    border-radius: var(--radius-sm);
+  }
+
+  .vsw__toggle {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  .vsw[open] .vsw__toggle {
+    color: var(--color-text);
+  }
+
+  .vsw__panel {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+    display: grid;
+    gap: 0.75rem;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    padding: 0.875rem;
+  }
+
+  .vsw__label {
+    margin-bottom: 0.25rem;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .vsw__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .vsw button {
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard);
+
+    &:hover {
+      color: var(--color-text);
+    }
+
+    &[aria-pressed='true'] {
+      background-color: color-mix(in srgb, var(--color-text) 16%, transparent);
+      color: var(--color-text);
+    }
+  }
+
+  .vsw .vsw__reset {
+    justify-self: start;
+    padding-inline: 0;
+    color: var(--color-text-subtle);
+  }
+</style>

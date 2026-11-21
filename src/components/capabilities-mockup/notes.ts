@@ -14,13 +14,14 @@ export const OWNER_NOTE = {
   intro:
     'Obecna strona to 18 osobnych kart. Tu wszystko stoi pod jednym parasolem: product engineering. To szkic do reakcji, prawdziwa strona się nie zmienia. Angielskie teksty to wersja robocza zbudowana z faktów z obecnych stron.',
   compare:
-    'Porównaj dwie rzeczy: N1, nazwę parasola (kliknięcie opcji zmienia tytuł strony), i T1, sposób narysowania kształtu T. Przy każdym obszarze pracy na dole strony stoi numer starej karty, więc widać, że nic nie zginęło.',
+    'Porównaj trzy rzeczy: N1, nazwę parasola (kliknięcie opcji zmienia tytuł strony), T1, sposób narysowania kształtu T, i W1, ścianę logotypów technologii pod kształtem T. Przy każdym obszarze pracy na dole strony stoi numer starej karty, więc widać, że nic nie zginęło.',
   open: 'Otwarte poza pytaniami: nagłówek strony stoi przy lewej krawędzi logo, jak w kierunku S1-C. Prawdziwe strony mają dziś nagłówek wyśrodkowany, to osobna decyzja.',
 }
 
 export const QUESTION_INDEX = [
   { id: 'N1', label: 'Nazwa parasola' },
   { id: 'T1', label: 'Kształt T' },
+  { id: 'W1', label: 'Ściana technologii' },
 ]
 
 export interface NameOption {
@@ -81,5 +82,29 @@ export const T1_OPTIONS = [
     name: 'Dwie połowy',
     consequence:
       'Lewa połowa dziedziny, prawa stack, ten sam nagłówek co w A. Spokojniej i tak samo na każdej szerokości, ale T trzeba opisać słowami.',
+  },
+]
+
+export const W1 = {
+  id: 'W1',
+  question: 'Czy pod kształtem T pokazać ścianę technologii, których używasz?',
+  recommendation:
+    'B, komórki. Ściana stoi na tych samych liniach co reszta strony, a każdy logotyp ma własną komórkę, więc po najechaniu widać, która część ściany należy do niego. Bez ściany (A) noga T pokazuje tylko 10 logotypów.',
+  note: 'Najedź na logotyp: zapala się kolorem marki (JavaScript żółty, HTML pomarańczowo-czerwony, CSS niebieski), pokazuje nazwę, a wnętrze ściany świeci przy krawędziach tym samym kolorem. Na telefonie nazwy są widoczne od razu. Lista 32 technologii to moja propozycja z treści strony: wykreśl lub dopisz. A: bez ściany, strona idzie dalej jak dziś.',
+}
+
+export const W1_OPTIONS = [
+  {
+    letter: 'B',
+    name: 'Komórki',
+    consequence:
+      '32 logotypy, każdy w komórce siatki: 8 w rzędzie na komputerze, 6 na tablecie, 4 na telefonie. Najbliżej reszty strony, ale linii jest dużo.',
+    recommended: true,
+  },
+  {
+    letter: 'C',
+    name: 'Jedno pole',
+    consequence:
+      'Te same logotypy w jednym polu bez linii w środku, wyrównane do lewej krawędzi tekstu. Spokojniej, mniej przypomina tabelę.',
   },
 ]

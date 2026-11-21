@@ -25,10 +25,9 @@ export const BOARD_INDEX: BoardIndexGroup[] = [
   {
     name: 'Typografia',
     questions: [
-      { id: 'T1', question: 'Jaki krój pisma ma mieć strona?' },
-      { id: 'T2', question: 'Jaki system rozmiarów i wag?' },
-      { id: 'T3', question: 'Jak wyważyć nagłówek: logo wobec menu?' },
-      { id: 'T4', question: 'Jak ma wyglądać nagłówek sekcji?' },
+      { id: 'T1', question: 'Krój pisma i skala rozmiarów razem (dawne T1 i T2)' },
+      { id: 'T3', question: 'Nagłówek strony: kurczący się, z ikonami, pełny ekran' },
+      { id: 'T4', question: 'Nagłówek sekcji: cztery warianty jednego komponentu' },
     ],
   },
   {

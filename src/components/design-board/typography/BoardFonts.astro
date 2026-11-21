@@ -1,8 +1,11 @@
 ---
 /**
  * Webfonts for the typography board only. The families carry board-only names, so the
- * rest of the page keeps the site's real font stack. The files load through dynamic
- * imports under DEV, so no font reaches a production build.
+ * rest of the page keeps the real font stack of the site. The files load through
+ * dynamic imports under DEV, so no font reaches a production build. They are the Latin
+ * and Latin Extended subsets of the `@fontsource-variable` packages (licences beside them).
+ * Selawik has no such package: its three static files are unmodified copies from the
+ * 1.01 release of the microsoft/Selawik repository (SIL OFL 1.1, licence beside them).
  */
 const fontUrl = async (load: () => Promise<{ default: string }>) =>
   import.meta.env.DEV ? (await load()).default : ''
@@ -14,47 +17,65 @@ const LATIN_EXT_RANGE =
 
 const faces = [
   {
-    family: 'Board Inter',
-    range: LATIN_RANGE,
-    /* The opsz file carries both axes: weight 100-900 and optical size 14-32. */
-    url: await fontUrl(
-      () =>
-        import(
-          '@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2?url'
-        ),
+    family: 'Board Open Sans',
+    weights: '300 800',
+    latin: await fontUrl(() => import('./fonts/open-sans-latin-wght-normal.woff2?url')),
+    latinExt: await fontUrl(
+      () => import('./fonts/open-sans-latin-ext-wght-normal.woff2?url'),
     ),
   },
   {
-    family: 'Board Inter',
-    range: LATIN_EXT_RANGE,
-    url: await fontUrl(
-      () =>
-        import(
-          '@fontsource-variable/inter/files/inter-latin-ext-opsz-normal.woff2?url'
-        ),
+    family: 'Board Noto Sans',
+    weights: '100 900',
+    latin: await fontUrl(() => import('./fonts/noto-sans-latin-wght-normal.woff2?url')),
+    latinExt: await fontUrl(
+      () => import('./fonts/noto-sans-latin-ext-wght-normal.woff2?url'),
     ),
   },
   {
-    family: 'Board Geist',
-    range: LATIN_RANGE,
-    url: await fontUrl(
-      () => import('./fonts/geist-latin-wght-normal.woff2?url'),
+    family: 'Board Source Sans',
+    weights: '200 900',
+    latin: await fontUrl(
+      () => import('./fonts/source-sans-3-latin-wght-normal.woff2?url'),
     ),
-  },
-  {
-    family: 'Board Geist',
-    range: LATIN_EXT_RANGE,
-    url: await fontUrl(
-      () => import('./fonts/geist-latin-ext-wght-normal.woff2?url'),
+    latinExt: await fontUrl(
+      () => import('./fonts/source-sans-3-latin-ext-wght-normal.woff2?url'),
     ),
   },
 ]
 
+const staticFaces = [
+  {
+    weight: 300,
+    url: await fontUrl(() => import('./fonts/selawik-light.woff2?url')),
+  },
+  {
+    weight: 350,
+    url: await fontUrl(() => import('./fonts/selawik-semilight.woff2?url')),
+  },
+  {
+    weight: 400,
+    url: await fontUrl(() => import('./fonts/selawik-regular.woff2?url')),
+  },
+]
+const SELAWIK_FAMILY = 'Board Selawik'
+
+const staticFontFace = (family: string, weight: number, url: string) =>
+  `@font-face{font-family:'${family}';font-style:normal;font-display:swap;font-weight:${weight};src:url('${url}') format('woff2');}`
+
+const fontFace = (family: string, weights: string, url: string, range: string) =>
+  `@font-face{font-family:'${family}';font-style:normal;font-display:swap;font-weight:${weights};src:url('${url}') format('woff2-variations');unicode-range:${range};}`
+
 const css = faces
-  .filter((face) => face.url)
-  .map(
-    (face) =>
-      `@font-face{font-family:'${face.family}';font-style:normal;font-display:swap;font-weight:100 900;src:url('${face.url}') format('woff2-variations');unicode-range:${face.range};}`,
+  .filter((face) => face.latin)
+  .flatMap((face) => [
+    fontFace(face.family, face.weights, face.latin, LATIN_RANGE),
+    fontFace(face.family, face.weights, face.latinExt, LATIN_EXT_RANGE),
+  ])
+  .concat(
+    staticFaces
+      .filter((face) => face.url)
+      .map((face) => staticFontFace(SELAWIK_FAMILY, face.weight, face.url)),
   )
   .join('\n')
 ---

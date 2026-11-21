@@ -1,9 +1,14 @@
 ---
 /**
- * Board demo, F2: the part list of a series card (markup of SeriesCard) with one
- * draft or review marker style. Every variant draws its own bar left of the row;
- * `current` copies the committed DraftBadge edge (1px, two different inks), because
- * the working tree may already carry a newer one.
+ * Board demo, F2: the part list of a series with one draft or review marker style.
+ * `current` copies the committed DraftBadge edge (a bar at the far left of the row).
+ * `wide`, `wide-label` and `thin` are the rejected far-left bars, kept for the record:
+ * 2px translucent, 2px with the state name on hover, 1px translucent.
+ * `between` is the owner's pick: a 1px vertical line between the part number and the
+ * title, dashed for a draft and solid for a review; published parts keep the empty
+ * slot, so every title starts on the same edge.
+ * `layout`: `card` (the list inside a series card) or `rows` (the wider rows of a
+ * series block, where the state name follows the title).
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
@@ -17,50 +22,56 @@ export interface MarkerPart {
 }
 
 interface Props {
-  variant: 'current' | 'wide' | 'wide-label' | 'thin'
+  variant: 'current' | 'between' | 'wide' | 'wide-label' | 'thin'
+  layout?: 'card' | 'rows'
   seriesTitle: string
   parts: MarkerPart[]
 }
 
-const { variant, seriesTitle, parts } = Astro.props
+const { variant, layout = 'card', seriesTitle, parts } = Astro.props
 const STATE_LABEL: Record<MarkerState, string> = {
   published: '',
   review: 'Review',
   draft: 'Draft',
 }
+const between = variant === 'between'
 ---
 
-<div class="marker-card">
+<div class:list={['marker-card', `marker-card--${layout}`]}>
   <div class="flex items-center gap-x-1 text-label uppercase text-fg-subtle">
     <SiteIcon name="layers" size="sm" />
     <span>Series</span>
   </div>
   <h3 class="mt-2 text-fg">{seriesTitle}</h3>
 
-  <ul class="mt-5 w-full space-y-1">
+  <ul class="marker-list">
     {
       parts.map((part) => (
         <li>
-          <a
-            href={`/blog/${part.slug}`}
-            class="marker-row relative -mx-2 flex items-start gap-x-2 px-2 py-1 text-sm transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-fg"
-          >
-            <span class="w-4 shrink-0 text-right text-xs tabular-nums text-fg-subtle">
-              {part.part}
-            </span>
-            <span class="line-clamp-2 min-w-0 flex-1 text-fg-secondary">{part.title}</span>
-            {part.state !== 'published' && (
-              <span
-                class={`marker marker--${variant} marker--${part.state}`}
-                title={STATE_LABEL[part.state]}
-              >
-                <span class="sr-only">{STATE_LABEL[part.state]}</span>
-              </span>
+          <a href={`/blog/${part.slug}`} class="marker-row">
+            <span class="marker-row__number">{part.part}</span>
+            {between && (
+              <span class={`marker-slot marker-slot--${part.state}`} aria-hidden="true" />
             )}
-            {part.state !== 'published' && variant === 'wide-label' && (
+            <span class="marker-row__title">
+              {part.title}
+              {layout === 'rows' && part.state !== 'published' && (
+                <span class="marker-row__state">{STATE_LABEL[part.state]}</span>
+              )}
+            </span>
+            {!between && part.state !== 'published' && (
+              <span
+                class={`marker-edge marker-edge--${variant} marker-edge--${part.state}`}
+                aria-hidden="true"
+              />
+            )}
+            {variant === 'wide-label' && part.state !== 'published' && (
               <span class="marker-label" aria-hidden="true">
                 {STATE_LABEL[part.state]}
               </span>
+            )}
+            {layout === 'card' && part.state !== 'published' && (
+              <span class="sr-only">{STATE_LABEL[part.state]}</span>
             )}
           </a>
         </li>
@@ -69,48 +80,108 @@ const STATE_LABEL: Record<MarkerState, string> = {
   </ul>
 </div>
 
-<style>
+<style lang="scss">
+  $dash: 4px;
+
+  @mixin dashed($ink) {
+    background: repeating-linear-gradient(to bottom, $ink 0 $dash, transparent $dash $dash * 2);
+  }
+
   /* Inset like the real series card, so a marker never sits on the cell line. */
   .marker-card {
     width: 100%;
     padding: 0.75rem 1rem 1rem;
   }
 
-  .marker {
+  .marker-list {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .marker-row {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-inline: -0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    color: var(--color-text-secondary);
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard);
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+      color: var(--color-text);
+    }
+  }
+
+  .marker-row__number {
+    flex-shrink: 0;
+    width: 1.25rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-subtle);
+  }
+
+  .marker-row__title {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .marker-row__state {
+    margin-left: 0.5rem;
+    color: var(--color-text-subtle);
+  }
+
+  /* The pick: 1px between the number and the title, as tall as the row's text. */
+  .marker-slot {
+    flex-shrink: 0;
+    width: 1px;
+  }
+
+  .marker-slot--review {
+    background: var(--color-text-subtle);
+  }
+
+  .marker-slot--draft {
+    @include dashed(var(--color-text-subtle));
+  }
+
+  /* Before and rejected: a bar at the far left of the row, 2px translucent by default. */
+  .marker-edge {
     --marker-ink: color-mix(in srgb, var(--color-text) 22%, transparent);
     position: absolute;
     top: 0.3em;
     bottom: 0.3em;
-    left: -0.5rem;
+    left: 0;
     width: 2px;
     background: var(--marker-ink);
     pointer-events: none;
   }
 
-  .marker--thin,
-  .marker--current {
+  .marker-edge--current,
+  .marker-edge--thin {
     width: 1px;
   }
 
   /* A: the committed look. Draft takes the hover-line grey, review a brighter one. */
-  .marker--current.marker--draft {
-    --marker-ink: var(--color-line-strong);
-  }
-
-  .marker--current.marker--review {
+  .marker-edge--current.marker-edge--review {
     --marker-ink: var(--color-text-subtle);
   }
 
-  /* Draft: dashed. Review: solid. Same translucent ink, same width. */
-  .marker--draft {
-    background: repeating-linear-gradient(
-      to bottom,
-      var(--marker-ink) 0 4px,
-      transparent 4px 8px
-    );
+  .marker-edge--current.marker-edge--draft {
+    --marker-ink: var(--color-line-strong);
   }
 
-  /* C: the state name, at the row's right edge, only while the row is hovered or focused. */
+  .marker-edge--draft {
+    @include dashed(var(--marker-ink));
+  }
+
+  /* C (rejected): the state name at the row's right edge, only on hover or focus. */
   .marker-label {
     flex-shrink: 0;
     align-self: center;
@@ -125,5 +196,18 @@ const STATE_LABEL: Record<MarkerState, string> = {
   .marker-row:hover .marker-label,
   .marker-row:focus-visible .marker-label {
     opacity: 1;
+  }
+
+  .marker-card--rows {
+    .marker-row {
+      gap: 0.875rem;
+      padding-block: 0.625rem;
+      font-size: var(--text-body);
+      line-height: 1.5rem;
+    }
+
+    .marker-row__number {
+      width: 1.5rem;
+    }
   }
 </style>

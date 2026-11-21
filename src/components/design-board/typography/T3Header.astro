@@ -1,9 +1,12 @@
 ---
 /**
- * T3: header balance. Four headers in today's system font, each above the real page
- * title, so the weight of the logo and nav can be judged against the light titles.
+ * T3: header balance. Four static headers in the current system font, each above the
+ * real page title, then the two ideas from the last round: a header that is tall at
+ * the top and shrinks after scrolling (E), and a full-screen first view (F).
  */
+import FirstViewMock from './FirstViewMock.astro'
 import MockHeader, { type HeaderVariant } from './MockHeader.astro'
+import ShrinkHeaderDemo from './ShrinkHeaderDemo.astro'
 import OptionStrip from './OptionStrip.astro'
 import TypeQuestion from './TypeQuestion.astro'
 import type { TypographySamples } from './data'
@@ -14,6 +17,21 @@ interface Props {
 
 const { samples } = Astro.props
 const ANCHOR = 'board-t3'
+
+const SHRINK = {
+  key: 'E',
+  label: 'Wysoki na górze, niski po przewinięciu, z ikonami w menu',
+  consequence:
+    'Na górze strony nagłówek ma 88 px i pełne logo z hasłem; po przewinięciu kurczy się do 61 px, logo maleje o 20%, hasło znika. Każda pozycja menu ma ikonę o 2 px większą od napisu, ze stałą kreską. Hasło mieści się obok logo od 1400 px szerokości, ikony od 1200 px; węższy nagłówek tylko się kurczy, a na telefonie nic się nie zmienia.',
+  facts: '88 px na górze · 61 px po przewinięciu · ikona 18 px przy tekście 16 px',
+}
+const FIRST_VIEW = {
+  key: 'F',
+  label: 'Pierwszy ekran na całą wysokość (opcja dla wybranych stron)',
+  consequence:
+    'Tytuł strony zajmuje cały pierwszy ekran pod nagłówkiem, treść zaczyna się dopiero po przewinięciu; strzałka w dół podpowiada, że strona ma ciąg dalszy. Pasuje do stron sprzedażowych z małą ilością treści, nie do bloga ani list.',
+  facts: 'wysokość ekranu minus nagłówek · tytuł wyśrodkowany',
+}
 
 const options: {
   key: string
@@ -60,9 +78,9 @@ const options: {
 <TypeQuestion
   id="T3"
   question="Jak wyważyć nagłówek: logo wobec menu?"
-  options={options}
-  recommendation="D: logo nie ma konkurencji, menu czyta się jak zwykły tekst, a treść zyskuje miejsce. Jeśli wersaliki w menu mają zostać, to B."
-  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka."
+  options={[...options, SHRINK, FIRST_VIEW]}
+  recommendation="E: to Twój kierunek z ostatniej rundy (mniejszy nagłówek, ikony w menu) bez utraty dużego logo na górze strony. F jako osobna opcja tylko dla stron, które mają jedno hasło do przekazania."
+  note="Pokazane w foncie systemowym, czyli tak jak dziś. Liczba po prawej to zmierzona wysokość nagłówka. E i F zobaczysz na żywo na każdej stronie: przycisk Warianty w lewym dolnym rogu, wiersze Nagłówek strony i Pierwszy ekran. Na żywo F nie ma jeszcze strzałki w dół."
 >
   {
     options.map((option) => (
@@ -86,6 +104,32 @@ const options: {
       </OptionStrip>
     ))
   }
+  <OptionStrip
+    optionKey={SHRINK.key}
+    label={SHRINK.label}
+    facts={SHRINK.facts}
+    measure="wysokość na górze strony"
+  >
+    <div class="t3-page t3-page--states">
+      <p class="t3-state">Na górze strony</p>
+      <ShrinkHeaderDemo state="top" anchor={ANCHOR} />
+      <p class="t3-state">Po przewinięciu</p>
+      <ShrinkHeaderDemo state="scrolled" anchor={ANCHOR} />
+    </div>
+  </OptionStrip>
+  <OptionStrip
+    optionKey={FIRST_VIEW.key}
+    label={FIRST_VIEW.label}
+    facts={FIRST_VIEW.facts}
+  >
+    <div class="t3-page">
+      <FirstViewMock
+        title={samples.hero.title}
+        subtitle={samples.hero.subtitle}
+        anchor={ANCHOR}
+      />
+    </div>
+  </OptionStrip>
 </TypeQuestion>
 
 <style lang="scss">
@@ -94,6 +138,21 @@ const options: {
   .t3-page {
     --tb-font: 'Segoe UI', system-ui, sans-serif;
     font-family: var(--tb-font);
+  }
+
+  /* Keeps the last bar's line clear of the next option's top line. */
+  .t3-page--states {
+    padding-bottom: 2rem;
+  }
+
+  .t3-state {
+    @include px-responsive();
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
   }
 
   .t3-page__hero {

@@ -1,0 +1,123 @@
+---
+/**
+ * Board, F3 options E to H (round 3): mosaics between B and C. One wide cell explains the
+ * four options in Polish for the owner, then four cards in the Portfolio shell. The tiles
+ * name the portfolio areas in English, as the card would on the site.
+ */
+import BoardCell from './BoardCell.astro'
+import MosaicCard from './MosaicCard.astro'
+import MosaicTiles, { type MosaicTile } from './MosaicTiles.astro'
+
+/** The nine portfolio areas: the four from the card copy around the robot, the rest in the corners. */
+const TILES: MosaicTile[] = [
+  { icon: 'browser', label: 'Web design' },
+  { icon: 'broadcast', label: 'Indoor location' },
+  { icon: 'contactless-payment', label: 'NFC table' },
+  { icon: 'squares-four', label: 'Developer portals' },
+  { icon: 'robot', label: 'Humanoid robot' },
+  { icon: 'house', label: 'Smart home' },
+  { icon: 'wifi-high', label: 'WiFi community' },
+  { icon: 'desk', label: 'Smart desk' },
+  { icon: 'game-controller', label: 'Nick finder' },
+]
+
+const OPTIONS = [
+  {
+    key: 'E',
+    label: 'Lżejsze ramki',
+    consequence:
+      'Dziewięć kafli 3×3, ramka 1 px o połowę słabsza niż w B, ikony Phosphor Light 32 px (zestaw I1-G). Kafle cieniuje fala pod 45°: najjaśniejsza środkowa przekątna, każdy kafel ma trochę inny ton.',
+  },
+  {
+    key: 'F',
+    label: 'Bez ramek',
+    consequence: 'Jak E, ale kafle dzieli tylko ton, a ikony mają 40 px, bliżej C.',
+  },
+  {
+    key: 'G',
+    label: 'Kreskowanie 45°',
+    consequence:
+      'Zamiast tonu cienkie ukośne kreski, gęstsze w tonie na środkowej przekątnej. Najbardziej „techniczne”, ale kreski konkurują z ikoną.',
+  },
+  {
+    key: 'H',
+    label: 'Fala w ruchu',
+    consequence:
+      'Jak E bez ramek, a jasny pas fali przesuwa się po skosie raz na 24 s. Nie rusza się przy ograniczonym ruchu i poza ekranem.',
+  },
+]
+---
+
+<BoardCell wide heading="E–H: nowe opcje między B a C">
+  <ul class="mosaic-options">
+    {
+      OPTIONS.map((option) => (
+        <li>
+          <span class="mosaic-options__key">{option.key}</span>
+          <span>
+            <span class="mosaic-options__label">{option.label}.</span> {option.consequence}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="mosaic-options__note">
+    Każdy kafel reaguje osobno: rozjaśnia się, a pod mozaiką pojawia się nazwa obszaru (robot, smart
+    home i reszta portfolio). Na telefonie nie ma najechania, więc nazw nie widać; opis karty mówi to
+    samo słowami.
+  </p>
+  <p class="mosaic-options__note">
+    <span class="mosaic-options__key">Rekomendacja</span>
+    E: ramka wciąż porządkuje kafle, ale nie krzyczy jak w B, a ikony Light 32 px mają tę samą kreskę
+    co reszta strony. F, jeśli chcesz jeszcze ciszej.
+  </p>
+</BoardCell>
+<BoardCell option="E" caption="3×3, ramka 4,5%, Light 32 px" flush>
+  <MosaicCard><MosaicTiles tiles={TILES} look="line" /></MosaicCard>
+</BoardCell>
+<BoardCell option="F" caption="3×3 bez ramek, Light 40 px" flush>
+  <MosaicCard><MosaicTiles tiles={TILES} look="open" icon={40} /></MosaicCard>
+</BoardCell>
+<BoardCell option="G" caption="3×3, kreskowanie 45°" flush>
+  <MosaicCard><MosaicTiles tiles={TILES} look="hatch" /></MosaicCard>
+</BoardCell>
+<BoardCell option="H" caption="3×3, fala w ruchu" flush>
+  <MosaicCard><MosaicTiles tiles={TILES} look="moving" /></MosaicCard>
+</BoardCell>
+
+<style>
+  .mosaic-options {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 90ch;
+    color: var(--color-text-muted);
+  }
+
+  .mosaic-options li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .mosaic-options__key {
+    margin-right: 1rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .mosaic-options li .mosaic-options__key {
+    margin-right: 0;
+  }
+
+  .mosaic-options__label {
+    color: var(--color-text);
+  }
+
+  .mosaic-options__note {
+    max-width: 90ch;
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+/**
+ * I1 sample: the meta row of a real post (series part, date, category) with icons in
+ * one style, next to text of a given size.
+ */
+import BoardIcon from './BoardIcon.astro'
+import type { BoardIconSpec } from './board-icons'
+import { mapIcon } from './icon-map'
+import { getVisiblePosts } from '@/lib/blog/visibility'
+import { formatDate } from '@/lib/blog/format-date'
+
+interface Props {
+  style: Omit<BoardIconSpec, 'name'>
+  /** Size of the meta text in px. */
+  textPx: number
+  /** Shows the post title above the row. */
+  title?: boolean
+}
+
+const { style, textPx, title = false } = Astro.props
+const { set, ...options } = style
+const posts = await getVisiblePosts()
+const post = posts.find((candidate) => candidate.data.series && candidate.data.part) ?? posts[0]
+const { datetime, label: dateLabel } = formatDate(post.data.date)
+---
+
+{title && <p class="meta-row__title">{post.data.title}</p>}
+<div class="meta-row" style={`font-size: ${textPx / 16}rem`}>
+  {
+    post.data.part && (
+      <span class="meta-row__item">
+        <BoardIcon spec={mapIcon('series', set, options)} />
+        Part {post.data.part}
+      </span>
+    )
+  }
+  <span class="meta-row__item">
+    <BoardIcon spec={mapIcon('date', set, options)} />
+    <time datetime={datetime}>{dateLabel}</time>
+  </span>
+  <span class="meta-row__item">
+    <BoardIcon spec={mapIcon('tag', set, options)} />
+    {post.data.category}
+  </span>
+</div>
+
+<style>
+  .meta-row__title {
+    font-size: var(--text-h4);
+    line-height: 1.3;
+    color: var(--color-text);
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    color: var(--color-text-subtle);
+  }
+
+  .meta-row__item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+</style>

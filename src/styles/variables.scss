@@ -455,6 +455,23 @@ $header-height-mobile: calc(
 
 // Hover and focus are an overlay that lands on the neighbours' lines.
 // Zero layout shift: only background-color and the overlay opacity change.
+// Card-hover looks under owner review (design board I3). The dev-only variant switcher
+// sets html[data-v-card-hover]; nothing sets it in production, so the default look of
+// cell-interactive stays as written below.
+$card-hover-before-fill: #111827; // A: the blue-grey fill of the original site
+$card-hover-before-icon: 0.32; // A: how bright the background icon gets
+$card-hover-bright-fill: color-mix(in srgb, var(--color-text) 9%, var(--color-surface)); // D
+
+@mixin card-hover-fill-only($fill) {
+  &:hover {
+    background-color: $fill;
+  }
+
+  &:not(:focus-visible):not(:has(:focus-visible))::after {
+    border-color: transparent;
+  }
+}
+
 @mixin cell-interactive {
   position: relative;
   border-radius: var(--radius-none);
@@ -497,5 +514,14 @@ $header-height-mobile: calc(
   &:has(:focus-visible)::after {
     border-width: var(--focus-ring-width);
     border-color: var(--line-focus);
+  }
+
+  html[data-v-card-hover='a'] & {
+    --icon-bg-max-opacity: #{$card-hover-before-icon};
+    @include card-hover-fill-only($card-hover-before-fill);
+  }
+
+  html[data-v-card-hover='d'] & {
+    @include card-hover-fill-only($card-hover-bright-fill);
   }
 }

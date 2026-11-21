@@ -1,7 +1,8 @@
 ---
 /**
  * I1, contexts "/contact card" and "capabilities card": the large decorative icon of a
- * card, with the real card copy, one cell per icon system.
+ * card, with the real card copy. Three systems of the first round: before the changes,
+ * today, and C, which the owner picked for the /contact card.
  */
 import BoardCell from './BoardCell.astro'
 import BoardIcon from './BoardIcon.astro'
@@ -10,17 +11,20 @@ import { describeBoardIcon } from './board-icons'
 import { ICON_SYSTEMS, systemIcon } from './icon-systems'
 
 const CAL_URL = 'http://cal.com/zentala'
+const SYSTEMS = ICON_SYSTEMS.filter((system) => ['A', 'B', 'C'].includes(system.key))
+const optionLabel = (system: (typeof SYSTEMS)[number], pickedAs: string) =>
+  `${system.key} · ${system.key === 'C' ? pickedAs : system.label}`
 ---
 
-<BoardCell wide heading="/contact: ikona karty „Schedule Meeting”" />
+<BoardCell wide heading="/contact: ikona karty „Schedule Meeting” (wybrane: C)" />
 {
-  ICON_SYSTEMS.map((system) => {
+  SYSTEMS.map((system) => {
     const spec = systemIcon(system, 'contactCard', 'book-call')
     const inHeading = system.contactPlacement === 'heading'
     return (
       <BoardCell
         flush
-        option={`${system.key} · ${system.label}`}
+        option={optionLabel(system, 'Wybrane')}
         caption={spec ? describeBoardIcon(spec) : undefined}
       >
         <div class="board-card" style={`--bg-opacity: ${system.backgroundOpacity}`}>
@@ -46,14 +50,14 @@ const CAL_URL = 'http://cal.com/zentala'
   })
 }
 
-<BoardCell wide heading="/about/capabilities: duża ikona w tle karty (cienka, ale większa)" />
+<BoardCell wide heading="/about/capabilities: duża ikona w tle karty (propozycja: tak samo jak na /contact)" />
 {
-  ICON_SYSTEMS.map((system) => {
+  SYSTEMS.map((system) => {
     const spec = systemIcon(system, 'cardBackground', 'strategy')
     return (
       <BoardCell
         flush
-        option={`${system.key} · ${system.label}`}
+        option={optionLabel(system, 'Propozycja')}
         caption={spec ? describeBoardIcon(spec) : undefined}
       >
         <div class="board-card" style={`--bg-opacity: ${system.backgroundOpacity}`}>

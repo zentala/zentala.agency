@@ -60,6 +60,24 @@ const ctaFooter = [
   <GalleryCell label="ghost: text and chevron only">
     <Button href="/blog" text="All posts" variant="ghost" />
   </GalleryCell>
+  <GalleryCell label="tier cta (under review): solid blue, the one key action">
+    <Button tier="cta" href="https://cal.com/zentala" text="Book a call" icon="calendar-plus" />
+  </GalleryCell>
+  <GalleryCell label="tier primary: solid white">
+    <Button tier="primary" href="/contact" text="Get started" />
+  </GalleryCell>
+  <GalleryCell label="tier secondary: grey">
+    <Button tier="secondary" href="/portfolio" text="See the portfolio" />
+  </GalleryCell>
+  <GalleryCell label="tier tertiary: quieter grey">
+    <Button tier="tertiary" href="/blog" text="All posts" />
+  </GalleryCell>
+  <GalleryCell label="tier, icon on the right (no chevron)">
+    <Button tier="secondary" href="/contact" text="Write to me" icon="envelope-simple" iconPosition="right" />
+  </GalleryCell>
+  <GalleryCell label="tier primary as a submit button">
+    <Button tier="primary" type="button" text="Send message" icon="paper-plane-tilt" iconPosition="right" />
+  </GalleryCell>
 </GalleryEntry>
 
 <GalleryEntry id="cta" cols={1}>

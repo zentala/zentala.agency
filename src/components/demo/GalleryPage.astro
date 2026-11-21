@@ -19,6 +19,8 @@ import GalleryRich from '@/components/demo/GalleryRich.astro'
 import GalleryBanners from '@/components/demo/GalleryBanners.astro'
 import GalleryGeneral from '@/components/demo/GalleryGeneral.astro'
 import GallerySections from '@/components/demo/GallerySections.astro'
+import GalleryVariants from '@/components/demo/GalleryVariants.astro'
+import GalleryTechLogos from '@/components/demo/GalleryTechLogos.astro'
 import GalleryTypography from '@/components/demo/GalleryTypography.astro'
 import { GALLERY_GROUPS } from '@/components/demo/manifest'
 
@@ -100,6 +102,8 @@ const totalCount = GALLERY_GROUPS.reduce(
         {group.title === 'Banners' && <GalleryBanners />}
         {group.title === 'General' && <GalleryGeneral />}
         {group.title === 'Page sections' && <GallerySections />}
+        {group.title === 'Variants under review' && <GalleryVariants />}
+        {group.title === 'Technology logos' && <GalleryTechLogos />}
       </>
     ))
   }

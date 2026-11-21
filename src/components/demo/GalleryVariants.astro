@@ -1,0 +1,41 @@
+---
+/**
+ * Gallery group "Variants under review": looks the owner is still comparing. Each
+ * SectionHeader variant is pinned with the `variant` prop, so the dev variant
+ * switcher does not restyle these examples.
+ */
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import GalleryCell from '@/components/demo/GalleryCell.astro'
+import GalleryEntry from '@/components/demo/GalleryEntry.astro'
+import { VARIANT_AXES } from '@/components/dev/variant-switcher/axes'
+
+const HEADLINE = 'Agent-Native Harness'
+const SUBHEAD = 'How to build a repo an AI agent can actually work in'
+const META = '17 parts'
+const VARIANTS = ['a', 'b', 'c', 'd'] as const
+---
+
+<GalleryEntry id="section-header-variants" bare>
+  {
+    VARIANTS.map((variant) => (
+      <SectionHeader
+        variant={variant}
+        tag="h3"
+        headline={HEADLINE}
+        subhead={SUBHEAD}
+        labelIcon="stack"
+        meta={META}
+      />
+    ))
+  }
+</GalleryEntry>
+
+<GalleryEntry id="variant-switcher" cols={1}>
+  <GalleryCell label="where it is">
+    <p>
+      The panel is the "Warianty" button at the bottom left of this page. Its axes:
+      {VARIANT_AXES.map((axis) => axis.id).join(', ')}. The first option of an axis
+      is the current look and sets no attribute.
+    </p>
+  </GalleryCell>
+</GalleryEntry>

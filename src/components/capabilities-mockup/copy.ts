@@ -113,6 +113,46 @@ export const TSHAPE = {
   ] satisfies StackLayer[],
 }
 
+/** The logo wall under the T-shape (question W1): one list, rendered by TechLogoWall. */
+export const TECH_WALL = {
+  headline: 'Technologies I use',
+  subhead: 'The languages, frameworks, services and hardware behind the work on this page.',
+  logos: [
+    'typescript',
+    'javascript',
+    'html5',
+    'css3',
+    'react',
+    'astro',
+    'tailwindcss',
+    'sass',
+    'nodedotjs',
+    'supabase',
+    'postgresql',
+    'docker',
+    'cloudflare',
+    'linux',
+    'git',
+    'npm',
+    'githubactions',
+    'playwright',
+    'vitest',
+    'backstage',
+    'claude',
+    'openai',
+    'modelcontextprotocol',
+    'figma',
+    'espressif',
+    'arduino',
+    'raspberrypi',
+    'homeassistant',
+    'esphome',
+    'zigbee',
+    'bluetooth',
+    'ros',
+  ],
+}
+
 export interface Area {
   title: string
   body: string

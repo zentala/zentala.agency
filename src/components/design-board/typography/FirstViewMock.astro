@@ -1,0 +1,82 @@
+---
+/**
+ * Mock of the optional full-screen first view (T3, option F): a frame in screen
+ * proportions with the tall header, the page title centred in the rest of the
+ * screen and a quiet cue that the page continues below. The live version is the
+ * "first view" option of the dev variant switcher on any page that opens with a Hero.
+ */
+import BoardIcon from '../icons-controls/BoardIcon.astro'
+import ShrinkHeaderDemo from './ShrinkHeaderDemo.astro'
+import type { BoardIconSpec } from '../icons-controls/board-icons'
+
+interface Props {
+  title: string
+  subtitle: string
+  anchor: string
+}
+
+const { title, subtitle, anchor } = Astro.props
+const CUE_ICON: BoardIconSpec = {
+  set: 'ph',
+  name: 'caret-down',
+  weight: 'regular',
+  size: 18,
+}
+---
+
+<div class="first-view">
+  <ShrinkHeaderDemo state="top" anchor={anchor} />
+  <div class="first-view__hero">
+    <p class="first-view__title">{title}</p>
+    <p class="first-view__subtitle">{subtitle}</p>
+  </div>
+  <p class="first-view__cue">
+    <BoardIcon spec={CUE_ICON} />
+    <span class="sr-only">More below</span>
+  </p>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  /* Screen proportions of a laptop; on a phone a tall screen. */
+  .first-view {
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 16 / 9;
+
+    @include tablet {
+      aspect-ratio: 9 / 16;
+    }
+  }
+
+  .first-view__hero {
+    @include px-responsive('md');
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .first-view__title {
+    font-size: clamp(2.25rem, 6vw, 6rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+
+  .first-view__subtitle {
+    margin-top: 1.5rem;
+    font-size: clamp(1.25rem, 2.4vw, 2.25rem);
+    font-weight: 300;
+    color: var(--color-text-secondary);
+  }
+
+  .first-view__cue {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1.5rem;
+    color: var(--color-text-subtle);
+  }
+</style>

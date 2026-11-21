@@ -1,0 +1,29 @@
+---
+/**
+ * Dev-only icon before a header nav link, shown only in the "shrink" header variant.
+ * It uses the board's icon renderer and the nav style the owner preferred (system F),
+ * drawn 2 px larger than the 16 px label. Header imports it only under DEV.
+ */
+import BoardIcon from '@/components/design-board/icons-controls/BoardIcon.astro'
+import {
+  getSystem,
+  systemIcon,
+} from '@/components/design-board/icons-controls/icon-systems'
+import type { SemanticIconName } from '@/components/design-board/icons-controls/icon-map'
+
+interface Props {
+  name: SemanticIconName
+}
+
+const NAV_SYSTEM = 'F'
+const NAV_ICON_SIZE = 18
+const base = systemIcon(getSystem(NAV_SYSTEM), 'nav', Astro.props.name)
+---
+
+{
+  base && (
+    <span class="dev-nav-icon">
+      <BoardIcon spec={{ ...base, size: NAV_ICON_SIZE }} />
+    </span>
+  )
+}

@@ -10,15 +10,24 @@ const headerLogoProps = {
 }
 
 const links = [
-  { href: '/', text: 'Home' },
+  { href: '/', text: 'Home', navIcon: 'nav-home' },
   // { path: '/mission', text: 'Mission' },
   // { path: '/about', text: 'About' },
-  { href: '/about/capabilities', text: 'Capabilities' },
+  { href: '/about/capabilities', text: 'Capabilities', navIcon: 'nav-capabilities' },
   // { path: '/faq', text: 'FAQ' },
-  { href: '/portfolio', text: 'Portfolio' },
-  { href: '/blog', text: 'Blog' },
-  { href: '/contact', text: 'Contact' },
-]
+  { href: '/portfolio', text: 'Portfolio', navIcon: 'nav-portfolio' },
+  { href: '/blog', text: 'Blog', navIcon: 'nav-blog' },
+  { href: '/contact', text: 'Contact', navIcon: 'nav-contact' },
+] as const
+
+/**
+ * Dev-only nav icons for the "shrink" header variant of the variant switcher.
+ * Imported under DEV only and hidden until that variant is on, so the default
+ * header and the production build are unchanged.
+ */
+const DevNavIcon = import.meta.env.DEV
+  ? (await import('@/components/dev/variant-switcher/NavIcon.astro')).default
+  : null
 
 const { pathname } = Astro.url
 const isCurrent = (href: string) =>
@@ -162,6 +171,7 @@ const isCurrent = (href: string) =>
             class="font-medium uppercase tracking-wide"
             aria-current={isCurrent(link.href) ? 'page' : undefined}
           >
+            {DevNavIcon && <DevNavIcon name={link.navIcon} />}
             {link.text}
           </a>
         ))

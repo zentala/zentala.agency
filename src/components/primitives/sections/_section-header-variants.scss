@@ -1,0 +1,202 @@
+/*
+ * Looks of SectionHeader beyond the default: the small icon and right-hand note of
+ * variant a, and the one-row variants b, c and d. A variant applies through the
+ * `variant` prop, or, for a header without the prop, through the dev-only variant
+ * switcher's `html[data-v-section-header]` attribute (never set in production).
+ */
+@use '../../../styles/variables' as *;
+
+$label-tracking: 0.14em;
+$on-line-gap: 0.75rem;
+
+/* Wraps rules for the named variants, set by prop or by the dev switcher. */
+@mixin when($names...) {
+  $selectors: ();
+  @each $name in $names {
+    $selectors: append($selectors, "&[data-variant='#{$name}']", comma);
+    $selectors: append(
+      $selectors,
+      ":global(html[data-v-section-header='#{$name}']) &:not([data-variant])",
+      comma
+    );
+  }
+
+  #{$selectors} {
+    @content;
+  }
+}
+
+@mixin caps-label {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: $label-tracking;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* Variant a: an optional small icon before the headline and a note on its right. */
+@mixin variant-a-extras {
+  .section-headline__icon {
+    display: none;
+    flex-shrink: 0;
+  }
+
+  .section-headline--icon {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .section-headline__icon {
+      display: inline-flex;
+    }
+  }
+
+  .section-headline__icon :global(.section-headline__icon-sm) {
+    display: none;
+  }
+
+  .section-header__meta {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-subtle);
+  }
+
+  @include tablet-up {
+    .section-header:has(> .section-header__meta) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 2rem;
+
+      > * {
+        grid-column: 1;
+      }
+
+      > .section-header__meta {
+        grid-column: 2;
+        grid-row: 1 / span 5;
+        align-self: end;
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+/* Variants b, c and d. Include inside `.section-header`. */
+@mixin compact-variants {
+  @include when('b', 'c', 'd') {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.125rem 1.5rem;
+    text-align: left;
+
+    :global(.card-background-icon),
+    .section-header__logo {
+      display: none;
+    }
+
+    .section-headline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-headline__icon {
+      display: inline-flex;
+    }
+
+    .section-eyebrow,
+    .section-header__meta {
+      order: 1;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* The note wins over the eyebrow when a header has both. */
+    &:has(> .section-header__meta) .section-eyebrow {
+      display: none;
+    }
+
+    .section-subhead,
+    .section-header__body {
+      order: 2;
+      flex: 0 0 100%;
+      max-width: none;
+      margin: 0.25rem 0 0;
+      font-size: var(--text-sm);
+      line-height: 1.5rem;
+      color: var(--color-text-muted);
+    }
+  }
+
+  @include when('b') {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  @include when('b', 'd') {
+    .section-headline {
+      @include caps-label;
+    }
+
+    .section-headline__icon :global(.section-headline__icon-sm) {
+      display: block;
+    }
+
+    .section-headline__icon :global(.section-headline__icon-lg) {
+      display: none;
+    }
+  }
+
+  @include when('c') {
+    padding-top: 1.125rem;
+    padding-bottom: 1.125rem;
+
+    .section-headline {
+      gap: 0.625rem;
+      font-size: 1.625rem;
+      font-weight: 300;
+      line-height: 2rem;
+      letter-spacing: -0.01em;
+      color: var(--color-text-muted);
+    }
+  }
+
+  /* Zero height: the name and the note sit on the line above and interrupt it. */
+  @include when('d') {
+    z-index: 3;
+    flex-wrap: nowrap;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+    overflow: visible;
+    isolation: auto;
+
+    .section-headline,
+    .section-eyebrow,
+    .section-header__meta {
+      margin-inline: -$on-line-gap;
+      padding-inline: $on-line-gap;
+      background-color: var(--color-surface);
+      line-height: 1.25rem;
+    }
+
+    .section-subhead,
+    .section-header__body {
+      display: none;
+    }
+
+    @include mobile {
+      .section-eyebrow,
+      .section-header__meta {
+        display: none;
+      }
+    }
+  }
+}

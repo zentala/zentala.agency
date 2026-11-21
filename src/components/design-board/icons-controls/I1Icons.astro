@@ -1,66 +1,80 @@
 ---
 /**
- * I1: icon style per context. Six icon systems, each shown in the six places icons
- * appear (or could appear) on the site, at their real sizes, after a note on why
- * small icons render grey.
+ * I1: icon set and weight per place. The picks of the first round are recorded as
+ * chosen; the open part is which set and weight draw sharp small icons. Order: the
+ * recorded picks, the stroke and sharpness facts, then each place and the compared sets.
  */
 import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
+import BoardCell from './BoardCell.astro'
 import StrokeNote from './StrokeNote.astro'
 import I1Footer from './I1Footer.astro'
+import I1SizeRule from './I1SizeRule.astro'
+import I1Meta from './I1Meta.astro'
 import I1Cards from './I1Cards.astro'
-import I1Inline from './I1Inline.astro'
-import I1Nav from './I1Nav.astro'
+import I1Sets from './I1Sets.astro'
+import { ICON_PLACES } from './icon-map'
+import { CANDIDATE_SYSTEMS } from '../icon-sets/candidate-systems'
 
-const OPTIONS: readonly BoardOption[] = [
-  {
-    key: 'A',
-    label: 'Przed zmianami',
-    consequence:
-      'Trzy zestawy naraz: pełne ikony Font Awesome w stopce, Lucide w przyciskach i meta, Phosphor Thin 128 px w tle kart. Mocna stopka, ale brak jednego źródła.',
-  },
-  {
-    key: 'B',
-    label: 'Obecnie',
-    consequence:
-      'Jeden zestaw i jedna waga (Phosphor Light) wszędzie. Spójnie, ale stopka jest słabsza od logo, a ikona na /contact skurczyła się do 40 px.',
-  },
-  {
-    key: 'C',
-    label: 'Phosphor, waga wg miejsca',
-    consequence:
-      'Jeden zestaw, trzy wagi: Fill 32 px w stopce, Regular w przyciskach, meta i menu, Thin 176 px w tle kart. Kreska w tle rośnie razem z ikoną.',
-  },
-  {
-    key: 'D',
-    label: 'Lucide (odrzucone)',
-    consequence:
-      'Właściciel odrzucił ten zestaw po przeglądzie, zwłaszcza w małych rozmiarach. Zostaje tu tylko dla porównania.',
-  },
-  {
-    key: 'E',
-    label: 'Regular w ostrych rozmiarach',
-    consequence:
-      'Wagę wybiera rozmiar, nie miejsce: do 32 px zawsze Regular, w tle Thin 128 px jak przed zmianami. Ikona w przycisku maleje z 20 do 16 px, bo tam kreska ma równo 1 px.',
-  },
-  {
-    key: 'F',
-    label: 'Stała kreska 1,5 px',
-    consequence:
-      'Waga rośnie, gdy ikona maleje: Bold przy 16 px, Regular przy 24 px, Light przy 32 px. Kreska jest wszędzie ta sama, ale małe ikony robią się ciężkie.',
-  },
-]
+const OPTIONS: readonly BoardOption[] = CANDIDATE_SYSTEMS.map((system) => ({
+  key: system.key,
+  label: system.label,
+  consequence: system.finding,
+}))
+
+const picked = ICON_PLACES.filter((place) => place.status === 'wybrane')
 ---
 
 <BoardQuestion
   id="I1"
   question="Który zestaw ikon i jaka waga w każdym miejscu strony?"
   options={OPTIONS}
-  recommendation="E. Małe ikony są szare, bo kreska Light ma przy 16 px tylko 0,75 px; Regular ma tam równo 1 px i trafia w piksele, a duże ikony w tle zostają cienkie jak przed zmianami. C różni się od E pełnymi ikonami w stopce i ikoną 20 px w przycisku, która wypada między pikselami. F ma najrówniejszą kreskę, ale Bold przy 16 px jest za ciężki dla tej strony."
+  recommendation="G. Phosphor zostaje jedynym zestawem interfejsu, a wagę wybiera rozmiar: Bold przy 16–20 px, Regular przy 24 px, Light przy 32 px, Thin od 64 px. Kreska ma wtedy 1,5–1,9 px, a Bold przy 18 px wypada w pomiarze najostrzej ze skalowanych opcji (40% wobec 32% dla Lucide 2). Wyjątek: meta wpisu zostaje przy wybranym Regular 16 px. Jeśli Bold okaże się za ciężki w przyciskach, drugim wyborem jest H (Lucide 2): kreska równo 1,5 px, ale okrągły rysunek i drugi zestaw na stronie."
   columns={3}
 >
+  <BoardCell wide heading="Zapisane wybory z poprzedniej rundy">
+    <ul class="picked">
+      {
+        picked.map((place) => (
+          <li>
+            <span class="picked__place">{place.label}</span>
+            <span>{place.rule}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </BoardCell>
   <StrokeNote />
   <I1Footer />
+  <I1SizeRule />
+  <I1Meta />
   <I1Cards />
-  <I1Inline />
-  <I1Nav />
+  <I1Sets />
 </BoardQuestion>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .picked {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 90ch;
+    color: var(--color-text-secondary);
+
+    li {
+      display: grid;
+      grid-template-columns: 12rem minmax(0, 1fr);
+      gap: 1rem;
+    }
+
+    @include mobile {
+      li {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+      }
+    }
+  }
+
+  .picked__place {
+    color: var(--color-text);
+  }
+</style>

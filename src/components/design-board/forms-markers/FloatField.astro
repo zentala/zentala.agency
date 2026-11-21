@@ -4,8 +4,11 @@
  * The label rests where the value goes; on focus or when filled it moves up, small.
  * The control fills the whole field and owns the padding, so a textarea's resize
  * handle sits in the very corner. The icon is as tall as label plus value.
- * `variant`: `grid` (a line-grid cell, shared cell overlay), `line` (bottom line
- * only), `accent` (a line-grid cell whose focus is a thin accent line).
+ * `variant`: `grid` (a line-grid cell, shared cell overlay) or `line` (horizontal
+ * lines only, no divider between columns). Focus is neutral in both: the label and
+ * the icon get lighter, no colour. Autofilled fields keep the dark surface.
+ * `accent` is the rejected option D, kept for the record: a line-grid cell whose
+ * focus is a thin accent line with an accent label and icon.
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
@@ -117,31 +120,69 @@ const Control = multiline ? 'textarea' : 'input'
     transition: color var(--motion-fast) var(--ease-standard);
   }
 
+  /* Neutral focus: the label and the icon get lighter, nothing turns blue. */
+  .ff__control:focus ~ .ff__label,
+  .ff__control:focus ~ :global(.ff__icon) {
+    color: var(--color-text-secondary);
+  }
+
+  /* Browser autofill paints a light fill and its own text colour; hold both back. */
+  .ff__control:autofill {
+    -webkit-text-fill-color: var(--color-text);
+    caret-color: var(--color-text);
+    transition: background-color 600000s 0s;
+  }
+
+  .ff__control:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-text);
+    caret-color: var(--color-text);
+    transition: background-color 600000s 0s;
+  }
+
+  .ff__control:autofill ~ .ff__label {
+    transform: translateY(-0.5rem) scale(0.6875);
+    letter-spacing: 0.04em;
+  }
+
+  .ff__control:-webkit-autofill ~ .ff__label {
+    transform: translateY(-0.5rem) scale(0.6875);
+    letter-spacing: 0.04em;
+  }
+
   /* B: a cell of the line grid; hover and focus are the shared cell overlay. */
   .ff--grid {
     @include cell-interactive;
   }
 
-  .ff--grid .ff__control:focus ~ :global(.ff__icon) {
-    color: var(--color-text-secondary);
-  }
-
-  /* C: no cell, a bottom line only; focus turns the line and the label accent. */
+  /* C: horizontal lines only. The field owns its top line; focus brightens the line below it. */
   .ff--line {
-    --ff-pad-x: 0rem;
-    border-bottom: 1px solid var(--color-line-strong);
-    transition: border-color var(--motion-fast) var(--ease-standard);
+    border-top: 1px solid var(--color-line);
+    transition: background-color var(--motion-fast) var(--ease-standard);
   }
 
   .ff--line:hover {
-    border-bottom-color: var(--color-text-subtle);
+    background-color: var(--color-surface-hover);
   }
 
-  .ff--line:has(.ff__control:focus) {
-    border-bottom-color: var(--color-accent);
+  .ff--line::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--line-focus);
+    opacity: 0;
+    pointer-events: none;
+    z-index: var(--z-cell-hover);
+    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
-  /* D: a cell of the line grid; focus is a 1px accent line on the cell's bottom line. */
+  .ff--line:has(.ff__control:focus)::after {
+    opacity: 1;
+  }
+
+  /* D (rejected): a cell of the line grid; focus is a 1px accent line on its bottom line. */
   .ff--accent {
     transition: background-color var(--motion-fast) var(--ease-standard);
   }
@@ -168,9 +209,7 @@ const Control = multiline ? 'textarea' : 'input'
     opacity: 1;
   }
 
-  .ff--line .ff__control:focus ~ .ff__label,
   .ff--accent .ff__control:focus ~ .ff__label,
-  .ff--line .ff__control:focus ~ :global(.ff__icon),
   .ff--accent .ff__control:focus ~ :global(.ff__icon) {
     color: var(--color-accent);
   }

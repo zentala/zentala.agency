@@ -33,6 +33,11 @@ const {
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString()
 const ogImageUrl = new URL(ogImage, Astro.site).toString()
 const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
+
+/** Dev-only variant switcher: imported under DEV only, so no part of it reaches dist. */
+const VariantSwitcher = import.meta.env.DEV
+  ? (await import('@/components/dev/variant-switcher/VariantSwitcher.astro')).default
+  : null
 ---
 
 <!doctype html>
@@ -74,6 +79,7 @@ const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
       <slot />
     </main>
     <Footer />
+    {VariantSwitcher && <VariantSwitcher />}
 
     <!-- Chat huba — RESTORED 2026-08-26.
          Was disabled the same day: the host answered 200 with

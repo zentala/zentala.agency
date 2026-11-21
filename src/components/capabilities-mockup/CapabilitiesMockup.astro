@@ -4,7 +4,8 @@
  * engineering (/mockups/capabilities). The real page is untouched; this is a
  * backlog idea for the owner to react to. Order: owner note, header with the
  * name question N1, what you get, the T-shape question T1 (options A and B),
- * the six areas that replace the 18 cards, one call to action.
+ * the technology wall question W1 (options B and C), the six areas that replace
+ * the 18 cards, one call to action.
  */
 import BoardQuestion from '@/components/design-board/blog-index/BoardQuestion.astro'
 import OptionBar from '@/components/design-board/blog-index/OptionBar.astro'
@@ -16,11 +17,13 @@ import TShapeLiteral from './TShapeLiteral.astro'
 import TShapeHalves from './TShapeHalves.astro'
 import Areas from './Areas.astro'
 import CapCta from './CapCta.astro'
-import { NAME_OPTIONS, T1, T1_OPTIONS } from './notes'
+import TechWall from './TechWall.astro'
+import { NAME_OPTIONS, T1, T1_OPTIONS, W1, W1_OPTIONS } from './notes'
 
 const recommendedName =
   NAME_OPTIONS.find((option) => option.recommended)?.name ?? NAME_OPTIONS[0].name
 const [optionA, optionB] = T1_OPTIONS
+const [wallCells, wallField] = W1_OPTIONS
 ---
 
 <OwnerNote />
@@ -33,6 +36,12 @@ const [optionA, optionB] = T1_OPTIONS
 <TShapeLiteral />
 <OptionBar questionId={T1.id} {...optionB} />
 <TShapeHalves />
+
+<BoardQuestion {...W1} />
+<OptionBar questionId={W1.id} {...wallCells} status="Lista do potwierdzenia" />
+<TechWall layout="cells" />
+<OptionBar questionId={W1.id} {...wallField} />
+<TechWall layout="field" />
 
 <Areas />
 <CapCta />

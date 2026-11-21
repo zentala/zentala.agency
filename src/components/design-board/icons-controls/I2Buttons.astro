@@ -1,6 +1,7 @@
 ---
 /**
- * I2: buttons and CTAs. Six looks, each shown as a main and a second action at rest,
+ * I2: buttons and CTAs. The four tiers the owner asked for come first (I2Tiers); the
+ * six earlier looks stay below for comparison, each shown as a main and a second action at rest,
  * with hover pinned, and with the real labels of /contact and of the home hero. The
  * inventory below the looks names every icon the buttons draw.
  */
@@ -8,17 +9,20 @@ import BoardQuestion from './BoardQuestion.astro'
 import BoardCell from './BoardCell.astro'
 import BoardButton from './BoardButton.astro'
 import I2Inventory from './I2Inventory.astro'
-import { BUTTON_GROUPS, LOOKS, kindFor } from './button-looks'
+import I2Tiers from './I2Tiers.astro'
+import { BUTTON_GROUPS, LOOKS, TIERS_OPTION, kindFor } from './button-looks'
 import { getSystem, systemIcon } from './icon-systems'
 ---
 
 <BoardQuestion
   id="I2"
   question="Jak mają wyglądać przyciski i CTA?"
-  options={LOOKS}
-  recommendation="E. Zostaje dzisiejsza szara ramka i biały napis, bez ikony z lewej: kalendarz czy teczka nic nie dodają do napisu, a przy 20 px są nieostre. Strzałka jest biała, w wadze Regular, i rusza się na hover. Jeśli ikona ma zostać, to F: biała, 16 px, gdzie kreska ma równo 1 px. Bez niebieskiej ramki i niebieskich ikon."
+  options={[...LOOKS, TIERS_OPTION]}
+  recommendation="G. Cztery typy z Twojej odpowiedzi: niebieskie CTA tylko dla jednej najważniejszej akcji na ekranie, biały przycisk dla głównej akcji bloku, dwie szarości dla reszty. Ikona według I1-G (Phosphor, gruba kreska, 18 px); Lucide 2 jest pokazany obok jako drugi wybór. Opcje A do F zostają niżej tylko dla porównania."
   columns={2}
 >
+  <I2Tiers />
+  <BoardCell wide heading="A do F · wcześniejsze wyglądy, dla porównania" />
   {
     LOOKS.map((look) => {
       const system = getSystem(look.icons)

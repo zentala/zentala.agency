@@ -10,6 +10,12 @@
  * - Default slot: rich body content under the subhead (series intro, category text)
  * - `compact`: the plain header padding even with an eyebrow (listing pages);
  *   `eyebrowIcon`: a small SiteIcon before the eyebrow text
+ * - `variant`: `a` (this look, the default), `b` (small caps label), `c` (thin larger
+ *   label) or `d` (label on the section line, no height). In b, c and d the header is
+ *   one row: icon and name on the left, `meta` (or the eyebrow) on the right; d hides
+ *   the subhead and the body. Without the prop the dev-only variant switcher may
+ *   restyle the header through `html[data-v-section-header]`.
+ * - `labelIcon`: a small SiteIcon before the headline; `meta`: a short note on the right
  *
  * Usage:
  * <SectionHeader
@@ -34,6 +40,9 @@ interface Props {
   logoAlt?: string
   tag?: 'h1' | 'h2' | 'h3'
   align?: 'left' | 'center'
+  variant?: 'a' | 'b' | 'c' | 'd'
+  labelIcon?: string
+  meta?: string
   interactive?: boolean // Deprecated, no effect: the scale hover was removed
 }
 
@@ -48,8 +57,16 @@ const {
   logoAlt = '',
   tag = 'h2',
   align = 'left',
+  variant,
+  labelIcon,
+  meta,
 } = Astro.props
 const HeadingTag = tag
+
+/** The compact variants reuse an icon the header already names; emoji icons are skipped. */
+const ICON_NAME = /^[a-z][a-z0-9-]+$/
+const fallbackIcon = [eyebrowIcon, icon].find((name) => name && ICON_NAME.test(name))
+const headlineIcon = labelIcon ?? fallbackIcon
 ---
 
 <div
@@ -59,6 +76,7 @@ const HeadingTag = tag
     compact && eyebrow && 'section-header--compact-eyebrow',
   ]}
   data-align={align}
+  data-variant={variant}
 >
   {icon && <CardBackgroundIcon icon={icon} />}
   {logoSrc && <img src={logoSrc} alt={logoAlt} class="section-header__logo" />}
@@ -70,7 +88,20 @@ const HeadingTag = tag
       </p>
     )
   }
-  <HeadingTag class="section-headline">{headline}</HeadingTag>
+  <HeadingTag
+    class:list={['section-headline', labelIcon && 'section-headline--icon']}
+  >
+    {
+      headlineIcon && (
+        <span class="section-headline__icon">
+          <SiteIcon name={headlineIcon} size="sm" class="section-headline__icon-sm" />
+          <SiteIcon name={headlineIcon} size="lg" class="section-headline__icon-lg" />
+        </span>
+      )
+    }
+    {headline}
+  </HeadingTag>
+  {meta && <p class="section-header__meta">{meta}</p>}
   {subhead && <p class="section-subhead">{subhead}</p>}
   {
     Astro.slots.has('default') && (
@@ -83,6 +114,7 @@ const HeadingTag = tag
 
 <style lang="scss">
   @use '../../../styles/variables' as *;
+  @use './section-header-variants' as variants;
 
   .section-header {
     border-bottom: 1px solid $border-color;
@@ -190,5 +222,11 @@ const HeadingTag = tag
 
   .section-header[data-align='center'] .section-subhead {
     margin-inline: auto;
+  }
+
+  @include variants.variant-a-extras;
+
+  .section-header {
+    @include variants.compact-variants;
   }
 </style>

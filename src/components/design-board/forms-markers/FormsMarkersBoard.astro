@@ -1,8 +1,10 @@
 ---
 /**
  * Design board, group "forms, draft and review markers, home icon mosaic".
- * Three owner questions (F1 to F3), each a section with its options rendered
- * side by side in real context. Dev-only demo: nothing here changes the site.
+ * Three owner questions (F1 to F3), each a section with its options rendered in
+ * real context. F1 shows the picked form at full width with a B or C switch.
+ * Rejected options stay on the board, collapsed, so the history is not lost.
+ * Dev-only demo: nothing here changes the site.
  */
 import { getCollection } from 'astro:content'
 import CardIconMosaic from '@/components/primitives/CardIconMosaic.astro'
@@ -24,6 +26,12 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0))
   .slice(0, MARKER_STATES.length)
 
+const REJECTED_MARKERS = [
+  { variant: 'wide', label: 'B · 2 px, półprzezroczysta' },
+  { variant: 'wide-label', label: 'C · 2 px i napis po najechaniu' },
+  { variant: 'thin', label: 'D · 1 px, półprzezroczysta' },
+] as const
+
 const parts: MarkerPart[] = posts.map((post, index) => ({
   title: post.data.title,
   slug: post.slug,
@@ -32,18 +40,43 @@ const parts: MarkerPart[] = posts.map((post, index) => ({
 }))
 ---
 
-<BoardQuestion {...F1} columns={2}>
-  <BoardCell option="A" caption="Teraz na /contact"><CurrentForm /></BoardCell>
-  <BoardCell option="B" caption="Pływająca etykieta, komórki siatki"><FloatForm variant="grid" prefix="f1b" /></BoardCell>
-  <BoardCell option="C" caption="Pływająca etykieta, tylko dolna linia"><FloatForm variant="line" prefix="f1c" /></BoardCell>
-  <BoardCell option="D" caption="Siatka + niebieska linia przy fokusie"><FloatForm variant="accent" prefix="f1d" /></BoardCell>
+<BoardQuestion {...F1} columns={1}>
+  <BoardCell option="B i C" caption="w prawdziwej szerokości; przełącz przyciskiem" flush>
+    <div class="form-switch" role="group" aria-label="Wariant formularza" data-form-switch>
+      <button type="button" data-show="grid" aria-pressed="true">B · w siatce</button>
+      <button type="button" data-show="line" aria-pressed="false">C · same linie poziome</button>
+    </div>
+    <FloatForm variant="grid" prefix="f1b" />
+    <FloatForm variant="line" prefix="f1c" hidden />
+  </BoardCell>
+  <BoardCell option="A" caption="Teraz na /contact, dla porównania"><CurrentForm /></BoardCell>
+  <BoardCell option="D" caption="Odrzucone: siatka z niebieską linią przy fokusie">
+    <details class="rejected">
+      <summary>Pokaż odrzucony wariant</summary>
+      <div class="rejected__frame"><FloatForm variant="accent" prefix="f1d" /></div>
+    </details>
+  </BoardCell>
 </BoardQuestion>
 
-<BoardQuestion {...F2} columns={4}>
-  <BoardCell option="A" caption="Ostatni commit: 1 px"><MarkerList variant="current" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
-  <BoardCell option="B" caption="2 px, półprzezroczyste"><MarkerList variant="wide" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
-  <BoardCell option="C" caption="2 px + napis po najechaniu"><MarkerList variant="wide-label" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
-  <BoardCell option="D" caption="1 px, półprzezroczyste"><MarkerList variant="thin" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+<BoardQuestion {...F2} columns={2}>
+  <BoardCell option="A" caption="Karta serii: kreska przy lewej krawędzi"><MarkerList variant="current" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="E" caption="Karta serii: kreska między numerem a tytułem"><MarkerList variant="between" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="E" caption="Wiersze serii: kreska między numerem a tytułem, stan po tytule" wide><MarkerList variant="between" layout="rows" seriesTitle={SERIES_TITLE} parts={parts} /></BoardCell>
+  <BoardCell option="B, C, D" caption="Odrzucone: kreska przy lewej krawędzi wiersza" wide>
+    <details class="rejected">
+      <summary>Pokaż odrzucone warianty</summary>
+      <div class="rejected__row">
+        {
+          REJECTED_MARKERS.map((marker) => (
+            <div>
+              <p class="rejected__label">{marker.label}</p>
+              <MarkerList variant={marker.variant} seriesTitle={SERIES_TITLE} parts={parts} />
+            </div>
+          ))
+        }
+      </div>
+    </details>
+  </BoardCell>
 </BoardQuestion>
 
 <BoardQuestion {...F3} columns={4}>
@@ -66,4 +99,85 @@ const parts: MarkerPart[] = posts.map((post, index) => ({
   document.querySelectorAll<HTMLFormElement>('[data-board-form]').forEach((form) => {
     form.addEventListener('submit', (event) => event.preventDefault())
   })
+
+  // F1: one form at a time, B or C.
+  document.querySelectorAll<HTMLElement>('[data-form-switch]').forEach((group) => {
+    const cell = group.parentElement
+    group.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest('button')
+      if (!button || !cell) return
+      group
+        .querySelectorAll('button')
+        .forEach((other) => other.setAttribute('aria-pressed', String(other === button)))
+      cell.querySelectorAll<HTMLFormElement>('[data-form-variant]').forEach((form) => {
+        form.hidden = form.dataset.formVariant !== button.dataset.show
+      })
+    })
+  })
 </script>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .rejected summary {
+    width: fit-content;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-standard);
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  /* Closes the right and bottom line of a line grid that stands alone in a board cell. */
+  .rejected__frame {
+    margin-top: 1rem;
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .rejected__row {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+
+    @include tablet {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .rejected__label {
+    padding-inline: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .form-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem 1rem;
+  }
+
+  .form-switch button {
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .form-switch button:hover {
+    color: var(--color-text);
+  }
+
+  .form-switch button[aria-pressed='true'] {
+    background-color: color-mix(in srgb, var(--color-text) 16%, transparent);
+    color: var(--color-text);
+  }
+</style>

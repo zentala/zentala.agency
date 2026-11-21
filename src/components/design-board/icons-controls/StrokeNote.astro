@@ -1,57 +1,54 @@
 ---
 /**
- * I1 facts: why small icons look grey. Explains the rendered stroke width and lists it
- * for every weight at the three small sizes, with the icons drawn at those sizes.
+ * I1 facts: why small icons look grey, and how sharp each compared set draws at 16 to
+ * 24 px. One table: the icons at those sizes, the stroke width and the measured share
+ * of fully white pixels.
  */
 import BoardCell from './BoardCell.astro'
 import BoardIcon from './BoardIcon.astro'
 import { mapIcon } from './icon-map'
-import { SMALL_SIZES, STROKE_ROWS, formatPx, isSubPixel, strokePx } from './stroke-math'
+import { formatPx, isSubPixel, strokePx } from './stroke-math'
+import { COVERAGE_ROWS, COVERAGE_SIZES } from '../icon-sets/coverage'
 
-/* EVIDENCE: Chromium at device pixel ratio 1, the calendar glyph on black, 2026-11-20:
-   share of lit pixels at 90% white or more. Phosphor Light 16 px: 0%. Regular 16 px: 81%.
-   Regular 20 px: 7%. Regular 24 px: 49%. Lucide stroke 1.5 at 16 px: 4%. */
-const SAMPLES = ['date', 'chat', 'arrow-next'] as const
+const SAMPLES = ['date', 'nav-contact', 'arrow-next'] as const
 
-const rows = STROKE_ROWS.map((row) => {
+const FACTS = [
+  'Ikona to rysunek na siatce, więc kreska kurczy się razem z ikoną. Phosphor Light ma 6 px w ikonie 128 px i 0,75 px w ikonie 16 px.',
+  'Zwykły ekran nie zapali części piksela. Kreskę cieńszą niż 1 px rysuje szarym pikselem, a kreskę leżącą między pikselami rozmywa na dwa.',
+  'Kreska 1,5 px nigdy nie trafi równo w piksele zwykłego ekranu: jeden piksel jest biały, sąsiedni szary. Dlatego przy 18 i 20 px żaden zestaw nie ma więcej niż 42% w pełni białych pikseli.',
+  'Przy 18 px na zwykłym ekranie: Phosphor Bold 40%, Lucide 2,25 i Material 35%, Lucide 2 i Tabler 32%, Iconoir 23%, Phosphor Regular 11%. Przy skalowaniu 125%: Bold 47%, Lucide 2,25 44%, Lucide 2 i Tabler 40%, Material 39%, Regular 27%.',
+  'Najostrzej wypada rozmiar, w którym ikonę narysowano: Material Symbols przy 24 px ma 71%. Phosphor Regular trafia w piksele tylko przy 16 px (kreska równo 1 px).',
+  'Stała kreska 1,5 px w Lucide daje przy 18 px to samo co Lucide 2, bo to ta sama grubość. Stała kreska 2 px jest najostrzejsza przy 16 i 18 px (48% i 42%), ale najcięższa.',
+]
+
+const rows = COVERAGE_ROWS.map((row) => {
   const { set, ...options } = row.style
   return {
     ...row,
-    cells: SMALL_SIZES.map((size) => ({
+    cells: COVERAGE_SIZES.map((size, index) => ({
       px: strokePx({ ...row.style, size }) as number,
+      crisp: [row.crisp.dpr1[index], row.crisp.dpr125[index]],
       icons: SAMPLES.map((name) => mapIcon(name, set, { ...options, size })),
     })),
   }
 })
 ---
 
-<BoardCell wide heading="Dlaczego duże ikony są dobre, a małe szare">
+<BoardCell wide heading="Dlaczego małe ikony są szare i który zestaw rysuje najostrzej">
   <div class="stroke-note">
     <ul class="stroke-note__facts">
-      <li>
-        Ikona to rysunek na siatce, więc kreska kurczy się razem z ikoną. Ta sama waga
-        Light ma 6 px w ikonie 128 px i 0,75 px w ikonie 16 px.
-      </li>
-      <li>
-        Zwykły ekran nie zapali części piksela. Kreskę cieńszą niż 1 px rysuje szarym
-        pikselem zamiast białego, a kreskę leżącą między pikselami rozmywa na dwa.
-      </li>
-      <li>
-        Opcje A i B mają w małych ikonach kreskę 0,75–1,25 px, która nie trafia w piksele.
-        Pomiar na ikonie kalendarza 16 px: Phosphor Light ma 0% w pełni białych pikseli,
-        Lucide 4%, Phosphor Regular 81%.
-      </li>
-      <li>
-        Phosphor Regular jest ostry przy 16 px (kreska równo 1 px) i przy 24 px. Rozmiar
-        20 px, którego używają dziś przyciski, wypada między pikselami w każdej wadze.
-      </li>
+      {FACTS.map((fact) => <li>{fact}</li>)}
     </ul>
     <table class="stroke-table">
-      <caption>Grubość kreski na ekranie. Szara liczba: kreska cieńsza niż 1 px.</caption>
+      <caption>
+        Pod ikonami: grubość kreski, potem udział w pełni białych pikseli na zwykłym
+        ekranie i przy skalowaniu 125%. Średnia z sześciu ikon każdego zestawu. Szara
+        grubość: kreska cieńsza niż 1 px.
+      </caption>
       <thead>
         <tr>
-          <th scope="col">Waga</th>
-          {SMALL_SIZES.map((size) => <th scope="col">{size} px</th>)}
+          <th scope="col">Zestaw</th>
+          {COVERAGE_SIZES.map((size) => <th scope="col">{size} px</th>)}
         </tr>
       </thead>
       <tbody>
@@ -71,6 +68,10 @@ const rows = STROKE_ROWS.map((row) => {
                   </span>
                   <span class:list={['stroke-table__px', isSubPixel(cell.px) && 'is-thin']}>
                     {formatPx(cell.px)}
+                  </span>
+                  <span class="stroke-table__crisp">
+                    <span>{cell.crisp[0]}%</span>
+                    <span>{cell.crisp[1]}%</span>
                   </span>
                 </td>
               ))}
@@ -164,14 +165,26 @@ const rows = STROKE_ROWS.map((row) => {
     color: var(--color-text-subtle);
   }
 
+  .stroke-table__crisp {
+    display: flex;
+    gap: 0.5rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+  }
+
   @include mobile {
     .stroke-table th,
     .stroke-table td {
       padding-right: 0.5rem;
     }
 
-    .stroke-table__icons {
-      gap: 0.25rem;
+    .stroke-table__icons :global(.board-icon + .board-icon) {
+      display: none;
+    }
+
+    .stroke-table__crisp {
+      flex-direction: column;
+      gap: 0;
     }
   }
 </style>

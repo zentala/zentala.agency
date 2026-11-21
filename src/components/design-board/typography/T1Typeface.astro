@@ -1,8 +1,13 @@
 ---
-/** T1: which typeface. The same header and content, at today's sizes, in three fonts. */
+/**
+ * T1 and T2 as one question: typeface and size scale are chosen together. Each font
+ * is shown twice on the same content: with the current sizes and with the lighter
+ * scale (the former T2-C). The system font comes first; the webfonts are candidates
+ * for systems that have no Segoe UI.
+ */
 import MockHeader from './MockHeader.astro'
 import OptionStrip from './OptionStrip.astro'
-import Specimen from './Specimen.astro'
+import Specimen, { type SpecimenScale } from './Specimen.astro'
 import TypeQuestion from './TypeQuestion.astro'
 import type { TypographySamples } from './data'
 
@@ -11,54 +16,78 @@ interface Props {
 }
 
 const { samples } = Astro.props
-const ID = 'T1'
 const ANCHOR = 'board-t1'
+const CURRENT_FACTS = '96 / 36 / 24 / 20 / 18 / 14 px · tytuły 300 · tekst 400'
+const LIGHT_FACTS = '80 / 36 / 24 / 19 / 17 / 13 px · tytuły 200 · tekst 300'
 
-const options = [
+const fonts = [
   {
-    key: 'A',
-    label: 'Obecny: bez webfontu (Segoe UI na Windows)',
-    consequence:
-      'Nic się nie ładuje, ale każdy system pokazuje inny font. Segoe nie ma wagi 500, więc przeglądarka rysuje menu jako Semibold; wagi 200 też nie ma.',
-    facts: 'Segoe UI: Light 300, Regular 400, Semibold 600',
-    font: "'Segoe UI', system-ui, sans-serif",
+    name: 'Obecny font systemowy (Segoe UI na Windows)',
+    stack: "'Segoe UI', system-ui, sans-serif",
+    cost: 'Nic się nie pobiera. Na Macu, Androidzie i Linuksie strona wygląda inaczej, bo każdy system podstawia swój font.',
+    weights: 'Segoe UI nie ma wagi 200 ani 500: 200 rysuje się jako 300, a 500 jako 600',
   },
   {
-    key: 'B',
-    label: 'Inter (zmienny, hostowany u nas)',
-    consequence:
-      'Ten sam wygląd na każdym systemie, wagi 100–900 i oś optyczna: duże tytuły same robią się cieńsze i ciaśniejsze, mały tekst zostaje wyraźny. Koszt: plik ok. 73 kB i drugi, 133 kB, na stronach z polskimi znakami.',
-    facts: 'Inter Variable: wagi 100–900, oś optyczna 14–32',
-    font: "'Board Inter', sans-serif",
+    name: 'Selawik',
+    stack: "'Board Selawik', sans-serif",
+    cost: 'Otwarty zamiennik Segoe UI od Microsoftu: te same szerokości liter, więc wiersze łamią się tak samo jak na Windows. Pliki: po 15 kB na wagę, razem z polskimi znakami. Nie ma kursywy (przeglądarka pochyla litery sama), a ostatnie wydanie jest z 2015 roku.',
+    weights: 'wagi 300, 350 i 400 (jest też 600 i 700), więc 200 rysuje się jako 300, a 500 jako 400: menu wychodzi lżejsze niż w Segoe UI',
   },
   {
-    key: 'C',
-    label: 'Geist (zmienny, hostowany u nas)',
-    consequence:
-      'Bardziej geometryczny i techniczny, bliższy literom logo. Węższy, bez osi optycznej, więc długi tekst bloga czyta się odrobinę gorzej. Koszt: plik ok. 29 kB i drugi, 17 kB, na stronach z polskimi znakami.',
-    facts: 'Geist Variable: wagi 100–900',
-    font: "'Board Geist', sans-serif",
+    name: 'Open Sans',
+    stack: "'Board Open Sans', sans-serif",
+    cost: 'Ten sam projektant co Segoe UI (Steve Matteson) i najbliższy kształt liter; trochę szerszy. Pliki: 48 kB i 35 kB dla polskich znaków.',
+    weights: 'wagi 300–800, więc 200 rysuje się jako 300',
+  },
+  {
+    name: 'Noto Sans',
+    stack: "'Board Noto Sans', sans-serif",
+    cost: 'Wyrósł z Open Sans, ma ciaśniejsze odstępy i pełny zakres wag. Pliki: 36 kB i aż 168 kB dla polskich znaków.',
+    weights: 'wagi 100–900',
+  },
+  {
+    name: 'Source Sans 3',
+    stack: "'Board Source Sans', sans-serif",
+    cost: 'Węższy i lżejszy w rysunku, litery wyglądają na mniejsze przy tym samym rozmiarze. Pliki: 29 kB i 60 kB dla polskich znaków.',
+    weights: 'wagi 200–900',
   },
 ]
+
+const SCALES: { scale: SpecimenScale; label: string; facts: string }[] = [
+  { scale: 'current', label: 'obecne rozmiary', facts: CURRENT_FACTS },
+  { scale: 'light', label: 'lżejsza skala (dawne T2-C)', facts: LIGHT_FACTS },
+]
+const KEYS = 'ABCDEFGHIJ'
+
+const options = fonts.flatMap((font, fontIndex) =>
+  SCALES.map((item, scaleIndex) => ({
+    key: KEYS[fontIndex * SCALES.length + scaleIndex],
+    label: `${font.name}, ${item.label}`,
+    consequence:
+      scaleIndex === 0
+        ? font.cost
+        : `Ten sam font w lżejszej skali; ${font.weights}.`,
+    facts: item.facts,
+    scale: item.scale,
+    stack: font.stack,
+    withHeader: scaleIndex === 0,
+  })),
+)
 ---
 
 <TypeQuestion
-  id={ID}
-  question="Jaki krój pisma ma mieć strona?"
+  id="T1"
+  question="Krój pisma i skala rozmiarów razem: która kombinacja?"
   options={options}
-  recommendation="B, Inter: jedyny z trzech, który ma prawdziwą wagę 500 i 200 oraz sam dopasowuje grubość kreski do rozmiaru, czego potrzebuje jasny tekst na czerni."
-  note="W każdej opcji ta sama treść i dzisiejsze rozmiary oraz wagi; zmienia się tylko font."
+  recommendation="A na Windows i C dla pozostałych systemów jako jedna reguła: strona najpierw prosi o Segoe UI, a dopiero gdy go nie ma, pobiera Selawik. Na Twoim komputerze nic się nie zmienia i nic się nie pobiera, a na innych systemach układ zostaje ten sam. Jeśli ważniejsza jest prawdziwa kursywa i waga 500, zamiast C weź E (Open Sans): litery są wtedy trochę szersze. Lżejszą skalę (B, D, F, H, J) pokazuję jako górną granicę: tekst w wadze 300 poniżej 18 px robi się na czerni cienki."
+  note="Inter i Geist odpadły. Selawik nie ma paczki @fontsource, więc jego pliki pochodzą wprost z wydania 1.01 w repozytorium Microsoftu (licencja SIL OFL). Fonty z tej tablicy ładują się tylko tutaj, prawdziwa strona ich nie pobiera. Pierwszy wiersz każdego fontu pokazuje też nagłówek strony."
 >
   {
     options.map((option) => (
-      <OptionStrip
-        optionKey={option.key}
-        label={option.label}
-        facts={option.facts}
-      >
-        <div style={`--tb-font: ${option.font}`}>
-          <MockHeader variant="current" anchor={ANCHOR} />
-          <Specimen scale="current" samples={samples} />
+      <OptionStrip optionKey={option.key} label={option.label} facts={option.facts}>
+        <div style={`--tb-font: ${option.stack}`}>
+          {option.withHeader && <MockHeader variant="current" anchor={ANCHOR} />}
+          <Specimen scale={option.scale} samples={samples} />
         </div>
       </OptionStrip>
     ))

@@ -1,12 +1,11 @@
 ---
 /**
- * Design board, group "typography and compact headers" (dev only): questions T1 to
- * T4, each with its options rendered on real site content. Nothing here changes
- * the site; the owner's picks are applied afterwards.
+ * Design board, group "typography and compact headers" (dev only): T1 (typeface and
+ * scale as combinations), T3 (site header) and T4 (section header variants), each
+ * rendered on real site content. Nothing here changes the site by default.
  */
 import BoardFonts from './BoardFonts.astro'
 import T1Typeface from './T1Typeface.astro'
-import T2Scale from './T2Scale.astro'
 import T3Header from './T3Header.astro'
 import T4SectionHeaders from './T4SectionHeaders.astro'
 import { loadTypographySamples } from './data'
@@ -16,6 +15,5 @@ const samples = await loadTypographySamples()
 
 <BoardFonts />
 <T1Typeface samples={samples} />
-<T2Scale samples={samples} />
 <T3Header samples={samples} />
 <T4SectionHeaders samples={samples} />

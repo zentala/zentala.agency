@@ -1,0 +1,166 @@
+---
+/**
+ * The shrinking header in one of its two states, for the board (T3, option E):
+ * `top` is the bar at the top of the page, `scrolled` the same bar after scrolling.
+ * Nav links carry an icon 2 px larger than the label, in the nav style of icon
+ * system F. The live version is the "shrink" option of the dev variant switcher.
+ */
+import Logo from '@/components/Logo.astro'
+import BoardIcon from '../icons-controls/BoardIcon.astro'
+import { getSystem, systemIcon } from '../icons-controls/icon-systems'
+import { CURRENT_NAV, TAGLINE } from './data'
+
+interface Props {
+  state: 'top' | 'scrolled'
+  /** In-page anchor the nav links point at, so a click stays on the board. */
+  anchor: string
+}
+
+const { state, anchor } = Astro.props
+const NAV_ICON_SIZE = 18
+const NAV_SYSTEM = getSystem('F')
+const LINKS = [
+  { text: 'Home', icon: 'nav-home' },
+  { text: 'Capabilities', icon: 'nav-capabilities' },
+  { text: 'Portfolio', icon: 'nav-portfolio' },
+  { text: 'Blog', icon: 'nav-blog' },
+  { text: 'Contact', icon: 'nav-contact' },
+] as const
+const LOGO_SIZE = {
+  top: { width: '200px', height: '40px' },
+  scrolled: { width: '160px', height: '32px' },
+}
+---
+
+<div class="shrink-header" data-state={state} data-tb-cost={state === 'top' ? '' : undefined}>
+  <div class="shrink-header__brand">
+    <Logo type="full" color="currentColor" {...LOGO_SIZE[state]} />
+    {state === 'top' && <span class="shrink-header__tagline">{TAGLINE}</span>}
+  </div>
+  <nav class="shrink-header__nav" aria-label={`Nawigacja, stan: ${state}`}>
+    {
+      LINKS.map((link) => {
+        const icon = systemIcon(NAV_SYSTEM, 'nav', link.icon)
+        return (
+          <a
+            href={`#${anchor}`}
+            aria-current={link.text === CURRENT_NAV ? 'page' : undefined}
+          >
+            {icon && <BoardIcon spec={{ ...icon, size: NAV_ICON_SIZE }} />}
+            {link.text}
+          </a>
+        )
+      })
+    }
+  </nav>
+  <span class="shrink-header__burger" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </span>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  $height-top: 5.5rem;
+  $height-scrolled: 3.8125rem;
+  $height-phone: 3.5625rem;
+
+  .shrink-header {
+    @include px-responsive();
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: $height-top;
+    border-bottom: 1px solid $border-color;
+    color: var(--color-text);
+  }
+
+  .shrink-header[data-state='scrolled'] {
+    height: $height-scrolled;
+  }
+
+  .shrink-header__brand {
+    display: flex;
+    align-items: center;
+
+    > :global(div) {
+      line-height: 0;
+    }
+  }
+
+  .shrink-header__tagline {
+    margin-left: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.26rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .shrink-header__nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .shrink-header__nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.26rem;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color var(--motion-fast) var(--ease-standard);
+
+    &:hover,
+    &:focus-visible,
+    &[aria-current='page'] {
+      color: var(--color-text);
+    }
+  }
+
+  .shrink-header__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 1.75rem;
+    height: 1.25rem;
+
+    span {
+      height: 3px;
+      background-color: var(--color-text);
+    }
+  }
+
+  /* Below this width the tagline would run into the nav. */
+  @media (max-width: 1399px) {
+    .shrink-header__tagline {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1200px) {
+
+    /* Narrow desktop: no room for icons, the bar only shrinks. */
+    .shrink-header__nav :global(.board-icon) {
+      display: none;
+    }
+  }
+
+  /* On a phone the header stays as it is today: one low bar with the menu button. */
+  @include tablet {
+    .shrink-header,
+    .shrink-header[data-state='scrolled'] {
+      height: $height-phone;
+    }
+
+    .shrink-header__nav {
+      display: none;
+    }
+
+    .shrink-header__burger {
+      display: flex;
+    }
+  }
+</style>

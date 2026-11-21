@@ -2,6 +2,7 @@
 import BoardQuestion from './BoardQuestion.astro'
 import IndexCurrent from './IndexCurrent.astro'
 import IndexGrid from './IndexGrid.astro'
+import LatestGrid from './LatestGrid.astro'
 import OptionBar from './OptionBar.astro'
 import SeriesRow from './SeriesRow.astro'
 import { loadBoardData } from './data'
@@ -17,8 +18,8 @@ const B1 = {
   id: 'B1',
   question: 'Jak ma być zbudowana strona /blog?',
   recommendation:
-    'E: wybrana opcja C z trzema zmianami: serie też mają okładki, pod nazwą serii stoi krótki opis, a liczba części ma ikonę. Do potwierdzenia.',
-  note: 'Na 390 px każda opcja układa się w jedną kolumnę: posty jeden pod drugim, potem archiwum, potem serie; okładki maleją do 96 px. W B, C i D nagłówki sekcji mają 44 px wysokości. Komórki mają znów pełny odstęp od góry, taki jak z boków; proporcje i położenie nagłówków rozstrzyga pytanie S1. W E wiersze serii wyglądają jak w B2-E.',
+    'F: Twój wybór z ostatniej rundy złożony w całość. Do potwierdzenia zostaje jedno: okładki (F) czy własne ikony wpisów, kategorii i serii zamiast okładek (G).',
+  note: 'Na 390 px każda opcja układa się w jedną kolumnę: posty jeden pod drugim, potem archiwum, potem serie; okładki maleją do 96 px. W B, C i D nagłówki sekcji mają 44 px wysokości. Komórki mają znów pełny odstęp od góry, taki jak z boków; proporcje i położenie nagłówków rozstrzyga pytanie S1. W E wiersze serii wyglądają jak w B2-E. F i G: przy dwóch kolumnach (771–1000 px) komórka archiwum zajmuje cały rząd, na telefonie duży wpis ma zwykły rozmiar. Ikony przy tekście są o 2 px większe od tekstu (tekst 14 px, ikona 16 px) w wadze Regular; cienka waga jest tylko na dużych ikonach w tle.',
 }
 
 const B2 = {
@@ -71,9 +72,26 @@ const B2 = {
     letter="E"
     name="C ze zmianami: serie z okładką, opisem i ikoną przy liczbie części"
     consequence='Posty jak w C. Każda seria dostaje okładkę wyliczoną z adresu serii, krótki opis pod nazwą i ikonę przy liczbie części; "Start" przechodzi z pierwszego wiersza do tej samej linii co liczba części. Blok serii jest wyższy o okładkę (144 px) i opis.'
-    recommended
+    status="Poprzednia runda"
   />
   <IndexGrid data={data} covers seriesBadges />
+
+  <OptionBar
+    questionId="B1"
+    letter="F"
+    name="Najnowszy wpis duży, 7 wpisów i archiwum w trzech rzędach"
+    consequence='Bez napisu nad wpisami. Meta w dwóch liniach: data i kategoria, niżej "Part 13 of" z nazwą serii jako linkiem. Komórka archiwum ma małą ikonę w prawym górnym rogu i dużą ikonę w tle. Nad seriami cienki nagłówek sekcji z ikoną (T4-C), przy "Start" ikona. Strona jest dłuższa o jeden rząd wpisów.'
+    recommended
+  />
+  <LatestGrid data={data} look="cover" />
+
+  <OptionBar
+    questionId="B1"
+    letter="G"
+    name="To samo z własnymi ikonami zamiast okładek"
+    consequence="Każdy wpis, kategoria i seria ma swoją ikonę (fabryka przy wycieczce po fabryce oprogramowania, uścisk dłoni przy dzierżawie pliku): mała obok tytułu, duża w tle. Rząd jest niższy o okładkę (144 px), ale każdy nowy wpis wymaga dobrania ikony; bez niej dostaje ikonę kategorii."
+  />
+  <LatestGrid data={data} look="icon" />
 
   <BoardQuestion {...B2} />
 
@@ -130,7 +148,7 @@ const B2 = {
     questionId="B2"
     letter="E"
     name="D ze znaczkiem zaraz za tytułem, delikatne kolory"
-    consequence="Opublikowana część: ikona kalendarza i data w szarości tabeli. Szkic: ołówek i Draft w zgaszonym morskim. Do recenzji: oko i Review w zgaszonym niebieskim. Bez wypełnienia i ramki, tym samym krojem co tytuł; osobnej kolumny nie ma."
+    consequence="Opublikowana część: ikona kalendarza i data w szarości tabeli. Szkic: ołówek i Draft w zgaszonym morskim. Do recenzji: oko i Review w zgaszonym niebieskim. Bez wypełnienia i ramki, tym samym krojem co tytuł; osobnej kolumny nie ma. Link Start ma teraz ikonę."
     recommended
   />
   <section class="section-full">

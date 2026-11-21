@@ -2,7 +2,7 @@
 /**
  * I3: card hover. Real capability cards as line-grid cells, one row per option.
  * The middle card of each row has its hover pinned, so the state shows without a pointer.
- * Every option is square: no radius anywhere.
+ * Square, no radius. The dev variant switcher's "Hover karty" row shows them on real pages.
  */
 import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
 import BoardCell from './BoardCell.astro'
@@ -30,9 +30,9 @@ const OPTIONS: readonly BoardOption[] = [
   },
   {
     key: 'D',
-    label: 'Samo tło',
+    label: 'Samo tło, jaśniejsze',
     consequence:
-      'Tylko delikatne rozjaśnienie tła i ikony; najspokojniejszy, ale najsłabiej widać, co jest klikalne.',
+      'Tylko tło, ponad dwa razy jaśniejsze niż w poprzedniej wersji D (9% bieli zamiast 4%); linie się nie zmieniają, zero koloru.',
   },
 ]
 
@@ -63,15 +63,32 @@ const CARDS = [
 /** One icon for every option, so only the hover differs: the thin 128px icon of the original site. */
 const iconSystem = getSystem('A')
 const PINNED_INDEX = 1
+
+/** Pages with many cards, where the switcher's card-hover axis is worth trying. */
+const REAL_PAGES = [
+  { href: '/about/capabilities', label: '/about/capabilities' },
+  { href: '/blog', label: '/blog' },
+  { href: '/portfolio', label: '/portfolio' },
+  { href: '/', label: 'strona główna' },
+]
 ---
 
 <BoardQuestion
   id="I3"
   question="Jak karta ma reagować na najechanie myszą?"
   options={OPTIONS}
-  recommendation="B. Hover zostaje neutralny: tło lekko się rozjaśnia, a linie siatki tylko jaśnieją na szaro, bez koloru. C (niebieska linia) jest odrzucone, D jest za słabe, żeby było widać, co jest klikalne."
+  recommendation="D w nowej, jaśniejszej wersji: działa jak A, które Ci się podobało (samo tło, linie stoją), ale bez niebieskawego odcienia i bez mocno świecącej ikony. Porównaj A, obecny i D na prawdziwych stronach: przycisk „Warianty” w lewym dolnym rogu, wiersz „Hover karty”. C zostaje tylko jako odrzucone."
   columns={3}
 >
+  <BoardCell wide option="Na prawdziwych stronach" caption="przełącznik „Warianty”, wiersz „Hover karty”: B obecny, A, D">
+    <ul class="hover-pages">
+      {REAL_PAGES.map((page) => <li><a href={page.href}>{page.label}</a></li>)}
+    </ul>
+    <p class="hover-pages__note">
+      Karty na /about/capabilities nie są linkami, więc na stronie nie mają hovera. Po
+      wybraniu B, A albo D przełącznik pokazuje go tam na próbę.
+    </p>
+  </BoardCell>
   {
     OPTIONS.map((option) => (
       <>
@@ -164,9 +181,28 @@ const PINNED_INDEX = 1
     color: var(--color-text-muted);
   }
 
-  /* B and D share the neutral wash; pinned state repeats what :hover does. */
-  .hover-card--B.is-hover,
-  .hover-card--D.is-hover {
+  .hover-pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+
+    a {
+      color: var(--color-accent);
+      transition: color var(--motion-fast) var(--ease-standard);
+
+      &:hover {
+        color: var(--color-accent-hover);
+      }
+    }
+  }
+
+  .hover-pages__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Pinned state repeats what :hover does. */
+  .hover-card--B.is-hover {
     background-color: var(--color-surface-hover);
   }
 
@@ -177,7 +213,7 @@ const PINNED_INDEX = 1
 
   /* A: the original card. Blue-gray fill (gray-900), bright icon, no line change. */
   .hover-card--A {
-    --hover-icon-opacity: 0.32;
+    --hover-icon-opacity: #{$card-hover-before-icon};
 
     &:not(:focus-visible)::after {
       border-color: transparent;
@@ -185,7 +221,7 @@ const PINNED_INDEX = 1
 
     &:hover,
     &.is-hover {
-      background-color: rgb(17 24 39);
+      background-color: $card-hover-before-fill;
     }
   }
 
@@ -200,8 +236,15 @@ const PINNED_INDEX = 1
     }
   }
 
-  /* D: surface only. */
-  .hover-card--D:not(:focus-visible)::after {
-    border-color: transparent;
+  /* D: surface only, the brighter fill the switcher uses on real pages. */
+  .hover-card--D {
+    &:not(:focus-visible)::after {
+      border-color: transparent;
+    }
+
+    &:hover,
+    &.is-hover {
+      background-color: $card-hover-bright-fill;
+    }
   }
 </style>

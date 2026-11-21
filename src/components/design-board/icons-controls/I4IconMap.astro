@@ -1,62 +1,71 @@
 ---
 /**
- * I4: the proposed semantic icon map. The table is drawn from the same data the other
- * questions use, so every name shown here is one a component on this board asked for.
+ * I4: the semantic icon map. Both tables are drawn from the data the other questions
+ * use: the rule per place (set, size, weight) and the names with their glyphs.
  */
 import BoardQuestion, { type BoardOption } from './BoardQuestion.astro'
 import BoardCell from './BoardCell.astro'
 import BoardIcon from './BoardIcon.astro'
-import type { BoardIconSpec } from './board-icons'
-import { ICON_MAP, mapIcon, type IconGroup } from './icon-map'
-import { formatPx, strokePx } from './stroke-math'
+import { describeBoardIcon, type BoardIconSpec } from './board-icons'
+import { ICON_MAP, ICON_PLACES, WEIGHT_BY_SIZE, mapIcon } from './icon-map'
+import type { IconContext, IconGroup, SemanticIconName } from './icon-map'
 
 const OPTIONS: readonly BoardOption[] = [
   {
     key: 'A',
-    label: 'Jedna mapa z nazwami znaczeń',
+    label: 'Jedna mapa z nazwami znaczeń (przyjęte)',
     consequence:
-      'Komponent prosi o „date” albo „email”, a jeden plik mówi, który znak to rysuje. Zmiana zestawu lub wagi to edycja jednego pliku; test pilnuje, że nikt nie ładuje ikon inaczej.',
+      'Komponent prosi o „date” albo „email”, a jeden plik mówi, który znak to rysuje i w jakim rozmiarze i wadze. Zmiana zestawu lub wagi to edycja jednego pliku; test pilnuje, że nikt nie ładuje ikon inaczej.',
   },
   {
     key: 'B',
     label: 'Nazwy z zestawu, jak dziś',
     consequence:
-      'W kodzie zostają nazwy typu „calendar-blank” i „hard-drives” plus lista aliasów. Działa, ale każda zmiana zestawu oznacza przepisywanie nazw w wielu plikach.',
+      'W kodzie zostają nazwy typu „calendar-blank” i „hard-drives” plus lista aliasów. Każda zmiana zestawu oznacza przepisywanie nazw w wielu plikach.',
   },
 ]
 
 const GROUPS = [...new Set(ICON_MAP.map((entry) => entry.group))] as IconGroup[]
-const SAMPLE_SIZE = 20
+/** Large background icons are drawn smaller in the table. */
+const TABLE_MAX_SIZE = 32
+const PLACE_SAMPLE: Record<IconContext, SemanticIconName> = {
+  footer: 'linkedin',
+  contactCard: 'book-call',
+  cardBackground: 'strategy',
+  meta: 'date',
+  nav: 'nav-blog',
+  button: 'send',
+  buttonArrow: 'arrow-next',
+}
 
-/** The glyph columns of the table, left to right. */
-const COLUMNS = [
-  { label: 'Phosphor Regular', note: 'lewa kolumna', set: 'ph', options: { weight: 'regular' } },
-  { label: 'Phosphor Light', note: 'strona dziś', set: 'ph', options: { weight: 'light' } },
-  { label: 'Lucide 1,25', note: 'odrzucone', set: 'lucide', options: { stroke: 1.25 } },
-] as const
-
-const columns = COLUMNS.map((column) => {
-  const style: Omit<BoardIconSpec, 'name'> = {
-    set: column.set,
-    size: SAMPLE_SIZE,
-    ...column.options,
+const places = ICON_PLACES.map((place) => {
+  const { set, ...options } = place.style
+  return {
+    ...place,
+    spec: describeBoardIcon({ ...place.style, name: '' }),
+    sample: mapIcon(PLACE_SAMPLE[place.context], set, {
+      ...options,
+      size: Math.min(place.style.size, TABLE_MAX_SIZE),
+    }),
   }
-  return { ...column, stroke: formatPx(strokePx(style) as number) }
 })
 
-const FACTS = [
-  'Lewa kolumna to Phosphor Regular, prawa to Lucide z ustawieniem kreski 1,25. Przy 20 px kreska Regular ma 1,25 px, a Lucide 1,04 px, czyli o jedną szóstą mniej.',
-  'Lucide jest rysowane pod 24 px i kreskę 2. Zmniejszone i pocienione wypada między pikselami, więc szarzeje; Phosphor ma osobny rysunek dla każdej wagi.',
-  'Lucide jest odrzucone decyzją właściciela i zostaje tu tylko dla porównania.',
-  'Środkowa kolumna to Phosphor Light, którego strona używa dziś: 0,94 px przy 20 px, czyli jeszcze cieniej niż Lucide.',
+/** Glyph columns of the names table: the chosen set at its two small rules, then the second choice. */
+const COLUMNS: readonly { label: string; style: Omit<BoardIconSpec, 'name'> }[] = [
+  { label: 'Phosphor Bold 18 px', style: { set: 'ph', weight: 'bold', size: 18 } },
+  { label: 'Phosphor Regular 16 px', style: { set: 'ph', weight: 'regular', size: 16 } },
+  { label: 'Lucide 2, 18 px', style: { set: 'lucide', stroke: 2, size: 18 } },
 ]
+const glyphs = (name: SemanticIconName) =>
+  COLUMNS.map(({ style: { set, ...options } }) => mapIcon(name, set, options))
 
 const RULES = [
-  'Jeden plik mapy (propozycja: src/lib/icons/icon-map.ts): nasza nazwa, znaczenie, znak w zestawie.',
+  'Jeden plik mapy (propozycja: src/lib/icons/icon-map.ts): nasza nazwa, znaczenie, znak w zestawie oraz reguła rozmiaru i wagi dla każdego miejsca.',
+  'Wybrany zestaw interfejsu to Phosphor. Znaki marek w stopce pochodzą z Font Awesome, loga technologii z Simple Icons (TechIcon).',
+  'Jedna ikona ma jedno znaczenie: strona się nie zbuduje, gdy ten sam znak rysuje dwie nazwy. Dlatego „umów rozmowę” ma kalendarz z plusem, a czat dwa dymki.',
   'SiteIcon przyjmuje wyłącznie nazwy z mapy; literówka nie przechodzi kompilacji TypeScript.',
-  'Wagę i rozmiar wybiera jedna reguła z I1 (zapisana w mapie), nie autor komponentu.',
+  'Rozmiar i wagę wybiera reguła miejsca, nie autor komponentu: ikona jest o 2 px większa niż tekst obok.',
   'Test blokuje: import astro-icon i wstawiony ręcznie znacznik svg poza SiteIcon i TechIcon, nazwę spoza mapy oraz wpis mapy, którego nikt nie używa.',
-  'Loga technologii zostają osobno w TechIcon (Simple Icons).',
 ]
 ---
 
@@ -64,35 +73,36 @@ const RULES = [
   id="I4"
   question="Czy ikony mają mieć jedną mapę, w której nasze nazwy opisują znaczenie?"
   options={OPTIONS}
-  recommendation="A. To spełnia zasadę jednego źródła prawdy: nazwy mówią, co ikona znaczy, a wybór z I1 wpisuje się w jednym miejscu."
+  recommendation="A, przyjęte. Mapa trzyma teraz także regułę z I1: zestaw, rozmiar i wagę dla każdego miejsca. Wiersze „propozycja” czekają na potwierdzenie w I1."
   columns={1}
 >
-  <BoardCell wide heading="Czym różnią się kolumny ikon">
-    <div class="icon-map-facts">
-      <ul class="icon-map-facts__text">
-        {FACTS.map((fact) => <li>{fact}</li>)}
-      </ul>
-      <ol class="icon-map-facts__columns">
-        {
-          columns.map((column) => (
-            <li>
-              <BoardIcon spec={mapIcon('date', column.set, { ...column.options, size: SAMPLE_SIZE })} />
-              <span>
-                <span class="icon-map-facts__label">{column.label}</span>
-                <span class="icon-map-facts__note">
-                  {column.note} · {SAMPLE_SIZE} px · kreska {column.stroke}
-                </span>
-              </span>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
+  <BoardCell wide heading="Reguła w mapie: zestaw, rozmiar i waga w każdym miejscu">
+    <ul class="icon-places">
+      {
+        places.map((place) => (
+          <li class="icon-places__row">
+            <span class="icon-places__sample">
+              <BoardIcon spec={place.sample} />
+            </span>
+            <span class="icon-places__place">
+              {place.label}
+              <span class="icon-places__status">{place.status}</span>
+            </span>
+            <span class="icon-places__spec">
+              {place.spec}
+              {place.textPx && ` · tekst ${place.textPx} px`}
+            </span>
+            <span class="icon-places__rule">{place.rule}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="icon-places__weights">
+      Waga według rozmiaru w Phosphor: {WEIGHT_BY_SIZE.map((row) => `${row.sizes} ${row.weight} (${row.stroke})`).join('; ')}.
+      Wyjątek: meta wpisu zostaje przy Regular 16 px.
+    </p>
   </BoardCell>
-  <BoardCell
-    wide
-    heading="Proponowane nazwy (kolumny od lewej: Phosphor Regular, Phosphor Light, Lucide; wszystkie po 20 px)"
-  >
+  <BoardCell wide heading={`Nazwy i znaki (kolumny od lewej: ${COLUMNS.map((column) => column.label).join(', ')})`}>
     <div class="icon-map">
       {
         GROUPS.map((group) => (
@@ -102,13 +112,8 @@ const RULES = [
               {ICON_MAP.filter((entry) => entry.group === group).map((entry) => (
                 <li class="icon-map__row">
                   <span class="icon-map__glyphs">
-                    {columns.map((column) => (
-                      <BoardIcon
-                        spec={mapIcon(entry.name, column.set, {
-                          ...column.options,
-                          size: SAMPLE_SIZE,
-                        })}
-                      />
+                    {glyphs(entry.name).map((spec) => (
+                      <BoardIcon spec={spec} />
                     ))}
                   </span>
                   <code class="icon-map__name">{entry.name}</code>
@@ -144,46 +149,32 @@ const RULES = [
     }
   }
 
-  .icon-map-facts {
+  .icon-places__row {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 1.5rem 3rem;
-    align-items: start;
-
-    @include medium {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .icon-map-facts__text {
-    display: grid;
-    gap: 0.75rem;
-    max-width: 62ch;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-  }
-
-  .icon-map-facts__columns {
-    display: grid;
-    gap: 0.75rem;
-    color: var(--color-text);
-
-    li {
-      display: grid;
-      grid-template-columns: 1.25rem minmax(0, 1fr);
-      gap: 0.75rem;
-      align-items: center;
-    }
-  }
-
-  .icon-map-facts__label,
-  .icon-map-facts__note {
-    display: block;
+    grid-template-columns: 2.5rem 12rem 16rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.25rem 1rem;
+    min-height: 3rem;
     font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
-  .icon-map-facts__note {
+  .icon-places__sample,
+  .icon-places__place {
+    color: var(--color-text);
+  }
+
+  .icon-places__status {
+    display: block;
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     color: var(--color-text-subtle);
+  }
+
+  .icon-places__weights {
+    max-width: 90ch;
+    color: var(--color-text-secondary);
   }
 
   .icon-map__group-title {
@@ -227,6 +218,18 @@ const RULES = [
     padding-left: 1.25rem;
     list-style: decimal;
     color: var(--color-text-secondary);
+  }
+
+  @include medium {
+    .icon-places__row {
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+      padding-block: 0.5rem;
+    }
+
+    .icon-places__spec,
+    .icon-places__rule {
+      grid-column: 2;
+    }
   }
 
   @include mobile {
