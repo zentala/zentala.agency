@@ -10,7 +10,7 @@ import { join, relative, sep } from 'node:path'
 import { Parser } from 'htmlparser2'
 
 /** Hosts that are the site itself (production and the local dev copy). */
-export const OWN_HOSTS = new Set(['zentala.agency', 'www.zentala.agency', 'agency.internal', 'zentala.internal'])
+export const OWN_HOSTS = new Set(['zentala.agency', 'www.zentala.agency', 'agency.internal', 'agency.mitx.lan', 'zentala.internal'])
 
 const SITE_BASE = 'https://zentala.agency/'
 const CHECKABLE_PROTOCOLS = new Set(['http:', 'https:'])

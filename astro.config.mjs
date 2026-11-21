@@ -127,7 +127,7 @@ export default defineConfig({
       hmr: {
         overlay: false,
       },
-      allowedHosts: ['agency.internal', 'zentala.internal', 'localhost'],
+      allowedHosts: ['agency.internal', 'agency.mitx.lan', 'zentala.internal', 'localhost'],
       proxy: isAgentationReview ? agentationProxy : undefined,
     },
     css: {
