@@ -39,6 +39,14 @@ lint:
 fix:
     npm run lint:fix; npm run format
 
+# check every outgoing link of the built site (run `just build` first), write .cache/links/report.json, notify via ntfy (LAN only)
+links:
+    node scripts/links/cli.mjs dist --notify
+
+# check the outgoing links of the live site (sitemap crawl), notify via ntfy (LAN only)
+links-live:
+    node scripts/links/cli.mjs live --notify
+
 # pre-commit gate: lint, build (widget off, as in CI), unit tests, prod-bundle audit, critical e2e on chromium
 check:
     npm run lint

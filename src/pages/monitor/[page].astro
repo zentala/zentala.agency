@@ -1,0 +1,18 @@
+---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js'
+
+/**
+ * Link monitor route, dev only (/monitor/links). getStaticPaths is empty in a production
+ * build and the page body is imported only under DEV, so no monitor code, CSS or report
+ * reader reaches dist. Data comes from `just links` (scripts/links).
+ */
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { page: 'links' } }] : []
+}
+
+const LinkMonitor = import.meta.env.DEV
+  ? ((await import('@/components/monitor/LinkMonitor.astro')).default as AstroComponentFactory)
+  : null
+---
+
+{LinkMonitor && <LinkMonitor />}

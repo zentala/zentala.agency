@@ -59,6 +59,10 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # Outgoing links are checked after the build; dead ones are disabled in the deployed
+      # site and listed in the job summary. Dead links never fail the deploy.
+      LINK_CHECK: '1'
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
