@@ -1,0 +1,154 @@
+---
+/**
+ * Link monitor, dev only: every outgoing link of the site with its last check result,
+ * grouped by status (dead first). Reads the report written by `just links` or a
+ * LINK_CHECK=1 build. Rendered by src/pages/monitor/[page].astro in dev only.
+ * Layout: line-grid primitives only, neutral tokens, no colour for status.
+ */
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import {
+  groupByStatus,
+  outcomeLabel,
+  readLatestReport,
+  STATUS_ORDER,
+  type LinkStatus,
+} from '@/lib/links/report'
+
+const GROUP_COPY: Record<LinkStatus, { headline: string; subhead: string }> = {
+  dead: {
+    headline: 'Dead',
+    subhead: 'Not found, gone or refusing connections after two attempts. Disabled in a LINK_CHECK build.',
+  },
+  unverified: {
+    headline: 'Unverified',
+    subhead: 'Blocked, rate-limited, failing or timing out. The link may work for a browser; never disabled.',
+  },
+  ok: { headline: 'Reachable', subhead: 'Answered with a 2xx, directly or after redirects.' },
+}
+
+const report = readLatestReport()
+const groups = report ? groupByStatus(report.links) : null
+const checkedAt = (iso: string) => iso.replace('T', ' ').slice(0, 16) + ' UTC'
+---
+
+<Layout title="Link monitor" description="Outgoing links and their last status. Dev only." noindex>
+  <Hero
+    eyebrow="Dev only"
+    title="Link monitor"
+    subtitle={report
+      ? `${report.counts.total} outgoing links on ${report.pageCount} pages`
+      : 'No report yet'}
+  />
+
+  {
+    !report || !groups ? (
+      <Section id="empty">
+        <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+          <div class="content-grid__text">
+            <p class="text-fg-secondary">
+              No link report found. Build first, then run <code>just links</code> (or build with{' '}
+              <code>LINK_CHECK=1</code>), and reload this page.
+            </p>
+          </div>
+        </div>
+      </Section>
+    ) : (
+      <>
+        <Section id="summary">
+          <div class="line-grid" style="--cols-wide: 4; --cols-medium: 2; --cols-narrow: 2">
+            {STATUS_ORDER.map((status) => (
+              <div class="content-grid__text">
+                <p class="monitor-figure">{report.counts[status]}</p>
+                <p class="monitor-label">{GROUP_COPY[status].headline}</p>
+              </div>
+            ))}
+            <div class="content-grid__text">
+              <p class="monitor-figure">{report.disabled}</p>
+              <p class="monitor-label">Disabled in dist</p>
+            </div>
+            <div class="content-grid__text">
+              <p class="monitor-label">Source</p>
+              <p class="text-fg-secondary">{report.source}</p>
+            </div>
+            <div class="content-grid__text">
+              <p class="monitor-label">Report written</p>
+              <p class="text-fg-secondary">{checkedAt(report.generatedAt)}</p>
+            </div>
+            <div class="content-grid__text" />
+          </div>
+        </Section>
+
+        {STATUS_ORDER.map((status) => (
+          <div id={status} class="container-bordered">
+            <SectionHeader
+              headline={`${GROUP_COPY[status].headline} (${groups[status].length})`}
+              subhead={GROUP_COPY[status].subhead}
+            />
+            <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+              {groups[status].length === 0 ? (
+                <div class="content-grid__text">
+                  <p class="text-fg-muted">None.</p>
+                </div>
+              ) : (
+                groups[status].map((link) => (
+                  <div class="monitor-row" data-status={link.status}>
+                    <p class="monitor-url text-fg">{link.url}</p>
+                    <p class="monitor-meta">
+                      <span>{outcomeLabel(link)}</span>
+                      <span>{checkedAt(link.checkedAt)}</span>
+                    </p>
+                    <p class="monitor-pages">
+                      {link.pages.map((page) => (
+                        <span>{page}</span>
+                      ))}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        ))}
+      </>
+    )
+  }
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .monitor-figure {
+    @apply text-3xl font-light text-fg;
+  }
+
+  .monitor-label {
+    @apply text-sm text-fg-muted;
+  }
+
+  .monitor-row {
+    @include px-responsive('md');
+    @include py-responsive('sm');
+    display: grid;
+    gap: 0.25rem 2rem;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 2fr);
+    align-items: baseline;
+
+    @media (max-width: 770px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .monitor-url {
+    overflow-wrap: anywhere;
+  }
+
+  .monitor-meta,
+  .monitor-pages {
+    @apply text-sm text-fg-secondary;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+  }
+</style>
