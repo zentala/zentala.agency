@@ -1,6 +1,6 @@
 version: 1
 name: zentala-agency
-description: zentala.agency marketing site (Astro dev server on mITX, http://agency.internal)
+description: zentala.agency marketing site (Astro dev server, served from the dev worktree, http://agency.internal)
 
 services:
   - name: dev

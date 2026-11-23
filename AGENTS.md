@@ -84,7 +84,7 @@ src/
 - **Styling strategy:** quick prototype uses Tailwind classes; complex responsive uses SCSS with the mixins in `variables.scss`; shared styles go to `src/styles/components/`; component-specific styles go in the component's `<style>`.
 - **Naming:** components `PascalCase.astro`, utilities `camelCase.ts`, styles `_kebab-case.scss`, task docs `SCREAMING_SNAKE_CASE.md`.
 - **Config files:** `astro.config.mjs`, `tailwind.config.js`, `src/styles/variables.scss`, `.prettierrc` (single quotes, no semicolons, trailing commas), `.env.example`.
-- **Environment:** mITX, Fedora Linux, bash, Node per `.nvmrc`, npm (until 2026-11-21: mATX, Windows 11, PowerShell 7.x).
+- **Environment:** mATX, Windows 11, PowerShell 7.x and Git Bash, Node per `.nvmrc`, npm (2026-11-21 to 2026-11-23 briefly mITX, Fedora Linux).
 - Spacing is responsive (16 to 64px) through the mixins and classes described in DESIGN.md section 2.
 
 ## Blog and content
@@ -94,28 +94,27 @@ src/
 - Drafts use `published: false` (visible in dev, absent in production).
 - Never set `published: true` without the owner's separate review. A draft you judge ready gets `review: true` (shown as the Review marker in dev); details in [docs/agents/blog-content.md](docs/agents/blog-content.md).
 
-## Local dev runs on mITX as `agency.internal`, under PM3 — never `localhost:PORT`
+## Local dev runs on mATX as `agency.internal`, under PM3 — never `localhost:PORT`
 
-Development moved from mATX (Windows) to mITX (Fedora Linux, also named `server.lan`) on 2026-11-21 (owner). Work on branch `dev`; `main` is the deployed branch (a push to `main` deploys to GitHub Pages, a push to `dev` deploys nothing). Three rules, one after the other (owner, 2026-08-26, domain updated 2026-11-21):
+Development runs on mATX (Windows 11, PowerShell) again since 2026-11-23: mITX broke after the 2026-11-21 move, so the owner moved back. The served checkout is the worktree `.plan/worktrees/dev` (branch `dev`); `main` is the deployed branch (a push to `main` deploys to GitHub Pages, a push to `dev` deploys nothing). Three rules, one after the other (owner, 2026-08-26, domain updated 2026-11-21):
 
-1. **The development site is `http://agency.internal`**, served from the clone on mITX. Until the LAN resolver points `*.internal` at the address Caddy listens on (2026-11-21: it answers `192.168.1.10`, Caddy listens on `192.168.1.2`), use the working alias `http://agency.mitx.lan`. `astro.config.mjs` allows both hosts (`vite.server.allowedHosts`). The old mATX address `zentala.internal` is retired.
-2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev` (`node node_modules/astro/astro.js dev --port 4300 --host`, health check on 4300, domain `agency.internal`). Start it with `pm3 start zentala-agency/dev` (that is what `just dev` does), never with a loose `npm run dev` in a shell: an unsupervised dev server dies with its terminal and nothing notices. The Agentation toolbar renders without sync on mITX (the Windows password broker that injected its token is not available there).
+1. **The development site is `http://agency.internal`.** On mATX the browser reaches it through the system PAC file and the local Caddy on port 2080, so router DNS does not matter here. Other LAN devices cannot resolve it: the router answers every `*.internal` name with `192.168.1.10`, which nobody holds (see `.plan/DECIDE.md` INF-1). `astro.config.mjs` allows `agency.internal`, `agency.mitx.lan` and `localhost` (`vite.server.allowedHosts`). The old address `zentala.internal` is retired and unregistered.
+2. **PM3 owns the process.** `pm3.yaml` in the repo root defines service `dev` (`node node_modules/astro/astro.js dev --port 4300 --host`, health check on 4300, domain `agency.internal`, registered by PM3 itself). Start, stop and restart it only with `pm3 start|stop|restart dev` from the served worktree (that is what `just dev` does), never with a loose `npm run dev` and never by killing its process: when PM3 refuses, report the refusal and fix PM3 instead of working around it. Do not `pm3 reload` from another worktree: every worktree's `pm3.yaml` has the same project name, and the last one loaded takes the service over.
 3. **[CRITICAL] Every link handed to the owner is `http://agency.internal`**, in chat, in a report, in a task file. Never `localhost:4321`, `localhost:4300` or `127.0.0.1:PORT`. A raw `host:port` is for the agent's own `curl` diagnostics only. Astro's startup banner prints `localhost`: do not copy it. If the dev server picked another port because 4300 was taken, that is a bug to fix, not a link to paste.
 
 ## Git and commit rules
 
 1. **ALWAYS `npm run build` before commit** (catches type errors).
 2. Commit messages: short, single-line, English.
-3. **NEVER commit without user approval**: stage and propose the message.
-4. **NEVER push**: the user does it manually.
-5. Use `--no-pager`: `git --no-pager log`, `git --no-pager diff`.
-6. Reference task numbers: `"feat: add hero #001"`.
+3. **Commit and push `dev` freely** (owner, 2026-11-23): no approval needed for commits or pushes to `dev`. Merging `dev` into `main` deploys the live site, so it waits for the owner's go.
+4. Use `--no-pager`: `git --no-pager log`, `git --no-pager diff`.
+5. Reference task numbers: `"feat: add hero #001"`.
 
 <!-- CAVEAT(owner): rules 3 and 4 predate the owner's newer global push and merge decisions; kept unchanged until the owner decides which wins for this public repo. -->
 
 ## Planning
 
-At the start of every session read `.plan/STATE.md` (section "Resume here": where the work stopped, what waits for the owner, what to do with each answer) and `.plan/DECIDE.md`. The private part of `.plan/` is not in this public repository; on mITX it comes from the private Gitea repository `zentala/zentala.agency-plan`.
+At the start of every session read `.plan/STATE.md` (section "Resume here": where the work stopped, what waits for the owner, what to do with each answer) and `.plan/DECIDE.md`. The private part of `.plan/` is not in this public repository: on mATX it lives in the main checkout `C:/Users/zentala/code/zentala.agency/.plan/` (a worktree's own `.plan/` holds only the tracked public files), with a copy in the private Gitea repository `zentala/zentala.agency-plan`. The owner answers open decisions on the dev-only page http://agency.internal/admin/decisions; saved answers land in `.plan/answers/`.
 
 Work is tracked in `.plan/`: epics in `.plan/epics/` (taskmd usage in [.plan/epics/CLAUDE.md](.plan/epics/CLAUDE.md)), plus `.plan/TASKS.md` and `.plan/BACKLOG.md`. The old `.claude/tasks/` system is legacy, kept for history.
 

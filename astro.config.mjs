@@ -124,10 +124,14 @@ export default defineConfig({
       watch: {
         usePolling: true,
       },
+      // The page is reached through an HTTP proxy (PAC -> Caddy :2080) that cannot tunnel
+      // WebSockets, so the HMR client connects to the dev server directly.
       hmr: {
         overlay: false,
+        host: 'localhost',
+        clientPort: Number(process.env.PORT) || 4300,
       },
-      allowedHosts: ['agency.internal', 'agency.mitx.lan', 'zentala.internal', 'localhost'],
+      allowedHosts: ['agency.internal', 'agency.mitx.lan', 'localhost'],
       proxy: isAgentationReview ? agentationProxy : undefined,
     },
     css: {
