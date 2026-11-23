@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import { SHOW_DRAFTS } from '@/config/blog'
 
 /**
  * Series navigation for a post: the series display title, the current part's
@@ -31,7 +32,7 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
     {seriesTitle}
   </a>
   <p class="mt-1 text-sm text-fg-muted">{currentLabel}</p>
-  <ol class="mt-4 flex flex-col gap-2 p-0 [container-type:inline-size]">
+  <ol class:list={['mt-4 flex flex-col gap-2 p-0', SHOW_DRAFTS && '[container-type:inline-size]']}>
     {
       nearby.map((post) => (
         <li class="relative list-none text-sm leading-snug">

@@ -3,14 +3,18 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { SHOW_DRAFTS } from '@/config/blog'
 
 /**
- * The one DRAFT marker. Renders only where drafts are shown (never in production)
- * and never takes layout space, so a page is as tall in dev as in production:
+ * The one DRAFT marker. Renders only where drafts are shown (never in production).
+ * Only `corner` is out of flow; `rule` and `state` take inline space unless the
+ * caller positions them (see below):
  * - `corner`: a tag pinned to the top-right corner of the nearest positioned
  *   ancestor (cards, post hero); it sits in that box's padding.
  * - `rule`: a 1px vertical line placed between the part number and the title of
- *   a list row (F2-E), never at the far left of the row.
- * - `state`: the state name in grey after the title; shown only where the row
- *   is wide (container of 22rem or more).
+ *   a list row (F2-E), never at the far left of the row. It carries 0.5rem side
+ *   margins; where titles must align with published rows (column layouts), the
+ *   caller wraps it in an absolutely positioned box in the column gap and zeroes
+ *   the margin (SeriesCard, SeriesList).
+ * - `state`: the state name in grey after the title (inline, may wrap a line);
+ *   shown only where the row is wide (container of 22rem or more).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
  * States, all neutral: a plain draft is a dashed line or tag; `review` (a
  * draft the agent judges ready for the owner's publication review) is a solid

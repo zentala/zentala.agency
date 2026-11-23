@@ -1,6 +1,7 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import { SHOW_DRAFTS } from '@/config/blog'
 import { formatDate } from '@/lib/blog/format-date'
 
 /**
@@ -51,7 +52,7 @@ const latestDate = formatDate(latestPart.date)
       <SiteIcon name="next" size="sm" class="arrow-nudge" />
     </a>
 
-    <div class="pointer-events-none relative mt-auto w-full pt-6 [container-type:inline-size]">
+    <div class:list={['pointer-events-none relative mt-auto w-full pt-6', SHOW_DRAFTS && '[container-type:inline-size]']}>
       <p class="text-label uppercase text-fg-subtle">Latest</p>
       <a
         href={`/blog/${latestPart.slug}`}

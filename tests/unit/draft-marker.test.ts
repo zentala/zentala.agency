@@ -29,7 +29,11 @@ describe('DraftBadge state name', () => {
   it.each(users)('%s provides a size container for the state query', (file) => {
     const source = read(file)
     expect(source).toContain('placement="state"')
-    expect(source).toContain('container-type:inline-size')
+    expect(source).toContain("SHOW_DRAFTS && '[container-type:inline-size]'")
+  })
+  it('the series card puts the rule in the column gap so draft titles do not shift', () => {
+    const source = read('src/components/cards/SeriesCard.astro')
+    expect(source).toMatch(/absolute inset-y-\[0\.2em\] -right-1[^"]*\[&_\.draft-rule\]:mx-0/)
   })
   it('the board series list renders the state name in every variant', () => {
     const source = read('src/components/design-board/blog-index/SeriesList.astro')
