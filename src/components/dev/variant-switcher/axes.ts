@@ -33,14 +33,6 @@ export const VARIANT_AXES: VariantAxis[] = [
   axis('section-header', 'Nagłówek sekcji', 'A obecny', 'b:B etykieta', 'c:C cienki', 'd:D na linii'),
   axis('header', 'Nagłówek strony', 'obecny', 'shrink:kurczy się, z ikonami'),
   axis('first-view', 'Pierwszy ekran', 'zwykły', 'full:na cały ekran'),
-  axis(
-    'card-hover',
-    'Hover karty',
-    'bez zmian',
-    'b:B obecny, też na kartach bez linku',
-    'a:A sprzed zmian',
-    'd:D samo tło, jaśniejsze',
-  ),
 ]
 
 export const VARIANT_STORAGE_KEY = 'dev-variants'

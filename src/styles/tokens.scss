@@ -5,6 +5,8 @@
   --color-surface-raised: #0d0d0d;
   // Hover wash: white at 4% over the surface, neutral. Text on it stays above 18:1 for white.
   --color-surface-hover: color-mix(in srgb, #fff 4%, var(--color-surface));
+  // Card hover fill: text colour at 9% over the surface (design board variant D).
+  --color-surface-card-hover: color-mix(in srgb, var(--color-text) 9%, var(--color-surface));
 
   // Lines
   --color-line: #1f2937;

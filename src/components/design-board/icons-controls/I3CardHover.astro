@@ -64,7 +64,7 @@ const CARDS = [
 const iconSystem = getSystem('A')
 const PINNED_INDEX = 1
 
-/** Pages with many cards, where the switcher's card-hover axis is worth trying. */
+/** Pages with many cards, where the chosen hover can be seen. */
 const REAL_PAGES = [
   { href: '/about/capabilities', label: '/about/capabilities' },
   { href: '/blog', label: '/blog' },
@@ -124,6 +124,9 @@ const REAL_PAGES = [
 
 <style lang="scss">
   @use '../../../styles/variables' as *;
+
+  $card-hover-before-fill: #111827; // A: the blue-grey fill of the original site
+  $card-hover-before-icon: 0.32; // A: how bright the background icon gets
 
   /* As a direct-child link of the line grid, the card already has the current hover (B):
      neutral wash plus the line-strong overlay. The other options override that. */
@@ -244,7 +247,7 @@ const REAL_PAGES = [
 
     &:hover,
     &.is-hover {
-      background-color: $card-hover-bright-fill;
+      background-color: var(--color-surface-card-hover);
     }
   }
 </style>

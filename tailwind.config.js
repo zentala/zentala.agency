@@ -31,6 +31,7 @@ export default {
           DEFAULT: 'var(--color-surface)',
           raised: 'var(--color-surface-raised)',
           hover: 'var(--color-surface-hover)',
+          'card-hover': 'var(--color-surface-card-hover)',
         },
         line: {
           DEFAULT: 'var(--color-line)',
