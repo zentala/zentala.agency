@@ -11,7 +11,7 @@ import Hero from '@/components/Hero.astro'
 import Button from '@/components/Button.astro'
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
-import DecisionCells from '@/components/admin/DecisionCells.astro'
+import DecisionCard from '@/components/admin/DecisionCard.astro'
 import DecisionGroup from '@/components/admin/DecisionGroup.astro'
 import { readAnswers } from '@/lib/admin/answers'
 import { buildBoard } from '@/lib/admin/board'
@@ -90,7 +90,7 @@ const fileDate = decide.modifiedAt
               <summary class="deferred__summary">Na później ({board.deferred.length})</summary>
               <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
                 {board.deferred.map((item) => (
-                  <DecisionCells item={item} saved={answerById.get(item.id)} />
+                  <DecisionCard item={item} saved={answerById.get(item.id)} />
                 ))}
               </div>
             </details>
@@ -263,6 +263,33 @@ const fileDate = decide.modifiedAt
       card.toggleAttribute('data-changed', changed.has(card.dataset.decisionId ?? ''))
     })
   }
+
+  const noteField = (card: HTMLElement) => card.querySelector<HTMLTextAreaElement>('textarea')
+
+  function openNote(card: HTMLElement, focus: boolean) {
+    const note = card.querySelector<HTMLElement>('[data-note]')
+    const toggle = card.querySelector<HTMLElement>('[data-note-toggle]')
+    if (note) note.hidden = false
+    if (toggle) toggle.hidden = true
+    if (focus) noteField(card)?.focus()
+  }
+
+  /** A note with content is always visible: a draft the browser restored after a reload counts. */
+  function openFilledNotes() {
+    document.querySelectorAll<HTMLElement>('[data-decision-id]').forEach((card) => {
+      if (noteField(card)?.value.trim()) openNote(card, false)
+    })
+    markChanged()
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-note-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const card = toggle.closest<HTMLElement>('[data-decision-id]')
+      if (card) openNote(card, true)
+    })
+  })
+  openFilledNotes()
+  window.addEventListener('pageshow', openFilledNotes)
 
   document.addEventListener('input', markChanged)
   document.addEventListener('change', markChanged)
