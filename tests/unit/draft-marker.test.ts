@@ -41,3 +41,10 @@ describe('DraftBadge state name', () => {
     expect(source).toContain('placement="state"')
   })
 })
+
+describe('published rows', () => {
+  it('the series card number span gains `relative` only where drafts are shown', () => {
+    const source = read('src/components/cards/SeriesCard.astro')
+    expect(source).toContain("SHOW_DRAFTS && 'relative'")
+  })
+})

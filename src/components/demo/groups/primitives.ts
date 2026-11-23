@@ -44,7 +44,7 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       path: 'primitives/DraftBadge.astro',
       purpose:
         'The one dev-only DRAFT marker; the review state marks a draft ready for the owner.',
-      props: 'placement (corner; edge, inline), review (false), label',
+      props: 'placement (corner; rule, state, inline), review (false), label',
     },
     {
       id: 'phase-label',

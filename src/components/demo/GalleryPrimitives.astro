@@ -90,15 +90,19 @@ const TAGS = ['backstage', 'agents', 'devex']
     ><p>Short label <DraftBadge placement="inline" review /></p></GalleryCell
   >
   <GalleryCell label="rule: 1px line between number and title, draft">
-    <p>03<DraftBadge placement="rule" />Part title</p>
+    <div class="[container-type:inline-size]">
+      <p>03<DraftBadge placement="rule" />Part title<DraftBadge placement="state" /></p>
+    </div>
   </GalleryCell>
   <GalleryCell label="rule, review">
-    <p>
-      03<DraftBadge placement="rule" review />Part title<DraftBadge
-        placement="state"
-        review
-      />
-    </p>
+    <div class="[container-type:inline-size]">
+      <p>
+        03<DraftBadge placement="rule" review />Part title<DraftBadge
+          placement="state"
+          review
+        />
+      </p>
+    </div>
   </GalleryCell>
 </GalleryEntry>
 
