@@ -12,7 +12,7 @@ Owner rulings of 2026-11-20, amended by the design-board answers of 2026-11-21 a
 | --- | --- | --- | --- |
 | P1 | No orange, amber or yellow in the site's own UI | No `--color-warn`, no amber, orange or yellow class or hex, no warm gradient. Exception (target): a technology logo in `TechIcon` and the logo wall shows its real brand colour on hover, warm hues included | `tests/unit/design-guards.test.ts`, describe "colour restraint" (3 tests; must exempt the logo data in `src/data/tech-icons.ts`, T30) |
 | P2 | Blue is a small accent | `--color-accent` for links, an icon, a chevron or a thin highlight. Never a large fill, a tinted cell or bento background, a wash, or a gradient. The one exception: the CTA button tier is a solid `--color-accent-solid` fill with white text, at most one per screen (section 5, Buttons) | none |
-| P3 | Hover is neutral | A hovered card gets a lighter background, white at 9% over black (card-hover variant D), and nothing else: no line overlay, no colour, no icon change (target). Keyboard focus keeps the `line-focus` overlay (section 3, item 8). No blue wash anywhere | none (tokens in `src/styles/tokens.scss`) |
+| P3 | Hover is neutral | A hovered card gets a lighter background, white at 9% over black (card-hover variant D), and nothing else: no line overlay, no colour, no icon change. Keyboard focus keeps the `line-focus` overlay (section 3, item 8). No blue wash anywhere | none (tokens in `src/styles/tokens.scss`) |
 | P4 | No bold type in components | Weight ceiling `font-medium`, which is 600 in Tailwind (Segoe UI draws 500 as 600). Titles 300, body 400. No `font-semibold` or `font-bold`, no literal 600+ declaration. Global `strong`, `b`, `th` and prose `code` ask for 500 and render as 600 | `design-guards.test.ts`, describe "no bold type" |
 | P5 | No underlines on links | Hover is a brighter colour. No `underline` utility, no `text-decoration: underline`, no animated underline bar | `design-guards.test.ts`, describe "no underlined links" |
 | P6 | One arrow: a chevron that moves | `<SiteIcon name="next" size="sm" class="arrow-nudge" />` inside the link, button or `.group`. No text arrows (`→`), no shaft icons. The nudge is CSS in `src/styles/motion.scss` and off under reduced motion | none |
@@ -289,7 +289,7 @@ Applied on: `/`, `/portfolio`, `/about/capabilities`, `/blog`, series, category,
 
 ## 6. Interaction states
 
-- **Hover:** the lighter card background of P3 (white at 9% over the surface; target, today the code still adds the `line-strong` overlay and a 4% fill), 150ms. The blue wash of C7 was reversed by the owner on 2026-11-20.
+- **Hover:** the lighter card background of P3 (white at 9% over the surface, no line overlay), 150ms. The blue wash of C7 was reversed by the owner on 2026-11-20.
 - **Focus-visible:** the overlay of section 3 in `line-focus` on cells; global 1px inset ring for everything else. Every hover affordance has a focus and touch equivalent.
 - **Active:** no scale.
 - **Reduced motion:** one global block in `motion.scss` sets animation and transition durations to `.01ms`, iteration count 1, `scroll-behavior: auto`, and zeroes transforms on `[data-motion]`. Colour changes stay. JS-driven zoom must check `prefers-reduced-motion` itself.
