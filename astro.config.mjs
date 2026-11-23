@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx'
 import icon from 'astro-icon'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
+import { adminAnswersIntegration } from './src/integrations/admin-answers'
 import { blogVersionHistoryDevPlugin } from './src/lib/dev/git-history/vitePlugin'
 
 /** True when Astro was invoked as `astro build`, false for `astro dev`/`preview`. */
@@ -93,6 +94,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     agentationReviewIntegration,
+    adminAnswersIntegration,
     mdx(),
     icon({ include: { ph: ['*'], 'simple-icons': ['*'] } }),
     react({ include: ['src/components/react-stuff/**/*'] }),
