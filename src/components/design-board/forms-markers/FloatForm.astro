@@ -27,11 +27,11 @@ const { variant, prefix, hidden = false } = Astro.props
   data-board-form
   data-form-variant={variant}
 >
-  <FloatField id={`${prefix}-fname`} label="First name" icon="user" variant={variant} required />
-  <FloatField id={`${prefix}-lname`} label="Last name" icon="user" variant={variant} />
-  <FloatField id={`${prefix}-email`} label="Email" icon="envelope-simple" type="email" variant={variant} required />
+  <FloatField id={`${prefix}-fname`} label="First name" icon="person" variant={variant} required />
+  <FloatField id={`${prefix}-lname`} label="Last name" icon="person" variant={variant} />
+  <FloatField id={`${prefix}-email`} label="Email" icon="email" type="email" variant={variant} required />
   <FloatField id={`${prefix}-phone`} label="Phone" icon="phone" type="tel" variant={variant} />
-  <FloatField id={`${prefix}-msg`} label="Your message" icon="chat-circle" variant={variant} multiline class="float-form__span" />
+  <FloatField id={`${prefix}-msg`} label="Your message" icon="message" variant={variant} multiline class="float-form__span" />
   <div class:list={['float-form__foot', 'float-form__span', `float-form__foot--${variant}`]}>
     <div class="float-form__aside">
       <label class="float-form__check">
@@ -42,7 +42,7 @@ const { variant, prefix, hidden = false } = Astro.props
         I use your details only to answer you. No newsletter, no sharing.
       </p>
     </div>
-    <Button tier="primary" type="submit" text="Send message" icon="paper-plane-tilt" iconPosition="right" />
+    <Button tier="primary" type="submit" text="Send message" icon="send" iconPosition="right" />
   </div>
 </form>
 

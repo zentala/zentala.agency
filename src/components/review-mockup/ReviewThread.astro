@@ -71,14 +71,14 @@ const headLabel = isProposal ? 'Suggested edit' : 'Comment'
             <span>Editing in the text</span>
             <button type="button" class="rv-link rv-link--go" data-rv-send>
               Send to agent
-              <SiteIcon name="caret-right" />
+              <SiteIcon name="next" />
             </button>
             <button type="button" class="rv-link" data-rv-cancel>
               Cancel
             </button>
           </div>
           <div class="rv-proposal__state">
-            <SiteIcon name="paper-plane-tilt" />
+            <SiteIcon name="send" />
             Sent to agent. The file is unchanged until the agent applies it.
           </div>
         </div>
@@ -97,7 +97,7 @@ const headLabel = isProposal ? 'Suggested edit' : 'Comment'
         aria-pressed="false"
         aria-label="Like"
       >
-        <SiteIcon name="thumbs-up" />
+        <SiteIcon name="approve" />
         <span data-rv-count>{thread.likes}</span>
       </button>
       <button
@@ -107,7 +107,7 @@ const headLabel = isProposal ? 'Suggested edit' : 'Comment'
         aria-pressed="false"
         aria-label="Dislike"
       >
-        <SiteIcon name="thumbs-down" />
+        <SiteIcon name="reject" />
         <span data-rv-count>{thread.dislikes}</span>
       </button>
       {
@@ -130,7 +130,7 @@ const headLabel = isProposal ? 'Suggested edit' : 'Comment'
           />
           <button type="submit" class="rv-link rv-link--go">
             Reply
-            <SiteIcon name="caret-right" />
+            <SiteIcon name="next" />
           </button>
         </form>
       )

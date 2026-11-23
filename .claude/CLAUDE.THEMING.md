@@ -432,7 +432,7 @@ Content grid uses the same transparent border pattern:
     href="https://example.com"
     text="Click me"
     icon="message-circle"
-    variant="primary"
+    tier="primary"
   />
 </div>
 ```
@@ -782,7 +782,7 @@ Full-width CTA button/link with top border.
   href="/portfolio"
   text="View Portfolio"
   icon="folder"
-  variant="primary"
+  tier="primary"
 />
 
 <SectionCTA
@@ -956,7 +956,7 @@ import SectionCTA from '@/components/primitives/sections/SectionCTA.astro'
   href="/link"
   text="Click me"
   icon="arrow-right"
-  variant="primary"
+  tier="primary"
 />
 ```
 
@@ -966,7 +966,7 @@ import SectionCTA from '@/components/primitives/sections/SectionCTA.astro'
   href="/link"
   text="Click me"
   icon="arrow-right"
-  variant="primary"
+  tier="primary"
 />
 ```
 

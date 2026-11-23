@@ -14,57 +14,26 @@ import ContactForm from '@/components/ContactForm.astro'
 import TrustedMe from '@/components/TrustedMe.astro'
 
 const ctaButtons = [
-  { href: '/contact', text: 'Get started', variant: 'primary' },
+  { href: '/contact', text: 'Get started', tier: 'cta' },
   {
     href: 'https://cal.com/zentala',
     text: 'Book a call',
-    variant: 'secondary',
+    tier: 'secondary',
     target: '_blank',
   },
 ] as const
 const ctaFooter = [
-  { icon: 'map-pin', text: 'Warsaw, Poland' },
+  { icon: 'location', text: 'Warsaw, Poland' },
   { text: 'Working worldwide' },
 ]
 ---
 
 <GalleryEntry id="button" cols={3}>
-  <GalleryCell label="primary (default)">
+  <GalleryCell label="tier cta: solid blue, the one key action of a screen">
+    <Button tier="cta" href="https://cal.com/zentala" text="Book a call" icon="book-call" />
+  </GalleryCell>
+  <GalleryCell label="tier primary (default): solid white">
     <Button href="/contact" text="Get started" />
-  </GalleryCell>
-  <GalleryCell label="secondary: outlined">
-    <Button href="/contact" text="Get started" variant="secondary" />
-  </GalleryCell>
-  <GalleryCell label="accent">
-    <Button href="/contact" text="Get started" variant="accent" />
-  </GalleryCell>
-  <GalleryCell label="secondary, icon, no arrow">
-    <Button
-      href="https://cal.com/zentala"
-      text="Book a call"
-      icon="calendar"
-      variant="secondary"
-      arrow={false}
-      target="_blank"
-    />
-  </GalleryCell>
-  <GalleryCell label="primary, icon and arrow">
-    <Button href="/contact" text="Get started" icon="rocket" />
-  </GalleryCell>
-  <GalleryCell label="accent, icon, no arrow">
-    <Button href="/contact" text="Write to me" icon="envelope-simple" variant="accent" arrow={false} />
-  </GalleryCell>
-  <GalleryCell label="secondary, arrow">
-    <Button href="/portfolio" text="See the portfolio" variant="secondary" />
-  </GalleryCell>
-  <GalleryCell label="ghost: text and chevron only">
-    <Button href="/blog" text="All posts" variant="ghost" />
-  </GalleryCell>
-  <GalleryCell label="tier cta (under review): solid blue, the one key action">
-    <Button tier="cta" href="https://cal.com/zentala" text="Book a call" icon="calendar-plus" />
-  </GalleryCell>
-  <GalleryCell label="tier primary: solid white">
-    <Button tier="primary" href="/contact" text="Get started" />
   </GalleryCell>
   <GalleryCell label="tier secondary: grey">
     <Button tier="secondary" href="/portfolio" text="See the portfolio" />
@@ -72,11 +41,17 @@ const ctaFooter = [
   <GalleryCell label="tier tertiary: quieter grey">
     <Button tier="tertiary" href="/blog" text="All posts" />
   </GalleryCell>
-  <GalleryCell label="tier, icon on the right (no chevron)">
-    <Button tier="secondary" href="/contact" text="Write to me" icon="envelope-simple" iconPosition="right" />
+  <GalleryCell label="icon on the left, no chevron">
+    <Button tier="secondary" href="https://cal.com/zentala" text="Book a call" icon="book-call" arrow={false} target="_blank" />
   </GalleryCell>
-  <GalleryCell label="tier primary as a submit button">
-    <Button tier="primary" type="button" text="Send message" icon="paper-plane-tilt" iconPosition="right" />
+  <GalleryCell label="icon on the right (replaces the chevron)">
+    <Button tier="secondary" href="/contact" text="Write to me" icon="email" iconPosition="right" />
+  </GalleryCell>
+  <GalleryCell label="icon and chevron">
+    <Button tier="primary" href="/contact" text="Get started" icon="launch" />
+  </GalleryCell>
+  <GalleryCell label="tier primary as a button element">
+    <Button tier="primary" type="button" text="Send message" icon="send" iconPosition="right" />
   </GalleryCell>
 </GalleryEntry>
 
@@ -187,7 +162,7 @@ const ctaFooter = [
     ><ThemedInput
       type="email"
       id="gallery-email"
-      icon="envelope-simple"
+      icon="email"
       placeholder="Email"
     /></GalleryCell
   >

@@ -72,7 +72,7 @@ const rows = series.parts.slice(0, limit).map((part, index) => {
             {row.isFirst ? (
               <span class="series-row__start">
                 {START_LABEL}
-                <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+                <SiteIcon name="next" size="sm" class="arrow-nudge" />
               </span>
             ) : variant === 'combined' && !row.status ? (
               <time class="series-row__trail" datetime={row.datetime}>

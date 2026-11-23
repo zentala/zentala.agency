@@ -37,9 +37,9 @@ const date = formatDate(post.data.date)
     <div class="specimen__cell">
       <h3 class="specimen__h3">{post.data.title}</h3>
       <p class="specimen__meta">
-        <span><SiteIcon name="layers" size="sm" />{partLabel}</span>
+        <span><SiteIcon name="series" size="sm" />{partLabel}</span>
         <span>
-          <SiteIcon name="calendar" size="sm" />
+          <SiteIcon name="date" size="sm" />
           <time datetime={date.datetime}>{date.label}</time>
         </span>
         <span><SiteIcon name="tag" size="sm" />{post.data.category}</span>

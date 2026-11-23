@@ -57,7 +57,7 @@ From `src/pages/offer/harness-engineering.astro` (the `Section` primitive is `se
 </Section>
 ```
 
-Imports: `Section`, `SectionHeader`, `SectionGrid` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`. `SectionContent` is a transparent prose block; `.content-grid__text` is the lighter alternative for static cells. Icon names are short Phosphor Light names (`handshake`, `compass`); an unknown name fails the build.
+Imports: `Section`, `SectionHeader`, `SectionGrid` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`. `SectionContent` is a transparent prose block; `.content-grid__text` is the lighter alternative for static cells. Icon names are meanings from `src/lib/icons/icon-map.ts` (`partnership`, `discovery`); an unknown name fails the build.
 
 ## Prose cell in a grid
 
@@ -109,24 +109,24 @@ A static text cell uses `.content-grid__text` (padding and vertical centring fro
 ```
 
 ```astro
-<SectionCTA href="https://example.com" text="Visit the site" icon="external-link" variant="primary" bgText="Visit" />
+<SectionCTA href="https://example.com" text="Visit the site" icon="external-link" tier="primary" bgText="Visit" />
 ```
 
 `variant` is the legacy outlined look (`primary`, `secondary`, `accent`, `ghost`). Target: the four-tier `tier` look replaces it (DESIGN.md section 5, Buttons; built in E007-T30), so copy the call as it is in the file and check DESIGN.md for the current rule. `bgText` is normal case (`Visit`, not `VISIT`).
 
 ## Buttons, arrows, icons, tags
 
-From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). Today `variant` is outlined; DESIGN.md section 5 (Buttons) decides the four solid tiers that replace it in E007-T30. Use `primary` for the main action and `secondary` for the rest until then:
+From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). DESIGN.md section 5 (Buttons) defines the four solid tiers (`cta`, `primary`, `secondary`, `tertiary`). Use `primary` for the main action and `secondary` for the rest, and `cta` for at most one action per page:
 
 ```astro
-<Button href="http://cal.com/zentala" text="Book a Call" target="_blank" variant="primary" icon="calendar" />
-<Button href="/portfolio" text="See the work" variant="ghost" />
+<Button href="http://cal.com/zentala" text="Book a Call" target="_blank" tier="primary" icon="calendar" />
+<Button href="/portfolio" text="See the work" tier="secondary" />
 ```
 
 Every arrow is the same chevron. Put it inside the link, button or `.group` so it moves on hover (a text arrow or a shaft icon is a defect):
 
 ```astro
-<a href="/blog" class="group">All posts <SiteIcon name="caret-right" size="sm" class="arrow-nudge" /></a>
+<a href="/blog" class="group">All posts <SiteIcon name="next" size="sm" class="arrow-nudge" /></a>
 ```
 
 Icons: `<SiteIcon name="calendar" size="lg" />` (sizes `sm` 16, `md` 20, `lg` 24) and `<TechIcon name="astro" />` for a logo. Tags: `<TagGroup tags={['UWB', 'BLE']} tech />` shows a logo where `src/data/tech-icons.ts` has one; a single chip is `<Tag text="astro" />`.

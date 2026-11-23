@@ -11,14 +11,14 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
 <div class="current-frame">
   <form class="line-grid current-form" novalidate data-board-form>
-    <ThemedInput type="text" id="f1a-fname" placeholder="First name" icon="user" required />
-    <ThemedInput type="text" id="f1a-lname" placeholder="Last name" icon="user" />
-    <ThemedInput type="email" id="f1a-email" placeholder="Email" icon="envelope-simple" required />
+    <ThemedInput type="text" id="f1a-fname" placeholder="First name" icon="person" required />
+    <ThemedInput type="text" id="f1a-lname" placeholder="Last name" icon="person" />
+    <ThemedInput type="email" id="f1a-email" placeholder="Email" icon="email" required />
     <ThemedInput type="tel" id="f1a-phone" placeholder="Phone" icon="phone" />
-    <ThemedTextarea id="f1a-msg" placeholder="Your message" icon="chat-circle" />
+    <ThemedTextarea id="f1a-msg" placeholder="Your message" icon="message" />
     <button type="submit" class="current-form__submit">
       <span>Send message</span>
-      <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+      <SiteIcon name="next" size="sm" class="arrow-nudge" />
     </button>
   </form>
 </div>

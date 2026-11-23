@@ -7,13 +7,16 @@ export interface Props {
 const { icon } = Astro.props
 
 /** A short icon name renders as an icon; anything else (an emoji, a glyph) renders as text. */
+/** Background glyphs are drawn at this size (Thin weight); CSS scales the box to the card. */
+const BACKGROUND_ICON_PX = 176
+
 const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
 ---
 
 <span class="card-background-icon">
   {
     isIconName ? (
-      <SiteIcon name={icon} size="lg" class="card-background-icon__svg" />
+      <SiteIcon name={icon} size={BACKGROUND_ICON_PX} class="card-background-icon__svg" />
     ) : (
       icon
     )

@@ -1,12 +1,21 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { resolveIconName } from '@/lib/siteIcon'
+import phIcons from '@iconify-json/ph/icons.json'
+import { ICON_MAP } from '@/lib/icons/icon-map'
+import {
+  ICON_WEIGHTS,
+  iconPx,
+  iconWeightForSize,
+  phosphorName,
+  resolveIconName,
+  type IconWeight,
+} from '@/lib/siteIcon'
 
 /**
- * Guard for the one icon set: UI icons render through SiteIcon (Phosphor Light) and
- * technology logos through TechIcon (simple-icons). Nothing else may import astro-icon,
- * name a Lucide or non-light Phosphor icon, or draw an inline icon <svg>.
+ * Guard for the one icon set: UI icons render through SiteIcon (Phosphor, weight by rendered
+ * size, glyphs only through the icon map) and technology logos through TechIcon (simple-icons).
+ * Nothing else may import astro-icon, name a Lucide or raw Phosphor icon, or draw an inline icon <svg>.
  */
 
 const SRC = join(process.cwd(), 'src')
@@ -40,16 +49,38 @@ function listSources(dir: string): string[] {
   })
 }
 
-const files = listSources(SRC)
+const sources = listSources(SRC)
   .map((file) => ({
     path: relative(SRC, file).split(sep).join('/'),
     text: readFileSync(file, 'utf8'),
   }))
   .filter((file) => !file.path.startsWith('content/'))
-  .filter((file) => !file.path.startsWith(COMPARISON_BOARD))
+const files = sources.filter((file) => !file.path.startsWith(COMPARISON_BOARD))
 
 const offenders = (test: (file: { path: string; text: string }) => boolean) =>
   files.filter(test).map((file) => file.path)
+
+/**
+ * Icon meanings that callers name: SiteIcon names, `icon` props and keys, mosaic lists,
+ * `const icon = cond ? 'a' : 'b'` picks and the `VARIANT_ICON` table of NoteBox.
+ */
+function usedMeanings(scanned = files): Set<string> {
+  const used = new Set<string>()
+  for (const f of scanned) {
+    for (const pick of f.text.matchAll(/const icon = [^\n]*/g))
+      for (const m of pick[0].matchAll(/'([a-z][a-z0-9-]+)'/g)) used.add(m[1])
+    for (const table of f.text.matchAll(/VARIANT_ICON = \{([^}]*)\}/g))
+      for (const m of table[1].matchAll(/:\s*'([a-z][a-z0-9-]+)'/g)) used.add(m[1])
+    for (const m of f.text.matchAll(
+      /\b(?:icon|eyebrowIcon|labelIcon|backgroundIcon)(?:=|:\s*)['"]([a-z][a-z0-9-]+)['"]/g,
+    ))
+      used.add(m[1])
+    for (const m of f.text.matchAll(/<SiteIcon\s+name="([a-z][a-z0-9-]+)"/g)) used.add(m[1])
+    for (const list of f.text.matchAll(/icons=\{\[([^\]]*)\]\}/g))
+      for (const m of list[1].matchAll(/'([a-z][a-z0-9-]+)'/g)) used.add(m[1])
+  }
+  return used
+}
 
 describe('icon set guard', () => {
   it('scans the source tree', () => {
@@ -66,22 +97,12 @@ describe('icon set guard', () => {
 
   it('names no Lucide icon', () => {
     expect(
-      offenders(
-        (f) => /lucide[:-]/i.test(f.text) && f.path !== 'lib/siteIcon.ts',
-      ),
+      offenders((f) => /lucide[:-]/i.test(f.text)),
     ).toEqual([])
   })
 
-  it('names no Phosphor icon outside the light weight', () => {
-    expect(
-      offenders(
-        (f) =>
-          f.path !== 'lib/siteIcon.ts' &&
-          [...f.text.matchAll(/['"`]ph:([a-z0-9-]+)['"`]/g)].some(
-            (m) => !m[1].endsWith('-light'),
-          ),
-      ),
-    ).toEqual([])
+  it('passes no raw "ph:" name: callers name a meaning', () => {
+    expect(offenders((f) => /['"`]ph:[a-z0-9-]/.test(f.text))).toEqual([])
   })
 
   it('draws no inline <svg> outside the allowlist', () => {
@@ -98,21 +119,64 @@ describe('icon set guard', () => {
     }
   })
 
-  it('resolves every short icon name used by callers to a real Phosphor Light icon', () => {
-    const used = new Set<string>()
-    for (const f of files) {
-      for (const m of f.text.matchAll(
-        /\b(?:icon|eyebrowIcon|backgroundIcon)(?:=|:\s*)['"]([a-z][a-z0-9-]+)['"]/g,
-      ))
-        used.add(m[1])
-      for (const m of f.text.matchAll(/<SiteIcon\s+name="([a-z][a-z0-9-]+)"/g))
-        used.add(m[1])
+  it('resolves every icon meaning used by callers through the icon map', () => {
+    const used = usedMeanings()
+    expect(used.size).toBeGreaterThan(40)
+    for (const name of used) {
+      expect(Object.keys(ICON_MAP), name).toContain(name)
+      expect(() => resolveIconName(name, 20), name).not.toThrow()
     }
-    expect(used.size).toBeGreaterThan(10)
-    for (const name of used) expect(() => resolveIconName(name), name).not.toThrow()
   })
 
-  it('rejects an unknown icon name', () => {
-    expect(() => resolveIconName('no-such-icon')).toThrow()
+  it('keeps no icon map entry that no caller uses', () => {
+    const used = usedMeanings(sources.filter((f) => f.path !== 'lib/icons/icon-map.ts'))
+    const unused = Object.keys(ICON_MAP).filter((name) => !used.has(name))
+    expect(unused).toEqual([])
+  })
+
+  it('rejects an unknown icon meaning, including a raw Phosphor name', () => {
+    expect(() => resolveIconName('no-such-icon', 20)).toThrow()
+    expect(() => resolveIconName('calendar-blank', 20)).toThrow()
+  })
+})
+
+describe('icon weight by size', () => {
+  const BANDS: [number, IconWeight][] = [
+    [16, 'bold'],
+    [18, 'bold'],
+    [20, 'bold'],
+    [24, 'regular'],
+    [32, 'light'],
+    [40, 'light'],
+    [48, 'light'],
+    [63, 'light'],
+    [64, 'thin'],
+    [96, 'thin'],
+    [176, 'thin'],
+  ]
+
+  it.each(BANDS)('%i px draws %s', (px, weight) => {
+    expect(iconWeightForSize(px)).toBe(weight)
+    expect(resolveIconName('date', px)).toBe(`ph:${phosphorName('calendar-blank', weight)}`)
+  })
+
+  it('names the sm, md and lg sizes 16, 20 and 24 px', () => {
+    expect(['sm', 'md', 'lg'].map((size) => iconPx(size as 'sm'))).toEqual([16, 20, 24])
+  })
+
+  it('rejects a fractional size and a size under 16 px', () => {
+    expect(() => iconPx(17.5)).toThrow()
+    expect(() => iconPx(12)).toThrow()
+  })
+
+  it('has every map glyph in every weight it can render at', () => {
+    const known = phIcons.icons as Record<string, unknown>
+    const aliases = (phIcons as { aliases?: Record<string, unknown> }).aliases ?? {}
+    const missing = Object.entries(ICON_MAP).flatMap(([meaning, base]) =>
+      ICON_WEIGHTS.map((weight) => ({ meaning, name: phosphorName(base, weight) })).filter(
+        ({ name }) => !(name in known) && !(name in aliases),
+      ),
+    )
+    expect(missing).toEqual([])
   })
 })

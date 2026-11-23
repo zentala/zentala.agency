@@ -7,14 +7,7 @@ interface Props {
   text: string
   target?: string
   /**
-   * primary: white text, light line, faint neutral fill (the main action).
-   * accent: as primary, with the chevron and icon in the blue accent.
-   * secondary: muted text, line border. ghost: text and chevron, no line.
-   */
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost'
-  /**
-   * The four-tier look under owner review; when set it replaces `variant`.
-   * cta: solid blue, white text (the one most important action of a view).
+   * cta: solid blue, white text (the one most important action of a screen).
    * primary: solid white, black text. secondary, tertiary: two neutral greys.
    */
   tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
@@ -30,8 +23,7 @@ const {
   href,
   text,
   target,
-  variant = 'primary',
-  tier,
+  tier = 'primary',
   icon,
   iconPosition = 'left',
   arrow = true,
@@ -39,7 +31,6 @@ const {
 } = Astro.props
 const rel = target === '_blank' ? 'noopener noreferrer' : undefined
 const Tag = type ? 'button' : 'a'
-const look = tier ? `button--tier button--tier-${tier}` : `button--${variant}`
 const iconRight = Boolean(icon) && iconPosition === 'right'
 const hasIcon = Boolean(icon) || Astro.slots.has('icon')
 ---
@@ -49,26 +40,33 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
   type={type}
   target={type ? undefined : target}
   rel={type ? undefined : rel}
-  class={`button ${look}`}
+  class={`button button--${tier}`}
 >
   {
     hasIcon && !iconRight && (
       <slot name="icon">
-        <SiteIcon name={icon!} size="md" class="button__icon" />
+        <SiteIcon name={icon!} size={18} class="button__icon" />
       </slot>
     )
   }
   <span>{text}</span>
-  {iconRight && <SiteIcon name={icon!} size="md" class="button__icon" />}
+  {iconRight && <SiteIcon name={icon!} size={18} class="button__icon" />}
   {
     arrow && !iconRight && (
-      <SiteIcon name="caret-right" size="sm" class="button__arrow arrow-nudge" />
+      <SiteIcon name="next" size={18} class="button__arrow arrow-nudge" />
     )
   }
 </Tag>
 
-<style>
-  /* Every variant has a 1px border (transparent for ghost) so buttons in one row share a height. */
+<style lang="scss">
+  @use '../styles/button-tiers' as *;
+
+  /*
+   * Four tiers. Each tier sets three properties, so a caller (the design board) can pin
+   * the hover state by reading --button-fill-hover. No tier has a visible border: the
+   * fill is the shape, and hover only changes the fill's brightness. Equal height in a
+   * row comes from min-height, never from padding or a border.
+   */
   .button {
     display: inline-flex;
     align-items: center;
@@ -76,18 +74,21 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
     gap: 0.5rem;
     min-height: 3rem;
     padding: 0.625rem 1.5rem;
-    border: 1px solid transparent;
+    cursor: pointer;
+    font: inherit;
     font-weight: 400;
+    line-height: 1.5;
     text-decoration: none;
-    color: var(--color-text);
+    color: var(--button-ink);
+    background-color: var(--button-fill);
     transition:
       color var(--motion-fast) var(--ease-standard),
-      background-color var(--motion-fast) var(--ease-standard),
-      border-color var(--motion-fast) var(--ease-standard);
+      background-color var(--motion-fast) var(--ease-standard);
   }
 
   .button:hover {
     text-decoration: none;
+    background-color: var(--button-fill-hover);
   }
 
   .button:focus-visible {
@@ -95,103 +96,5 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
     outline-offset: 2px;
   }
 
-  .button--primary {
-    border-color: var(--color-text-subtle);
-    background-color: rgba(255, 255, 255, 0.04);
-  }
-
-  .button--primary:hover,
-  .button--accent:hover {
-    border-color: var(--color-text);
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .button--accent {
-    border-color: var(--color-text-subtle);
-    background-color: rgba(255, 255, 255, 0.04);
-  }
-
-  .button--accent :global(.site-icon) {
-    color: var(--color-accent);
-  }
-
-  .button--secondary {
-    border-color: var(--color-line-strong);
-    color: var(--color-text-secondary);
-  }
-
-  .button--secondary:hover {
-    border-color: var(--color-text-subtle);
-    color: var(--color-text);
-    background-color: rgba(255, 255, 255, 0.04);
-  }
-
-  .button--ghost {
-    color: var(--color-text-secondary);
-    padding-inline: 0.75rem;
-  }
-
-  .button--ghost:hover {
-    color: var(--color-text);
-  }
-
-  /*
-   * Four tiers. Each tier sets three properties, so a caller (the design board) can pin
-   * the hover state by reading --button-fill-hover. No tier has a visible border: the
-   * fill is the shape, and hover only changes the fill's brightness.
-   */
-  .button--tier {
-    --button-icon-size: 1.125rem; /* label 16px + 2px */
-    /* Phosphor Light is drawn 12 units wide on a 256 grid; 12 more give the Bold width. */
-    --button-icon-thicken: 12px;
-    cursor: pointer;
-    font: inherit;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--button-ink);
-    background-color: var(--button-fill);
-  }
-
-  .button--tier:hover {
-    background-color: var(--button-fill-hover);
-  }
-
-  .button--tier :global(.site-icon) {
-    stroke: currentColor;
-    stroke-width: var(--button-icon-thicken);
-    stroke-linejoin: round;
-  }
-
-  .button--tier :global(.button__icon) {
-    width: var(--button-icon-size);
-    height: var(--button-icon-size);
-  }
-
-  .button--tier-cta {
-    --button-ink: var(--color-text);
-    --button-fill: var(--color-accent-solid);
-    --button-fill-hover: color-mix(in srgb, var(--color-accent-solid) 86%, var(--color-text));
-  }
-
-  .button--tier-primary {
-    --button-ink: var(--color-surface);
-    --button-fill: var(--color-text);
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 90%, var(--color-surface));
-  }
-
-  .button--tier-secondary {
-    --button-ink: var(--color-text);
-    --button-fill: color-mix(in srgb, var(--color-text) 16%, var(--color-surface));
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 23%, var(--color-surface));
-  }
-
-  .button--tier-tertiary {
-    --button-ink: var(--color-text-secondary);
-    --button-fill: color-mix(in srgb, var(--color-text) 7%, var(--color-surface));
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 12%, var(--color-surface));
-  }
-
-  .button--tier-tertiary:hover {
-    --button-ink: var(--color-text);
-  }
+  @include button-tiers('.button');
 </style>

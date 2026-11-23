@@ -61,9 +61,9 @@ const savedAt = saved
             checked={saved?.choice === option.letter}
           />
           <span class="option__mark" aria-hidden="true">
-            <SiteIcon name="square" size="md" class="option__off" />
+            <SiteIcon name="checkbox-off" size="md" class="option__off" />
             <span class="option__on">
-              <SiteIcon name="check" size="sm" />
+              <SiteIcon name="done" size="sm" />
             </span>
           </span>
           <span class="option__letter">{option.letter}</span>
@@ -87,7 +87,7 @@ const savedAt = saved
           {
             option.recommended && (
               <span class="option__recommended">
-                <SiteIcon name="star" size="sm" />
+                <SiteIcon name="recommended" size="sm" />
                 rekomendowane
               </span>
             )
@@ -105,7 +105,7 @@ const savedAt = saved
       placeholder={isQuestion
         ? `Twoja odpowiedź na ${item.id} własnymi słowami`
         : `Notatka do ${item.id} (opcjonalnie)`}
-      icon="chat-text"
+      icon="comments"
     />
   </div>
   <div class="decision__note-toggle" data-note-toggle hidden={noteOpen}>
@@ -113,7 +113,7 @@ const savedAt = saved
       type="button"
       tier="tertiary"
       text={isQuestion ? 'Odpowiedz' : 'Dodaj notatkę'}
-      icon="plus"
+      icon="add"
       arrow={false}
     />
   </div>

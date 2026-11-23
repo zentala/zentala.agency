@@ -21,39 +21,39 @@ const report = readLatestReport()
 const tools = [
   {
     href: '/admin/decisions',
-    icon: 'check-square',
+    icon: 'decisions',
     title: 'Decyzje do podjęcia',
     text: 'Pytania z DECIDE.md z opcjami i skutkami; odpowiedzi trafiają do planu.',
     count: decide.missing ? 'brak DECIDE.md' : `${board.openCount} otwartych`,
   },
   {
     href: '/monitor/links',
-    icon: 'link-break',
+    icon: 'broken-links',
     title: 'Martwe linki',
     text: 'Wynik ostatniego sprawdzenia linków wychodzących, z miejscem w źródle.',
     count: report ? deadSummaryLabel(deadSummary(report.links)) : 'brak raportu',
   },
   {
     href: '/mockups/design-board',
-    icon: 'palette',
+    icon: 'design',
     title: 'Plansza projektu',
     text: 'Warianty wyglądu do wyboru przez właściciela.',
   },
   {
     href: '/mockups/review-layer',
-    icon: 'chat-text',
+    icon: 'comments',
     title: 'Warstwa recenzji',
     text: 'Makieta komentowania tekstu w kontekście strony.',
   },
   {
     href: '/mockups/capabilities',
-    icon: 'stack',
+    icon: 'series',
     title: 'Szkic capabilities',
     text: 'Szkic strony capabilities pod jednym szyldem.',
   },
   {
     href: '/demo',
-    icon: 'squares-four',
+    icon: 'gallery',
     title: 'Galeria komponentów',
     text: 'Każdy komponent strony z wariantami.',
   },
@@ -73,7 +73,7 @@ const tools = [
               <span class="tool__text">{tool.text}</span>
               {tool.count && <span class="tool__count">{tool.count}</span>}
             </span>
-            <SiteIcon name="caret-right" size="sm" class="tool__arrow arrow-nudge" />
+            <SiteIcon name="next" size="sm" class="tool__arrow arrow-nudge" />
           </a>
         ))
       }

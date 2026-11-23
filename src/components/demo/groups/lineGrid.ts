@@ -47,7 +47,7 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       path: 'primitives/sections/SectionCTA.astro',
       purpose: 'Full-width call-to-action link block (line-block).',
       props:
-        'href, text, icon, arrow (true), variant (primary; secondary, accent), external, bgText',
+        'href, text, icon, arrow (true), tier (primary; cta, secondary, tertiary), external, bgText',
     },
     {
       id: 'section-block-quote',

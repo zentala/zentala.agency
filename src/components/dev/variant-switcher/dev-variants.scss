@@ -112,44 +112,11 @@ html[data-v-first-view='full'] main > section:first-child {
   }
 }
 
-/*
- * Card hover (axis card-hover). Linked cards take their look from the cell-interactive
- * mixin. Cards without a link (the /about/capabilities grid) have no hover on the site;
- * with any value chosen they preview the look too, so many cards can be compared.
- */
-.card-container:not(.card-container--hover) {
-  html[data-v-card-hover] & {
-    position: relative;
-    transition: background-color var(--motion-fast) var(--ease-standard);
-  }
+/* Font axis: the family goes first; the rest of the production stack stays behind it. */
+$font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
 
-  html[data-v-card-hover='b'] & {
-    &::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border: 1px solid $border-color-hover;
-      opacity: 0;
-      pointer-events: none;
-      z-index: var(--z-cell-hover);
-      transition: opacity var(--motion-fast) var(--ease-standard);
-    }
-
-    &:hover {
-      background-color: $surface-hover;
-    }
-
-    &:hover::after {
-      opacity: 1;
-    }
-  }
-
-  html[data-v-card-hover='a'] & {
-    --icon-bg-max-opacity: #{$card-hover-before-icon};
-    @include card-hover-fill-only($card-hover-before-fill);
-  }
-
-  html[data-v-card-hover='d'] & {
-    @include card-hover-fill-only($card-hover-bright-fill);
+@each $value, $family in ('selawik': 'Selawik', 'open-sans': 'Board Open Sans', 'noto-sans': 'Board Noto Sans', 'source-sans': 'Board Source Sans') {
+  html[data-v-font='#{$value}'] {
+    --font-sans: '#{$family}', #{$font-stack-tail};
   }
 }

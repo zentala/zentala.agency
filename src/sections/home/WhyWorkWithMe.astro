@@ -34,7 +34,7 @@ interface Props {
     href: string
     text: string
     icon?: string
-    variant?: 'primary' | 'secondary' | 'accent'
+    tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   }
   showCta?: boolean
 }
@@ -111,7 +111,7 @@ const {
       href={cta.href}
       text={cta.text}
       icon={cta.icon}
-      variant={cta.variant ?? 'secondary'}
+      tier={cta.tier ?? 'secondary'}
     />
   ) : null}
 </div>

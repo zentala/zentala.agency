@@ -36,15 +36,15 @@ const heroVariants = {
         {
           href: CAL_URL,
           text: 'Schedule Discovery Call',
-          variant: 'primary',
+          tier: 'cta',
           target: '_blank',
-          icon: 'calendar',
+          icon: 'book-call',
         },
         {
           href: '/portfolio',
           text: 'View Portfolio',
-          variant: 'secondary',
-          icon: 'briefcase',
+          tier: 'secondary',
+          icon: 'portfolio',
         },
       ],
     },
@@ -64,13 +64,13 @@ const heroVariants = {
         {
           href: CAL_URL,
           text: "Let's Talk About Your Project",
-          variant: 'primary',
+          tier: 'cta',
           target: '_blank',
         },
         {
           href: '/portfolio',
           text: 'See My Work',
-          variant: 'secondary',
+          tier: 'secondary',
         },
       ],
     },
@@ -90,13 +90,13 @@ const heroVariants = {
         {
           href: CAL_URL,
           text: 'Schedule Discovery Call',
-          variant: 'primary',
+          tier: 'cta',
           target: '_blank',
         },
         {
           href: '/portfolio',
           text: 'View Portfolio',
-          variant: 'secondary',
+          tier: 'secondary',
         },
       ],
     },
@@ -115,13 +115,13 @@ const heroVariants = {
         {
           href: CAL_URL,
           text: 'Schedule Call',
-          variant: 'primary',
+          tier: 'cta',
           target: '_blank',
         },
         {
           href: '/portfolio',
           text: 'Portfolio',
-          variant: 'secondary',
+          tier: 'secondary',
         },
       ],
     },
@@ -141,13 +141,13 @@ const heroVariants = {
         {
           href: CAL_URL,
           text: 'Work With Me',
-          variant: 'primary',
+          tier: 'cta',
           target: '_blank',
         },
         {
           href: '/portfolio',
           text: 'See Projects',
-          variant: 'secondary',
+          tier: 'secondary',
         },
       ],
     },
@@ -201,16 +201,16 @@ const engagementModels = {
     },
   ],
   note: {
-    icon: 'lightbulb',
+    icon: 'strategy',
     title: 'Common Thread',
     text: 'All engagements focus on knowledge transfer, not dependency. You keep the capabilities when I leave.',
   },
   cta: {
     href: CAL_URL,
     text: 'Schedule discovery call to discuss your needs',
-    variant: 'primary',
+    tier: 'primary',
     target: '_blank',
-    icon: 'calendar',
+    icon: 'book-call',
   },
 } as const
 
@@ -316,8 +316,8 @@ const whyWorkWithMe = {
   cta: {
     href: '/portfolio',
     text: 'View Complete Portfolio',
-    icon: 'folder',
-    variant: 'secondary',
+    icon: 'projects',
+    tier: 'secondary',
   },
 } as const
 
@@ -353,7 +353,7 @@ type ServiceConfig = {
     href: string
     text: string
     icon?: string
-    variant?: 'primary' | 'secondary' | 'accent'
+    tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   }
   note?: { icon?: string; htmlStrongLabel?: string; text: string }
 }
@@ -417,8 +417,8 @@ const services: ServiceConfig[] = [
     cta: {
       href: CAL_URL,
       text: 'Discuss your IoT project',
-      icon: 'message-circle',
-      variant: 'primary',
+      icon: 'message',
+      tier: 'primary',
     },
   },
   {
@@ -471,10 +471,10 @@ const services: ServiceConfig[] = [
       href: 'https://devstage.io',
       text: 'Visit DevStage.io',
       icon: 'external-link',
-      variant: 'primary',
+      tier: 'primary',
     },
     note: {
-      icon: 'info',
+      icon: 'note-info',
       htmlStrongLabel: 'Note',
       text: 'DevStage.io is our dedicated product brand for Backstage services - visit the standalone site for detailed plugin catalog, blog, and specific offerings.',
     },
@@ -524,8 +524,8 @@ const services: ServiceConfig[] = [
     cta: {
       href: CAL_URL,
       text: 'Discuss rapid prototyping needs',
-      icon: 'message-circle',
-      variant: 'primary',
+      icon: 'message',
+      tier: 'primary',
     },
   },
 ]
@@ -564,8 +564,8 @@ const currentFocus = (() => {
         link: {
           href: '/about/capabilities/backstage',
           text: 'Explore Backstage offer',
-          variant: 'secondary',
-          icon: 'folder',
+          tier: 'secondary',
+          icon: 'projects',
         },
       },
     ],

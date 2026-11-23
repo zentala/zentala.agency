@@ -54,21 +54,21 @@ export const F3: Question = {
 export const MARKER_STATES = ['published', 'published', 'review', 'review', 'draft', 'draft'] as const
 
 /** The icons the home Portfolio card shows today (BentoAboutMe). */
-export const MOSAIC_CURRENT = ['radar', 'bot', 'layout-grid', 'house']
+export const MOSAIC_CURRENT = ['indoor-location', 'ai-agent', 'capabilities', 'home']
 
 /** Sixteen icons for the denser mosaic: the four above plus the owner's fields of work. */
 export const MOSAIC_MORE = [
   ...MOSAIC_CURRENT,
-  'cpu',
-  'circuitry',
-  'plugs',
+  'iot',
+  'integrations',
   'terminal',
   'server',
   'network',
   'code',
   'database',
-  'tree-structure',
-  'cube',
-  'wrench',
-  'compass',
+  'architecture',
+  'devops',
+  'tooling',
+  'discovery',
+  'cloud',
 ]

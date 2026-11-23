@@ -1,57 +1,74 @@
 ---
 /**
- * Typography comparison, dev only: the same heading and paragraph in three clearly
- * named variants, side by side. Replaces the old heading switch, which changed the
- * navbar instead of the page. The Inter variable font is loaded by the CSS
- * import in this file, so it exists only on this dev-only page and never reaches production.
+ * Typography of the site, dev only: the font stack, the font the page renders now
+ * (it follows the "Czcionka" axis of the Warianty switcher) and one heading and paragraph
+ * at the site weights. The stack lives in `--font-sans` (src/styles/tokens.scss).
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
-
-// Dev only: a static import would bundle the font files into production as orphans.
-if (import.meta.env.DEV) await import('@fontsource-variable/inter/index.css')
+import { VARIANT_AXES } from '@/components/dev/variant-switcher/axes'
 
 const SAMPLE_HEADING = 'Agents need a harness, not a bigger prompt'
 const SAMPLE_BODY =
   'The machinery around coding agents is what keeps parallel work from overwriting itself: a registry, a lease on the checkout and a knowledge base they can all read.'
 
-const VARIANTS = [
-  {
-    id: 'today',
-    label: 'Today (system font, 300)',
-    note: 'What the site renders now: Segoe UI on Windows, heading weight 300.',
-  },
-  {
-    id: 'larger-300',
-    label: 'Larger, 300',
-    note: 'Same system font and weight, headings one step larger.',
-  },
-  {
-    id: 'larger-200-inter',
-    label: 'Larger, 200, Inter',
-    note: 'Inter Variable at weight 200, the thin look; needs the webfont.',
-  },
+const fontAxis = VARIANT_AXES.find((axis) => axis.id === 'font')
+const FONT_NAMES = Object.fromEntries(
+  (fontAxis?.options ?? []).map((option) => [option.value, option.label]),
+)
+
+const STACK = ['Segoe UI', 'Selawik (local name only)', 'system-ui', 'sans-serif']
+const WEIGHTS = [
+  { weight: 300, label: 'Titles, 300' },
+  { weight: 400, label: 'Body, 400' },
+  { weight: 600, label: 'Labels, header and menu, 600' },
 ]
 ---
 
 <Section id="typography">
   <SectionHeader
     headline="Typography"
-    subhead="One heading and paragraph, three variants. Pick the one that reads best; only the owner's choice goes into the site."
+    subhead="The system font, no text webfont. Switch the font in the Warianty panel to compare candidates."
   />
-  <div class="line-grid typography-grid">
+  <div class="line-grid typography-grid" data-typography-gallery>
+    <div class="typography-cell">
+      <p class="typography-cell__label">Stack</p>
+      <p class="typography-cell__body" data-typography-stack>{STACK.join(', ')}</p>
+      <p class="typography-cell__label">Active font</p>
+      <p class="typography-cell__heading" data-typography-active>Segoe UI</p>
+      <p class="typography-cell__note" data-typography-note></p>
+    </div>
     {
-      VARIANTS.map((variant) => (
-        <div class="typography-cell" data-variant={variant.id}>
-          <p class="typography-cell__label">{variant.label}</p>
-          <h2 class="typography-cell__heading">{SAMPLE_HEADING}</h2>
-          <p class="typography-cell__body">{SAMPLE_BODY}</p>
-          <p class="typography-cell__note">{variant.note}</p>
+      WEIGHTS.map((item) => (
+        <div class="typography-cell">
+          <p class="typography-cell__label">{item.label}</p>
+          <h2 class="typography-cell__heading" style={`font-weight: ${item.weight}`}>
+            {SAMPLE_HEADING}
+          </h2>
+          <p class="typography-cell__body" style={`font-weight: ${item.weight}`}>
+            {SAMPLE_BODY}
+          </p>
         </div>
       ))
     }
   </div>
 </Section>
+
+<script is:inline define:vars={{ FONT_NAMES }}>
+  const gallery = document.querySelector('[data-typography-gallery]')
+  const sync = () => {
+    const chosen = document.documentElement.getAttribute('data-v-font')
+    gallery.querySelector('[data-typography-active]').textContent = FONT_NAMES[chosen ?? 'default']
+    gallery.querySelector('[data-typography-note]').textContent = chosen
+      ? 'Chosen in the Warianty switcher, for comparison only.'
+      : 'The production font.'
+  }
+  new MutationObserver(sync).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-v-font'],
+  })
+  sync()
+</script>
 
 <style is:global>
   .typography-cell {
@@ -90,20 +107,5 @@ const VARIANTS = [
   .typography-cell__note {
     font-size: var(--text-sm);
     color: var(--color-text-subtle);
-  }
-
-  .typography-cell[data-variant='larger-300'] .typography-cell__heading,
-  .typography-cell[data-variant='larger-200-inter'] .typography-cell__heading {
-    font-size: var(--text-h2);
-  }
-
-  .typography-cell[data-variant='larger-200-inter'] .typography-cell__heading {
-    font-family: 'Inter Variable', sans-serif;
-    font-weight: 200;
-  }
-
-  .typography-cell[data-variant='larger-200-inter'] .typography-cell__body {
-    font-family: 'Inter Variable', sans-serif;
-    font-weight: 300;
   }
 </style>

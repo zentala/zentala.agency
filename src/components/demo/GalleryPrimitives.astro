@@ -21,11 +21,14 @@ const TAGS = ['backstage', 'agents', 'devex']
 ---
 
 <GalleryEntry id="site-icon" cols={3}>
-  <GalleryCell label="sm 16"><SiteIcon name="database" size="sm" /></GalleryCell>
-  <GalleryCell label="md 20 (default)"><SiteIcon name="robot" /></GalleryCell>
-  <GalleryCell label="lg 24"
-    ><SiteIcon name="git-branch" size="lg" /></GalleryCell
+  <GalleryCell label="sm 16, Bold"><SiteIcon name="database" size="sm" /></GalleryCell>
+  <GalleryCell label="18, Bold (nav, button)"><SiteIcon name="database" size={18} /></GalleryCell>
+  <GalleryCell label="md 20, Bold (default)"><SiteIcon name="ai-agent" /></GalleryCell>
+  <GalleryCell label="lg 24, Regular"
+    ><SiteIcon name="devops" size="lg" /></GalleryCell
   >
+  <GalleryCell label="32, Light"><SiteIcon name="devops" size={32} /></GalleryCell>
+  <GalleryCell label="64, Thin"><SiteIcon name="devops" size={64} /></GalleryCell>
 </GalleryEntry>
 
 <GalleryEntry id="tech-icon" cols={3}>
@@ -104,15 +107,15 @@ const TAGS = ['backstage', 'agents', 'devex']
     ><div data-prose-widget style="width: 100%"><NoteBox title="Rule of thumb">Every line has one owner.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="info, own icon"
-    ><div data-prose-widget style="width: 100%"><NoteBox variant="info" icon="info" title="Good to know"
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="info" icon="note-info" title="Good to know"
       >Drafts show only in dev.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="success"
-    ><div data-prose-widget style="width: 100%"><NoteBox variant="success" icon="check" title="Done"
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="success" icon="done" title="Done"
       >The guard is green.</NoteBox></div></GalleryCell
   >
   <GalleryCell label="warning, no title"
-    ><div data-prose-widget style="width: 100%"><NoteBox variant="warning" icon="triangle-alert"
+    ><div data-prose-widget style="width: 100%"><NoteBox variant="warning" icon="note-warning"
       >Not published until the owner reviews it.</NoteBox></div></GalleryCell
   >
 </GalleryEntry>
@@ -154,17 +157,17 @@ const TAGS = ['backstage', 'agents', 'devex']
 <GalleryEntry id="card-background-icon" cols={3}>
   <GalleryCell label="robot"
     ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="bot" />
+      <CardBackgroundIcon icon="ai-agent" />
     </div></GalleryCell
   >
   <GalleryCell label="handshake"
     ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="handshake" />
+      <CardBackgroundIcon icon="partnership" />
     </div></GalleryCell
   >
   <GalleryCell label="stack"
     ><div style="position: relative; isolation: isolate; min-height: 8rem; width: 100%">
-      <CardBackgroundIcon icon="layers" />
+      <CardBackgroundIcon icon="series" />
     </div></GalleryCell
   >
 </GalleryEntry>
@@ -174,10 +177,10 @@ const TAGS = ['backstage', 'agents', 'devex']
     <div style="position: relative; height: 12rem; width: 100%">
       <CardIconMosaic
         icons={[
-          'radar',
-          'bot',
-          'layout-grid',
-          'house',
+          'indoor-location',
+          'ai-agent',
+          'capabilities',
+          'home',
         ]}
       />
     </div>
@@ -186,11 +189,11 @@ const TAGS = ['backstage', 'agents', 'devex']
     <div style="position: relative; height: 12rem; width: 100%">
       <CardIconMosaic
         icons={[
-          'cpu',
+          'iot',
           'network',
           'database',
           'terminal',
-          'git-branch',
+          'devops',
           'server',
         ]}
       />
@@ -200,18 +203,18 @@ const TAGS = ['backstage', 'agents', 'devex']
     <div style="position: relative; height: 12rem; width: 100%">
       <CardIconMosaic
         icons={[
-          'cpu',
+          'iot',
           'network',
           'database',
           'terminal',
-          'git-branch',
+          'devops',
           'server',
-          'radar',
-          'bot',
-          'layout-grid',
-          'house',
-          'calendar',
-          'rocket',
+          'indoor-location',
+          'ai-agent',
+          'capabilities',
+          'home',
+          'date',
+          'launch',
         ]}
       />
     </div>

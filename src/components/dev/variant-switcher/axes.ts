@@ -34,12 +34,13 @@ export const VARIANT_AXES: VariantAxis[] = [
   axis('header', 'Nagłówek strony', 'obecny', 'shrink:kurczy się, z ikonami'),
   axis('first-view', 'Pierwszy ekran', 'zwykły', 'full:na cały ekran'),
   axis(
-    'card-hover',
-    'Hover karty',
-    'bez zmian',
-    'b:B obecny, też na kartach bez linku',
-    'a:A sprzed zmian',
-    'd:D samo tło, jaśniejsze',
+    'font',
+    'Czcionka',
+    'Segoe UI',
+    'selawik:Selawik',
+    'open-sans:Open Sans',
+    'noto-sans:Noto Sans',
+    'source-sans:Source Sans 3',
   ),
 ]
 

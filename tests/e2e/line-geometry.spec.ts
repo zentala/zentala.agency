@@ -148,3 +148,26 @@ test.describe('hover keeps the layout still', () => {
     })
   }
 })
+
+test.describe('buttons keep the shared height', () => {
+  test.use({ viewport: { width: 1920, height: 1000 }, deviceScaleFactor: 1 })
+
+  test('/contact: every button has the same min-height (3rem), link or <button>', async ({
+    page,
+  }) => {
+    await page.goto('/contact')
+    await page.waitForLoadState('networkidle')
+    const heights = await page.evaluate(() =>
+      [...document.querySelectorAll('.button')].map((el) => ({
+        tag: el.tagName,
+        height: Math.round(el.getBoundingClientRect().height),
+        minHeight: getComputedStyle(el).minHeight,
+      })),
+    )
+    expect(new Set(heights.map((b) => b.tag)).size, 'a link and a <button>').toBe(2)
+    for (const b of heights) {
+      expect(b.minHeight).toBe('48px')
+      expect(b.height).toBe(48)
+    }
+  })
+})

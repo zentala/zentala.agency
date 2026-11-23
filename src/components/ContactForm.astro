@@ -1,23 +1,22 @@
 ---
 /**
  * ContactForm - the contact fields as cells of one line grid.
- * Fields share lines, have no radius and no container border. Submit is a cell too.
+ * Fields share lines, have no radius and no container border. Submit is a cell holding a primary-tier `Button`.
  */
 import ThemedInput from './ThemedInput.astro'
 import ThemedTextarea from './ThemedTextarea.astro'
-import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import Button from './Button.astro'
 ---
 
 <form class="line-grid contact-form" action="mailto:zentala@gmail.com" method="post" enctype="text/plain">
-  <ThemedInput type="text" id="fName" placeholder="First name" icon="user" required />
-  <ThemedInput type="text" id="lName" placeholder="Last name" icon="user" />
-  <ThemedInput type="email" id="email" placeholder="Email" icon="envelope-simple" required />
+  <ThemedInput type="text" id="fName" placeholder="First name" icon="person" required />
+  <ThemedInput type="text" id="lName" placeholder="Last name" icon="person" />
+  <ThemedInput type="email" id="email" placeholder="Email" icon="email" required />
   <ThemedInput type="tel" id="phone" placeholder="Phone" icon="phone" />
-  <ThemedTextarea id="msg" placeholder="Your message" icon="chat-circle" />
-  <button type="submit" class="contact-form__submit">
-    <span>Send message</span>
-    <SiteIcon name="caret-right" size="sm" class="contact-form__arrow arrow-nudge" />
-  </button>
+  <ThemedTextarea id="msg" placeholder="Your message" icon="message" />
+  <div class="contact-form__submit">
+    <Button type="submit" tier="primary" text="Send message" />
+  </div>
 </form>
 
 <style lang="scss">
@@ -36,21 +35,8 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
   }
 
   .contact-form__submit {
-    @include cell-interactive;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
-    gap: 0.5rem;
-    padding: 1rem 1.25rem;
-    min-height: 3.5rem;
-    background: transparent;
-    color: var(--color-text-secondary);
-    font: inherit;
-    font-weight: 400;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--color-text);
-    }
+    padding: 0.5rem 1.25rem;
   }
 </style>

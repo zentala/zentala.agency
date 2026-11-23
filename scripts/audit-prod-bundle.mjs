@@ -53,6 +53,9 @@ const FORBIDDEN_CSS = [
   'rv-thread',
 ]
 
+/** No text webfont ships: the site uses the system font stack. */
+const FONT_FILE_EXT = new Set(['.woff', '.woff2', '.ttf', '.otf', '.eot'])
+
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.css', '.html'])
 
 function walk(dir, files = []) {
@@ -64,7 +67,7 @@ function walk(dir, files = []) {
     } else if (stat.isFile()) {
       const dot = entry.lastIndexOf('.')
       const ext = dot >= 0 ? entry.slice(dot).toLowerCase() : ''
-      if (SCAN_EXT.has(ext)) files.push(full)
+      if (SCAN_EXT.has(ext) || FONT_FILE_EXT.has(ext)) files.push(full)
     }
   }
   return files
@@ -78,6 +81,8 @@ const FORBIDDEN_RUNTIME = [
   '/api/dev/',
   '@astrojs/markdown-remark',
   'Blog version history',
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
   'Expand blog version panel',
   'agentation',
   'dev/agentation',
@@ -147,6 +152,13 @@ function main() {
         const idx = lines.findIndex((l) => l.includes(needle))
         failures.push({ file: file.replace(ROOT, ''), needle, line: idx + 1 })
       }
+    }
+  }
+
+  for (const file of allFiles) {
+    const dot = file.lastIndexOf('.')
+    if (FONT_FILE_EXT.has(file.slice(dot).toLowerCase())) {
+      failures.push({ file: file.replace(ROOT, ''), needle: 'font file', line: 0 })
     }
   }
 

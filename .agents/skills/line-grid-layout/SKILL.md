@@ -38,8 +38,8 @@ Load before you create or change a page, section, card, grid, banner, CTA, form,
 | Prose or fact list in a cell | `.content-grid__text` (padding, vertical centring) inside `.content-grid`, or `prose prose-blog` text; give headings `text-fg`. `SectionContent` is a transparent prose block (context `full` or `grid`) and is fine to use | `src/styles/components/_grids.scss` |
 | Standalone CTA, quote, banner | `SectionCTA`, `SectionBlockQuote`, `Banner` (all `line-block`) | `.../sections/`, `src/components/banners/` |
 | Button or CTA | `Button` with `tier` (DESIGN.md section 5, Buttons: at most one `cta` per screen); `variant` is the legacy look; `CTA` for headline plus buttons; `PostCta` only for copy | `src/components/Button.astro`, `CTA.astro` |
-| Arrow | `<SiteIcon name="caret-right" size="sm" class="arrow-nudge" />` inside the link, button or `.group`; never `→` or a shaft icon | `src/styles/motion.scss` |
-| Icon | `SiteIcon` with a meaning name; size and weight rule: DESIGN.md section 5, Icons; a typo throws at build; technology logo: `TechIcon name="astro"`; logo wall: `TechLogoWall` | `src/components/primitives/SiteIcon.astro`, `TechIcon.astro`, `src/lib/siteIcon.ts` |
+| Arrow | `<SiteIcon name="next" size="sm" class="arrow-nudge" />` inside the link, button or `.group`; never `→` or a shaft icon | `src/styles/motion.scss` |
+| Icon | `SiteIcon` with a meaning name; size and weight rule: DESIGN.md section 5, Icons; a typo throws at build; technology logo: `TechIcon name="astro"`; logo wall: `TechLogoWall` | `src/components/primitives/SiteIcon.astro`, `TechIcon.astro`, `src/lib/siteIcon.ts`, `src/lib/icons/icon-map.ts` |
 | Tag, chip, badge | `Tag` (or `TagGroup`, `TagList`, `Badge`, which wrap it); `tech="Astro"` for a logo | `src/components/primitives/Tag.astro` |
 | Form | `ThemedInput` and `ThemedTextarea` as direct children of a `.line-grid` form, plus a submit cell (anatomy: DESIGN.md section 5, Forms) | `src/components/ContactForm.astro` |
 | Callout in prose | `NoteBox variant="info"`; in a cell, wrap in `data-prose-widget` | `src/components/primitives/NoteBox.astro` |

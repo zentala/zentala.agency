@@ -10,7 +10,7 @@ type HeroLayout = 'split' | 'profile'
 type HeroCTA = {
   href: string
   text: string
-  variant?: 'primary' | 'secondary' | 'accent'
+  tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   target?: string
   icon?: string
 }
@@ -95,7 +95,7 @@ const {
             <Button
               href={cta.href}
               text={cta.text}
-              variant={cta.variant ?? 'primary'}
+              tier={cta.tier ?? 'primary'}
               target={cta.target}
               icon={cta.icon}
             />
@@ -147,7 +147,7 @@ const {
             <Button
               href={cta.href}
               text={cta.text}
-              variant={cta.variant ?? 'primary'}
+              tier={cta.tier ?? 'primary'}
               target={cta.target}
               icon={cta.icon}
             />

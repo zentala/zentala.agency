@@ -35,7 +35,7 @@ const heroProps = {
 const developmentServices = [
   {
     name: 'Custom Plugin Development',
-    icon: 'rocket-launch',
+    icon: 'launch',
     description:
       'Bespoke plugins that solve your specific workflow challenges — from simple automations to complex full-stack features.',
     features: [
@@ -47,7 +47,7 @@ const developmentServices = [
   },
   {
     name: 'Processors Engineering',
-    icon: 'gear-six',
+    icon: 'configure',
     description:
       'Pre/post processors that transform how Backstage catalogs and processes your resources.',
     features: [
@@ -59,7 +59,7 @@ const developmentServices = [
   },
   {
     name: 'Theme & UI Customization',
-    icon: 'palette',
+    icon: 'design',
     description:
       'Transform Backstage into a branded experience that developers love to use.',
     features: [
@@ -74,7 +74,7 @@ const developmentServices = [
 const consultingServices = [
   {
     name: 'Strategic DevEx Consulting',
-    icon: 'lightbulb',
+    icon: 'strategy',
     description:
       'Long-term strategic guidance to architect and implement your Backstage ecosystem.',
     features: [
@@ -86,7 +86,7 @@ const consultingServices = [
   },
   {
     name: 'AI Chat & MCP',
-    icon: 'robot',
+    icon: 'ai-agent',
     description:
       'AI-powered chatbot integrated with Backstage data and actions. Embedded chat or MCP Server integration.',
     features: [
@@ -98,7 +98,7 @@ const consultingServices = [
   },
   {
     name: 'Security SLA',
-    icon: 'shield-check',
+    icon: 'security',
     description:
       'Keep your enterprise Backstage patched within 48 hours of every upstream security release.',
     features: [
@@ -110,7 +110,7 @@ const consultingServices = [
   },
   {
     name: 'Developer Education',
-    icon: 'chalkboard-teacher',
+    icon: 'training',
     description:
       'Knowledge transfer built into every engagement — your team learns as we work.',
     features: [
@@ -125,25 +125,25 @@ const consultingServices = [
 const processSteps = [
   {
     n: '01',
-    icon: 'magnifying-glass',
+    icon: 'search',
     title: 'Free Consultation',
     body: '30-minute call to understand your Backstage needs and challenges. We assess fit and discuss potential approaches.',
   },
   {
     n: '02',
-    icon: 'list-checks',
+    icon: 'audit',
     title: 'Technical Discovery',
     body: 'We map your integration landscape, understand your organization, and define success metrics. Results in a clear engagement plan.',
   },
   {
     n: '03',
-    icon: 'hammer',
+    icon: 'build',
     title: 'Delivery & Iteration',
     body: 'Expert hours focused on your specific work. Pay for results, scale up or down as needed. Agile sprints with fast feedback loops.',
   },
   {
     n: '04',
-    icon: 'handshake',
+    icon: 'partnership',
     title: 'Handover & Support',
     body: 'You own everything we build. Full source code, documentation, knowledge transfer. Continue independently or with ongoing support.',
   },
@@ -152,7 +152,7 @@ const processSteps = [
 const engagementModels = [
   {
     name: 'Project Sprints',
-    icon: 'lightning',
+    icon: 'speed',
     description:
       'Intensive development sprints for specific features — custom plugins, AI integrations, processor development — with measurable impact and a fixed scope.',
     features: [
@@ -164,7 +164,7 @@ const engagementModels = [
   },
   {
     name: 'Extended Engagement',
-    icon: 'infinity',
+    icon: 'continuous',
     description:
       'A dedicated DevEx team embedded in your project for months. We join your standups, architect solutions, ship complex features, and mentor your team throughout.',
     features: [
@@ -176,7 +176,7 @@ const engagementModels = [
   },
   {
     name: 'Contracting & Body Leasing',
-    icon: 'users-three',
+    icon: 'team',
     description:
       'Hire a Backstage contractor — or a full team — to plug into your project. You direct the work, we deliver hours. Paweł works contracting himself, and we have a vetted network of Backstage specialists ready to deploy.',
     features: [
@@ -230,29 +230,29 @@ const finalCtaButtons = [
   {
     href: CAL_URL,
     text: 'Schedule Discovery Call',
-    variant: 'accent',
+    tier: 'cta',
     target: '_blank',
-    icon: 'calendar',
+    icon: 'book-call',
   },
   {
     href: DEVSTAGE_URL,
     text: 'Visit DevStage.io',
-    variant: 'secondary',
+    tier: 'secondary',
     target: '_blank',
     icon: 'external-link',
   },
   {
     href: LINKEDIN_URL,
     text: 'Connect on LinkedIn',
-    variant: 'secondary',
+    tier: 'secondary',
     target: '_blank',
     icon: 'linkedin',
   },
 ] as const
 
 const finalCtaFooter = [
-  { icon: 'map-pin', text: 'Warsaw, Poland · CET timezone' },
-  { icon: 'globe', text: 'Working with clients worldwide' },
+  { icon: 'location', text: 'Warsaw, Poland · CET timezone' },
+  { icon: 'worldwide', text: 'Working with clients worldwide' },
 ] as const
 ---
 
@@ -278,7 +278,7 @@ const finalCtaFooter = [
   <Section id="development">
     <SectionHeader
       eyebrow="Development services"
-      icon="wrench"
+      icon="tooling"
       headline="What I build"
       subhead="Hands-on engineering across the Backstage stack."
     />
@@ -309,7 +309,7 @@ const finalCtaFooter = [
   <Section id="consulting">
     <SectionHeader
       eyebrow="Strategic consulting"
-      icon="lightbulb-filament"
+      icon="idea"
       headline="What I advise on"
       subhead="Strategy, AI, security, and education — turning Backstage into an org-wide platform."
     />
@@ -340,7 +340,7 @@ const finalCtaFooter = [
   <Section id="devstage">
     <SectionHeader
       eyebrow="Our Backstage practice"
-      icon="plugs-connected"
+      icon="integrations"
       headline="Backstage Specialists at DevStage.io"
       subhead="DevStage is our dedicated Backstage practice inside Żentała Innovation Agency — fast implementations, data integrations, and consulting with enterprise experience and no vendor lock-in."
     />
@@ -367,7 +367,7 @@ const finalCtaFooter = [
         href={DEVSTAGE_URL}
         text="Visit DevStage.io"
         target="_blank"
-        variant="secondary"
+        tier="secondary"
         icon="external-link"
       />
     </div>
@@ -377,7 +377,7 @@ const finalCtaFooter = [
   <Section id="process">
     <SectionHeader
       eyebrow="Engagement process"
-      icon="flow-arrow"
+      icon="workflow"
       headline="How we work"
       subhead="A predictable four-step path from first call to your team owning the work."
     />
@@ -401,7 +401,7 @@ const finalCtaFooter = [
   <Section id="engagement">
     <SectionHeader
       eyebrow="Working together"
-      icon="handshake"
+      icon="partnership"
       headline="Engagement models"
       subhead="Three ways to work together — pick the format that matches your need."
     />
@@ -432,7 +432,7 @@ const finalCtaFooter = [
   <Section id="about">
     <SectionHeader
       eyebrow="About"
-      icon="user-circle"
+      icon="profile"
       headline="Your Backstage partner"
       subhead="20+ years bridging technology and human communication — from robotics and IoT to developer portals."
     />
@@ -486,7 +486,7 @@ const finalCtaFooter = [
   <Section id="faq">
     <SectionHeader
       eyebrow="FAQ"
-      icon="question"
+      icon="faq"
       headline="Common questions"
       subhead="What teams typically ask before booking the consultation."
     />
