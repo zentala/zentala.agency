@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
  */
 
 const DIST_DIR = join(process.cwd(), 'dist')
-const CTA_BUTTON = /class="[^"]*\bbutton--cta\b/g
+const CTA_BUTTON = /class="[^"]*\b(?:button|section-cta)--cta\b/g
 const MIN_PAGES = 10
 
 function listHtml(dir: string): string[] {
@@ -22,14 +22,10 @@ function listHtml(dir: string): string[] {
 
 describe('one cta tier button per page (built site)', () => {
   if (!existsSync(DIST_DIR)) {
-    // `just check` builds first; on CI a missing dist/ must not pass silently.
-    if (process.env.CI) {
-      it('needs dist/ to exist', () => {
-        expect(existsSync(DIST_DIR)).toBe(true)
-      })
-    } else {
-      it.skip('dist/ not found: run `npm run build` before this suite', () => {})
-    }
+    // `just check` builds first; a missing dist/ must fail, never pass silently.
+    it('needs dist/ to exist: run `npm run build` first', () => {
+      expect(existsSync(DIST_DIR)).toBe(true)
+    })
     return
   }
 
