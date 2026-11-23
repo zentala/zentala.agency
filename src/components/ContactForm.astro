@@ -9,14 +9,14 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 ---
 
 <form class="line-grid contact-form" action="mailto:zentala@gmail.com" method="post" enctype="text/plain">
-  <ThemedInput type="text" id="fName" placeholder="First name" icon="user" required />
-  <ThemedInput type="text" id="lName" placeholder="Last name" icon="user" />
-  <ThemedInput type="email" id="email" placeholder="Email" icon="envelope-simple" required />
+  <ThemedInput type="text" id="fName" placeholder="First name" icon="person" required />
+  <ThemedInput type="text" id="lName" placeholder="Last name" icon="person" />
+  <ThemedInput type="email" id="email" placeholder="Email" icon="email" required />
   <ThemedInput type="tel" id="phone" placeholder="Phone" icon="phone" />
-  <ThemedTextarea id="msg" placeholder="Your message" icon="chat-circle" />
+  <ThemedTextarea id="msg" placeholder="Your message" icon="message" />
   <button type="submit" class="contact-form__submit">
     <span>Send message</span>
-    <SiteIcon name="caret-right" size="sm" class="contact-form__arrow arrow-nudge" />
+    <SiteIcon name="next" size="sm" class="contact-form__arrow arrow-nudge" />
   </button>
 </form>
 

@@ -72,7 +72,7 @@ const { headline, subhead, cards, note, cta } = Astro.props
   </SectionGrid>
 
   {note ? (
-    <NoteBox icon={note.icon ?? 'lightbulb'}>
+    <NoteBox icon={note.icon ?? 'note-tip'}>
       <p>
         {note.title ? <strong>{note.title}:</strong> : null} {note.text}
       </p>

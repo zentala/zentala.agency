@@ -126,7 +126,7 @@ From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). Today
 Every arrow is the same chevron. Put it inside the link, button or `.group` so it moves on hover (a text arrow or a shaft icon is a defect):
 
 ```astro
-<a href="/blog" class="group">All posts <SiteIcon name="caret-right" size="sm" class="arrow-nudge" /></a>
+<a href="/blog" class="group">All posts <SiteIcon name="next" size="sm" class="arrow-nudge" /></a>
 ```
 
 Icons: `<SiteIcon name="calendar" size="lg" />` (sizes `sm` 16, `md` 20, `lg` 24) and `<TechIcon name="astro" />` for a logo. Tags: `<TagGroup tags={['UWB', 'BLE']} tech />` shows a logo where `src/data/tech-icons.ts` has one; a single chip is `<Tag text="astro" />`.

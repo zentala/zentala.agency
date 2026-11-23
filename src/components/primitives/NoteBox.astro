@@ -12,10 +12,10 @@ interface Props {
 }
 
 const VARIANT_ICON = {
-  default: 'lightbulb',
-  info: 'info',
-  success: 'check-circle',
-  warning: 'warning',
+  default: 'note-tip',
+  info: 'note-info',
+  success: 'note-success',
+  warning: 'note-warning',
 } as const
 
 const { icon, title, variant = 'default' } = Astro.props

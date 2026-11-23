@@ -1,26 +1,26 @@
 import { describe, expect, it } from 'vitest'
 import { resolveIconName } from '@/lib/siteIcon'
 
-/** Icons the admin pages use: SiteIcon throws at render time on a name the set lacks. */
+/** Icon meanings the admin pages use: SiteIcon throws at render time on a meaning the map lacks. */
 const ADMIN_ICONS = [
-  'check-square',
-  'link-break',
-  'palette',
-  'chat-text',
-  'stack',
-  'squares-four',
-  'star',
-  'square',
-  'check',
-  'plus',
+  'decisions',
+  'broken-links',
+  'design',
+  'comments',
+  'series',
+  'gallery',
+  'recommended',
+  'checkbox-off',
+  'done',
+  'add',
   'external-link',
   'copy',
-  'floppy-disk',
-  'caret-right',
+  'save',
+  'next',
 ]
 
 describe('admin icons', () => {
-  it.each(ADMIN_ICONS)('%s exists in the Phosphor Light set', (name) => {
-    expect(resolveIconName(name)).toMatch(/^ph:/)
+  it.each(ADMIN_ICONS)('%s resolves to a Phosphor glyph', (name) => {
+    expect(resolveIconName(name, 20)).toMatch(/^ph:/)
   })
 })

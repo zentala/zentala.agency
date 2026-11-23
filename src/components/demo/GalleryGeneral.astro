@@ -23,7 +23,7 @@ const ctaButtons = [
   },
 ] as const
 const ctaFooter = [
-  { icon: 'map-pin', text: 'Warsaw, Poland' },
+  { icon: 'location', text: 'Warsaw, Poland' },
   { text: 'Working worldwide' },
 ]
 ---
@@ -42,17 +42,17 @@ const ctaFooter = [
     <Button
       href="https://cal.com/zentala"
       text="Book a call"
-      icon="calendar"
+      icon="book-call"
       variant="secondary"
       arrow={false}
       target="_blank"
     />
   </GalleryCell>
   <GalleryCell label="primary, icon and arrow">
-    <Button href="/contact" text="Get started" icon="rocket" />
+    <Button href="/contact" text="Get started" icon="launch" />
   </GalleryCell>
   <GalleryCell label="accent, icon, no arrow">
-    <Button href="/contact" text="Write to me" icon="envelope-simple" variant="accent" arrow={false} />
+    <Button href="/contact" text="Write to me" icon="email" variant="accent" arrow={false} />
   </GalleryCell>
   <GalleryCell label="secondary, arrow">
     <Button href="/portfolio" text="See the portfolio" variant="secondary" />
@@ -61,7 +61,7 @@ const ctaFooter = [
     <Button href="/blog" text="All posts" variant="ghost" />
   </GalleryCell>
   <GalleryCell label="tier cta (under review): solid blue, the one key action">
-    <Button tier="cta" href="https://cal.com/zentala" text="Book a call" icon="calendar-plus" />
+    <Button tier="cta" href="https://cal.com/zentala" text="Book a call" icon="book-call" />
   </GalleryCell>
   <GalleryCell label="tier primary: solid white">
     <Button tier="primary" href="/contact" text="Get started" />
@@ -73,10 +73,10 @@ const ctaFooter = [
     <Button tier="tertiary" href="/blog" text="All posts" />
   </GalleryCell>
   <GalleryCell label="tier, icon on the right (no chevron)">
-    <Button tier="secondary" href="/contact" text="Write to me" icon="envelope-simple" iconPosition="right" />
+    <Button tier="secondary" href="/contact" text="Write to me" icon="email" iconPosition="right" />
   </GalleryCell>
   <GalleryCell label="tier primary as a submit button">
-    <Button tier="primary" type="button" text="Send message" icon="paper-plane-tilt" iconPosition="right" />
+    <Button tier="primary" type="button" text="Send message" icon="send" iconPosition="right" />
   </GalleryCell>
 </GalleryEntry>
 
@@ -187,7 +187,7 @@ const ctaFooter = [
     ><ThemedInput
       type="email"
       id="gallery-email"
-      icon="envelope-simple"
+      icon="email"
       placeholder="Email"
     /></GalleryCell
   >

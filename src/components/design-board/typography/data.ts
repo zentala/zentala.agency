@@ -19,11 +19,11 @@ export interface TypographySamples {
 }
 
 export const NAV_LINKS = [
-  { text: 'Home', icon: 'house' },
-  { text: 'Capabilities', icon: 'squares-four' },
-  { text: 'Portfolio', icon: 'briefcase' },
-  { text: 'Blog', icon: 'article' },
-  { text: 'Contact', icon: 'envelope-simple' },
+  { text: 'Home', icon: 'home' },
+  { text: 'Capabilities', icon: 'capabilities' },
+  { text: 'Portfolio', icon: 'portfolio' },
+  { text: 'Blog', icon: 'blog' },
+  { text: 'Contact', icon: 'email' },
 ] as const
 
 /** The nav item shown as the current page in every header mock. */

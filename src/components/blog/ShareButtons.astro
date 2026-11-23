@@ -13,12 +13,12 @@ const externalLinks = [
   {
     label: 'Share on LinkedIn',
     href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`,
-    icon: 'linkedin-logo',
+    icon: 'linkedin',
   },
   {
     label: 'Share on Microsoft Teams',
     href: `https://teams.microsoft.com/share?href=${encodeURIComponent(postUrl)}&msgText=${encodeURIComponent(title)}`,
-    icon: 'microsoft-teams-logo',
+    icon: 'teams',
   },
 ]
 const emailHref = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n\n${postUrl}`)}`
@@ -47,7 +47,7 @@ const buttonClass =
     aria-label="Share via email"
     title="Share via email"
   >
-    <SiteIcon name="envelope-simple" size="md" />
+    <SiteIcon name="email" size="md" />
   </a>
   <button
     type="button"
@@ -56,7 +56,7 @@ const buttonClass =
     aria-label="Copy link"
     title="Copy link"
   >
-    <SiteIcon name="link-simple" size="md" class="group-[.is-copied]:hidden" />
-    <SiteIcon name="check" size="md" class="hidden group-[.is-copied]:block" />
+    <SiteIcon name="copy-link" size="md" class="group-[.is-copied]:hidden" />
+    <SiteIcon name="done" size="md" class="hidden group-[.is-copied]:block" />
   </button>
 </div>

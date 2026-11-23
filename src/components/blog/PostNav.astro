@@ -44,7 +44,7 @@ const hasPair = Boolean(previous || next)
           {previous && (
             <a href={`/blog/${previous.slug}`} class={cellClass} rel="prev">
               <span class={`${labelClass} inline-flex items-center gap-1`}>
-                <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+                <SiteIcon name="prev" size="sm" class="arrow-nudge-back" />
                 Previous part
                 {previous.data.published === false && (
                   <DraftBadge
@@ -66,7 +66,7 @@ const hasPair = Boolean(previous || next)
             >
               <span class={labelClass}>
                 Next part
-                <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+                <SiteIcon name="next" size="sm" class="arrow-nudge" />
                 {next.data.published === false && (
                   <DraftBadge placement="inline" review={next.data.review} />
                 )}
@@ -99,7 +99,7 @@ const hasPair = Boolean(previous || next)
       class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-responsive py-5"
     >
       <a href="/blog" class={`${textLinkClass} inline-flex items-center gap-1 text-fg-muted hover:text-fg`}>
-        <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+        <SiteIcon name="prev" size="sm" class="arrow-nudge-back" />
         All posts
       </a>
       {
@@ -109,7 +109,7 @@ const hasPair = Boolean(previous || next)
             class={`${textLinkClass} inline-flex items-center gap-1 text-accent hover:text-accent-hover`}
           >
             All {seriesPosts.length} parts
-            <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+            <SiteIcon name="next" size="sm" class="arrow-nudge" />
           </a>
         )
       }

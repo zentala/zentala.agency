@@ -38,13 +38,13 @@ const { datetime, label } = formatDate(date)
   {
     partLabel && (
       <span class="flex items-center gap-x-1">
-        <SiteIcon name="layers" size={iconSize} />
+        <SiteIcon name="series" size={iconSize} />
         {partLabel}
       </span>
     )
   }
   <span class="flex items-center gap-x-1">
-    <SiteIcon name="calendar" size={iconSize} />
+    <SiteIcon name="date" size={iconSize} />
     <time datetime={datetime} data-blog-date>{label}</time>
   </span>
   {

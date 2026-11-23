@@ -7,8 +7,8 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       id: 'site-icon',
       name: 'SiteIcon',
       path: 'primitives/SiteIcon.astro',
-      purpose: 'The only UI icon: Phosphor Light, currentColor, whole-pixel sizes.',
-      props: 'name, size (sm 16; md 20, lg 24), class',
+      purpose: 'The only UI icon: Phosphor by meaning (src/lib/icons/icon-map.ts), weight by size (Bold to 20, Regular 24, Light to 63, Thin from 64), currentColor, whole-pixel sizes.',
+      props: 'name (meaning, for example date), size (md 20; sm 16, lg 24, or a number from 16 up), class',
     },
     {
       id: 'tech-icon',

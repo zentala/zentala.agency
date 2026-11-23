@@ -43,16 +43,16 @@ export const STATUS_META: Record<
   ThreadStatus,
   { label: string; icon: string }
 > = {
-  open: { label: 'Open', icon: 'circle' },
-  done: { label: 'Done', icon: 'check' },
-  declined: { label: 'Declined', icon: 'prohibit' },
-  outdated: { label: 'Outdated', icon: 'clock-counter-clockwise' },
-  removed: { label: 'Removed', icon: 'eye-slash' },
+  open: { label: 'Open', icon: 'status-open' },
+  done: { label: 'Done', icon: 'done' },
+  declined: { label: 'Declined', icon: 'status-declined' },
+  outdated: { label: 'Outdated', icon: 'status-outdated' },
+  removed: { label: 'Removed', icon: 'status-removed' },
 }
 
 export const AUTHOR_META: Record<Author, { name: string; icon: string }> = {
-  agent: { name: 'Agent', icon: 'robot' },
-  owner: { name: 'Paweł', icon: 'user' },
+  agent: { name: 'Agent', icon: 'ai-agent' },
+  owner: { name: 'Paweł', icon: 'person' },
 }
 
 export const SAMPLE_THREADS: ReviewThreadData[] = [
