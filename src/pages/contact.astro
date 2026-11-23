@@ -1,5 +1,4 @@
 ---
-import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import Button from '../components/Button.astro'
@@ -22,7 +21,7 @@ const heroProps = {
   <section class="section-full">
     <div class="container-bordered">
       <div class="line-grid">
-        <CardContainer hasHover>
+        <CardContainer hasHover backgroundIcon="message">
           <div class="contact-card__head">
             <h2 class="contact-card__title">Let's Talk</h2>
           </div>
@@ -53,12 +52,9 @@ const heroProps = {
           </div>
         </CardContainer>
 
-        <CardContainer hasHover>
+        <CardContainer hasHover backgroundIcon="book-call">
           <div class="contact-card__head">
             <h2 class="contact-card__title">Schedule Meeting</h2>
-            <span class="contact-card__icon" aria-hidden="true">
-              <SiteIcon name="book-call" size="lg" />
-            </span>
           </div>
           <p class="contact-card__text">
             Let's discuss your needs in a 20-minute free consultation call.
@@ -72,12 +68,9 @@ const heroProps = {
           />
         </CardContainer>
 
-        <CardContainer hasHover>
+        <CardContainer hasHover backgroundIcon="linkedin">
           <div class="contact-card__head">
             <h2 class="contact-card__title">Follow Me</h2>
-            <span class="contact-card__icon" aria-hidden="true">
-              <SiteIcon name="portfolio" size="lg" />
-            </span>
           </div>
           <p class="contact-card__text">
             Connect with me on LinkedIn to stay updated with my latest insights
@@ -123,17 +116,5 @@ const heroProps = {
     margin-bottom: 1.5rem;
     font-size: var(--text-lead);
     color: var(--color-text-secondary);
-  }
-
-  /* Decorative: sits in the heading row, never under the paragraph */
-  .contact-card__icon {
-    flex-shrink: 0;
-    color: var(--color-text);
-    opacity: 0.12;
-  }
-
-  .contact-card__icon :global(svg) {
-    width: 2.5rem;
-    height: 2.5rem;
   }
 </style>

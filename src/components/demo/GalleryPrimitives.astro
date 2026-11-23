@@ -2,6 +2,7 @@
 import GalleryEntry from './GalleryEntry.astro'
 import GalleryCell from './GalleryCell.astro'
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import BrandIcon from '@/components/primitives/BrandIcon.astro'
 import TechIcon from '@/components/primitives/TechIcon.astro'
 import Badge from '@/components/primitives/Badge.astro'
 import Tag from '@/components/primitives/Tag.astro'
@@ -39,6 +40,12 @@ const TAGS = ['backstage', 'agents', 'devex']
   <GalleryCell label="brand colour"
     ><TechIcon name="react" size="lg" brand="#61DAFB" /></GalleryCell
   >
+</GalleryEntry>
+
+<GalleryEntry id="brand-icon" cols={3}>
+  <GalleryCell label="linkedin, 33"><BrandIcon name="linkedin" /></GalleryCell>
+  <GalleryCell label="github, 33"><BrandIcon name="github" /></GalleryCell>
+  <GalleryCell label="email, 33"><BrandIcon name="email" /></GalleryCell>
 </GalleryEntry>
 
 <GalleryEntry id="badge" cols={3}>

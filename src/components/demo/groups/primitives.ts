@@ -18,6 +18,13 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       props: 'name, size (sm; md, lg), brand (hex), class',
     },
     {
+      id: 'brand-icon',
+      name: 'BrandIcon',
+      path: 'primitives/BrandIcon.astro',
+      purpose: 'Footer social mark: a Font Awesome 6 Free glyph inlined at build time (no webfont, no CDN), currentColor.',
+      props: 'name (linkedin, github, email), size (33), class',
+    },
+    {
       id: 'badge',
       name: 'Badge',
       path: 'primitives/Badge.astro',

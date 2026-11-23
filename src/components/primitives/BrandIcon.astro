@@ -1,0 +1,40 @@
+---
+/**
+ * Footer social mark: a Font Awesome 6 Free glyph (CC BY 4.0) inlined at build time by
+ * astro-icon from the installed `@iconify-json` sets, so there is no webfont and no CDN request.
+ * Brand marks come from the brands set; `envelope` has no brand and comes from the regular set.
+ * Whole-pixel sizes only; colour from `currentColor`.
+ */
+import { Icon } from 'astro-icon/components'
+import { iconPx } from '@/lib/siteIcon'
+
+const BRAND_GLYPHS = {
+  linkedin: 'fa6-brands:linkedin-in',
+  github: 'fa6-brands:github',
+  email: 'fa6-regular:envelope',
+} as const
+
+export interface Props {
+  name: keyof typeof BRAND_GLYPHS
+  size?: number
+  class?: string
+}
+
+const { name, size = 33, class: className, ...rest } = Astro.props
+if (!Object.hasOwn(BRAND_GLYPHS, name)) throw new Error(`BrandIcon: no glyph "${name}"`)
+const px = iconPx(size)
+---
+
+<Icon
+  name={BRAND_GLYPHS[name]}
+  size={px}
+  class:list={['brand-icon', className]}
+  aria-hidden="true"
+  {...rest}
+/>
+
+<style>
+  .brand-icon {
+    flex-shrink: 0;
+  }
+</style>

@@ -22,6 +22,7 @@ const SRC = join(process.cwd(), 'src')
 const RENDERERS = new Set([
   'components/primitives/SiteIcon.astro',
   'components/primitives/TechIcon.astro',
+  'components/primitives/BrandIcon.astro',
 ])
 const SOURCE_EXT = /\.(astro|tsx|ts|jsx|mdx)$/
 

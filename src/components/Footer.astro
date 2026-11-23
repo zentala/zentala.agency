@@ -1,6 +1,6 @@
 ---
 import Logo from '../components/Logo.astro'
-import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import BrandIcon from '@/components/primitives/BrandIcon.astro'
 import { getCollection } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
 import { isParkedLink } from '@/lib/links/parked'
@@ -77,17 +77,17 @@ const FOOTER_GROUPS: { label: string; links: FooterLink[] }[] = [
         <a
           href="https://www.linkedin.com/in/zentala/"
           target="_blank"
-          rel="noopener noreferrer"><SiteIcon name="linkedin" size="lg" /><span class="sr-only">LinkedIn</span></a
+          rel="noopener noreferrer"><BrandIcon name="linkedin" /><span class="sr-only">LinkedIn</span></a
         >
         <a
           href="https://github.com/zentala"
           target="_blank"
-          rel="noopener noreferrer"><SiteIcon name="github" size="lg" /><span class="sr-only">GitHub</span></a
+          rel="noopener noreferrer"><BrandIcon name="github" /><span class="sr-only">GitHub</span></a
         >
         <a
           href="mailto:zentala@gmail.com"
           target="_blank"
-          rel="noopener noreferrer"><SiteIcon name="email" size="lg" /><span class="sr-only">Email</span></a
+          rel="noopener noreferrer"><BrandIcon name="email" /><span class="sr-only">Email</span></a
         >
       </div>
     </div>
