@@ -12,6 +12,7 @@ import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import DeadLinksByPage from '@/components/monitor/DeadLinksByPage.astro'
 import LinkSummaryBar from '@/components/monitor/LinkSummaryBar.astro'
+import { PARKED_LINKS } from '@/data/parked-links'
 import { groupByStatus, outcomeLabel, readLatestReport } from '@/lib/links/report'
 import { locateUrls } from '@/lib/links/source-map'
 import { deadSummary, groupDeadByPage, isStale, reportAgeDays, STALE_AFTER_DAYS } from '@/lib/links/view'
@@ -98,6 +99,24 @@ const singleColumn = '--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1'
           summary={deadSummary(report.links)}
           {locations}
         />
+
+        <Section id="parked">
+          <SectionHeader
+            headline={`Ukryte tymczasowo (${PARKED_LINKS.length})`}
+            subhead="Linki z src/data/parked-links.ts: build zamienia je w zwykły tekst, aż znów działają. Usuń wpis, żeby przywrócić link."
+          />
+          <div class="line-grid" style={singleColumn}>
+            {PARKED_LINKS.map((entry) => (
+              <div class="monitor-row">
+                <p class="monitor-url text-fg">{entry.url}</p>
+                <p class="monitor-meta">
+                  <span>{entry.reason}</span>
+                  <span>Przywrócić, gdy: {entry.reenableWhen}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
 
         <Section id="disabled">
           <SectionHeader

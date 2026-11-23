@@ -14,3 +14,9 @@ export const SHOW_AUTHOR = false
  */
 export const SHOW_DRAFTS =
   import.meta.env.DEV || import.meta.env.PUBLIC_PREVIEW === 'true'
+
+/**
+ * Whether the Share block (LinkedIn, X, ... links) renders on blog posts.
+ * NOTE(intent): hidden on the owner's request 2026-11-23, see .plan backlog.
+ */
+export const SHOW_SHARE_BUTTONS = false

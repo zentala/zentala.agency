@@ -33,32 +33,11 @@ const hasPair = Boolean(previous || next)
 
 <section class="section-full">
   <nav class="container-bordered" aria-label="More to read" data-post-nav>
-    <div
-      class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-responsive py-5"
-    >
-      {
-        seriesSlug ? (
-          seriesPosts.length > 1 ? (
-            <a
-              href={`/series/${seriesSlug}`}
-              class={`${textLinkClass} inline-flex items-center gap-1 text-accent hover:text-accent-hover`}
-            >
-              All {seriesPosts.length} parts
-              <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
-            </a>
-          ) : (
-            <span />
-          )
-        ) : (
-          <p class={labelClass}>{related.length > 0 ? 'Related posts' : ''}</p>
-        )
-      }
-      <a href="/blog" class={`${textLinkClass} inline-flex items-center gap-1 text-fg-muted hover:text-fg`}>
-        <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
-        All posts
-      </a>
-    </div>
-
+    {
+      !seriesSlug && related.length > 0 && (
+        <p class={`${labelClass} px-responsive py-5`}>Related posts</p>
+      )
+    }
     {
       seriesSlug && hasPair && (
         <div class="line-grid" style="--cols-wide: 2">
@@ -116,5 +95,24 @@ const hasPair = Boolean(previous || next)
         </div>
       )
     }
+    <div
+      class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-responsive py-5"
+    >
+      <a href="/blog" class={`${textLinkClass} inline-flex items-center gap-1 text-fg-muted hover:text-fg`}>
+        <SiteIcon name="caret-left" size="sm" class="arrow-nudge-back" />
+        All posts
+      </a>
+      {
+        seriesSlug && seriesPosts.length > 1 && (
+          <a
+            href={`/series/${seriesSlug}`}
+            class={`${textLinkClass} inline-flex items-center gap-1 text-accent hover:text-accent-hover`}
+          >
+            All {seriesPosts.length} parts
+            <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+          </a>
+        )
+      }
+    </div>
   </nav>
 </section>
