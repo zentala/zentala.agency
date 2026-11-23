@@ -1,0 +1,26 @@
+---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js'
+
+/**
+ * Dev-only admin routes: /admin (tool index) and /admin/decisions (decision board).
+ * getStaticPaths is empty in a production build and the page bodies are imported only under
+ * DEV, so no admin code, CSS or plan reader reaches dist. Data comes from the private plan
+ * folder (src/lib/admin/plan-dir.ts).
+ */
+export function getStaticPaths() {
+  return import.meta.env.DEV
+    ? [{ params: { page: undefined } }, { params: { page: 'decisions' } }]
+    : []
+}
+
+const { page } = Astro.params
+const Admin = import.meta.env.DEV
+  ? ((
+      page === 'decisions'
+        ? await import('@/components/admin/DecisionBoard.astro')
+        : await import('@/components/admin/AdminIndex.astro')
+    ).default as AstroComponentFactory)
+  : null
+---
+
+{Admin && <Admin />}

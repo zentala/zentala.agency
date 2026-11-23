@@ -1,0 +1,230 @@
+---
+/**
+ * One decision of the owner's board, dev only: a line-grid cell with the question and its
+ * options as radio cells, followed by a note field cell (rendered by DecisionGroup).
+ * Radio semantics: native inputs, arrow keys move the choice. The recommended option is
+ * marked, never preselected; a saved answer is preselected and shown with its time.
+ * The page script (DecisionBoard) reads `data-decision-id`, `data-saved-*` and the inputs.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import Tag from '@/components/primitives/Tag.astro'
+import type { SavedAnswer } from '@/lib/admin/answers'
+import type { DecideItem } from '@/lib/admin/decide'
+
+export interface Props {
+  item: DecideItem
+  saved?: SavedAnswer
+}
+
+const { item, saved } = Astro.props
+const name = `choice-${item.id}`
+const savedAt = saved
+  ? new Date(saved.at).toLocaleString('pl-PL', { dateStyle: 'short', timeStyle: 'short' })
+  : ''
+---
+
+<div
+  class="decision"
+  data-decision-id={item.id}
+  data-saved-choice={saved?.choice ?? ''}
+  data-saved-note={saved?.note ?? ''}
+>
+  <div class="decision__head">
+    <p class="decision__code">{item.id}</p>
+    <h3 class="decision__title">{item.title}</h3>
+    {item.question && <p class="decision__question">{item.question}</p>}
+  </div>
+
+  <fieldset class="decision__options">
+    <legend class="sr-only">Opcje {item.id}</legend>
+    {
+      item.options.map((option) => (
+        <label class="option">
+          <input
+            class="sr-only"
+            type="radio"
+            name={name}
+            value={option.letter}
+            checked={saved?.choice === option.letter}
+          />
+          <span class="option__mark" aria-hidden="true">
+            <SiteIcon name="circle" size="md" class="option__off" />
+            <SiteIcon name="check-circle" size="md" class="option__on" />
+          </span>
+          <span class="option__letter">{option.letter}</span>
+          <span class="option__body">
+            <span class="option__text">{option.text}</span>
+            {option.consequence && (
+              <span class="option__consequence">Skutek: {option.consequence}</span>
+            )}
+          </span>
+          {option.recommended && <Tag text="rekomendowane" icon="star" class="option__tag" />}
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <dl class="decision__meta">
+    {
+      item.blocks && (
+        <div>
+          <dt>blokuje:</dt>
+          <dd>{item.blocks}</dd>
+        </div>
+      )
+    }
+    {
+      item.from && (
+        <div>
+          <dt>od:</dt>
+          <dd>{item.from}</dd>
+        </div>
+      )
+    }
+    {
+      item.link && (
+        <div>
+          <dt>link:</dt>
+          <dd>
+            <a href={item.link} target="_blank" rel="noopener noreferrer" class="decision__link">
+              {item.link.replace(/^https?:\/\//, '')}
+              <SiteIcon name="external-link" size="sm" />
+            </a>
+          </dd>
+        </div>
+      )
+    }
+  </dl>
+
+  <p class="decision__status" data-status aria-live="polite">
+    {saved ? `odpowiedź: ${saved.choice}, ${savedAt}` : ''}
+  </p>
+</div>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .decision {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .decision__code {
+    @apply text-sm text-fg-muted;
+  }
+
+  .decision__title {
+    @apply text-xl font-light text-fg;
+  }
+
+  .decision__question {
+    @apply mt-2 text-fg-secondary;
+  }
+
+  .decision__options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-surface-raised);
+    cursor: pointer;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+
+    &:hover,
+    &:has(input:checked) {
+      background-color: var(--color-surface-hover);
+    }
+
+    &:has(input:focus-visible) {
+      outline: var(--focus-ring-width) solid var(--line-focus);
+      outline-offset: -2px;
+    }
+  }
+
+  .option__mark {
+    display: grid;
+    color: var(--color-text-muted);
+  }
+
+  .option__on {
+    display: none;
+  }
+
+  .option:has(input:checked) {
+    .option__off {
+      display: none;
+    }
+
+    .option__on {
+      display: block;
+      color: var(--color-text);
+    }
+  }
+
+  .option__letter {
+    @apply font-medium text-fg;
+    min-width: 1.25rem;
+  }
+
+  .option__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .option__text {
+    @apply text-fg;
+  }
+
+  .option__consequence {
+    @apply text-sm text-fg-muted;
+  }
+
+  .option__tag {
+    flex-shrink: 0;
+  }
+
+  .decision__meta {
+    @apply text-sm text-fg-muted;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+
+    > div {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    dd {
+      @apply text-fg-secondary;
+      margin: 0;
+    }
+  }
+
+  .decision__link {
+    @apply inline-flex items-center gap-1 text-fg-secondary transition-colors duration-fast ease-standard hover:text-fg;
+  }
+
+  .decision__status {
+    @apply text-sm text-fg-secondary;
+
+    &:empty {
+      display: none;
+    }
+  }
+</style>

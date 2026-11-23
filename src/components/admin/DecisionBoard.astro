@@ -1,0 +1,254 @@
+---
+/**
+ * Decision board, dev only (/admin/decisions): the owner's open questions from the private
+ * plan's DECIDE.md as an infographic. Summary, one section per group, decision cards with
+ * options as radio cells, a sticky bar to save (POST /__admin/answers, a dev middleware) or
+ * copy the answers as text. Nothing is preselected and nothing is sent until the owner clicks.
+ * Lines that cannot be parsed are listed at the bottom so nothing is hidden.
+ */
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Button from '@/components/Button.astro'
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import DecisionGroup from '@/components/admin/DecisionGroup.astro'
+import { readAnswers } from '@/lib/admin/answers'
+import { buildBoard } from '@/lib/admin/board'
+import { readDecideFile } from '@/lib/admin/decide-file'
+import { resolvePlanDir } from '@/lib/admin/plan-dir'
+
+const planDir = resolvePlanDir()
+const decide = readDecideFile(planDir)
+const answers = readAnswers(planDir)
+const board = buildBoard(decide.items, answers)
+const answerById = new Map(answers.map((answer) => [answer.id, answer]))
+const fileDate = decide.modifiedAt
+  ? new Date(decide.modifiedAt).toLocaleString('pl-PL', { dateStyle: 'medium', timeStyle: 'short' })
+  : ''
+---
+
+<Layout title="Decyzje do podjęcia" description="Pytania do właściciela. Tylko dev." noindex>
+  <Hero
+    eyebrow="Tylko dev"
+    title="Decyzje do podjęcia"
+    subtitle={decide.missing
+      ? 'Brak pliku DECIDE.md'
+      : `${board.openCount} otwartych, ${board.answeredCount} z odpowiedzią`}
+  />
+
+  {
+    decide.missing ? (
+      <Section id="missing">
+        <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+          <div class="content-grid__text">
+            <p class="text-fg-secondary">
+              Nie znaleziono pliku z decyzjami. Szukałem w <code>{decide.path}</code>. Ustaw{' '}
+              <code>ADMIN_PLAN_DIR</code> na folder planu albo utwórz w nim DECIDE.md.
+            </p>
+          </div>
+        </div>
+      </Section>
+    ) : (
+      <div>
+        <Section id="summary">
+          <div class="line-grid line-grid--fill-last">
+            <div class="content-grid__text">
+              <p class="figure">{board.openCount}</p>
+              <p class="label">Otwarte pytania</p>
+            </div>
+            <div class="content-grid__text">
+              <p class="figure">{board.answeredCount}</p>
+              <p class="label">Z zapisaną odpowiedzią</p>
+            </div>
+            <div class="content-grid__text">
+              <p class="label">DECIDE.md zmieniony</p>
+              <p class="text-fg-secondary">{fileDate}</p>
+            </div>
+            {board.groups.map((group) => (
+              <div class="content-grid__text">
+                <p class="figure">{group.items.length}</p>
+                <p class="label">{group.name}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {board.groups.map((group) => (
+          <DecisionGroup
+            name={group.name}
+            items={group.items}
+            answers={answerById}
+            answered={group.answered}
+          />
+        ))}
+
+        {board.deferred.length > 0 && (
+          <Section id="deferred">
+            <details class="deferred">
+              <summary class="deferred__summary">Na później ({board.deferred.length})</summary>
+              <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+                {board.deferred.map((item) => (
+                  <div class="content-grid__text">
+                    <p class="label">{item.id}</p>
+                    <p class="text-fg">{item.title}</p>
+                    {item.question && <p class="text-fg-secondary">{item.question}</p>}
+                    {item.blocks && <p class="label">blokuje: {item.blocks}</p>}
+                  </div>
+                ))}
+              </div>
+            </details>
+          </Section>
+        )}
+
+        {decide.errors.length > 0 && (
+          <Section id="unreadable">
+            <SectionHeader
+              headline="Nie udało się odczytać"
+              subhead="Te linie z DECIDE.md mają błąd formatu. Są pokazane tak, jak stoją w pliku."
+            />
+            <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+              {decide.errors.map((error) => (
+                <div class="content-grid__text">
+                  <p class="label">linia {error.line}: {error.error}</p>
+                  <p class="raw">{error.raw}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        <div class="admin-bar-wrap">
+          <div class="container-bordered">
+            <div class="admin-bar">
+              <div data-action="save">
+                <Button type="button" text="Zapisz odpowiedzi" variant="primary" icon="floppy-disk" arrow={false} />
+              </div>
+              <div data-action="copy">
+                <Button type="button" text="Kopiuj jako tekst" variant="secondary" icon="copy" arrow={false} />
+              </div>
+              <p class="admin-bar__status" data-board-status role="status" aria-live="polite" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+</Layout>
+
+<script>
+  import { formatAnswerLine } from '@/lib/admin/answer-text'
+
+  const ENDPOINT = '/__admin/answers'
+
+  interface Entry {
+    card: HTMLElement
+    id: string
+    choice: string
+    note: string
+  }
+
+  const status = document.querySelector<HTMLElement>('[data-board-status]')
+  const say = (text: string) => {
+    if (status) status.textContent = text
+  }
+
+  const entries = (): Entry[] =>
+    [...document.querySelectorAll<HTMLElement>('[data-decision-id]')].flatMap((card) => {
+      const id = card.dataset.decisionId ?? ''
+      const choice = card.querySelector<HTMLInputElement>('input[type="radio"]:checked')?.value
+      const note = document.querySelector<HTMLTextAreaElement>(`textarea[name="note-${id}"]`)?.value ?? ''
+      return choice ? [{ card, id, choice, note: note.trim() }] : []
+    })
+
+  const isChanged = ({ card, choice, note }: Entry) =>
+    choice !== card.dataset.savedChoice || note !== (card.dataset.savedNote ?? '')
+
+  const clock = () => new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
+
+  async function save() {
+    const changed = entries().filter(isChanged)
+    if (changed.length === 0) return say('Nic nowego do zapisania: wybierz opcję albo zmień notatkę.')
+    say('Zapisuję…')
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: changed.map(({ id, choice, note }) => ({ id, choice, note })) }),
+      })
+      const result = (await response.json()) as { ok: boolean; saved?: number; error?: string }
+      if (!response.ok || !result.ok) return say(`Nie zapisano: ${result.error ?? response.status}`)
+      const time = clock()
+      for (const { card, choice, note } of changed) {
+        card.dataset.savedChoice = choice
+        card.dataset.savedNote = note
+        const mark = card.querySelector('[data-status]')
+        if (mark) mark.textContent = `wysłano: ${choice}, ${time}`
+      }
+      say(`Zapisano ${result.saved}: ${changed.map(({ id, choice }) => `${id} ${choice}`).join(', ')}`)
+    } catch {
+      say('Nie zapisano: serwer deweloperski nie odpowiada.')
+    }
+  }
+
+  async function copy() {
+    const all = entries()
+    if (all.length === 0) return say('Nic do skopiowania: wybierz opcję.')
+    const text = all.map(({ id, choice, note }) => formatAnswerLine(id, choice, note)).join('\n')
+    try {
+      await navigator.clipboard.writeText(text)
+      say(`Skopiowano ${all.length} odpowiedzi.`)
+    } catch {
+      say('Schowek niedostępny na tym adresie. Zaznacz i skopiuj ręcznie.')
+    }
+  }
+
+  document.querySelector('[data-action="save"]')?.addEventListener('click', () => void save())
+  document.querySelector('[data-action="copy"]')?.addEventListener('click', () => void copy())
+</script>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .figure {
+    @apply text-3xl font-light text-fg;
+  }
+
+  .label {
+    @apply text-sm text-fg-muted;
+  }
+
+  .raw {
+    @apply text-sm text-fg-secondary;
+    overflow-wrap: anywhere;
+    font-family: ui-monospace, monospace;
+  }
+
+  .deferred__summary {
+    @include px-responsive('md');
+    @include py-responsive('sm');
+    @apply text-lg text-fg-secondary transition-colors duration-fast ease-standard hover:text-fg;
+    cursor: pointer;
+  }
+
+  .admin-bar-wrap {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+  }
+
+  .admin-bar {
+    @include px-responsive('md');
+    @include py-responsive('sm');
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    background-color: var(--color-surface-raised);
+  }
+
+  .admin-bar__status {
+    @apply text-sm text-fg-secondary;
+    flex: 1;
+    min-width: 12rem;
+  }
+</style>

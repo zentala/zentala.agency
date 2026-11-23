@@ -1,0 +1,96 @@
+---
+/**
+ * Proportional summary bar of the link report, dev only: dead, unverified and reachable
+ * as three neutral segments (brightest to dimmest, no status colours) with a legend.
+ * A filled inner block inside one grid cell, not a bordered one.
+ */
+import type { LinkReport } from '@/lib/links/report'
+import { statusShares } from '@/lib/links/view'
+
+export interface Props {
+  counts: LinkReport['counts']
+}
+
+const { counts } = Astro.props
+const shares = statusShares(counts)
+const segments = [
+  { key: 'dead', label: 'martwe', count: counts.dead, share: shares.dead },
+  { key: 'unverified', label: 'niezweryfikowane', count: counts.unverified, share: shares.unverified },
+  { key: 'ok', label: 'osiągalne', count: counts.ok, share: shares.ok },
+] as const
+---
+
+<div class="summary-bar">
+  <div class="summary-bar__track" role="img" aria-label={segments.map((s) => `${s.label}: ${s.count}`).join(', ')}>
+    {
+      segments.map((segment) => (
+        <span
+          class={`summary-bar__segment summary-bar__segment--${segment.key}`}
+          style={`flex-grow: ${segment.share}`}
+        />
+      ))
+    }
+  </div>
+  <ul class="summary-bar__legend">
+    {
+      segments.map((segment) => (
+        <li>
+          <span class={`summary-bar__swatch summary-bar__segment--${segment.key}`} aria-hidden="true" />
+          {segment.label}: {segment.count} ({segment.share}%)
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style lang="scss">
+  .summary-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .summary-bar__track {
+    display: flex;
+    gap: 2px;
+    height: 0.5rem;
+  }
+
+  .summary-bar__segment {
+    flex-basis: 0;
+    min-width: 0;
+  }
+
+  .summary-bar__segment--dead {
+    background-color: var(--color-text);
+  }
+
+  .summary-bar__segment--unverified {
+    background-color: var(--color-text-muted);
+  }
+
+  .summary-bar__segment--ok {
+    background-color: var(--color-line-strong);
+  }
+
+  .summary-bar__legend {
+    @apply text-sm text-fg-secondary;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .summary-bar__legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .summary-bar__swatch {
+    width: 0.75rem;
+    height: 0.5rem;
+  }
+</style>

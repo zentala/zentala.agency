@@ -1,0 +1,117 @@
+---
+/**
+ * Dead links grouped by the page that holds them, dev only. Each page is one cell of the
+ * grid: the page path (a real link to the dev site), then each dead link with its result and
+ * the place it is written in source (file:line), found by src/lib/links/source-map.ts.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import { outcomeLabel } from '@/lib/links/report'
+import type { SourceLocation } from '@/lib/links/source-map'
+import type { PageGroup } from '@/lib/links/view'
+
+export interface Props {
+  groups: PageGroup[]
+  locations: Record<string, SourceLocation[]>
+}
+
+const { groups, locations } = Astro.props
+const deadTotal = groups.reduce((sum, group) => sum + group.links.length, 0)
+---
+
+<Section id="dead">
+  <SectionHeader
+    headline={`Martwe linki według strony (${deadTotal})`}
+    subhead="Nie znaleziono, zniknęły albo odmawiają połączenia po dwóch próbach. W buildzie z LINK_CHECK=1 są wyłączone."
+  />
+  <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
+    {
+      groups.length === 0 ? (
+        <div class="content-grid__text">
+          <p class="text-fg-muted">Brak martwych linków.</p>
+        </div>
+      ) : (
+        groups.map((group) => (
+          <div class="page-group">
+            <p class="page-group__head">
+              <a href={group.page} class="page-group__page">
+                {group.page}
+              </a>
+              <span class="page-group__count">{group.links.length}</span>
+            </p>
+            <ul class="page-group__links">
+              {group.links.map((link) => (
+                <li>
+                  <p class="page-group__url">{link.url}</p>
+                  <p class="page-group__meta">
+                    <span>{outcomeLabel(link)}</span>
+                    {(locations[link.url] ?? []).length === 0 ? (
+                      <span>brak w src/ (link generowany albo z przekierowania)</span>
+                    ) : (
+                      locations[link.url].map((place) => (
+                        <code>
+                          {place.file}:{place.line}
+                        </code>
+                      ))
+                    )}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      )
+    }
+  </div>
+</Section>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .page-group {
+    @include px-responsive('md');
+    @include py-responsive('sm');
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .page-group__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .page-group__page {
+    @apply text-lg text-fg transition-colors duration-fast ease-standard hover:text-fg-secondary;
+  }
+
+  .page-group__count {
+    @apply text-sm text-fg-muted;
+  }
+
+  .page-group__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-group__url {
+    @apply text-fg;
+    overflow-wrap: anywhere;
+  }
+
+  .page-group__meta {
+    @apply text-sm text-fg-secondary;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+
+    code {
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
