@@ -81,7 +81,7 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                 </li>
               )}
               <li
-                class={isHidden ? 'hidden' : undefined}
+                class:list={['[container-type:inline-size]', { hidden: isHidden }]}
                 data-series-part
                 data-series-middle={isHidden ? '' : undefined}
               >

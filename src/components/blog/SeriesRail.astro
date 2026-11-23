@@ -31,7 +31,7 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
     {seriesTitle}
   </a>
   <p class="mt-1 text-sm text-fg-muted">{currentLabel}</p>
-  <ol class="mt-4 flex flex-col gap-2 p-0">
+  <ol class="mt-4 flex flex-col gap-2 p-0 [container-type:inline-size]">
     {
       nearby.map((post) => (
         <li class="relative list-none text-sm leading-snug">

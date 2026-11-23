@@ -75,7 +75,7 @@ const rows = series.parts.slice(0, limit).map((part, index) => {
             )}
             <span class="series-row__title">
               {row.title}
-              {variant === 'date' && row.isDraft && (
+              {row.isDraft && (
                 <DraftBadge placement="state" review={row.isReview} />
               )}
             </span>
