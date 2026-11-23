@@ -39,6 +39,20 @@ describe('validateAnswers', () => {
     })
   })
 
+  it('accepts a note-only answer with null or omitted choice', () => {
+    const expected = { ok: true, answers: [{ id: 'T-1', choice: null, note: 'najpierw pytanie' }] }
+    expect(validateAnswers({ answers: [{ id: 'T-1', choice: null, note: 'najpierw pytanie' }] }, items)).toEqual(expected)
+    expect(validateAnswers({ answers: [{ id: 'T-1', note: 'najpierw pytanie' }] }, items)).toEqual(expected)
+  })
+
+  it('rejects an empty answer, a blank note without choice, and a non-string choice', () => {
+    expect(validateAnswers({ answers: [{ id: 'T-1', choice: null }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'T-1' }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'T-1', choice: null, note: '  ' }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'T-1', choice: 1, note: 'x' }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'NOPE', note: 'x' }] }, items)).toMatchObject({ ok: false })
+  })
+
   it('rejects an unknown id, a letter the item does not have and a long note', () => {
     expect(validateAnswers({ answers: [{ id: 'NOPE', choice: 'A' }] }, items)).toMatchObject({ ok: false })
     expect(validateAnswers({ answers: [{ id: 'T-1', choice: 'C' }] }, items)).toMatchObject({ ok: false })
@@ -77,6 +91,12 @@ describe('answers store', () => {
     const plan = freshPlan()
     expect(appendAnswers(plan, [])).toBe(0)
     expect(readdirSync(plan)).toEqual(['DECIDE.md'])
+  })
+
+  it('stores and reads back a note-only answer with choice null', () => {
+    const plan = freshPlan()
+    appendAnswers(plan, [{ id: 'T-1', choice: null, note: 'hmm' }])
+    expect(readAnswers(plan)).toMatchObject([{ id: 'T-1', choice: null, note: 'hmm' }])
   })
 
   it('reads none when the answers folder is missing', () => {
@@ -167,6 +187,14 @@ describe('POST handler on a real server', () => {
     expect((await post('{nope')).status).toBe(400)
     const big = JSON.stringify({ answers: [{ id: 'T-1', choice: 'A', note: 'x'.repeat(MAX_BODY_BYTES) }] })
     expect((await post(big)).status).toBe(413)
+  })
+
+  it('saves a note-only answer and rejects an empty one with 400', async () => {
+    mkdirSync(plan, { recursive: true }) // afterEach removed the shared plan folder
+    writeFileSync(join(plan, 'DECIDE.md'), DECIDE, 'utf8')
+    expect((await post(JSON.stringify({ answers: [{ id: 'T-2', note: 'tylko notatka' }] }))).json).toEqual({ ok: true, saved: 1 })
+    expect(readAnswers(plan).find((a) => a.id === 'T-2')).toMatchObject({ choice: null, note: 'tylko notatka' })
+    expect((await post(JSON.stringify({ answers: [{ id: 'T-2', choice: null, note: '' }] }))).status).toBe(400)
   })
 
   it('accepts an empty answers array and saves nothing', async () => {

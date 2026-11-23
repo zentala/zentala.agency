@@ -67,5 +67,6 @@ describe('formatAnswerLine', () => {
   it('writes id, choice and a flattened note', () => {
     expect(formatAnswerLine('E008-1', 'A', '')).toBe('E008-1: A')
     expect(formatAnswerLine('E008-1', 'A', ' zmień\nkolory  ')).toBe('E008-1: A — zmień kolory')
+    expect(formatAnswerLine('E008-1', null, 'tylko\nnotatka')).toBe('E008-1: — tylko notatka')
   })
 })

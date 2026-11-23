@@ -12,7 +12,8 @@ export const MAX_NOTE_LENGTH = 2000
 
 export interface AnswerInput {
   id: string
-  choice: string
+  /** Letter of an option, or null for a note-only answer. */
+  choice: string | null
   note?: string
 }
 
@@ -27,7 +28,7 @@ export type Validation = { ok: true; answers: CheckedAnswer[] } | { ok: false; e
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
-/** Checks a parsed request body against the current items: known id, a letter of that item, short note. */
+/** Checks a parsed request body against the current items: known id, a letter of that item or a note instead, short note. */
 export function validateAnswers(body: unknown, items: DecideItem[]): Validation {
   if (!isRecord(body) || !Array.isArray(body.answers)) {
     return { ok: false, error: 'body must be { answers: [...] }' }
@@ -35,13 +36,14 @@ export function validateAnswers(body: unknown, items: DecideItem[]): Validation 
   const byId = new Map(items.map((item) => [item.id, item]))
   const answers: CheckedAnswer[] = []
   for (const entry of body.answers) {
-    if (!isRecord(entry) || typeof entry.id !== 'string' || typeof entry.choice !== 'string') {
-      return { ok: false, error: 'each answer needs a string id and choice' }
+    const choice = isRecord(entry) ? (entry.choice ?? null) : null
+    if (!isRecord(entry) || typeof entry.id !== 'string' || (choice !== null && typeof choice !== 'string')) {
+      return { ok: false, error: 'each answer needs a string id and a string or null choice' }
     }
     const item = byId.get(entry.id)
     if (!item) return { ok: false, error: `unknown id ${entry.id}` }
-    if (!item.options.some((option) => option.letter === entry.choice)) {
-      return { ok: false, error: `${entry.id} has no option ${entry.choice}` }
+    if (choice !== null && !item.options.some((option) => option.letter === choice)) {
+      return { ok: false, error: `${entry.id} has no option ${choice}` }
     }
     const note = entry.note === undefined ? '' : entry.note
     if (typeof note !== 'string' || note.length > MAX_NOTE_LENGTH) {
@@ -50,7 +52,10 @@ export function validateAnswers(body: unknown, items: DecideItem[]): Validation 
         error: `note of ${entry.id} is not a string of at most ${MAX_NOTE_LENGTH} characters`,
       }
     }
-    answers.push({ id: entry.id, choice: entry.choice, note })
+    if (choice === null && note.trim() === '') {
+      return { ok: false, error: `${entry.id} has neither a choice nor a note` }
+    }
+    answers.push({ id: entry.id, choice, note })
   }
   return { ok: true, answers }
 }

@@ -7,6 +7,7 @@
  * The page script (DecisionBoard) reads `data-decision-id`, `data-saved-*` and the inputs.
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { NOTE_ONLY_LABEL } from '@/lib/admin/answer-text'
 import type { SavedAnswer } from '@/lib/admin/answers'
 import type { DecideItem } from '@/lib/admin/decide'
 
@@ -105,7 +106,7 @@ const savedAt = saved
   </dl>
 
   <p class="decision__status" data-status aria-live="polite">
-    {saved ? `odpowiedź: ${saved.choice}, ${savedAt}` : ''}
+    {saved ? `odpowiedź: ${saved.choice ?? NOTE_ONLY_LABEL}, ${savedAt}` : ''}
   </p>
 </div>
 

@@ -141,14 +141,14 @@ const fileDate = decide.modifiedAt
 </Layout>
 
 <script>
-  import { formatAnswerLine } from '@/lib/admin/answer-text'
+  import { formatAnswerLine, NOTE_ONLY_LABEL } from '@/lib/admin/answer-text'
 
   const ENDPOINT = '/__admin/answers'
 
   interface Entry {
     card: HTMLElement
     id: string
-    choice: string
+    choice: string | null
     note: string
   }
 
@@ -162,17 +162,18 @@ const fileDate = decide.modifiedAt
       const id = card.dataset.decisionId ?? ''
       const choice = card.querySelector<HTMLInputElement>('input[type="radio"]:checked')?.value
       const note = document.querySelector<HTMLTextAreaElement>(`textarea[name="note-${id}"]`)?.value ?? ''
-      return choice ? [{ card, id, choice, note: note.trim() }] : []
+      const trimmed = note.trim()
+      return choice || trimmed ? [{ card, id, choice: choice ?? null, note: trimmed }] : []
     })
 
   const isChanged = ({ card, choice, note }: Entry) =>
-    choice !== card.dataset.savedChoice || note !== (card.dataset.savedNote ?? '')
+    (choice ?? '') !== (card.dataset.savedChoice ?? '') || note !== (card.dataset.savedNote ?? '')
 
   const clock = () => new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
 
   async function save() {
     const changed = entries().filter(isChanged)
-    if (changed.length === 0) return say('Nic nowego do zapisania: wybierz opcję albo zmień notatkę.')
+    if (changed.length === 0) return say('Nic nowego do zapisania: wybierz opcję albo wpisz notatkę.')
     say('Zapisuję…')
     try {
       const response = await fetch(ENDPOINT, {
@@ -184,12 +185,12 @@ const fileDate = decide.modifiedAt
       if (!response.ok || !result.ok) return say(`Nie zapisano: ${result.error ?? response.status}`)
       const time = clock()
       for (const { card, choice, note } of changed) {
-        card.dataset.savedChoice = choice
+        card.dataset.savedChoice = choice ?? ''
         card.dataset.savedNote = note
         const mark = card.querySelector('[data-status]')
-        if (mark) mark.textContent = `wysłano: ${choice}, ${time}`
+        if (mark) mark.textContent = `wysłano: ${choice ?? NOTE_ONLY_LABEL}, ${time}`
       }
-      say(`Zapisano ${result.saved}: ${changed.map(({ id, choice }) => `${id} ${choice}`).join(', ')}`)
+      say(`Zapisano ${result.saved}: ${changed.map(({ id, choice }) => `${id} ${choice ?? NOTE_ONLY_LABEL}`).join(', ')}`)
     } catch {
       say('Nie zapisano: serwer deweloperski nie odpowiada.')
     }
@@ -198,19 +199,29 @@ const fileDate = decide.modifiedAt
   const fallback = document.querySelector<HTMLElement>('[data-copy-fallback]')
   const fallbackText = document.querySelector<HTMLTextAreaElement>('[data-copy-text]')
 
-  /** execCommand copy from an off-screen textarea: works on plain http, where navigator.clipboard is undefined. */
+  /**
+   * execCommand copy from an off-screen textarea: works on plain http, where navigator.clipboard
+   * is undefined. True only when the command returned true and a copy event actually fired.
+   */
   function copyWithSelection(text: string): boolean {
     const area = document.createElement('textarea')
     area.value = text
     area.setAttribute('readonly', '')
     area.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0'
     document.body.append(area)
-    area.select()
+    area.focus()
+    area.setSelectionRange(0, text.length)
+    let copyEventFired = false
+    const onCopy = () => {
+      copyEventFired = true
+    }
+    document.addEventListener('copy', onCopy, { once: true })
     try {
-      return document.execCommand('copy')
+      return document.execCommand('copy') && copyEventFired
     } catch {
       return false
     } finally {
+      document.removeEventListener('copy', onCopy)
       area.remove()
     }
   }
@@ -227,11 +238,11 @@ const fileDate = decide.modifiedAt
 
   async function copy() {
     const all = entries()
-    if (all.length === 0) return say('Nic do skopiowania: wybierz opcję.')
+    if (all.length === 0) return say('Nic do skopiowania: wybierz opcję albo wpisz notatkę.')
     const text = all.map(({ id, choice, note }) => formatAnswerLine(id, choice, note)).join('\n')
     if (fallback) fallback.hidden = true
     let copied = false
-    if (navigator.clipboard) {
+    if (window.isSecureContext && navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(text)
         copied = true
@@ -290,6 +301,7 @@ const fileDate = decide.modifiedAt
 
   .admin-board {
     --admin-bar-height: 5rem;
+    --chat-bubble-reserve: 6.75rem;
   }
 
   .admin-bar-wrap {
@@ -311,6 +323,13 @@ const fileDate = decide.modifiedAt
     @include mobile {
       padding-left: 7rem;
     }
+  }
+
+  /* The site chat bubble (hub widget.js) is a fixed 100x100 px frame at the bottom-right
+     corner, above this bar at every width: keep the buttons out of it. Doubled class so the
+     responsive padding mixin's media rules do not win. */
+  .admin-bar.admin-bar {
+    padding-right: var(--chat-bubble-reserve);
   }
 
   .admin-bar__buttons {
