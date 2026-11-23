@@ -3,9 +3,12 @@
  * Dev-only variant switcher: a small fixed panel that sets `data-v-<axis>` attributes
  * on `<html>` and keeps the choice in localStorage, so the owner can compare looks of
  * shared components on real pages. Layout imports it only under DEV; nothing here
- * reaches a production build. Axes: `axes.ts`.
+ * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans, Noto Sans
+ * and Source Sans 3 through BoardFonts, whose files are imported under DEV only; Selawik
+ * is a local font name and says so when this computer lacks it.
  */
 import './dev-variants.scss'
+import BoardFonts from '@/components/design-board/typography/BoardFonts.astro'
 import { VARIANT_AXES, VARIANT_STORAGE_KEY, variantAttribute } from './axes'
 
 const axes = VARIANT_AXES.map((item) => ({
@@ -15,6 +18,7 @@ const axes = VARIANT_AXES.map((item) => ({
 const storageKey = VARIANT_STORAGE_KEY
 ---
 
+<BoardFonts />
 <details class="vsw" data-vsw>
   <summary class="vsw__toggle">
     Warianty<span data-vsw-count></span>
@@ -51,6 +55,25 @@ const storageKey = VARIANT_STORAGE_KEY
     } catch {
       return {}
     }
+  }
+
+  /* A missing local family renders as the fallback, so compare widths against two generics. */
+  const SELAWIK_MISSING_LABEL = 'Selawik (brak na tym komputerze)'
+  const isInstalled = (family) => {
+    const context = document.createElement('canvas').getContext('2d')
+    const sample = 'mwiIl10@Żółć'
+    const width = (font) => {
+      context.font = `72px ${font}`
+      return context.measureText(sample).width
+    }
+    return ['monospace', 'serif'].some((generic) => width(`'${family}', ${generic}`) !== width(generic))
+  }
+
+  const labelSelawik = () => {
+    const button = panel.querySelector('[data-vsw-axis="font"] [data-value="selawik"]')
+    if (!button) return
+    button.dataset.label ??= button.textContent.trim()
+    button.textContent = isInstalled('Selawik') ? button.dataset.label : SELAWIK_MISSING_LABEL
   }
 
   const apply = (state) => {
@@ -93,6 +116,7 @@ const storageKey = VARIANT_STORAGE_KEY
     root.toggleAttribute('data-scrolled', window.scrollY > SCROLLED_AFTER_PX)
   window.addEventListener('scroll', syncScrolled, { passive: true })
 
+  labelSelawik()
   apply(read())
   syncScrolled()
 </script>
