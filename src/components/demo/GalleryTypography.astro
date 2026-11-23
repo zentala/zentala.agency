@@ -6,10 +6,16 @@
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import { VARIANT_AXES } from '@/components/dev/variant-switcher/axes'
 
 const SAMPLE_HEADING = 'Agents need a harness, not a bigger prompt'
 const SAMPLE_BODY =
   'The machinery around coding agents is what keeps parallel work from overwriting itself: a registry, a lease on the checkout and a knowledge base they can all read.'
+
+const fontAxis = VARIANT_AXES.find((axis) => axis.id === 'font')
+const FONT_NAMES = Object.fromEntries(
+  (fontAxis?.options ?? []).map((option) => [option.value, option.label]),
+)
 
 const STACK = ['Segoe UI', 'Selawik (local name only)', 'system-ui', 'sans-serif']
 const WEIGHTS = [
@@ -48,17 +54,11 @@ const WEIGHTS = [
   </div>
 </Section>
 
-<script is:inline>
+<script is:inline define:vars={{ FONT_NAMES }}>
   const gallery = document.querySelector('[data-typography-gallery]')
-  const FONT_NAMES = {
-    selawik: 'Selawik',
-    'open-sans': 'Open Sans',
-    'noto-sans': 'Noto Sans',
-    'source-sans': 'Source Sans 3',
-  }
   const sync = () => {
     const chosen = document.documentElement.getAttribute('data-v-font')
-    gallery.querySelector('[data-typography-active]').textContent = FONT_NAMES[chosen] ?? 'Segoe UI'
+    gallery.querySelector('[data-typography-active]').textContent = FONT_NAMES[chosen ?? 'default']
     gallery.querySelector('[data-typography-note]').textContent = chosen
       ? 'Chosen in the Warianty switcher, for comparison only.'
       : 'The production font.'

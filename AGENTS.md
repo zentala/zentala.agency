@@ -51,7 +51,7 @@ just test       # unit tests        just typecheck
 - `networkidle` never settles on the dev server: use `waitUntil: 'load'` plus a 3 s wait, and retry when the dev server hot-reloads ("Execution context was destroyed").
 - Screenshot pages taller than about 16k px in chunks: a single capture shows black rectangles and false floating-line findings.
 - A bordered chip inside a grid cell draws a dangling line: chip rows go outside the grid as borderless filled chips (DESIGN.md).
-- No webfont is loaded on real pages: tailwind names Inter first, but nobody ships it, so everyone sees the system font (Segoe UI on Windows), weight 200 cannot render and Segoe UI has no 500. The owner chose the system font on 2026-11-23 (DESIGN.md section 2); `tailwind.config.js` still names Inter until T30.
+- No webfont is loaded on real pages: the stack is `--font-sans` (Segoe UI, Selawik by local name only, then system fallbacks; `src/styles/tokens.scss`), and `tailwind.config.js` `sans` reads it. Inter is gone. Weight 200 cannot render and Segoe UI has no 500, so Tailwind `font-medium` is 600. The owner chose the system font on 2026-11-23 (DESIGN.md section 2). The dev font axis of the Warianty switcher loads the comparison fonts only in `astro dev`.
 - `astro preview` listens on `[::1]` only: use `http://localhost:<port>` (or `--host 127.0.0.1`), not `127.0.0.1`. The dev server on 4300 does answer on `127.0.0.1`.
 - Unstyled text in a grid cell can be near black on black: give headings `text-fg`, or use `.content-grid__text` and `prose` (DESIGN.md section 4).
 
