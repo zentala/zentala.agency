@@ -28,6 +28,9 @@
   --color-danger: #f87171;
   --icon-bg-max-opacity: 0.12;
 
+  // Font: Segoe UI, then Selawik by local name only (no webfont), then platform fonts.
+  --font-sans: 'Segoe UI', Selawik, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
   // Type scale
   --text-label: 0.6875rem;
   --text-sm: 0.875rem;

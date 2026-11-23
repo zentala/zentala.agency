@@ -111,3 +111,12 @@ html[data-v-first-view='full'] main > section:first-child {
     min-height: calc(100svh - #{$header-top});
   }
 }
+
+/* Font axis: the family goes first; the rest of the production stack stays behind it. */
+$font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
+
+@each $value, $family in ('selawik': 'Selawik', 'open-sans': 'Board Open Sans', 'noto-sans': 'Board Noto Sans', 'source-sans': 'Board Source Sans') {
+  html[data-v-font='#{$value}'] {
+    --font-sans: '#{$family}', #{$font-stack-tail};
+  }
+}

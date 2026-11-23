@@ -1,4 +1,3 @@
-import defaultTheme from 'tailwindcss/defaultTheme'
 import typography from '@tailwindcss/typography'
 import animate from 'tailwindcss-animate'
 
@@ -14,7 +13,11 @@ export default {
         lg: '1001px',
       },
       fontFamily: {
-        sans: ['InterVariable', 'Inter', ...defaultTheme.fontFamily.sans],
+        sans: ['var(--font-sans)'],
+      },
+      // Segoe UI has no 500 and Chromium draws it as 600, so the site asks for 600 outright.
+      fontWeight: {
+        medium: '600',
       },
       maxWidth: {
         '8xl': '88rem',
