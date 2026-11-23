@@ -15,8 +15,8 @@ import LinkedInPostCard from '@/components/preview/LinkedInPostCard.astro'
 const AVATAR = 'https://cdn.zentala.agency/images/avatar.jpg'
 const PROJECT_IMAGE = '/images/portfolio/zentala-eu.png'
 const ctas = [
-  { href: '/contact', text: 'Get started', variant: 'primary' },
-  { href: '/portfolio', text: 'View portfolio', variant: 'secondary' },
+  { href: '/contact', text: 'Get started', tier: 'cta' },
+  { href: '/portfolio', text: 'View portfolio', tier: 'secondary' },
 ] as const
 const columns = [
   {
@@ -43,7 +43,7 @@ const engagementCards = [
     bestFor: 'A defined build with a clear end.',
     whatYouGet: ['Scoped delivery', 'Handover and docs'],
     format: 'Fixed scope',
-    link: { href: '/contact', text: 'Ask about it', variant: 'secondary' },
+    link: { href: '/contact', text: 'Ask about it', tier: 'secondary' },
   },
 ] as const
 const LINKEDIN_TEXT =

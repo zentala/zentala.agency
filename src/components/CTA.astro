@@ -11,7 +11,7 @@
  * <CTA
  *   headline="Let's Build Together"
  *   subhead="Start with a discovery call"
- *   buttons={[{ href: '/contact', text: 'Get Started', variant: 'primary' }]}
+ *   buttons={[{ href: '/contact', text: 'Get Started', tier: 'cta' }]}
  *   footerItems={[
  *     { icon: 'location', text: 'Warsaw, Poland' },
  *     { text: 'Working worldwide' }
@@ -26,7 +26,7 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 export type CTAButton = {
   href: string
   text: string
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost'
+  tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   target?: string
   icon?: string
 }
@@ -64,7 +64,7 @@ const {
         <Button
           href={btn.href}
           text={btn.text}
-          variant={btn.variant ?? 'primary'}
+          tier={btn.tier ?? 'primary'}
           target={btn.target}
           icon={btn.icon}
         />

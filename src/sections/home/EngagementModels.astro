@@ -17,7 +17,7 @@ type EngagementCard = {
 type CTAButton = {
   href: string
   text: string
-  variant?: 'primary' | 'secondary' | 'accent'
+  tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   target?: string
   icon?: string
 }
@@ -61,7 +61,7 @@ const { headline, subhead, cards, note, cta } = Astro.props
             <Button
               href={card.link.href}
               text={card.link.text}
-              variant={card.link.variant ?? 'secondary'}
+              tier={card.link.tier ?? 'secondary'}
               target={card.link.target}
               icon={card.link.icon}
             />
@@ -84,7 +84,7 @@ const { headline, subhead, cards, note, cta } = Astro.props
       <Button
         href={cta.href}
         text={cta.text}
-        variant={cta.variant ?? 'primary'}
+        tier={cta.tier ?? 'primary'}
         target={cta.target}
         icon={cta.icon}
       />
