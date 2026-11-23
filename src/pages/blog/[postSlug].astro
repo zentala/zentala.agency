@@ -9,7 +9,7 @@ import SeriesRail from '../../components/blog/SeriesRail.astro'
 import ShareButtons from '../../components/blog/ShareButtons.astro'
 import SiteIcon from '../../components/primitives/SiteIcon.astro'
 import DraftBadge from '../../components/primitives/DraftBadge.astro'
-import { SHOW_AUTHOR } from '@/config/blog'
+import { SHOW_AUTHOR, SHOW_SHARE_BUTTONS } from '@/config/blog'
 import { partLabel } from '@/lib/blog/part-label'
 import { getVisiblePosts } from '@/lib/blog/visibility'
 
@@ -186,7 +186,9 @@ const summaryClass =
               class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-fg-muted xl:hidden"
             >
               <span>{readingMinutes} min read</span>
-              <ShareButtons postUrl={postUrl} title={post.data.title} />
+              {SHOW_SHARE_BUTTONS && (
+                <ShareButtons postUrl={postUrl} title={post.data.title} />
+              )}
             </div>
 
             {
@@ -239,10 +241,14 @@ const summaryClass =
               )
             }
 
-            <div class="mt-10">
-              <p class="mb-3 text-label uppercase text-fg-subtle">Share</p>
-              <ShareButtons postUrl={postUrl} title={post.data.title} />
-            </div>
+            {
+              SHOW_SHARE_BUTTONS && (
+                <div class="mt-10">
+                  <p class="mb-3 text-label uppercase text-fg-subtle">Share</p>
+                  <ShareButtons postUrl={postUrl} title={post.data.title} />
+                </div>
+              )
+            }
           </div>
         </aside>
 
