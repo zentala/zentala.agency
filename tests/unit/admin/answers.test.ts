@@ -1,5 +1,6 @@
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
-import { request, createServer, type Server } from 'node:http'
+import { request, createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
+import { PassThrough } from 'node:stream'
 import type { AddressInfo } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -13,12 +14,12 @@ import {
 } from '@/lib/admin/answers'
 import { handleAnswersRequest, MAX_BODY_BYTES } from '@/lib/admin/answers-handler'
 import { parseDecide } from '@/lib/admin/decide'
-import { refusalReason } from '@/lib/admin/request-guard'
 
 const DECIDE = [
   '## G',
   '- [ ] 2026-11-23 · T-1: Pytanie · options: A (recommended) tak → dobrze / B nie',
   '- [ ] 2026-11-23 · T-2: Drugie · options: A raz / B dwa / C trzy',
+  '- [ ] 2026-11-23 · Q-1: Otwarte — co myślisz o X? · blocks: nic',
 ].join('\n')
 const items = parseDecide(DECIDE).items
 
@@ -63,6 +64,16 @@ describe('validateAnswers', () => {
     expect(
       validateAnswers({ answers: [{ id: 'T-1', choice: 'A', note: 'x'.repeat(MAX_NOTE_LENGTH) }] }, items),
     ).toMatchObject({ ok: true })
+  })
+
+  it('question item: a note is ok, an empty note and a letter are rejected', () => {
+    expect(validateAnswers({ answers: [{ id: 'Q-1', choice: null, note: 'moja odpowiedź' }] }, items)).toEqual({
+      ok: true,
+      answers: [{ id: 'Q-1', choice: null, note: 'moja odpowiedź' }],
+    })
+    expect(validateAnswers({ answers: [{ id: 'Q-1', choice: null, note: '  ' }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'Q-1', choice: null }] }, items)).toMatchObject({ ok: false })
+    expect(validateAnswers({ answers: [{ id: 'Q-1', choice: 'A', note: 'x' }] }, items)).toMatchObject({ ok: false })
   })
 
   it('rejects a body of the wrong shape and accepts an empty answers array', () => {
@@ -117,25 +128,6 @@ describe('answers store', () => {
   })
 })
 
-describe('refusalReason', () => {
-  const ok = { remoteAddress: '127.0.0.1', forwardedFor: undefined, origin: undefined }
-  it('allows loopback sockets in all three spellings, with and without a good Origin', () => {
-    for (const remoteAddress of ['127.0.0.1', '::1', '::ffff:127.0.0.1']) {
-      expect(refusalReason({ ...ok, remoteAddress })).toBeNull()
-    }
-    expect(refusalReason({ ...ok, origin: 'http://agency.internal' })).toBeNull()
-    expect(refusalReason({ ...ok, origin: 'http://localhost:4300', forwardedFor: '127.0.0.1, ::1' })).toBeNull()
-  })
-
-  it('refuses a LAN socket, a LAN forwarded entry and a foreign Origin', () => {
-    expect(refusalReason({ ...ok, remoteAddress: '192.168.1.20' })).not.toBeNull()
-    expect(refusalReason({ ...ok, remoteAddress: undefined })).not.toBeNull()
-    expect(refusalReason({ ...ok, forwardedFor: '127.0.0.1, 192.168.1.20' })).not.toBeNull()
-    expect(refusalReason({ ...ok, origin: 'http://evil.example' })).not.toBeNull()
-    expect(refusalReason({ ...ok, origin: 'http://agency.internal.evil.example' })).not.toBeNull()
-  })
-})
-
 describe('POST handler on a real server', () => {
   let server: Server
   let port: number
@@ -170,11 +162,12 @@ describe('POST handler on a real server', () => {
     expect(readAnswers(plan).find((a) => a.id === 'T-1')).toMatchObject({ choice: 'B', note: 'ok' })
   })
 
-  it('refuses a foreign Origin and a non-loopback X-Forwarded-For with 403 and writes nothing', async () => {
-    const before = readAnswers(plan).length
-    expect((await post(one, { origin: 'http://evil.example' })).status).toBe(403)
-    expect((await post(one, { 'x-forwarded-for': '192.168.1.20' })).status).toBe(403)
-    expect(readAnswers(plan).length).toBe(before)
+  it('accepts a foreign Origin and a forwarded LAN address: saving is not restricted', async () => {
+    mkdirSync(plan, { recursive: true }) // afterEach removed the shared plan folder
+    writeFileSync(join(plan, 'DECIDE.md'), DECIDE, 'utf8')
+    const res = await post(one, { origin: 'http://agency.matx.lan:4300', 'x-forwarded-for': '192.168.1.20' })
+    expect(res).toEqual({ status: 200, json: { ok: true, saved: 1 } })
+    expect((await post(one, { origin: 'http://evil.example' })).status).toBe(200)
   })
 
   it('rejects an unknown id and a bad choice with 400', async () => {
@@ -199,5 +192,34 @@ describe('POST handler on a real server', () => {
 
   it('accepts an empty answers array and saves nothing', async () => {
     expect(await post(JSON.stringify({ answers: [] }))).toEqual({ status: 200, json: { ok: true, saved: 0 } })
+  })
+})
+
+describe('POST handler from a non-loopback socket', () => {
+  it('appends the answer (200) when the remote address is a LAN host with a foreign Origin', async () => {
+    const plan = freshPlan()
+    const req = new PassThrough() as unknown as IncomingMessage
+    Object.assign(req, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'http://evil.example' },
+      socket: { remoteAddress: '192.168.1.20' },
+    })
+    let status = 0
+    let text = ''
+    const res = {
+      setHeader() {},
+      end(chunk: string) {
+        text = chunk
+      },
+      set statusCode(value: number) {
+        status = value
+      },
+    } as unknown as ServerResponse
+    const done = handleAnswersRequest(req, res, plan)
+    ;(req as unknown as PassThrough).end(JSON.stringify({ answers: [{ id: 'T-1', choice: 'A' }] }))
+    await done
+    expect(status).toBe(200)
+    expect(JSON.parse(text)).toEqual({ ok: true, saved: 1 })
+    expect(readAnswers(plan)).toMatchObject([{ id: 'T-1', choice: 'A' }])
   })
 })

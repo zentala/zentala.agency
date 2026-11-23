@@ -2,6 +2,13 @@
  * Parser for the owner's decision list (`.plan/DECIDE.md`), pure: text in, items out.
  * Line format (documented in the file header):
  * `- [ ] YYYY-MM-DD · CODE: title — question · options: A (recommended) text → consequence / B text · blocks: … · from: … · link: …`
+ * Two further forms:
+ * - Preview link: an option may end with `[podgląd: <url>]`, e.g.
+ *   `A kształt T → skutek [podgląd: http://agency.internal/mockups/x#a]`. The marker is removed
+ *   from text and consequence and returned as `preview`; an empty URL (`[podgląd: ]`) is dropped
+ *   without an error. Options are split on " / ", so a URL must contain no spaces.
+ * - Question item: a line without an `options:` segment is an open question (`kind: 'question'`,
+ *   no options), answered with a note only. An `options:` segment that cannot be read is still an error.
  */
 
 export interface DecideOption {
@@ -9,6 +16,8 @@ export interface DecideOption {
   recommended: boolean
   text: string
   consequence?: string
+  /** URL from a trailing `[podgląd: …]`, as written. */
+  preview?: string
 }
 
 export interface DecideItem {
@@ -17,6 +26,8 @@ export interface DecideItem {
   date: string
   title: string
   question?: string
+  /** `choice`: pick an option; `question`: no options, answered with a note. */
+  kind: 'choice' | 'question'
   options: DecideOption[]
   blocks?: string
   from?: string
@@ -48,6 +59,7 @@ const DATE = /^\d{4}-\d{2}-\d{2}$/
 const CODE_AND_TITLE = /^([A-Za-z0-9][A-Za-z0-9-]*):\s*(.+)$/
 const KEY_VALUE = /^([A-Za-z]+):\s*(.*)$/
 const OPTION = /^([A-Z])(\s+\(recommended\))?\s+(\S.*)$/
+const PREVIEW_MARKER = /\s*\[podgląd:([^\]]*)\]\s*$/
 const DEFERRED_MARKER = /^\(później\)\s*/i
 const KNOWN_KEYS = ['options', 'blocks', 'from', 'link']
 const SEGMENT_SEPARATOR = ' · '
@@ -62,7 +74,9 @@ function splitOnce(value: string, separator: string): [string, string | undefine
 }
 
 function parseOption(source: string): DecideOption | null {
-  const match = OPTION.exec(source.trim())
+  const previewMatch = PREVIEW_MARKER.exec(source)
+  const preview = previewMatch?.[1].trim()
+  const match = OPTION.exec((previewMatch ? source.slice(0, previewMatch.index) : source).trim())
   if (!match) return null
   const [text, consequence] = splitOnce(match[3], CONSEQUENCE_SEPARATOR)
   return {
@@ -70,6 +84,7 @@ function parseOption(source: string): DecideOption | null {
     recommended: Boolean(match[2]),
     text: text.trim(),
     ...(consequence?.trim() ? { consequence: consequence.trim() } : {}),
+    ...(preview ? { preview } : {}),
   }
 }
 
@@ -93,8 +108,9 @@ function parseItem(body: string, done: boolean, group: string, line: number): De
     if (!pair) return `segment "${segment.slice(0, 40)}" is not "key: value"`
     fields[pair[1].toLowerCase()] = pair[2].trim()
   }
-  const options = fields.options ? parseOptions(fields.options) : null
-  if (!options) return 'missing or unreadable "options:" (each option is "A text → consequence")'
+  const kind = fields.options === undefined ? 'question' : 'choice'
+  const options = fields.options === undefined ? [] : parseOptions(fields.options)
+  if (!options || (kind === 'choice' && options.length === 0)) return 'missing or unreadable "options:" (each option is "A text → consequence")'
   const { blocks, from, link } = fields
   const extra = { ...fields }
   for (const known of KNOWN_KEYS) delete extra[known]
@@ -103,6 +119,7 @@ function parseItem(body: string, done: boolean, group: string, line: number): De
     date,
     title: title.trim(),
     ...(question?.trim() ? { question: question.trim() } : {}),
+    kind,
     options,
     blocks,
     from,

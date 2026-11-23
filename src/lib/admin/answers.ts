@@ -42,6 +42,9 @@ export function validateAnswers(body: unknown, items: DecideItem[]): Validation 
     }
     const item = byId.get(entry.id)
     if (!item) return { ok: false, error: `unknown id ${entry.id}` }
+    if (choice !== null && item.kind === 'question') {
+      return { ok: false, error: `${entry.id} is a question without options` }
+    }
     if (choice !== null && !item.options.some((option) => option.letter === choice)) {
       return { ok: false, error: `${entry.id} has no option ${choice}` }
     }

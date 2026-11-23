@@ -19,6 +19,8 @@ const { item, saved } = Astro.props
 <DecisionCard item={item} saved={saved} />
 <ThemedTextarea
   id={`note-${item.id}`}
-  placeholder={`Notatka do ${item.id} (opcjonalnie)`}
+  placeholder={item.kind === 'question'
+    ? `Twoja odpowiedź na ${item.id} własnymi słowami`
+    : `Notatka do ${item.id} (opcjonalnie)`}
   icon="chat-text"
 />
