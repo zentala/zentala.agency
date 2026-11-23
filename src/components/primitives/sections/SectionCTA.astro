@@ -54,9 +54,9 @@ const rel = external ? 'noopener noreferrer' : undefined
 >
   {bgText && <span class="section-cta__bg-text" aria-hidden="true">{bgText}</span>}
   <span class="section-cta__content">
-    {icon && <SiteIcon name={icon} size="md" class="section-cta__icon" />}
+    {icon && <SiteIcon name={icon} size={18} class="section-cta__icon" />}
     <span class="section-cta__text">{text}</span>
-    {arrow && <SiteIcon name="next" size="sm" class="section-cta__arrow arrow-nudge" />}
+    {arrow && <SiteIcon name="next" size={18} class="section-cta__arrow arrow-nudge" />}
   </span>
 </a>
 

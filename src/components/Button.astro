@@ -45,15 +45,15 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
   {
     hasIcon && !iconRight && (
       <slot name="icon">
-        <SiteIcon name={icon!} size="md" class="button__icon" />
+        <SiteIcon name={icon!} size={18} class="button__icon" />
       </slot>
     )
   }
   <span>{text}</span>
-  {iconRight && <SiteIcon name={icon!} size="md" class="button__icon" />}
+  {iconRight && <SiteIcon name={icon!} size={18} class="button__icon" />}
   {
     arrow && !iconRight && (
-      <SiteIcon name="next" size="sm" class="button__arrow arrow-nudge" />
+      <SiteIcon name="next" size={18} class="button__arrow arrow-nudge" />
     )
   }
 </Tag>
@@ -68,9 +68,6 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
    * row comes from min-height, never from padding or a border.
    */
   .button {
-    --button-icon-size: 1.125rem; /* label 16px + 2px */
-    /* Phosphor Light is drawn 12 units wide on a 256 grid; 12 more give the Bold width. */
-    --button-icon-thicken: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -97,17 +94,6 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
   .button:focus-visible {
     outline: 2px solid var(--color-text);
     outline-offset: 2px;
-  }
-
-  .button :global(.site-icon) {
-    stroke: currentColor;
-    stroke-width: var(--button-icon-thicken);
-    stroke-linejoin: round;
-  }
-
-  .button :global(.button__icon) {
-    width: var(--button-icon-size);
-    height: var(--button-icon-size);
   }
 
   @include button-tiers('.button');
