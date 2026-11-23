@@ -24,11 +24,12 @@ just test       # unit tests        just typecheck
 ## Layout and design (always on)
 
 - Every page is built from the line-grid primitives (`Section`, `SectionHeader`, `SectionGrid`, `.line-grid`, `line-block`), never from ad-hoc borders.
-- Principles (owner rulings of 2026-11-20; full text and the guard for each in [DESIGN.md](DESIGN.md) "Principles"): the site is minimal, readable and subtle.
-  - No orange, amber or yellow, ever. Blue is a small accent only (links, tiny highlights), never a large fill or tint. Hover is neutral.
-  - No bold type in components (weight 500 at most). No underlines on links.
-  - Arrows are one chevron (`<SiteIcon name="caret-right" class="arrow-nudge" />`) that moves on hover. No solid bright buttons.
-  - Icons only through `SiteIcon` (Phosphor Light) and technology logos only through `TechIcon`: never import `astro-icon` or draw an inline icon `<svg>` elsewhere. Forms are line-grid cells. Tags only through `Tag`. Draft and review markers stay delicate and neutral.
+- Principles (owner rulings of 2026-11-20, amended 2026-11-21 and 2026-11-23; the rule, its guard and the decision rows are in [DESIGN.md](DESIGN.md) "Principles" P1 to P11 and section 10): the site is minimal, readable and subtle. Read DESIGN.md for the details; do not copy values into code or docs from here.
+  - Colour: P1 (no warm colour in the site's own UI), P2 (blue is a small accent; the one CTA button per screen is the only blue fill), P3 (hover is the lighter card background).
+  - Type and links: P4 (no bold), P5 (no underlines), the font is the system font (section 2).
+  - Arrows, icons, buttons: P6 (one chevron that moves, `<SiteIcon name="caret-right" class="arrow-nudge" />`), P7 (icons only through `SiteIcon`, weight by size, one icon map; logos only through `TechIcon`; never import `astro-icon` or draw an inline icon `<svg>` elsewhere), buttons through `Button` and its four tiers (section 5).
+  - Forms, tags, markers: P8, P9, P11. Section headers keep four named variants (section 5).
+  - A rule marked "target" in DESIGN.md is decided but not built until E007-T30: the code is the truth until then.
   - Guards: `tests/unit/design-guards.test.ts` (colour, underline, bold), `tests/unit/icon-set.test.ts` (icons), the line guard. The rest is checked by looking at the render.
 - Design source: [DESIGN.md](DESIGN.md) (principles, tokens, the line model in section 3, primitives and props, decisions). How to build with it: the [line-grid-layout skill](.agents/skills/line-grid-layout/SKILL.md).
 - A component never writes `border`, `overflow: hidden`, a fixed `aspect-ratio`, an opaque background, or `margin` / `transform` / `z-index` for layout or hover on a grid cell. Reuse or extend a primitive.
@@ -50,7 +51,7 @@ just test       # unit tests        just typecheck
 - `networkidle` never settles on the dev server: use `waitUntil: 'load'` plus a 3 s wait, and retry when the dev server hot-reloads ("Execution context was destroyed").
 - Screenshot pages taller than about 16k px in chunks: a single capture shows black rectangles and false floating-line findings.
 - A bordered chip inside a grid cell draws a dangling line: chip rows go outside the grid as borderless filled chips (DESIGN.md).
-- No webfont is loaded on real pages: tailwind names Inter first, but nobody ships it, so everyone sees the system font (Segoe UI on Windows) and weight 200 cannot render. Owner decision C5 (Inter) is pending; compare the variants in the Typography section of `/demo`.
+- No webfont is loaded on real pages: tailwind names Inter first, but nobody ships it, so everyone sees the system font (Segoe UI on Windows), weight 200 cannot render and Segoe UI has no 500. The owner chose the system font on 2026-11-23 (DESIGN.md section 2); `tailwind.config.js` still names Inter until T30.
 - `astro preview` listens on `[::1]` only: use `http://localhost:<port>` (or `--host 127.0.0.1`), not `127.0.0.1`. The dev server on 4300 does answer on `127.0.0.1`.
 - Unstyled text in a grid cell can be near black on black: give headings `text-fg`, or use `.content-grid__text` and `prose` (DESIGN.md section 4).
 

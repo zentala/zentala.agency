@@ -112,11 +112,11 @@ A static text cell uses `.content-grid__text` (padding and vertical centring fro
 <SectionCTA href="https://example.com" text="Visit the site" icon="external-link" variant="primary" bgText="Visit" />
 ```
 
-`variant` is `primary`, `secondary`, `accent` or `ghost`; none is a solid fill. `bgText` is normal case (`Visit`, not `VISIT`).
+`variant` is the legacy outlined look (`primary`, `secondary`, `accent`, `ghost`). Target: the four-tier `tier` look replaces it (DESIGN.md section 5, Buttons; built in E007-T30), so copy the call as it is in the file and check DESIGN.md for the current rule. `bgText` is normal case (`Visit`, not `VISIT`).
 
 ## Buttons, arrows, icons, tags
 
-From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). No solid button exists; use `primary` for the main action and `secondary` for the rest:
+From `src/pages/contact.astro` (a `Button` inside a `CardContainer` cell). Today `variant` is outlined; DESIGN.md section 5 (Buttons) decides the four solid tiers that replace it in E007-T30. Use `primary` for the main action and `secondary` for the rest until then:
 
 ```astro
 <Button href="http://cal.com/zentala" text="Book a Call" target="_blank" variant="primary" icon="calendar" />
@@ -165,7 +165,7 @@ const { title, description, icon, href } = Astro.props
 </CardContainer>
 ```
 
-Based on `src/components/cards/OfferCard.astro`. With `href` the cell is an `<a>` and gets the hover and focus overlay; without it the cell is static.
+Based on `src/components/cards/OfferCard.astro`. With `href` the cell is an `<a>` and gets the hover fill (P3) and the focus overlay; without it the cell is static.
 
 What never goes in the card styles: `border`, `overflow: hidden`, fixed `aspect-ratio`, opaque `background`, `margin` or `transform` or `z-index` for hover. Height comes from `min-height`; a tall card uses `grid-row: span N` on the cell.
 
