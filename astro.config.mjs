@@ -5,6 +5,7 @@ import icon from 'astro-icon'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import { adminAnswersIntegration } from './src/integrations/admin-answers'
+import { rehypeParkedLinks } from './src/lib/links/rehype-parked-links'
 import { blogVersionHistoryDevPlugin } from './src/lib/dev/git-history/vitePlugin'
 
 /** True when Astro was invoked as `astro build`, false for `astro dev`/`preview`. */
@@ -90,6 +91,9 @@ export default defineConfig({
     '/offer/backstage': '/about/capabilities/backstage',
     '/blog/index.old': '/blog',
     '/series/information-architecture': '/series/developer-experience',
+  },
+  markdown: {
+    rehypePlugins: [rehypeParkedLinks],
   },
   integrations: [
     tailwind(),

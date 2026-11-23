@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro'
 import Hero from '../../components/Hero.astro'
 import SiteIcon from '../../components/primitives/SiteIcon.astro'
+import { isParkedLink } from '@/lib/links/parked'
+
+const TRAY_REPO_URL = 'https://github.com/zentala/zntl-tray'
 
 const heroProps = {
   title: 'Case Study',
@@ -340,9 +343,13 @@ const heroProps = {
           </li>
           <li>
             <strong>GitHub:</strong>
-            <a href="https://github.com/zentala/zntl-tray"
-              >github.com/zentala/zntl-tray</a
-            >
+            {
+              isParkedLink(TRAY_REPO_URL) ? (
+                'github.com/zentala/zntl-tray'
+              ) : (
+                <a href={TRAY_REPO_URL}>github.com/zentala/zntl-tray</a>
+              )
+            }
           </li>
           <li>
             <strong>Research:</strong> Behavioral interventions for sedentary reduction

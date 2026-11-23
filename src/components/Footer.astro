@@ -3,6 +3,7 @@ import Logo from '../components/Logo.astro'
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { getCollection } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
+import { isParkedLink } from '@/lib/links/parked'
 import '../styles/footer.scss'
 
 const currentYear = new Date().getFullYear()
@@ -133,7 +134,7 @@ const FOOTER_GROUPS: { label: string; links: FooterLink[] }[] = [
             <div class="footer-ia-group">
               <h2 class="footer-heading">{group.label}</h2>
               <ul class="space-y-2">
-                {group.links.map((link) => (
+                {group.links.filter((link) => !isParkedLink(link.href)).map((link) => (
                   <li>
                     <a
                       href={link.href}

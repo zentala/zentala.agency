@@ -1,5 +1,6 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { isParkedLink } from '@/lib/links/parked'
 
 interface Props {
   title: string
@@ -11,18 +12,25 @@ interface Props {
 
 const { title, description, image, link, linkText = 'Learn more' } =
   Astro.props
+// A parked link (src/data/parked-links.ts) renders the card as plain text, without link or CTA.
+const parked = isParkedLink(link)
+const Element = parked ? 'div' : 'a'
 ---
 
-<a href={link} class="project-card">
+<Element href={parked ? undefined : link} class="project-card">
   <div class="project-image">
     <img src={image} alt={title} />
   </div>
   <div class="project-content">
     <h4 class="project-title">{title}</h4>
     <p class="project-description">{description}</p>
-    <span class="project-link">
-      {linkText}
-      <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
-    </span>
+    {
+      !parked && (
+        <span class="project-link">
+          {linkText}
+          <SiteIcon name="caret-right" size="sm" class="arrow-nudge" />
+        </span>
+      )
+    }
   </div>
-</a>
+</Element>
