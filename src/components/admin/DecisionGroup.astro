@@ -1,11 +1,11 @@
 ---
 /**
  * One group of the decision board, dev only: a Section whose line-grid holds, per decision,
- * the decision cell and a note field cell (DecisionCells).
+ * the decision cell (DecisionCard, which holds its own note field).
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
-import DecisionCells from '@/components/admin/DecisionCells.astro'
+import DecisionCard from '@/components/admin/DecisionCard.astro'
 import type { SavedAnswer } from '@/lib/admin/answers'
 import type { DecideItem } from '@/lib/admin/decide'
 
@@ -26,7 +26,7 @@ const { name, items, answers, answered } = Astro.props
   />
   <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
     {
-      items.map((item) => <DecisionCells item={item} saved={answers.get(item.id)} />)
+      items.map((item) => <DecisionCard item={item} saved={answers.get(item.id)} />)
     }
   </div>
 </Section>

@@ -6,7 +6,6 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { appendAnswers, validateAnswers } from './answers'
 import { readDecideFile } from './decide-file'
 import { resolvePlanDir } from './plan-dir'
-import { refusalReason } from './request-guard'
 
 export const ANSWERS_ROUTE = '/__admin/answers'
 export const MAX_BODY_BYTES = 64 * 1024
@@ -39,7 +38,8 @@ function readBody(req: IncomingMessage): Promise<string | null> {
 }
 
 /**
- * Answers a POST: 403 for a request that is not from this machine, 415 for non-JSON,
+ * Answers a POST from any device that reaches the dev server (owner decision INF-5, no origin
+ * check): 405 for another method, 415 for non-JSON,
  * 413 for a body over 64 KB, 400 for invalid answers, otherwise `{ ok, saved }`.
  * @param planDir plan folder; resolved per request when omitted
  */
@@ -49,12 +49,6 @@ export async function handleAnswersRequest(
   planDir?: string,
 ): Promise<void> {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'POST only' })
-  const refusal = refusalReason({
-    remoteAddress: req.socket.remoteAddress,
-    forwardedFor: header(req, 'x-forwarded-for'),
-    origin: header(req, 'origin'),
-  })
-  if (refusal) return send(res, 403, { ok: false, error: refusal })
   if (!header(req, 'content-type')?.toLowerCase().startsWith('application/json')) {
     return send(res, 415, { ok: false, error: 'Content-Type must be application/json' })
   }

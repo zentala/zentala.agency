@@ -4,12 +4,18 @@
  * options as radio cells, followed by a note field cell (rendered by DecisionGroup).
  * Radio semantics: native inputs, arrow keys move the choice. The recommended option is
  * marked, never preselected; a saved answer is preselected and shown with its time.
- * The page script (DecisionBoard) reads `data-decision-id`, `data-saved-*` and the inputs.
+ * The note field is hidden until the owner asks for it ("Dodaj notatkę" / "Odpowiedz" for an
+ * open question), and shown at once when a saved answer has a note; the page script (DecisionBoard)
+ * also opens it for a restored draft. The script reads `data-decision-id`, `data-saved-*`, the
+ * `data-note` / `data-note-toggle` parts and the inputs.
  */
+import Button from '@/components/Button.astro'
+import ThemedTextarea from '@/components/ThemedTextarea.astro'
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { NOTE_ONLY_LABEL } from '@/lib/admin/answer-text'
 import type { SavedAnswer } from '@/lib/admin/answers'
 import type { DecideItem } from '@/lib/admin/decide'
+import { localizeLink } from '@/lib/admin/local-link'
 
 export interface Props {
   item: DecideItem
@@ -18,6 +24,9 @@ export interface Props {
 
 const { item, saved } = Astro.props
 const name = `choice-${item.id}`
+const link = localizeLink(item.link)
+const isQuestion = item.kind === 'question'
+const noteOpen = Boolean(saved?.note)
 const savedAt = saved
   ? new Date(saved.at).toLocaleString('pl-PL', { dateStyle: 'short', timeStyle: 'short' })
   : ''
@@ -37,6 +46,8 @@ const savedAt = saved
     {item.question && <p class="decision__question">{item.question}</p>}
   </div>
 
+  {
+    item.kind === 'choice' && (
   <fieldset class="decision__options">
     <legend class="sr-only">Opcje {item.id}</legend>
     {
@@ -50,14 +61,27 @@ const savedAt = saved
             checked={saved?.choice === option.letter}
           />
           <span class="option__mark" aria-hidden="true">
-            <SiteIcon name="circle" size="md" class="option__off" />
-            <SiteIcon name="check-circle" size="md" class="option__on" />
+            <SiteIcon name="square" size="md" class="option__off" />
+            <span class="option__on">
+              <SiteIcon name="check" size="sm" />
+            </span>
           </span>
           <span class="option__letter">{option.letter}</span>
           <span class="option__body">
             <span class="option__text">{option.text}</span>
             {option.consequence && (
               <span class="option__consequence">Skutek: {option.consequence}</span>
+            )}
+            {option.preview && (
+              <a
+                href={localizeLink(option.preview)}
+                target="_blank"
+                rel="noopener"
+                class="decision__link option__preview"
+              >
+                Podgląd
+                <SiteIcon name="external-link" size="sm" />
+              </a>
             )}
           </span>
           {
@@ -72,6 +96,27 @@ const savedAt = saved
       ))
     }
   </fieldset>
+    )
+  }
+
+  <div class="decision__note" data-note hidden={!noteOpen}>
+    <ThemedTextarea
+      id={`note-${item.id}`}
+      placeholder={isQuestion
+        ? `Twoja odpowiedź na ${item.id} własnymi słowami`
+        : `Notatka do ${item.id} (opcjonalnie)`}
+      icon="chat-text"
+    />
+  </div>
+  <div class="decision__note-toggle" data-note-toggle hidden={noteOpen}>
+    <Button
+      type="button"
+      tier="tertiary"
+      text={isQuestion ? 'Odpowiedz' : 'Dodaj notatkę'}
+      icon="plus"
+      arrow={false}
+    />
+  </div>
 
   <dl class="decision__meta">
     {
@@ -91,12 +136,12 @@ const savedAt = saved
       )
     }
     {
-      item.link && (
+      link && (
         <div>
           <dt>link:</dt>
           <dd>
-            <a href={item.link} target="_blank" rel="noopener noreferrer" class="decision__link">
-              {item.link.replace(/^https?:\/\//, '')}
+            <a href={link} target="_blank" rel="noopener noreferrer" class="decision__link">
+              {link.replace(/^https?:\/\//, '')}
               <SiteIcon name="external-link" size="sm" />
             </a>
           </dd>
@@ -180,8 +225,15 @@ const savedAt = saved
     color: var(--color-text-muted);
   }
 
+  /* Selected: a white filled box with a black check, inset so it keeps the outline box's footprint. */
   .option__on {
     display: none;
+    place-items: center;
+    width: 1rem;
+    height: 1rem;
+    margin: 0.125rem;
+    background-color: var(--color-text);
+    color: var(--color-surface);
   }
 
   .option:has(input:checked) {
@@ -190,8 +242,7 @@ const savedAt = saved
     }
 
     .option__on {
-      display: block;
-      color: var(--color-text);
+      display: grid;
     }
   }
 
@@ -244,6 +295,20 @@ const savedAt = saved
 
   .decision__link {
     @apply inline-flex items-center gap-1 text-fg-secondary transition-colors duration-fast ease-standard hover:text-fg;
+  }
+
+  .decision__note,
+  .decision__note-toggle {
+    min-width: 0;
+  }
+
+  .decision__note-toggle {
+    align-self: flex-start;
+  }
+
+  .option__preview {
+    align-self: flex-start;
+    @apply text-sm;
   }
 
   .decision__status {

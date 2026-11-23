@@ -65,7 +65,7 @@ describe('parseDecide', () => {
 
   it('returns a malformed line raw with a reason, never dropping it', () => {
     const bad = '- [ ] wczoraj · X-3: zła data · options: A tak'
-    const noOptions = '- [ ] 2026-11-23 · X-4: bez opcji · blocks: nic'
+    const noOptions = '- [ ] 2026-11-23 · X-4: złe opcje · options: tak lub nie'
     const { items, errors } = parseDecide(sample(bad, FOUR_OPTIONS, noOptions))
     expect(items).toHaveLength(1)
     expect(errors.map((e) => e.raw)).toEqual([bad, noOptions])
