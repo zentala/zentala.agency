@@ -94,11 +94,12 @@ const hiddenCount = isCollapsed ? parts.length - VISIBLE_EDGE_COUNT * 2 : 0
                     <span class="sr-only">Part </span>
                     {partNumber}
                   </span>
+                  {part.data.published === false && <DraftBadge placement="rule" review={part.data.review} />}
                   <span class="flex min-w-0 flex-1 flex-col gap-y-0.5">
                     <span class="line-clamp-2 text-fg-secondary">
                       {part.data.title}
+                      {part.data.published === false && <DraftBadge placement="state" review={part.data.review} />}
                     </span>
-                    {part.data.published === false && <DraftBadge placement="edge" review={part.data.review} />}
                     {isNewest && (
                       <time
                         datetime={date.datetime}

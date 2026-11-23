@@ -53,12 +53,12 @@ const latestDate = formatDate(latestPart.date)
 
     <div class="pointer-events-none relative mt-auto w-full pt-6">
       <p class="text-label uppercase text-fg-subtle">Latest</p>
-      {latestPart.isDraft && <DraftBadge placement="edge" />}
       <a
         href={`/blog/${latestPart.slug}`}
         class="pointer-events-auto relative z-10 mt-1 line-clamp-2 text-sm text-fg-secondary transition-colors duration-fast ease-standard hover:text-fg"
       >
         {latestPart.title}
+        {latestPart.isDraft && <DraftBadge placement="state" />}
       </a>
       <time
         datetime={latestDate.datetime}

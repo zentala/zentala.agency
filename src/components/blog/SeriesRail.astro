@@ -37,9 +37,13 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
         <li class="relative list-none text-sm leading-snug">
           {post.slug === currentSlug ? (
             <span class="text-fg" aria-current="page">
-              Part {post.data.part}: {post.data.title}
+              Part {post.data.part}:{' '}
               {post.data.published === false && (
-                <DraftBadge placement="edge" review={post.data.review} />
+                <DraftBadge placement="rule" review={post.data.review} />
+              )}
+              {post.data.title}
+              {post.data.published === false && (
+                <DraftBadge placement="state" review={post.data.review} />
               )}
             </span>
           ) : (
@@ -47,9 +51,13 @@ const nearby = posts.slice(Math.max(0, currentIndex - 1), currentIndex + 2)
               href={`/blog/${post.slug}`}
               class="text-fg-muted no-underline hover:text-fg"
             >
-              Part {post.data.part}: {post.data.title}
+              Part {post.data.part}:{' '}
               {post.data.published === false && (
-                <DraftBadge placement="edge" review={post.data.review} />
+                <DraftBadge placement="rule" review={post.data.review} />
+              )}
+              {post.data.title}
+              {post.data.published === false && (
+                <DraftBadge placement="state" review={post.data.review} />
               )}
             </a>
           )}
