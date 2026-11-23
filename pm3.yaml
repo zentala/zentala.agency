@@ -1,6 +1,6 @@
 version: 1
 name: zentala-agency
-description: zentala.agency marketing site (Astro dev server, served from the dev worktree, http://agency.internal)
+description: zentala.agency marketing site (Astro dev server, served from the dev worktree; http://agency.internal on mATX, http://agency.matx.lan:4300 from other computers on the LAN or VPN)
 
 services:
   - name: dev
@@ -13,4 +13,5 @@ services:
     env:
       NODE_ENV: development
       PORT: '4300'
+      DEV_LAN_HOST: agency.matx.lan
       PUBLIC_AGENTATION_REVIEW: '1'

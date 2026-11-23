@@ -126,14 +126,16 @@ export default defineConfig({
       watch: {
         usePolling: true,
       },
-      // The page is reached through an HTTP proxy (PAC -> Caddy :2080) that cannot tunnel
-      // WebSockets, so the HMR client connects to the dev server directly.
+      // agency.internal is reached through an HTTP proxy (PAC -> Caddy :2080) that cannot tunnel
+      // WebSockets, so the HMR client connects to the dev server directly. DEV_LAN_HOST is the
+      // server's LAN name (agency.matx.lan), so HMR also works from other computers on the LAN
+      // or VPN; without it only a browser on the same machine gets HMR.
       hmr: {
         overlay: false,
-        host: 'localhost',
+        host: process.env.DEV_LAN_HOST || 'localhost',
         clientPort: Number(process.env.PORT) || 4300,
       },
-      allowedHosts: ['agency.internal', 'agency.mitx.lan', 'localhost'],
+      allowedHosts: ['agency.internal', 'agency.matx.lan', 'agency.mitx.lan', 'localhost'],
       proxy: isAgentationReview ? agentationProxy : undefined,
     },
     css: {
