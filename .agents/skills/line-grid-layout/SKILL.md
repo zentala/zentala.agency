@@ -5,7 +5,7 @@ description: Build or change pages, sections, cards, grids, banners and CTAs in 
 
 # Line-grid layout
 
-The site is separated by 1px lines that join into one continuous grid. Every line has exactly one owner. It is also minimal, readable and subtle: read [DESIGN.md](../../../DESIGN.md) "Principles" (P1 to P11) before you pick a colour, icon, arrow, tag or button. Reference and numbers: DESIGN.md section 3 (line model) and section 4 (primitives and props). This skill is the procedure; do not copy numbers from here.
+The site is separated by 1px lines that join into one continuous grid. Every line has exactly one owner. It is also minimal, readable and subtle: read [DESIGN.md](../../../DESIGN.md) "Principles" (P1 to P11) before you pick a colour, icon, arrow, tag or button. A rule marked "target" there is decided but built in E007-T30; the code is the truth until then. Reference and numbers: DESIGN.md section 3 (line model) and section 4 (primitives and props). This skill is the procedure; do not copy numbers from here.
 
 ## When to load
 
@@ -28,7 +28,7 @@ Load before you create or change a page, section, card, grid, banner, CTA, form,
 | Building | Use | Where |
 | --- | --- | --- |
 | Page header | `Hero` (own `section-grid`; `h1` title, `h2` subtitle) first; a later `SectionHeader` stays `h2` | `src/components/Hero.astro` |
-| Section header block | `SectionHeader` inside `Section` or `section-full` | `src/components/primitives/sections/SectionHeader.astro` |
+| Section header block | `SectionHeader` inside `Section` or `section-full`; look by `variant` (`a` default, `b`, `c`, `d`: DESIGN.md section 5, SectionHeader) | `src/components/primitives/sections/SectionHeader.astro` |
 | Section with a header and a grid | `Section` (`section-grid` plus `container-bordered`) | `.../sections/Section.astro` |
 | Bare listing (cards, blog) | `<section class="section-full"><div class="container-bordered">` around `.cards-grid` or `.line-grid` | `src/pages/portfolio.astro` |
 | Equal card grid, 2 to 5 columns | `SectionGrid columns={n}` or `.cards-grid` | `.../sections/SectionGrid.astro`, `src/styles/components/_grids.scss` |
@@ -37,13 +37,13 @@ Load before you create or change a page, section, card, grid, banner, CTA, form,
 | Asymmetric bento | `SectionBento` with `BentoCard` spans | `.../sections/SectionBento.astro`, [bento notation](../../../docs/design/bento-notation.md) |
 | Prose or fact list in a cell | `.content-grid__text` (padding, vertical centring) inside `.content-grid`, or `prose prose-blog` text; give headings `text-fg`. `SectionContent` is a transparent prose block (context `full` or `grid`) and is fine to use | `src/styles/components/_grids.scss` |
 | Standalone CTA, quote, banner | `SectionCTA`, `SectionBlockQuote`, `Banner` (all `line-block`) | `.../sections/`, `src/components/banners/` |
-| Button or CTA | `Button` variants `primary`, `secondary`, `accent`, `ghost` (none solid); `CTA` for headline plus buttons; `PostCta` only for copy | `src/components/Button.astro`, `CTA.astro` |
+| Button or CTA | `Button` with `tier` (DESIGN.md section 5, Buttons: at most one `cta` per screen); `variant` is the legacy look; `CTA` for headline plus buttons; `PostCta` only for copy | `src/components/Button.astro`, `CTA.astro` |
 | Arrow | `<SiteIcon name="caret-right" size="sm" class="arrow-nudge" />` inside the link, button or `.group`; never `→` or a shaft icon | `src/styles/motion.scss` |
-| Icon | `SiteIcon name="calendar" size="sm"` (16, 20, 24); a typo throws at build; technology logo: `TechIcon name="astro"` | `src/components/primitives/SiteIcon.astro`, `TechIcon.astro`, `src/lib/siteIcon.ts` |
+| Icon | `SiteIcon` with a meaning name; size and weight rule: DESIGN.md section 5, Icons; a typo throws at build; technology logo: `TechIcon name="astro"`; logo wall: `TechLogoWall` | `src/components/primitives/SiteIcon.astro`, `TechIcon.astro`, `src/lib/siteIcon.ts` |
 | Tag, chip, badge | `Tag` (or `TagGroup`, `TagList`, `Badge`, which wrap it); `tech="Astro"` for a logo | `src/components/primitives/Tag.astro` |
-| Form | `ThemedInput` and `ThemedTextarea` as direct children of a `.line-grid` form, plus a submit cell | `src/components/ContactForm.astro` |
+| Form | `ThemedInput` and `ThemedTextarea` as direct children of a `.line-grid` form, plus a submit cell (anatomy: DESIGN.md section 5, Forms) | `src/components/ContactForm.astro` |
 | Callout in prose | `NoteBox variant="info"`; in a cell, wrap in `data-prose-widget` | `src/components/primitives/NoteBox.astro` |
-| Dev-only marker | `DraftBadge` (neutral dashed or solid thin border) | `src/components/primitives/DraftBadge.astro` |
+| Dev-only marker | `DraftBadge` (neutral dashed or solid thin line: P11) | `src/components/primitives/DraftBadge.astro` |
 | Card | `CardContainer` as the root | `src/components/cards/CardContainer.astro` |
 | Interactive cell | a direct-child `<a>`, or add `cell-interactive` | mixin in `src/styles/variables.scss` |
 | Static cell | a plain child: no hover, no focus | |
@@ -72,7 +72,7 @@ Shortest page: `Layout` > `Hero` > `section-full` > `container-bordered` > `card
 - No seventh border system. A new look or token goes into the DESIGN.md Decisions table first.
 - A component that is a grid cell must not draw a border, `overflow: hidden`, a fixed `aspect-ratio`, an opaque background, or `margin` / `transform` / `z-index` for hover. Clip inside an inner wrapper with `overflow: clip` (see `CardContainer`). Make a tall card with `grid-row: span N`, give height with `min-height`.
 - Tokens only: `text-fg-*`, `border-line`, `bg-surface-*`, `var(--color-*)`. No hex, no `gray-800`, no `-m-px`, no `transition: all`.
-- Restraint (owner rulings, DESIGN.md Principles): no orange, amber or yellow; blue only as a small accent (never a fill, tint or wash); hover is neutral (`bg-surface-hover`); no `font-semibold` or `font-bold` (500 at most); no underline on a link (hover is a brighter colour); icons only through `SiteIcon` and `TechIcon`; no solid bright button. When unsure, make it quieter: the owner found every colour added so far too intense.
+- Restraint (owner rulings, DESIGN.md Principles P1 to P11): no warm colour in the UI; blue only as a small accent (the one `cta` button per screen is the only fill: P2); hover is the lighter card background (P3); no `font-semibold` or `font-bold` (P4); no underline on a link (P5); icons only through `SiteIcon` and `TechIcon` (P7). When unsure, make it quieter: the owner found every colour added so far too intense.
 - Do not mix SCSS and Tailwind breakpoints in one rule. Tailwind `md` is 771 and `lg` is 1001; SCSS has `tablet`, `medium`, `large` mixins.
 
 ## Verify
@@ -91,7 +91,7 @@ Shortest page: `Layout` > `Hero` > `section-full` > `container-bordered` > `card
 - `networkidle` never settles in dev: `load` plus a 3 s wait.
 - Screenshot very tall pages (over ~16k px) in chunks; one capture gives false floating findings.
 - A bordered chip in a grid cell draws a dangling line: chip rows go outside the grid as borderless filled chips (DESIGN.md).
-- No webfont is loaded unless the owner accepts Inter (C5 pending): weight 200 cannot render in the system font.
+- No text webfont is loaded: the owner chose the system font (DESIGN.md section 2). Weight 200 cannot render in it and Segoe UI has no 500.
 
 ## Failure modes seen in this project
 
@@ -110,9 +110,9 @@ Shortest page: `Layout` > `Hero` > `section-full` > `container-bordered` > `card
 | Dashed or boxed element inside a grid | a bordered chip or box inside a cell draws a dangling line | plain content, or a cell of its own; form controls and prose widgets are the documented exceptions |
 | Top edge dim on the first row at scroll top | the fixed header's bottom line covers the overlay's top pixel | known limitation (DESIGN.md Decisions); do not work around it |
 | The page feels loud, cheap or eye-searing | a warm colour, a blue fill or tint, a solid button, a glow | remove it: neutral tokens, blue only on a link, icon or chevron (P1, P2); `design-guards.test.ts` catches warm colours only |
-| Icons look heavy, jagged or uneven | a Lucide or thin-weight icon, an inline `<svg>`, a fractional size, a stroke prop | `SiteIcon` with size 16, 20 or 24 (`icon-set.test.ts` fails the first three) |
+| Icons look heavy, jagged or uneven | a Lucide icon, an inline `<svg>`, a fractional size, a stroke prop, or a weight that does not match the size | `SiteIcon` with a whole-pixel size; the weight follows the size (P7, DESIGN.md section 5 Icons; `icon-set.test.ts` fails the first three) |
 | A link shows an underline, or a title looks bold | `underline` or `hover:underline`, `font-semibold`, a plugin weight 600 | colour change on hover, `font-medium` at most (`design-guards.test.ts` fails these) |
-| A cell hover turns blue | a local `bg-accent` or accent `color-mix` hover | use `cell-interactive`; the wash is `--color-surface-hover`, neutral (P3) |
+| A cell hover turns blue | a local `bg-accent` or accent `color-mix` hover | use `cell-interactive`; the hover is the neutral card fill of P3 |
 | A heading or text in a cell is nearly invisible | unstyled markup is not white by default | `text-fg` on headings, `text-fg-secondary` on body, or `prose prose-blog` |
 | Text sits on the line with no padding | a bare `<div>` in a `.content-grid` | `.content-grid__text` or `padding-responsive-md` |
 | The last cell of a `fill-last` listing mis-spans | children of mixed tags (`<a>` and `<div>`), or custom `--cols-*` | one tag for every child, default columns |
