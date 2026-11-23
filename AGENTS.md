@@ -110,8 +110,6 @@ Development runs on mATX (Windows 11, PowerShell) again since 2026-11-23: mITX b
 4. Use `--no-pager`: `git --no-pager log`, `git --no-pager diff`.
 5. Reference task numbers: `"feat: add hero #001"`.
 
-<!-- CAVEAT(owner): rules 3 and 4 predate the owner's newer global push and merge decisions; kept unchanged until the owner decides which wins for this public repo. -->
-
 ## Planning
 
 At the start of every session read `.plan/STATE.md` (section "Resume here": where the work stopped, what waits for the owner, what to do with each answer) and `.plan/DECIDE.md`. The private part of `.plan/` is not in this public repository: on mATX it lives in the main checkout `C:/Users/zentala/code/zentala.agency/.plan/` (a worktree's own `.plan/` holds only the tracked public files), with a copy in the private Gitea repository `zentala/zentala.agency-plan`. The owner answers open decisions on the dev-only page http://agency.internal/admin/decisions; saved answers land in `.plan/answers/`.

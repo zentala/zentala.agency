@@ -11,7 +11,7 @@ default:
 setup:
     npm ci
 
-# start the dev server under PM3 (http://agency.internal on mITX)
+# start the dev server under PM3 (http://agency.internal)
 dev:
     pm3 start dev
 
