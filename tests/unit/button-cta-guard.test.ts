@@ -22,7 +22,14 @@ function listHtml(dir: string): string[] {
 
 describe('one cta tier button per page (built site)', () => {
   if (!existsSync(DIST_DIR)) {
-    it.skip('dist/ not found: run `npm run build` before this suite', () => {})
+    // `just check` builds first; on CI a missing dist/ must not pass silently.
+    if (process.env.CI) {
+      it('needs dist/ to exist', () => {
+        expect(existsSync(DIST_DIR)).toBe(true)
+      })
+    } else {
+      it.skip('dist/ not found: run `npm run build` before this suite', () => {})
+    }
     return
   }
 

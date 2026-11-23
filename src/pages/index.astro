@@ -317,7 +317,7 @@ const whyWorkWithMe = {
     href: '/portfolio',
     text: 'View Complete Portfolio',
     icon: 'projects',
-    variant: 'secondary',
+    tier: 'secondary',
   },
 } as const
 
@@ -353,7 +353,7 @@ type ServiceConfig = {
     href: string
     text: string
     icon?: string
-    variant?: 'primary' | 'secondary' | 'accent'
+    tier?: 'cta' | 'primary' | 'secondary' | 'tertiary'
   }
   note?: { icon?: string; htmlStrongLabel?: string; text: string }
 }
@@ -418,7 +418,7 @@ const services: ServiceConfig[] = [
       href: CAL_URL,
       text: 'Discuss your IoT project',
       icon: 'message',
-      variant: 'primary',
+      tier: 'primary',
     },
   },
   {
@@ -471,7 +471,7 @@ const services: ServiceConfig[] = [
       href: 'https://devstage.io',
       text: 'Visit DevStage.io',
       icon: 'external-link',
-      variant: 'primary',
+      tier: 'primary',
     },
     note: {
       icon: 'note-info',
@@ -525,7 +525,7 @@ const services: ServiceConfig[] = [
       href: CAL_URL,
       text: 'Discuss rapid prototyping needs',
       icon: 'message',
-      variant: 'primary',
+      tier: 'primary',
     },
   },
 ]

@@ -58,7 +58,9 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
   }
 </Tag>
 
-<style>
+<style lang="scss">
+  @use '../styles/button-tiers' as *;
+
   /*
    * Four tiers. Each tier sets three properties, so a caller (the design board) can pin
    * the hover state by reading --button-fill-hover. No tier has a visible border: the
@@ -107,31 +109,6 @@ const hasIcon = Boolean(icon) || Astro.slots.has('icon')
     width: var(--button-icon-size);
     height: var(--button-icon-size);
   }
-  .button--cta {
-    --button-ink: var(--color-text);
-    --button-fill: var(--color-accent-solid);
-    --button-fill-hover: color-mix(in srgb, var(--color-accent-solid) 86%, var(--color-text));
-  }
 
-  .button--primary {
-    --button-ink: var(--color-surface);
-    --button-fill: var(--color-text);
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 90%, var(--color-surface));
-  }
-
-  .button--secondary {
-    --button-ink: var(--color-text);
-    --button-fill: color-mix(in srgb, var(--color-text) 16%, var(--color-surface));
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 23%, var(--color-surface));
-  }
-
-  .button--tertiary {
-    --button-ink: var(--color-text-secondary);
-    --button-fill: color-mix(in srgb, var(--color-text) 7%, var(--color-surface));
-    --button-fill-hover: color-mix(in srgb, var(--color-text) 12%, var(--color-surface));
-  }
-
-  .button--tertiary:hover {
-    --button-ink: var(--color-text);
-  }
+  @include button-tiers('.button');
 </style>
