@@ -297,6 +297,10 @@ const fileDate = decide.modifiedAt
   /* Room for the sticky bar, so the last note field can scroll clear of it. */
   .admin-content {
     padding-bottom: var(--admin-bar-height);
+
+    @include mobile {
+      padding-bottom: calc(var(--admin-bar-height) + var(--chat-bubble-reserve));
+    }
   }
 
   .admin-board {
@@ -304,13 +308,20 @@ const fileDate = decide.modifiedAt
     --chat-bubble-reserve: 6.75rem;
   }
 
+  /* The site chat bubble (hub widget.js) is a fixed 100x100 px frame in the bottom-right
+     corner and the dev "Warianty" chip sits bottom-left. On narrow screens there is no room
+     between them, so the bar rides above both instead of squeezing between them. */
   .admin-bar-wrap {
     position: sticky;
     bottom: 0;
     z-index: 10;
+
+    @include mobile {
+      bottom: var(--chat-bubble-reserve);
+    }
   }
 
-  /* Buttons sit at the right: the dev "Warianty" chip is fixed at the bottom-left. */
+  /* Buttons sit at the right, clear of the chip on the left. */
   .admin-bar {
     @include px-responsive('md');
     @include py-responsive('sm');
@@ -319,17 +330,14 @@ const fileDate = decide.modifiedAt
     align-items: flex-end;
     gap: 0.5rem;
     background-color: var(--color-surface-raised);
-
-    @include mobile {
-      padding-left: 7rem;
-    }
   }
 
-  /* The site chat bubble (hub widget.js) is a fixed 100x100 px frame at the bottom-right
-     corner, above this bar at every width: keep the buttons out of it. Doubled class so the
-     responsive padding mixin's media rules do not win. */
+  /* From tablet width up the bar sits at the bottom edge, so keep the buttons out of the
+     chat bubble. Doubled class so the responsive padding mixin's media rules do not win. */
   .admin-bar.admin-bar {
-    padding-right: var(--chat-bubble-reserve);
+    @include mobile-up {
+      padding-right: var(--chat-bubble-reserve);
+    }
   }
 
   .admin-bar__buttons {
