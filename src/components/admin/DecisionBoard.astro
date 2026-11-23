@@ -11,6 +11,7 @@ import Hero from '@/components/Hero.astro'
 import Button from '@/components/Button.astro'
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import DecisionCells from '@/components/admin/DecisionCells.astro'
 import DecisionGroup from '@/components/admin/DecisionGroup.astro'
 import { readAnswers } from '@/lib/admin/answers'
 import { buildBoard } from '@/lib/admin/board'
@@ -49,7 +50,8 @@ const fileDate = decide.modifiedAt
         </div>
       </Section>
     ) : (
-      <div>
+      <div class="admin-board">
+        <div class="admin-content">
         <Section id="summary">
           <div class="line-grid line-grid--fill-last">
             <div class="content-grid__text">
@@ -88,12 +90,7 @@ const fileDate = decide.modifiedAt
               <summary class="deferred__summary">Na później ({board.deferred.length})</summary>
               <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
                 {board.deferred.map((item) => (
-                  <div class="content-grid__text">
-                    <p class="label">{item.id}</p>
-                    <p class="text-fg">{item.title}</p>
-                    {item.question && <p class="text-fg-secondary">{item.question}</p>}
-                    {item.blocks && <p class="label">blokuje: {item.blocks}</p>}
-                  </div>
+                  <DecisionCells item={item} saved={answerById.get(item.id)} />
                 ))}
               </div>
             </details>
@@ -117,16 +114,24 @@ const fileDate = decide.modifiedAt
           </Section>
         )}
 
+        </div>
+
         <div class="admin-bar-wrap">
           <div class="container-bordered">
             <div class="admin-bar">
-              <div data-action="save">
-                <Button type="button" text="Zapisz odpowiedzi" variant="primary" icon="floppy-disk" arrow={false} />
-              </div>
-              <div data-action="copy">
-                <Button type="button" text="Kopiuj jako tekst" variant="secondary" icon="copy" arrow={false} />
-              </div>
               <p class="admin-bar__status" data-board-status role="status" aria-live="polite" />
+              <div class="admin-bar__fallback" data-copy-fallback hidden>
+                <p class="admin-bar__hint">Schowek jest zablokowany na tym adresie. Tekst jest zaznaczony: naciśnij Ctrl+C.</p>
+                <textarea class="admin-bar__text" data-copy-text readonly rows="4" aria-label="Odpowiedzi jako tekst"></textarea>
+              </div>
+              <div class="admin-bar__buttons">
+                <div data-action="save">
+                  <Button type="button" text="Zapisz" variant="primary" icon="floppy-disk" arrow={false} />
+                </div>
+                <div data-action="copy">
+                  <Button type="button" text="Kopiuj" variant="secondary" icon="copy" arrow={false} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -190,19 +195,67 @@ const fileDate = decide.modifiedAt
     }
   }
 
+  const fallback = document.querySelector<HTMLElement>('[data-copy-fallback]')
+  const fallbackText = document.querySelector<HTMLTextAreaElement>('[data-copy-text]')
+
+  /** execCommand copy from an off-screen textarea: works on plain http, where navigator.clipboard is undefined. */
+  function copyWithSelection(text: string): boolean {
+    const area = document.createElement('textarea')
+    area.value = text
+    area.setAttribute('readonly', '')
+    area.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0'
+    document.body.append(area)
+    area.select()
+    try {
+      return document.execCommand('copy')
+    } catch {
+      return false
+    } finally {
+      area.remove()
+    }
+  }
+
+  /** Last resort: the text in a visible read-only field, pre-selected for Ctrl+C. */
+  function showManually(text: string) {
+    if (!fallback || !fallbackText) return say('Nie udało się skopiować. Odpowiedzi:\n' + text)
+    fallbackText.value = text
+    fallbackText.rows = Math.min(text.split('\n').length + 1, 10)
+    fallback.hidden = false
+    fallbackText.focus()
+    fallbackText.select()
+  }
+
   async function copy() {
     const all = entries()
     if (all.length === 0) return say('Nic do skopiowania: wybierz opcję.')
     const text = all.map(({ id, choice, note }) => formatAnswerLine(id, choice, note)).join('\n')
-    try {
-      await navigator.clipboard.writeText(text)
-      say(`Skopiowano ${all.length} odpowiedzi.`)
-    } catch {
-      say('Schowek niedostępny na tym adresie. Zaznacz i skopiuj ręcznie.')
+    if (fallback) fallback.hidden = true
+    let copied = false
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(text)
+        copied = true
+      } catch {
+        copied = false
+      }
     }
+    if (!copied) copied = copyWithSelection(text)
+    if (copied) return say(`Skopiowano ${all.length} odpowiedzi.`)
+    say('Schowek niedostępny: skopiuj tekst ręcznie.')
+    showManually(text)
   }
 
-  document.querySelector('[data-action="save"]')?.addEventListener('click', () => void save())
+  /** Marks cards whose choice or note differs from the saved state ("zmieniona"). */
+  function markChanged() {
+    const changed = new Set(entries().filter(isChanged).map(({ id }) => id))
+    document.querySelectorAll<HTMLElement>('[data-decision-id]').forEach((card) => {
+      card.toggleAttribute('data-changed', changed.has(card.dataset.decisionId ?? ''))
+    })
+  }
+
+  document.addEventListener('input', markChanged)
+  document.addEventListener('change', markChanged)
+  document.querySelector('[data-action="save"]')?.addEventListener('click', () => void save().then(markChanged))
   document.querySelector('[data-action="copy"]')?.addEventListener('click', () => void copy())
 </script>
 
@@ -230,25 +283,77 @@ const fileDate = decide.modifiedAt
     cursor: pointer;
   }
 
+  /* Room for the sticky bar, so the last note field can scroll clear of it. */
+  .admin-content {
+    padding-bottom: var(--admin-bar-height);
+  }
+
+  .admin-board {
+    --admin-bar-height: 5rem;
+  }
+
   .admin-bar-wrap {
     position: sticky;
     bottom: 0;
     z-index: 10;
   }
 
+  /* Buttons sit at the right: the dev "Warianty" chip is fixed at the bottom-left. */
   .admin-bar {
     @include px-responsive('md');
     @include py-responsive('sm');
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
     background-color: var(--color-surface-raised);
+
+    @include mobile {
+      padding-left: 7rem;
+    }
+  }
+
+  .admin-bar__buttons {
+    display: flex;
+    gap: 0.5rem;
+
+    @include mobile {
+      :global(.button) {
+        padding-inline: 0.75rem;
+      }
+    }
   }
 
   .admin-bar__status {
     @apply text-sm text-fg-secondary;
-    flex: 1;
-    min-width: 12rem;
+    text-align: right;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .admin-bar__fallback {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .admin-bar__hint {
+    @apply text-sm text-fg-secondary;
+  }
+
+  .admin-bar__text {
+    @apply text-sm text-fg;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-surface);
+    font-family: ui-monospace, monospace;
+    resize: vertical;
   }
 </style>

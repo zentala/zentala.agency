@@ -12,6 +12,7 @@ import { readAnswers } from '@/lib/admin/answers'
 import { readDecideFile } from '@/lib/admin/decide-file'
 import { resolvePlanDir } from '@/lib/admin/plan-dir'
 import { readLatestReport } from '@/lib/links/report'
+import { deadSummary, deadSummaryLabel } from '@/lib/links/view'
 
 const decide = readDecideFile(resolvePlanDir())
 const board = buildBoard(decide.items, readAnswers(resolvePlanDir()))
@@ -30,7 +31,7 @@ const tools = [
     icon: 'link-break',
     title: 'Martwe linki',
     text: 'Wynik ostatniego sprawdzenia linków wychodzących, z miejscem w źródle.',
-    count: report ? `${report.counts.dead} martwych` : 'brak raportu',
+    count: report ? deadSummaryLabel(deadSummary(report.links)) : 'brak raportu',
   },
   {
     href: '/mockups/design-board',

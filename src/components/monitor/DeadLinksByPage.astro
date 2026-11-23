@@ -8,21 +8,22 @@ import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import { outcomeLabel } from '@/lib/links/report'
 import type { SourceLocation } from '@/lib/links/source-map'
-import type { PageGroup } from '@/lib/links/view'
+import { deadSummaryLabel, type DeadSummary, type PageGroup } from '@/lib/links/view'
 
 export interface Props {
   groups: PageGroup[]
+  /** Real counts (distinct links and pages), shown in the heading. */
+  summary: DeadSummary
   locations: Record<string, SourceLocation[]>
 }
 
-const { groups, locations } = Astro.props
-const deadTotal = groups.reduce((sum, group) => sum + group.links.length, 0)
+const { groups, locations, summary } = Astro.props
 ---
 
 <Section id="dead">
   <SectionHeader
-    headline={`Martwe linki według strony (${deadTotal})`}
-    subhead="Nie znaleziono, zniknęły albo odmawiają połączenia po dwóch próbach. W buildzie z LINK_CHECK=1 są wyłączone."
+    headline={`Według strony: ${deadSummaryLabel(summary)}`}
+    subhead="Link na kilku stronach widać pod każdą z nich. Nie znaleziono, zniknęły albo odmawiają połączenia po dwóch próbach. W buildzie z LINK_CHECK=1 są wyłączone."
   />
   <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1">
     {

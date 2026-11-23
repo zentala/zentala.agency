@@ -14,7 +14,7 @@ import DeadLinksByPage from '@/components/monitor/DeadLinksByPage.astro'
 import LinkSummaryBar from '@/components/monitor/LinkSummaryBar.astro'
 import { groupByStatus, outcomeLabel, readLatestReport } from '@/lib/links/report'
 import { locateUrls } from '@/lib/links/source-map'
-import { groupDeadByPage, isStale, reportAgeDays, STALE_AFTER_DAYS } from '@/lib/links/view'
+import { deadSummary, groupDeadByPage, isStale, reportAgeDays, STALE_AFTER_DAYS } from '@/lib/links/view'
 
 const report = readLatestReport()
 const groups = report ? groupByStatus(report.links) : null
@@ -93,7 +93,11 @@ const singleColumn = '--cols-wide: 1; --cols-medium: 1; --cols-narrow: 1'
           </div>
         </Section>
 
-        <DeadLinksByPage groups={groupDeadByPage(report.links)} {locations} />
+        <DeadLinksByPage
+          groups={groupDeadByPage(report.links)}
+          summary={deadSummary(report.links)}
+          {locations}
+        />
 
         <Section id="disabled">
           <SectionHeader

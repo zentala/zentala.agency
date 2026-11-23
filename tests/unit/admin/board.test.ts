@@ -42,6 +42,27 @@ describe('buildBoard', () => {
   })
 })
 
+describe('deferred items', () => {
+  it('keep their options, question and blocks so they render as full cards', () => {
+    const text = [
+      '## Infra',
+      '- [ ] 2026-11-21 · (później) INF-3: gh auth login — pytanie · options: A (recommended) uruchom → skutek / B nie · blocks: push · from: Claude',
+    ].join('\n')
+    const board = buildBoard(parseDecide(text).items, [])
+    expect(board.openCount).toBe(0)
+    expect(board.groups).toEqual([])
+    const [item] = board.deferred
+    expect(item.id).toBe('INF-3')
+    expect(item.title).toBe('gh auth login')
+    expect(item.question).toBe('pytanie')
+    expect(item.blocks).toBe('push')
+    expect(item.options.map((o) => [o.letter, o.recommended, o.consequence])).toEqual([
+      ['A', true, 'skutek'],
+      ['B', false, undefined],
+    ])
+  })
+})
+
 describe('formatAnswerLine', () => {
   it('writes id, choice and a flattened note', () => {
     expect(formatAnswerLine('E008-1', 'A', '')).toBe('E008-1: A')

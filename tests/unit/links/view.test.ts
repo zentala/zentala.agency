@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { CheckedLink } from '@/lib/links/report'
-import { groupDeadByPage, isStale, reportAgeDays, statusShares } from '@/lib/links/view'
+import { deadSummary, deadSummaryLabel, groupDeadByPage, isStale, reportAgeDays, statusShares } from '@/lib/links/view'
 
 const link = (url: string, status: CheckedLink['status'], pages: string[]): CheckedLink => ({
   url,
@@ -55,5 +55,29 @@ describe('staleness', () => {
 
   it('treats a report from the future as age zero', () => {
     expect(reportAgeDays({ generatedAt: '2026-12-01T00:00:00.000Z' }, now)).toBe(0)
+  })
+})
+
+describe('deadSummary', () => {
+  const links = [
+    link('https://a.example/', 'dead', ['/', '/blog', '/about']),
+    link('https://b.example/', 'dead', ['/blog']),
+    link('https://c.example/', 'ok', ['/x']),
+  ]
+
+  it('counts distinct dead links and distinct pages, not occurrences', () => {
+    expect(deadSummary(links)).toEqual({ links: 2, pages: 3 })
+    expect(groupDeadByPage(links).reduce((sum, g) => sum + g.links.length, 0)).toBe(4)
+  })
+
+  it('is zero without dead links', () => {
+    expect(deadSummary([])).toEqual({ links: 0, pages: 0 })
+  })
+
+  it('says it in Polish with the right plural forms', () => {
+    expect(deadSummaryLabel({ links: 1, pages: 1 })).toBe('1 martwy link na 1 stronie')
+    expect(deadSummaryLabel({ links: 2, pages: 3 })).toBe('2 martwe linki na 3 stronach')
+    expect(deadSummaryLabel({ links: 6, pages: 26 })).toBe('6 martwych linków na 26 stronach')
+    expect(deadSummaryLabel({ links: 12, pages: 22 })).toBe('12 martwych linków na 22 stronach')
   })
 })

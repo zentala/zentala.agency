@@ -7,7 +7,6 @@
  * The page script (DecisionBoard) reads `data-decision-id`, `data-saved-*` and the inputs.
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
-import Tag from '@/components/primitives/Tag.astro'
 import type { SavedAnswer } from '@/lib/admin/answers'
 import type { DecideItem } from '@/lib/admin/decide'
 
@@ -30,7 +29,9 @@ const savedAt = saved
   data-saved-note={saved?.note ?? ''}
 >
   <div class="decision__head">
-    <p class="decision__code">{item.id}</p>
+    <p class="decision__code">
+      {item.id}<span class="decision__changed"> · zmieniona, niezapisana</span>
+    </p>
     <h3 class="decision__title">{item.title}</h3>
     {item.question && <p class="decision__question">{item.question}</p>}
   </div>
@@ -58,7 +59,14 @@ const savedAt = saved
               <span class="option__consequence">Skutek: {option.consequence}</span>
             )}
           </span>
-          {option.recommended && <Tag text="rekomendowane" icon="star" class="option__tag" />}
+          {
+            option.recommended && (
+              <span class="option__recommended">
+                <SiteIcon name="star" size="sm" />
+                rekomendowane
+              </span>
+            )
+          }
         </label>
       ))
     }
@@ -116,6 +124,14 @@ const savedAt = saved
     @apply text-sm text-fg-muted;
   }
 
+  .decision__changed {
+    display: none;
+  }
+
+  .decision[data-changed] .decision__changed {
+    display: inline;
+  }
+
   .decision__title {
     @apply text-xl font-light text-fg;
   }
@@ -143,9 +159,13 @@ const savedAt = saved
     cursor: pointer;
     transition: background-color var(--motion-fast) var(--ease-standard);
 
-    &:hover,
-    &:has(input:checked) {
+    &:hover {
       background-color: var(--color-surface-hover);
+    }
+
+    /* Selected: a clear neutral wash (DESIGN.md decisions, 2026-11-23) and full-strength text. */
+    &:has(input:checked) {
+      background-color: color-mix(in srgb, var(--color-text) 11%, var(--color-surface));
     }
 
     &:has(input:focus-visible) {
@@ -188,6 +208,10 @@ const savedAt = saved
   }
 
   .option__text {
+    @apply text-fg-secondary;
+  }
+
+  .option:has(input:checked) .option__text {
     @apply text-fg;
   }
 
@@ -195,7 +219,8 @@ const savedAt = saved
     @apply text-sm text-fg-muted;
   }
 
-  .option__tag {
+  .option__recommended {
+    @apply inline-flex items-center gap-1 text-fg-muted;
     flex-shrink: 0;
   }
 

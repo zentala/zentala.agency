@@ -26,6 +26,34 @@ export function groupDeadByPage(links: CheckedLink[]): PageGroup[] {
     .sort((a, b) => b.links.length - a.links.length || a.page.localeCompare(b.page))
 }
 
+export interface DeadSummary {
+  /** Distinct dead URLs. */
+  links: number
+  /** Distinct pages that hold at least one of them. */
+  pages: number
+}
+
+/** Real counts of dead links: distinct URLs and distinct pages, never page-by-link occurrences. */
+export function deadSummary(links: CheckedLink[]): DeadSummary {
+  const dead = links.filter((link) => link.status === 'dead')
+  return { links: dead.length, pages: new Set(dead.flatMap((link) => link.pages)).size }
+}
+
+/** Polish plural: one, few (2-4 except 12-14), many. */
+function plural(count: number, one: string, few: string, many: string): string {
+  const lastTwo = count % 100
+  const last = count % 10
+  if (count === 1) return one
+  return last >= 2 && last <= 4 && !(lastTwo >= 12 && lastTwo <= 14) ? few : many
+}
+
+/** "6 linków na 26 stronach": what a dead-link heading counts, said in words. */
+export function deadSummaryLabel({ links, pages }: DeadSummary): string {
+  const linkWord = plural(links, 'martwy link', 'martwe linki', 'martwych linków')
+  const pageWord = plural(pages, 'stronie', 'stronach', 'stronach')
+  return `${links} ${linkWord} na ${pages} ${pageWord}`
+}
+
 /**
  * Whole-number percentages of the three statuses that add up to exactly 100
  * (largest remainder), or all zeros for an empty report.
