@@ -57,7 +57,7 @@ From `src/pages/offer/harness-engineering.astro` (the `Section` primitive is `se
 </Section>
 ```
 
-Imports: `Section`, `SectionHeader`, `SectionGrid` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`. `SectionContent` is a transparent prose block; `.content-grid__text` is the lighter alternative for static cells. Icon names are short Phosphor Light names (`handshake`, `compass`); an unknown name fails the build.
+Imports: `Section`, `SectionHeader`, `SectionGrid` from `src/components/primitives/sections/`, `CardBackgroundIcon` from `src/components/primitives/`. `SectionContent` is a transparent prose block; `.content-grid__text` is the lighter alternative for static cells. Icon names are meanings from `src/lib/icons/icon-map.ts` (`partnership`, `discovery`); an unknown name fails the build.
 
 ## Prose cell in a grid
 

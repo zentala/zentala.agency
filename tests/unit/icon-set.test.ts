@@ -60,10 +60,17 @@ const files = sources.filter((file) => !file.path.startsWith(COMPARISON_BOARD))
 const offenders = (test: (file: { path: string; text: string }) => boolean) =>
   files.filter(test).map((file) => file.path)
 
-/** Icon meanings that callers name: SiteIcon names, `icon` props and keys, and mosaic lists. */
-function usedMeanings(): Set<string> {
+/**
+ * Icon meanings that callers name: SiteIcon names, `icon` props and keys, mosaic lists,
+ * `const icon = cond ? 'a' : 'b'` picks and the `VARIANT_ICON` table of NoteBox.
+ */
+function usedMeanings(scanned = files): Set<string> {
   const used = new Set<string>()
-  for (const f of files) {
+  for (const f of scanned) {
+    for (const pick of f.text.matchAll(/const icon = [^\n]*/g))
+      for (const m of pick[0].matchAll(/'([a-z][a-z0-9-]+)'/g)) used.add(m[1])
+    for (const table of f.text.matchAll(/VARIANT_ICON = \{([^}]*)\}/g))
+      for (const m of table[1].matchAll(/:\s*'([a-z][a-z0-9-]+)'/g)) used.add(m[1])
     for (const m of f.text.matchAll(
       /\b(?:icon|eyebrowIcon|labelIcon|backgroundIcon)(?:=|:\s*)['"]([a-z][a-z0-9-]+)['"]/g,
     ))
@@ -122,10 +129,8 @@ describe('icon set guard', () => {
   })
 
   it('keeps no icon map entry that no caller uses', () => {
-    const callers = sources.filter((f) => f.path !== 'lib/icons/icon-map.ts')
-    const unused = Object.keys(ICON_MAP).filter(
-      (name) => !callers.some((f) => f.text.includes(`'${name}'`) || f.text.includes(`"${name}"`)),
-    )
+    const used = usedMeanings(sources.filter((f) => f.path !== 'lib/icons/icon-map.ts'))
+    const unused = Object.keys(ICON_MAP).filter((name) => !used.has(name))
     expect(unused).toEqual([])
   })
 
