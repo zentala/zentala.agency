@@ -1,0 +1,121 @@
+---
+/**
+ * Index of the dev-only tools, rendered at /admin. Each tool is an interactive cell of one
+ * line-grid with an icon, a short description and, where there is data, a count.
+ */
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+import Section from '@/components/primitives/sections/Section.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { buildBoard } from '@/lib/admin/board'
+import { readAnswers } from '@/lib/admin/answers'
+import { readDecideFile } from '@/lib/admin/decide-file'
+import { resolvePlanDir } from '@/lib/admin/plan-dir'
+import { readLatestReport } from '@/lib/links/report'
+
+const decide = readDecideFile(resolvePlanDir())
+const board = buildBoard(decide.items, readAnswers(resolvePlanDir()))
+const report = readLatestReport()
+
+const tools = [
+  {
+    href: '/admin/decisions',
+    icon: 'check-square',
+    title: 'Decyzje do podjęcia',
+    text: 'Pytania z DECIDE.md z opcjami i skutkami; odpowiedzi trafiają do planu.',
+    count: decide.missing ? 'brak DECIDE.md' : `${board.openCount} otwartych`,
+  },
+  {
+    href: '/monitor/links',
+    icon: 'link-break',
+    title: 'Martwe linki',
+    text: 'Wynik ostatniego sprawdzenia linków wychodzących, z miejscem w źródle.',
+    count: report ? `${report.counts.dead} martwych` : 'brak raportu',
+  },
+  {
+    href: '/mockups/design-board',
+    icon: 'palette',
+    title: 'Plansza projektu',
+    text: 'Warianty wyglądu do wyboru przez właściciela.',
+  },
+  {
+    href: '/mockups/review-layer',
+    icon: 'chat-text',
+    title: 'Warstwa recenzji',
+    text: 'Makieta komentowania tekstu w kontekście strony.',
+  },
+  {
+    href: '/mockups/capabilities',
+    icon: 'stack',
+    title: 'Szkic capabilities',
+    text: 'Szkic strony capabilities pod jednym szyldem.',
+  },
+  {
+    href: '/demo',
+    icon: 'squares-four',
+    title: 'Galeria komponentów',
+    text: 'Każdy komponent strony z wariantami.',
+  },
+]
+---
+
+<Layout title="Admin" description="Narzędzia deweloperskie. Tylko dev." noindex>
+  <Hero eyebrow="Tylko dev" title="Admin" subtitle="Narzędzia pracy nad stroną" />
+  <Section id="tools">
+    <div class="line-grid" style="--cols-wide: 2; --cols-medium: 2; --cols-narrow: 1">
+      {
+        tools.map((tool) => (
+          <a href={tool.href} class="tool">
+            <SiteIcon name={tool.icon} size="lg" class="tool__icon" />
+            <span class="tool__body">
+              <span class="tool__title">{tool.title}</span>
+              <span class="tool__text">{tool.text}</span>
+              {tool.count && <span class="tool__count">{tool.count}</span>}
+            </span>
+            <SiteIcon name="caret-right" size="sm" class="tool__arrow arrow-nudge" />
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .tool {
+    @include px-responsive('md');
+    @include py-responsive('md');
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tool__icon {
+    @apply text-fg-secondary;
+  }
+
+  .tool__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tool__title {
+    @apply text-xl font-light text-fg;
+  }
+
+  .tool__text {
+    @apply text-fg-secondary;
+  }
+
+  .tool__count {
+    @apply text-sm text-fg-muted;
+  }
+
+  .tool__arrow {
+    @apply text-fg-muted;
+    align-self: center;
+  }
+</style>
