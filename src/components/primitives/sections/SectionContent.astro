@@ -8,7 +8,7 @@
  * The cell is transparent and never lifts on hover: the grid cell around it owns lines and hover.
  *
  * Context modes:
- * - 'full': Large padding, max-width, centered (standalone)
+ * - 'full': Cell padding, text measure capped, left-aligned (standalone)
  * - 'grid': Compact padding, full space (inside grid)
  * - 'auto': Auto-detect based on parent (TODO: implement)
  *
@@ -47,12 +47,13 @@ const actualContext = context === 'auto' ? 'full' : context
     position: relative;
   }
 
-  /* Full-width context: generous padding + max-width */
+  /* Full context: a standalone block of prose. Cell padding puts the text on the shared left edge; only the text measure is capped. */
   .section-content--full {
+    @include cell-padding;
+  }
+
+  .section-content--full .section-content__body {
     max-width: 60rem;
-    margin: 0 auto;
-    @include px-responsive('lg');
-    @include py-responsive('lg');
   }
 
   /* Grid context: a content cell, full cell padding. Inside a bento card the card pads. */

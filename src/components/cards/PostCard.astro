@@ -42,14 +42,17 @@ if (!author) {
 ---
 
 <style lang="scss">
+  @use '../../styles/variables' as *;
+
   .post-card {
+    @include cell-padding;
     min-height: clamp(16rem, 24vw, 24rem);
   }
 </style>
 
 <article class="cell-interactive">
   <div
-    class="padding-responsive-md post-card relative flex h-full flex-col items-start"
+    class="post-card relative flex h-full flex-col items-start"
   >
     <a href={link} class="absolute inset-0 z-0" aria-label={title}></a>
     {isDraft && <DraftBadge review={isReview} />}
