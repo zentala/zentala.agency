@@ -15,9 +15,11 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'section-header',
       name: 'SectionHeader',
       path: 'primitives/sections/SectionHeader.astro',
-      purpose: 'Headline block with the line under it.',
+      purpose:
+        'Headline block with the line under it, in four variants: A (default), B (small caps label), C (thin larger label), D (label on the line).',
       props:
-        'headline, subhead, eyebrow, icon, logoSrc, logoAlt, tag (h2; h1, h3), align (left; center)',
+        'headline, subhead, eyebrow, eyebrowIcon, icon, logoSrc, logoAlt, compact, tag (h2; h1, h3), align (left; center), variant (a; b, c, d), labelIcon, meta',
+      note: 'The header text starts on the page left edge (the logo edge) and the header takes the full cell padding (DESIGN.md, Left edge).',
     },
     {
       id: 'section-grid',
@@ -30,7 +32,8 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'section-content',
       name: 'SectionContent',
       path: 'primitives/sections/SectionContent.astro',
-      purpose: 'One cell or full block of prose.',
+      purpose:
+        'One cell or full block of prose. A grid cell takes the full cell padding; inside a padded BentoCard the card pads instead.',
       props: 'context (full; grid), prose (true)',
     },
     {

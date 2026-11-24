@@ -55,17 +55,13 @@ const actualContext = context === 'auto' ? 'full' : context
     @include py-responsive('lg');
   }
 
-  /* Grid context: compact padding, use available space */
+  /* Grid context: a content cell, full cell padding. Inside a bento card the card pads. */
   .section-content--grid {
-    padding: 0.75rem 1rem;
+    @include cell-padding;
+  }
 
-    @include medium-up {
-      padding: 1rem 1.25rem;
-    }
-
-    @include large-up {
-      padding: 1.25rem 1.5rem;
-    }
+  :global(.bento-card[class*='bento-card--padding']) .section-content--grid {
+    padding: 0;
   }
 
   .section-content__body {

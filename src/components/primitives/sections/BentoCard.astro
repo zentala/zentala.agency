@@ -66,25 +66,11 @@ const isDev = import.meta.env.DEV
       line-height: 1;
     }
 
-    // Padding variants - reduced for bento (1/3 of normal)
-    &--padding-sm {
-      padding: 0.5rem; // ~8px fixed for bento sm
-    }
-
-    &--padding-md {
-      padding: 0.75rem 1rem; // ~12-16px for bento md
-
-      @include medium-up {
-        padding: 1rem 1.25rem; // ~16-20px
-      }
-    }
-
+    // sm, md and lg all take the full cell padding (DESIGN.md "Left edge")
+    &--padding-sm,
+    &--padding-md,
     &--padding-lg {
-      padding: 1rem 1.25rem; // ~16-20px for bento lg
-
-      @include medium-up {
-        padding: 1.25rem 1.5rem; // ~20-24px
-      }
+      @include cell-padding;
     }
   }
 </style>
