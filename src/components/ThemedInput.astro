@@ -1,10 +1,13 @@
 ---
 /**
- * ThemedInput - a form field that is one cell of a line grid.
+ * ThemedInput - a form field that is one cell of a line grid (DESIGN.md P8, F1-B).
  *
- * The label sits inside the field, top left, small and muted; the value is
- * below it. The field draws no border: lines come from the parent `.line-grid`
- * (see ContactForm). Hover and focus use the shared cell overlay.
+ * The label rests where the value goes, at body size; on focus or when the field has
+ * a value it floats to the top at label size. The control fills the whole cell and owns
+ * the padding, so the field has no inner padding of its own and no border: lines come
+ * from the parent `.line-grid` (see ContactForm). Hover and focus use the shared cell
+ * overlay; focus is neutral (label and icon get lighter, nothing blue). Browser
+ * autofill keeps the dark surface and the light text.
  * `multiline` renders a textarea (ThemedTextarea wraps it); `size="large"` gives it more rows.
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
@@ -38,36 +41,34 @@ const {
 } = Astro.props
 
 const Control = multiline ? 'textarea' : 'input'
-const rows = size === 'large' ? 8 : 4
+const rows = size === 'large' ? 8 : 5
 const errorId = error ? `${id}-error` : undefined
 ---
 
 <div
   class:list={[
     'field',
-    icon && 'field--icon',
     multiline && 'field--multiline',
     error && 'field--error',
     disabled && 'field--disabled',
     className,
   ]}
 >
-  {icon && <SiteIcon name={icon} size="md" class="field__icon" />}
-  <div class="field__body">
-    <label for={id} class="field__label">{placeholder}</label>
-    <Control
-      id={id}
-      name={name}
-      type={multiline ? undefined : type}
-      rows={multiline ? rows : undefined}
-      required={required}
-      disabled={disabled}
-      aria-invalid={error ? 'true' : undefined}
-      aria-describedby={errorId}
-      class="field__control"
-    />
-    {error && <p id={errorId} class="field__error">{error}</p>}
-  </div>
+  <Control
+    id={id}
+    name={name}
+    type={multiline ? undefined : type}
+    rows={multiline ? rows : undefined}
+    placeholder=" "
+    required={required}
+    disabled={disabled}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={errorId}
+    class="field__control"
+  />
+  <label for={id} class="field__label">{placeholder}</label>
+  {icon && <SiteIcon name={icon} size={32} class="field__icon" />}
+  {error && <p id={errorId} class="field__error">{error}</p>}
 </div>
 
 <style lang="scss">
@@ -75,37 +76,22 @@ const errorId = error ? `${id}-error` : undefined
 
   .field {
     @include cell-interactive;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.75rem 1.25rem 0.875rem;
+    --field-pad-x: 1.25rem;
+    --field-icon: 32px;
+    --field-text-x: var(--field-pad-x);
     height: 100%;
     cursor: text;
   }
 
-  .field__icon {
-    margin-top: 1.5rem;
-    color: var(--color-text-subtle);
-  }
-
-  .field__body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .field__label {
-    font-size: var(--text-label);
-    letter-spacing: 0.04em;
-    color: var(--color-text-muted);
+  .field:has(.field__icon) {
+    --field-text-x: calc(var(--field-pad-x) + var(--field-icon) + 0.875rem);
   }
 
   .field__control {
     display: block;
     width: 100%;
-    margin-top: 0.25rem;
-    padding: 0;
+    height: 4rem;
+    padding: 1.625rem var(--field-pad-x) 0.875rem var(--field-text-x);
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -117,13 +103,63 @@ const errorId = error ? `${id}-error` : undefined
     outline: none;
   }
 
+  /* Lines that scroll up are clipped under the padding, so they never cover the floated label. */
   .field--multiline .field__control {
+    height: auto;
+    min-height: 9rem;
     resize: vertical;
-    min-height: 5rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
+    mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
+  }
+
+  .field__label {
+    position: absolute;
+    left: var(--field-text-x);
+    top: 1.25rem;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transform-origin: left top;
+    transition:
+      transform var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  /* Floated: 11px (the label size) at the top of the field. */
+  .field__control:focus ~ .field__label,
+  .field__control:not(:placeholder-shown) ~ .field__label,
+  .field__control:autofill ~ .field__label,
+  .field__control:-webkit-autofill ~ .field__label {
+    transform: translateY(-0.5rem) scale(0.6875);
+    letter-spacing: 0.04em;
+  }
+
+  .field :global(.field__icon) {
+    position: absolute;
+    left: var(--field-pad-x);
+    top: 1rem;
+    color: var(--color-text-subtle);
+    pointer-events: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  /* Neutral focus: the label and the icon get lighter, nothing turns blue. */
+  .field__control:focus ~ .field__label,
+  .field__control:focus ~ :global(.field__icon) {
+    color: var(--color-text-secondary);
+  }
+
+  /* Browser autofill paints a light fill and its own text colour; hold both back. */
+  .field__control:autofill,
+  .field__control:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-text);
+    caret-color: var(--color-text);
+    transition: background-color 600000s 0s;
   }
 
   .field__error {
-    margin-top: 0.25rem;
+    padding: 0 var(--field-pad-x) 0.75rem var(--field-text-x);
     font-size: var(--text-label);
     color: var(--color-danger);
   }

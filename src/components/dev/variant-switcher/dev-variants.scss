@@ -1,6 +1,6 @@
 /*
  * Dev-only global styles of the variant switcher axes that restyle page chrome
- * without touching it: the full-screen first view and the font.
+ * without touching it: the full-screen first view, the font and the form variant.
  * Loaded by VariantSwitcher.astro, which Layout imports only under DEV.
  */
 /* Full-screen first view: the first section of the page fills the screen under the header. */
@@ -25,4 +25,9 @@ $font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
   html[data-v-font='#{$value}'] {
     --font-sans: '#{$family}', #{$font-stack-tail};
   }
+}
+
+/* Form axis, variant C: horizontal lines only, no vertical line between the columns. */
+html[data-v-form='line'] .contact-form > * {
+  border-left: 0;
 }

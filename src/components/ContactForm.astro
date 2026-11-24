@@ -1,7 +1,11 @@
 ---
 /**
- * ContactForm - the contact fields as cells of one line grid.
- * Fields share lines, have no radius and no container border. Submit is a cell holding a primary-tier `Button`.
+ * ContactForm - the contact fields as cells of one line grid (DESIGN.md P8, F1-B).
+ * Fields share lines, have no radius, no container border and no inner padding; the
+ * grid draws the vertical line between the two columns. The last row is one cell with
+ * a padded left block (consent checkbox and privacy note) and the submit button
+ * filling its right end, flush with the row's lines. The dev "Formularz" axis
+ * switches to variant C (horizontal lines only).
  */
 import ThemedInput from './ThemedInput.astro'
 import ThemedTextarea from './ThemedTextarea.astro'
@@ -14,8 +18,17 @@ import Button from './Button.astro'
   <ThemedInput type="email" id="email" placeholder="Email" icon="email" required />
   <ThemedInput type="tel" id="phone" placeholder="Phone" icon="phone" />
   <ThemedTextarea id="msg" placeholder="Your message" icon="message" />
-  <div class="contact-form__submit">
-    <Button type="submit" tier="primary" text="Send message" />
+  <div class="contact-form__foot">
+    <div class="contact-form__aside">
+      <label class="contact-form__check">
+        <input type="checkbox" name="copy" />
+        <span>Send me a copy of this message</span>
+      </label>
+      <p class="contact-form__note">
+        I use your details only to answer you. No newsletter, no sharing.
+      </p>
+    </div>
+    <Button type="submit" tier="primary" text="Send message" icon="send" iconPosition="right" />
   </div>
 </form>
 
@@ -28,15 +41,55 @@ import Button from './Button.astro'
     --cols-narrow: 1;
   }
 
-  /* The message and the submit cell span both columns */
+  /* The message and the last row span both columns */
   .contact-form > :global(:nth-child(5)),
   .contact-form > :global(:nth-child(6)) {
     grid-column: 1 / -1;
   }
 
-  .contact-form__submit {
+  .contact-form__foot {
     display: flex;
-    justify-content: flex-end;
-    padding: 0.5rem 1.25rem;
+    align-items: stretch;
+
+    @include tablet {
+      flex-direction: column;
+    }
+  }
+
+  .contact-form__aside {
+    flex: 1;
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .contact-form__check {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+
+    input {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--color-text);
+    }
+  }
+
+  .contact-form__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* The button keeps the shared 3rem height: it sits on the row's bottom line, flush right. */
+  .contact-form__foot :global(.button) {
+    align-self: flex-end;
+    min-width: 14rem;
+    padding-inline: 2rem;
+
+    @include tablet {
+      align-self: stretch;
+    }
   }
 </style>

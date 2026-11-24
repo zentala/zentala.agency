@@ -40,6 +40,7 @@ export const VARIANT_AXES: VariantAxis[] = [
     'noto-sans:Noto Sans',
     'source-sans:Source Sans 3',
   ),
+  axis('form', 'Formularz', 'B (linie w obu kierunkach)', 'line:C (tylko poziome)'),
 ]
 
 export const VARIANT_STORAGE_KEY = 'dev-variants'
