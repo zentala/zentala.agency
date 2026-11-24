@@ -9,7 +9,8 @@ import { measureLines } from './lib/line-analysis'
  * - two parallel line segments sit 1px apart (a doubled line),
  * - a vertical line shows at the viewport edge at 1450px and below,
  * - a vertical line segment floats (both ends touch no other line),
- * - hovering a cell changes any layout rect.
+ * - hovering a cell changes any layout rect,
+ * - a SiteIcon renders at another size than it declares (CSS scaling breaks the weight rule).
  *
  * Routes are discovered from the production build (dist/**\/index.html), so a
  * new page is covered automatically. See tests/e2e/README.md.
@@ -29,6 +30,8 @@ const CONTAINER_SELECTOR =
 const INTERACTIVE_CELL =
   ':is(.cards-grid, .line-grid) > :is(a, .cell-interactive, .card-container--hover)'
 const CONTAINER_SIDE_LINES_MIN_WIDTH = 1451
+/** Rendered icon size may differ from the declared size by this much (subpixel layout). */
+const ICON_SIZE_TOLERANCE_PX = 1
 
 function listHtmlFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -170,4 +173,34 @@ test.describe('buttons keep the shared height', () => {
       expect(b.height).toBe(48)
     }
   })
+})
+
+test.describe('icons render at their declared size', () => {
+  test.use({ viewport: { width: 1450, height: 900 }, deviceScaleFactor: 1 })
+
+  for (const path of ROUTES) {
+    test(`${path}: every SiteIcon draws at its size prop`, async ({ page }) => {
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+      const wrong = await page.evaluate((tolerance) => {
+        return [...document.querySelectorAll<SVGElement>('[data-icon-px]')]
+          .map((el) => {
+            const rect = el.getBoundingClientRect()
+            return {
+              declared: Number(el.dataset.iconPx),
+              width: rect.width,
+              height: rect.height,
+              classes: el.getAttribute('class'),
+            }
+          })
+          .filter(
+            (i) =>
+              i.width > 0 &&
+              (Math.abs(i.width - i.declared) > tolerance ||
+                Math.abs(i.height - i.declared) > tolerance),
+          )
+      }, ICON_SIZE_TOLERANCE_PX)
+      expect(wrong, 'icons drawn at a size other than declared').toEqual([])
+    })
+  }
 })

@@ -4,7 +4,8 @@
  * Pass a meaning from the icon map (`date`, `next`), never a glyph name. Sizes are
  * whole pixels: `sm` 16, `md` 20, `lg` 24 or any number from 16 up (18, 32, 64, 176).
  * The weight follows the rendered size (Bold to 20, Regular 24, Light to 63, Thin from 64);
- * there are no stroke props.
+ * there are no stroke props. The declared size is emitted as `data-icon-px` so the e2e guard
+ * can fail when CSS draws the icon at another size than the one its weight was chosen for.
  */
 import { Icon } from 'astro-icon/components'
 import { iconPx, resolveIconName, type SiteIconSize } from '@/lib/siteIcon'
@@ -24,6 +25,7 @@ const px = iconPx(size)
   size={px}
   class:list={['site-icon', className]}
   aria-hidden="true"
+  data-icon-px={px}
   {...rest}
 />
 
