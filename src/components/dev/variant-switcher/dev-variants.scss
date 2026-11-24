@@ -1,7 +1,7 @@
 /*
  * Dev-only global styles of the variant switcher axes that restyle page chrome
  * without touching it: the full-screen first view, the font, the form variant, the
- * colour of the "cta" button tier and the hover of cards.
+ * colour of the "cta" button tier, the hover of cards and the header images.
  * Loaded by VariantSwitcher.astro, which Layout imports only under DEV.
  */
 /* Full-screen first view: the first section of the page fills the screen under the header. */
@@ -138,4 +138,14 @@ html[data-v-logo-expand='note-strip'] .logo-wall__strip {
 
 .logo-wall__strip .logo-wall__panel-head {
   margin-bottom: 0.25rem;
+}
+
+/*
+ * Header images axis. Components render their header images in dev even while HEADER_IMAGES
+ * is off, marked data-header-image-default="off"; production builds do not render them at all.
+ * Switch off (the default when HEADER_IMAGES is false): the image goes, and nothing keeps its slot.
+ */
+html:not([data-v-header-images='on']) [data-header-image-default='off'],
+html[data-v-header-images='off'] [data-header-image] {
+  display: none;
 }

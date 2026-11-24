@@ -5,17 +5,19 @@
  * shared components on real pages. Layout imports it only under DEV; nothing here
  * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans, Noto Sans
  * and Source Sans 3 through BoardFonts, whose files are imported under DEV only; Selawik
- * is a local font name and says so when this computer lacks it.
+ * is a local font name and says so when this computer lacks it. A `?v-<axis>=<value>`
+ * parameter in the URL applies and stores an option on load (see axes.ts).
  */
 import './dev-variants.scss'
 import BoardFonts from '@/components/design-board/typography/BoardFonts.astro'
-import { VARIANT_AXES, VARIANT_STORAGE_KEY, variantAttribute } from './axes'
+import { VARIANT_AXES, VARIANT_STORAGE_KEY, parseVariantLink, variantAttribute } from './axes'
 
 const axes = VARIANT_AXES.map((item) => ({
   ...item,
   attribute: variantAttribute(item.id),
 }))
 const storageKey = VARIANT_STORAGE_KEY
+const parseLinkSource = parseVariantLink.toString()
 ---
 
 <BoardFonts />
@@ -48,7 +50,7 @@ const storageKey = VARIANT_STORAGE_KEY
   </div>
 </details>
 
-<script is:inline define:vars={{ axes, storageKey }}>
+<script is:inline define:vars={{ axes, storageKey, parseLinkSource }}>
   const root = document.documentElement
   const panel = document.querySelector('[data-vsw]')
 
@@ -156,8 +158,14 @@ const storageKey = VARIANT_STORAGE_KEY
   document.addEventListener('pointerover', fillStrip)
   document.addEventListener('focusin', fillStrip)
 
+  /* Variant link: ?v-<axis>=<value> applies and stores a known option; anything else is ignored. */
+  const parseVariantLink = new Function('return ' + parseLinkSource)()
+  const fromUrl = () => parseVariantLink(location.search, axes, read())
+
   labelSelawik()
-  apply(read())
+  const linkedState = fromUrl()
+  if (linkedState) save(linkedState)
+  else apply(read())
 </script>
 
 <style lang="scss">
