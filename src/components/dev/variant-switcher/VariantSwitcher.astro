@@ -5,7 +5,8 @@
  * shared components on real pages. Layout imports it only under DEV; nothing here
  * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans, Noto Sans
  * and Source Sans 3 through BoardFonts, whose files are imported under DEV only; Selawik
- * is a local font name and says so when this computer lacks it.
+ * is a local font name and says so when this computer lacks it. A `?v-<axis>=<value>`
+ * parameter in the URL applies and stores an option on load (see axes.ts).
  */
 import './dev-variants.scss'
 import BoardFonts from '@/components/design-board/typography/BoardFonts.astro'
@@ -110,8 +111,24 @@ const storageKey = VARIANT_STORAGE_KEY
     if (event.key === 'Escape') panel.removeAttribute('open')
   })
 
+  /* Variant link: ?v-<axis>=<value> applies and stores a known option; anything else is ignored. */
+  const fromUrl = () => {
+    const state = read()
+    let linked = false
+    for (const item of axes) {
+      const value = new URLSearchParams(location.search).get('v-' + item.id)
+      if (value !== null && item.options.some((option) => option.value === value)) {
+        state[item.id] = value
+        linked = true
+      }
+    }
+    return linked ? state : null
+  }
+
   labelSelawik()
-  apply(read())
+  const linkedState = fromUrl()
+  if (linkedState) save(linkedState)
+  else apply(read())
 </script>
 
 <style lang="scss">

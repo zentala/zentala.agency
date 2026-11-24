@@ -3,6 +3,7 @@ import CardContainer from './CardContainer.astro'
 import Tag from '../primitives/Tag.astro'
 import SiteIcon from '../primitives/SiteIcon.astro'
 import { isParkedLink } from '@/lib/links/parked'
+import { headerImage } from '@/config/features'
 
 export interface PortfolioItemProps {
   title: string
@@ -14,7 +15,7 @@ export interface PortfolioItemProps {
   tags?: string[]
 }
 
-const { title, subtitle, linkTitle, key, tags } = Astro.props
+const { title, subtitle, image, linkTitle, key, tags } = Astro.props
 // A parked link (src/data/parked-links.ts) renders the card as plain text, without link or CTA.
 const parked = isParkedLink(Astro.props.link)
 const link = parked ? undefined : Astro.props.link
@@ -32,7 +33,16 @@ const target =
   class="portfolio-item"
   data-key={key}
 >
-  <!-- {image && <img src={image} alt={title} class="portfolio-item__image" />} -->
+  {
+    headerImage.render && image && (
+      <img
+        src={image}
+        alt={title}
+        class="portfolio-item__image"
+        {...headerImage.attrs}
+      />
+    )
+  }
 
   <h2 class="portfolio-item__title">{title}</h2>
   <p class="portfolio-item__subtitle">{subtitle}</p>

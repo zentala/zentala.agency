@@ -1,5 +1,6 @@
 import ReviewLayerMockup from '@/components/review-mockup/ReviewLayerMockup.astro'
 import DesignBoard from '@/components/design-board/DesignBoard.astro'
+import CapabilitiesPrevious from './CapabilitiesPrevious.astro'
 
 /**
  * Dev-only mockups served at /mockups/<name> by src/pages/mockups/[mockup].astro.
@@ -13,6 +14,10 @@ export const MOCKUPS = {
   'design-board': {
     title: 'Design decision board',
     Component: DesignBoard,
+  },
+  'capabilities-previous': {
+    title: 'Previous capabilities page',
+    Component: CapabilitiesPrevious,
   },
 } as const
 

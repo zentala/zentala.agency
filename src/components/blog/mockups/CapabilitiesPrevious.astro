@@ -1,0 +1,40 @@
+---
+import Hero from '@/components/Hero.astro'
+import OfferCard from '@/components/cards/OfferCard.astro'
+import MockupDevLabel from './MockupDevLabel.astro'
+import { PREVIOUS_OFFERS } from './previousCapabilitiesOffers'
+
+/**
+ * Dev-only copy of the capabilities page as it was before T37 (owner request R2,
+ * 2026-11-24): Hero plus 18 OfferCards with their background icons, so the owner can
+ * compare it with /about/capabilities. Shown at /mockups/capabilities-previous.
+ */
+const heroProps = {
+  title: 'Capabilities',
+  subtitle: 'Areas of specialization — what I build and consult on',
+}
+---
+
+<section class="section-full">
+  <div class="container-bordered">
+    <p
+      class="px-responsive flex flex-wrap items-center gap-x-3 gap-y-1 py-3 text-sm text-fg-secondary"
+    >
+      <MockupDevLabel>Mockup</MockupDevLabel>
+      <span>
+        Previous capabilities page, kept for comparison. The current page is at
+        <a href="/about/capabilities" class="text-accent hover:text-accent-hover">
+          /about/capabilities
+        </a>
+      </span>
+    </p>
+  </div>
+</section>
+<Hero {...heroProps} />
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid">
+      {PREVIOUS_OFFERS.map((offer) => <OfferCard {...offer} />)}
+    </div>
+  </div>
+</section>

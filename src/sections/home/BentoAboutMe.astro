@@ -324,7 +324,7 @@ const bentoStates = {
       >
         <CardIconMosaic tiles={PORTFOLIO_TILES} />
         <div
-          class="pointer-events-none absolute inset-0 flex flex-col justify-end p-6 md:p-10"
+          class="portfolio-caption pointer-events-none absolute inset-0 flex flex-col justify-end"
         >
           <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">
             Portfolio
@@ -472,6 +472,13 @@ const bentoStates = {
   </script>
 
   <style lang="scss">
+    @use '../../styles/variables' as *;
+
+    /* The caption takes the shared cell padding, like every text cell around it (DESIGN.md "Left edge"). */
+    .portfolio-caption {
+      @include cell-padding;
+    }
+
     .state-content {
       transition:
         opacity var(--motion-slow) var(--ease-standard),

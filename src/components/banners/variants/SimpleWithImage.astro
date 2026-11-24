@@ -1,5 +1,6 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { headerImage } from '@/config/features'
 interface SimpleWithImageBannerProps {
   title: string
   description: string
@@ -21,7 +22,11 @@ const {
 
 <!-- Full banner is clickable (like cards) -->
 <a href={linkHref} class={`banner banner-simple-with-image ${className}`}>
-  <img src={image} alt={title} class="banner-image" />
+  {
+    headerImage.render && (
+      <img src={image} alt={title} class="banner-image" {...headerImage.attrs} />
+    )
+  }
   <div class="banner-content">
     <h3>{title}</h3>
     <p>{description}</p>
