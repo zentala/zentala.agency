@@ -1,6 +1,6 @@
 /*
  * Dev-only global styles of the variant switcher axes that restyle page chrome
- * without touching it: the full-screen first view and the font.
+ * without touching it: the full-screen first view, the font and the form variant.
  * Loaded by VariantSwitcher.astro, which Layout imports only under DEV.
  */
 /* Full-screen first view: the first section of the page fills the screen under the header. */
@@ -24,5 +24,18 @@ $font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
 @each $value, $family in ('selawik': 'Selawik', 'open-sans': 'Board Open Sans', 'noto-sans': 'Board Noto Sans', 'source-sans': 'Board Source Sans') {
   html[data-v-font='#{$value}'] {
     --font-sans: '#{$family}', #{$font-stack-tail};
+  }
+}
+
+/*
+ * Form axis, variant C: horizontal lines only. Only the divider between the two columns
+ * goes: the fields of the second column (cells 2 and 4 of .contact-form) lose their left
+ * line. The left edge line, the top lines and the foot row keep the line grid's own lines.
+ * From 771 px up the form has two columns; below it every field is a left-edge cell.
+ */
+@media (min-width: 771px) {
+  html[data-v-form='line'] .contact-form > :nth-child(2),
+  html[data-v-form='line'] .contact-form > :nth-child(4) {
+    border-left: 0;
   }
 }

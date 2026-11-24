@@ -15,9 +15,11 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'section-header',
       name: 'SectionHeader',
       path: 'primitives/sections/SectionHeader.astro',
-      purpose: 'Headline block with the line under it.',
+      purpose:
+        'Headline block with the line under it, in four variants: A (default), B (small caps label), C (thin larger label), D (label on the line).',
       props:
-        'headline, subhead, eyebrow, icon, logoSrc, logoAlt, tag (h2; h1, h3), align (left; center)',
+        'headline, subhead, eyebrow, eyebrowIcon, icon, logoSrc, logoAlt, compact, tag (h2; h1, h3), align (left; center), variant (a; b, c, d), labelIcon, meta',
+      note: 'The header text starts on the page left edge (the logo edge) and the header takes the full cell padding (DESIGN.md, Left edge).',
     },
     {
       id: 'section-grid',
@@ -30,7 +32,8 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'section-content',
       name: 'SectionContent',
       path: 'primitives/sections/SectionContent.astro',
-      purpose: 'One cell or full block of prose.',
+      purpose:
+        'One cell or full block of prose. A grid cell takes the full cell padding; inside a padded BentoCard the card pads instead.',
       props: 'context (full; grid), prose (true)',
     },
     {
@@ -75,7 +78,8 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'bento-card-sections',
       name: 'BentoCard (sections)',
       path: 'primitives/sections/BentoCard.astro',
-      purpose: 'Bento cell with spans. Used by BentoShowcase.',
+      purpose:
+        'Bento cell with spans. Padding sm, md and lg all take the full cell padding (64/48/32/24/16 px by width); none leaves the cell bare. Used by BentoShowcase.',
       props:
         'colSpan (1; 1 to 4), rowSpan (1; 1 to 3), padding (md; none, sm, lg)',
     },
@@ -84,7 +88,7 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       name: 'BentoCard (bento)',
       path: 'primitives/sections/bento/BentoCard.astro',
       purpose:
-        'Bento cell with spans, hover state and the cell overlay. Used by the home bento.',
+        'Bento cell with spans, hover state and the cell overlay. Padding sm, md and lg all take the full cell padding; none leaves the cell bare. Used by the home bento.',
       props: 'colSpan, rowSpan, padding, hoverState, class',
     },
     {

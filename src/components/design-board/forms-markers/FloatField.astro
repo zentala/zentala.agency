@@ -1,16 +1,13 @@
 ---
 /**
- * Board demo: a form field with a floating label (Material v1 behaviour).
- * The label rests where the value goes; on focus or when filled it moves up, small.
- * The control fills the whole field and owns the padding, so a textarea's resize
- * handle sits in the very corner. The icon is as tall as label plus value.
- * `variant`: `grid` (a line-grid cell, shared cell overlay) or `line` (horizontal
- * lines only, no divider between columns). Focus is neutral in both: the label and
- * the icon get lighter, no colour. Autofilled fields keep the dark surface.
- * `accent` is the rejected option D, kept for the record: a line-grid cell whose
- * focus is a thin accent line with an accent label and icon.
+ * Board demo: a form field for the F1 options. The field itself is `ThemedInput`, the
+ * one implementation the site uses (floating label, neutral focus, autofill colours);
+ * this wrapper only adds what the board compares.
+ * `variant`: `grid` (a line-grid cell, shared cell overlay), `line` (horizontal lines
+ * only: the wrapper owns its top line and focus brightens the line below it) or
+ * `accent` (rejected option D: the grid with a thin accent line, label and icon on focus).
  */
-import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import ThemedInput from '@/components/ThemedInput.astro'
 
 interface Props {
   id: string
@@ -23,148 +20,37 @@ interface Props {
   class?: string
 }
 
-const {
-  id,
-  label,
-  icon,
-  variant,
-  type = 'text',
-  multiline = false,
-  required = false,
-  class: className = '',
-} = Astro.props
-
-const Control = multiline ? 'textarea' : 'input'
+const { id, label, icon, variant, type, multiline, required, class: className = '' } = Astro.props
 ---
 
-<div class:list={['ff', `ff--${variant}`, multiline && 'ff--multiline', className]}>
-  <Control
+<div class:list={['ff', `ff--${variant}`, className]}>
+  <ThemedInput
     id={id}
-    name={id}
-    type={multiline ? undefined : type}
-    rows={multiline ? 5 : undefined}
-    placeholder=" "
-    autocomplete="off"
+    placeholder={label}
+    icon={icon}
+    type={type}
+    multiline={multiline}
     required={required}
-    class="ff__control"
   />
-  <label for={id} class="ff__label">{label}</label>
-  <SiteIcon name={icon} size="lg" class="ff__icon" />
 </div>
 
 <style lang="scss">
-  @use '../../../styles/variables' as *;
-
   .ff {
-    --ff-pad-x: 1.25rem;
-    --ff-icon: 32px;
-    --ff-text-x: calc(var(--ff-pad-x) + var(--ff-icon) + 0.875rem);
     position: relative;
-    cursor: text;
+    display: grid;
   }
 
-  .ff__control {
-    display: block;
-    width: 100%;
-    height: 4rem;
-    padding: 1.625rem var(--ff-pad-x) 0.875rem var(--ff-text-x);
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    color: var(--color-text);
-    font: inherit;
-    font-size: var(--text-body);
-    line-height: 1.5;
-    appearance: none;
-    outline: none;
-  }
-
-  /* Lines that scroll up are clipped under the padding, so they never cover the floated label. */
-  .ff--multiline .ff__control {
-    height: auto;
-    min-height: 9rem;
-    resize: vertical;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
-    mask-image: linear-gradient(to bottom, transparent 1.5625rem, black 1.625rem);
-  }
-
-  .ff__label {
-    position: absolute;
-    left: var(--ff-text-x);
-    top: 1.25rem;
-    font-size: var(--text-body);
-    line-height: 1.5;
-    color: var(--color-text-muted);
-    pointer-events: none;
-    transform-origin: left top;
-    transition:
-      transform var(--motion-fast) var(--ease-standard),
-      color var(--motion-fast) var(--ease-standard);
-  }
-
-  /* Floated: 11px (the label size) at the top of the field. */
-  .ff__control:focus ~ .ff__label,
-  .ff__control:not(:placeholder-shown) ~ .ff__label {
-    transform: translateY(-0.5rem) scale(0.6875);
-    letter-spacing: 0.04em;
-  }
-
-  .ff :global(.ff__icon) {
-    position: absolute;
-    left: var(--ff-pad-x);
-    top: 1rem;
-    width: var(--ff-icon);
-    height: var(--ff-icon);
-    color: var(--color-text-subtle);
-    pointer-events: none;
-    transition: color var(--motion-fast) var(--ease-standard);
-  }
-
-  /* Neutral focus: the label and the icon get lighter, nothing turns blue. */
-  .ff__control:focus ~ .ff__label,
-  .ff__control:focus ~ :global(.ff__icon) {
-    color: var(--color-text-secondary);
-  }
-
-  /* Browser autofill paints a light fill and its own text colour; hold both back. */
-  .ff__control:autofill {
-    -webkit-text-fill-color: var(--color-text);
-    caret-color: var(--color-text);
-    transition: background-color 600000s 0s;
-  }
-
-  .ff__control:-webkit-autofill {
-    -webkit-text-fill-color: var(--color-text);
-    caret-color: var(--color-text);
-    transition: background-color 600000s 0s;
-  }
-
-  .ff__control:autofill ~ .ff__label {
-    transform: translateY(-0.5rem) scale(0.6875);
-    letter-spacing: 0.04em;
-  }
-
-  .ff__control:-webkit-autofill ~ .ff__label {
-    transform: translateY(-0.5rem) scale(0.6875);
-    letter-spacing: 0.04em;
-  }
-
-  /* B: a cell of the line grid; hover and focus are the shared cell overlay. */
-  .ff--grid {
-    @include cell-interactive;
-  }
-
-  /* C: horizontal lines only. The field owns its top line; focus brightens the line below it. */
+  /* C: the wrapper owns its top line; the cell overlay of the field is switched off. */
   .ff--line {
     border-top: 1px solid var(--color-line);
-    transition: background-color var(--motion-fast) var(--ease-standard);
   }
 
-  .ff--line:hover {
-    background-color: var(--color-surface-hover);
+  .ff--line :global(.field)::after {
+    display: none;
   }
 
-  .ff--line::after {
+  .ff--line::after,
+  .ff.ff--accent::after {
     content: '';
     position: absolute;
     left: 0;
@@ -178,39 +64,24 @@ const Control = multiline ? 'textarea' : 'input'
     transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
-  .ff--line:has(.ff__control:focus)::after {
+  .ff--line:has(:focus)::after,
+  .ff--accent:has(:focus)::after {
     opacity: 1;
   }
 
-  /* D (rejected): a cell of the line grid; focus is a 1px accent line on its bottom line. */
-  .ff--accent {
-    transition: background-color var(--motion-fast) var(--ease-standard);
+  /* D (rejected): the focus overlay becomes a 1px accent line on the bottom line. */
+  .ff.ff--accent :global(.field)::after {
+    display: none;
   }
 
-  .ff--accent:hover {
-    background-color: var(--color-surface-hover);
-  }
-
-  .ff--accent::after {
-    content: '';
-    position: absolute;
+  .ff.ff--accent::after {
     left: -1px;
     right: -1px;
-    bottom: -1px;
-    height: 1px;
     background: var(--color-accent);
-    opacity: 0;
-    pointer-events: none;
-    z-index: var(--z-cell-hover);
-    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
-  .ff--accent:has(.ff__control:focus)::after {
-    opacity: 1;
-  }
-
-  .ff--accent .ff__control:focus ~ .ff__label,
-  .ff--accent .ff__control:focus ~ :global(.ff__icon) {
+  .ff.ff--accent :global(.field__control:focus ~ .field__label),
+  .ff.ff--accent :global(.field__control:focus ~ .field__icon) {
     color: var(--color-accent);
   }
 </style>

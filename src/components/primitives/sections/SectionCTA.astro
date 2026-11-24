@@ -73,8 +73,7 @@ const rel = external ? 'noopener noreferrer' : undefined
     text-decoration: none;
     min-height: 120px;
     overflow: clip; // crops the background word at the top and bottom of the cell
-    @include px-responsive('md');
-    @include py-responsive('md');
+    @include cell-padding;
 
     @include mobile {
       min-height: 100px;
