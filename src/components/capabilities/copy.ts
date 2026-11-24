@@ -1,12 +1,18 @@
 /**
- * Draft public copy for the /mockups/capabilities sketch (dev only, English).
- * Every claim comes from a public page: the home page, /about/capabilities,
- * /portfolio, /case-studies/zntl-desk, the Backstage and harness offers, and the
- * stack in package.json. The page marks all of it as draft copy, and each claim
- * the owner has not confirmed yet (`unconfirmed`) carries a marker of its own.
+ * Public copy of /about/capabilities (English), from the accepted sketch of
+ * owner decision DB-9 A. Every claim comes from a public page: the home page,
+ * the old capabilities cards, /portfolio, /case-studies/zntl-desk, the Backstage
+ * and harness offers, and the stack in package.json.
+ * CAVEAT: the sketch marked these claims as not yet confirmed by the owner:
+ * the Ubudu proof line and the Backstage "50 to 200+ developers" proof
+ * (Outcomes), "Humanoid robot prototypes, ROS" (T-shape field), Node.js and
+ * Supabase (stack layer) and the Backstage area line. The markers are gone
+ * from the page; the owner reviews these lines in the diff.
  */
 
 export const CAL_URL = 'https://cal.com/zentala'
+
+export const NAME = 'Product Engineering'
 
 export const HERO = {
   eyebrow: 'Capabilities',
@@ -21,8 +27,6 @@ export interface Outcome {
   body: string
   proof: string
   href: string
-  /** The proof is not confirmed by the owner yet: shows the dev-only marker. */
-  unconfirmed?: boolean
 }
 
 export const OUTCOMES = {
@@ -40,14 +44,12 @@ export const OUTCOMES = {
       body: 'I start from the problem and finish with something that runs: a version you can put in front of real users.',
       proof: 'Indoor location systems deployed worldwide at Ubudu',
       href: '/portfolio',
-      unconfirmed: true,
     },
     {
       title: 'Product thinking',
       body: 'Before I pick a technology I ask who the product is for, what it must prove and what can wait. Those answers pick the stack.',
       proof: 'Backstage portals for teams of 50 to 200+ developers',
       href: '/about/capabilities/backstage',
-      unconfirmed: true,
     },
   ] satisfies Outcome[],
 }
@@ -55,8 +57,6 @@ export const OUTCOMES = {
 export interface Field {
   name: string
   detail: string
-  /** The detail is not confirmed by the owner yet: shows the dev-only marker. */
-  unconfirmed?: boolean
 }
 
 export interface StackLayer {
@@ -65,8 +65,6 @@ export interface StackLayer {
   logos: string[]
   /** The text under the logos: the tool names, or one line for the language. */
   detail: string
-  /** The detail is not confirmed by the owner yet: shows the dev-only marker. */
-  unconfirmed?: boolean
 }
 
 export const TSHAPE = {
@@ -84,7 +82,7 @@ export const TSHAPE = {
   fields: [
     { name: 'Product & UX', detail: 'Interface design, information architecture' },
     { name: 'IoT & electronics', detail: 'Sensors, smart home, indoor location' },
-    { name: 'Robotics', detail: 'Humanoid robot prototypes, ROS', unconfirmed: true },
+    { name: 'Robotics', detail: 'Humanoid robot prototypes, ROS' },
     { name: 'Cloud & DevOps', detail: 'CI/CD, Docker, cloud infrastructure' },
     { name: 'DevEx & AI agents', detail: 'Backstage portals, agent harnesses' },
   ] satisfies Field[],
@@ -103,7 +101,6 @@ export const TSHAPE = {
       name: 'Services & data',
       logos: ['nodedotjs', 'supabase'],
       detail: 'Node.js, Supabase',
-      unconfirmed: true,
     },
     {
       name: 'Delivery & agents',
@@ -113,7 +110,7 @@ export const TSHAPE = {
   ] satisfies StackLayer[],
 }
 
-/** The logo wall under the T-shape (question W1): one list, rendered by TechLogoWall. */
+/** The logo wall under the T-shape: one list, rendered by TechLogoWall. */
 export const TECH_WALL = {
   headline: 'Technologies I use',
   subhead: 'The languages, frameworks, services and hardware behind the work on this page.',
@@ -158,10 +155,8 @@ export interface Area {
   body: string
   href: string
   linkLabel: string
-  /** Owner-facing (Polish): which of the 18 old cards this area absorbs. */
-  devNote: string
-  /** The body is not confirmed by the owner yet: shows the dev-only marker. */
-  unconfirmed?: boolean
+  /** Facts of the old capability cards the area absorbs, as a short list. */
+  facts: string[]
 }
 
 export const AREAS = {
@@ -174,44 +169,67 @@ export const AREAS = {
       body: 'Feasibility, specification and a first version that works.',
       href: '/portfolio',
       linkLabel: 'Portfolio',
-      devNote: 'Karty 01, 02 · brak własnej podstrony',
+      facts: [
+        'Strategic innovation consulting',
+        'Prototype concept and specification development',
+      ],
     },
     {
       title: 'Product & UX design',
       body: 'Interfaces designed in code, for the person using them.',
       href: '/case-studies/zntl-desk',
       linkLabel: 'zntlDesk case study',
-      devNote: 'Karta 03',
+      facts: [
+        'Code-first UI and UX design',
+      ],
     },
     {
       title: 'Apps & cloud',
       body: 'Web, mobile and desktop apps on one TypeScript codebase, with the pipelines and data behind them.',
       href: '/portfolio',
       linkLabel: 'Portfolio',
-      devNote:
-        'Karty 04 do 11 · 05 (sklepy WooCommerce) nie pasuje do stacka TS: zostaje czy znika?',
+      facts: [
+        'Web applications and microservices in JavaScript',
+        'WooCommerce online stores',
+        'React Native apps for Android, Android TV, iOS and tvOS',
+        'Electron.js desktop apps for Linux, Windows and macOS',
+        'Console tools in Bash and Node.js',
+        'Cloud infrastructure instead of servers to administer',
+        'CI/CD and data pipelines',
+        'Database selection and modeling',
+      ],
     },
     {
       title: 'IoT, robotics & smart home',
       body: 'Connected devices, indoor location, long-range wireless links and robot prototypes.',
       href: '/portfolio',
       linkLabel: 'Portfolio',
-      devNote: 'Karty 12, 13, 16, 17, 18 · brak własnej podstrony',
+      facts: [
+        'IoT prototypes from ready-made components',
+        'Robotics prototypes from existing software and hardware',
+        'Real-time location systems (RTLS): UWB, BLE, RFID, NFC and location algorithms',
+        'Long-range wireless networks: urban and point-to-point links, WiFi bridges, antenna systems',
+        'Smart homes: electrical infrastructure, lighting, alarms, admin panels, AI voice assistants',
+      ],
     },
     {
       title: 'Developer portals',
       body: 'Backstage portals and custom plugins for teams of 50 to 200+ developers.',
       href: '/about/capabilities/backstage',
       linkLabel: 'Backstage offer',
-      devNote: 'Karta 15',
-      unconfirmed: true,
+      facts: [
+        'Backstage developer portals',
+        'Developer Experience',
+      ],
     },
     {
       title: 'Harness engineering',
       body: 'An outside architect in your team, building the setup that lets developers and their agents move fast.',
       href: '/offer/harness-engineering',
       linkLabel: 'Harness engineering offer',
-      devNote: 'Karta 14 i nowa oferta',
+      facts: [
+        'Machine learning and AI: ready-made models put to work in business operations',
+      ],
     },
   ] satisfies Area[],
 }

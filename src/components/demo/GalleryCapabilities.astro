@@ -1,0 +1,30 @@
+---
+/**
+ * Gallery group "Capabilities page": the components of /about/capabilities.
+ * Section-sized components sit in `bare` entries; the two item components sit in cells.
+ */
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import CapHero from '@/components/capabilities/CapHero.astro'
+import Outcomes from '@/components/capabilities/Outcomes.astro'
+import TShapeLiteral from '@/components/capabilities/TShapeLiteral.astro'
+import FieldItem from '@/components/capabilities/FieldItem.astro'
+import StackItem from '@/components/capabilities/StackItem.astro'
+import TechWall from '@/components/capabilities/TechWall.astro'
+import Areas from '@/components/capabilities/Areas.astro'
+import CapCta from '@/components/capabilities/CapCta.astro'
+import { TSHAPE } from '@/components/capabilities/copy'
+---
+
+<GalleryEntry id="cap-hero" bare><CapHero /></GalleryEntry>
+<GalleryEntry id="cap-outcomes" bare><Outcomes /></GalleryEntry>
+<GalleryEntry id="cap-t-shape" bare><TShapeLiteral /></GalleryEntry>
+<GalleryEntry id="cap-field-item" cols={2}>
+  <GalleryCell label="field"><FieldItem {...TSHAPE.fields[0]} /></GalleryCell>
+</GalleryEntry>
+<GalleryEntry id="cap-stack-item" cols={2}>
+  <GalleryCell label="layer with logos"><StackItem {...TSHAPE.stack[1]} /></GalleryCell>
+</GalleryEntry>
+<GalleryEntry id="cap-tech-wall" bare><TechWall /></GalleryEntry>
+<GalleryEntry id="cap-areas" bare><Areas /></GalleryEntry>
+<GalleryEntry id="cap-cta" bare><CapCta /></GalleryEntry>

@@ -31,6 +31,7 @@ const GUARDED_DIRS = [
   'banners',
   'home',
   'preview',
+  'capabilities',
 ]
 
 /** Component files that are not in the gallery, each with the reason. Keys are paths relative to src/components. */
