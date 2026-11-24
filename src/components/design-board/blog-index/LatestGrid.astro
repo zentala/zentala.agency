@@ -3,7 +3,7 @@ import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import ArchiveCell from './ArchiveCell.astro'
 import LatestCell from './LatestCell.astro'
 import SeriesRow from './SeriesRow.astro'
-import type { BoardData } from './data'
+import type { BlogIndexData } from '@/lib/blog/index-data'
 
 /**
  * The latest-posts layout the owner picked (B1, options F and G): no header above
@@ -13,7 +13,7 @@ import type { BoardData } from './data'
  * of posts, categories and series instead of covers).
  */
 interface Props {
-  data: BoardData
+  data: BlogIndexData
   look: 'cover' | 'icon'
 }
 

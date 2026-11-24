@@ -1,0 +1,168 @@
+---
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { formatDate } from '@/lib/blog/format-date'
+import { slugify } from '@/lib/blog/slug'
+import type { BlogIndexPost } from '@/lib/blog/index-data'
+import SlugCover from './SlugCover.astro'
+
+/**
+ * Post cell of the /blog index (DB-6, layout F): a generated cover, the title, a
+ * two-line meta (date and category; then "Part n of <series>" with the series as
+ * a link) and the excerpt. `featured` spans two columns and uses the wide cover.
+ */
+interface Props {
+  post: BlogIndexPost
+  seriesTitle?: string
+  featured?: boolean
+}
+
+const { post, seriesTitle, featured = false } = Astro.props
+const { title, date, category, excerpt, part, series, published, review } =
+  post.data
+const { datetime, label } = formatDate(date)
+const coverLabel =
+  part === undefined ? undefined : String(part).padStart(2, '0')
+---
+
+<article class:list={['cell-interactive', { 'post-cell--featured': featured }]}>
+  <div class="post-cell">
+    <a
+      href={`/blog/${post.slug}`}
+      class="absolute inset-0 z-0"
+      aria-label={title}></a>
+    {published === false && <DraftBadge review={review === true} />}
+    <SlugCover
+      seed={post.slug}
+      label={coverLabel}
+      size={featured ? 'wide' : 'regular'}
+    />
+    <div class="post-cell__body padding-responsive-md">
+      <h3 class="post-cell__title">{title}</h3>
+      <div class="post-cell__meta">
+        <p>
+          <span>
+            <SiteIcon name="date" size="sm" />
+            <time datetime={datetime}>{label}</time>
+          </span>
+          <a href={`/category/${slugify(category)}`}>
+            <SiteIcon name="tag" size="sm" />
+            {category}
+          </a>
+        </p>
+        {
+          series && seriesTitle && part !== undefined && (
+            <p>
+              <span>
+                <SiteIcon name="series" size="sm" />
+                <span>
+                  Part {part} of <a href={`/series/${series}`}>{seriesTitle}</a>
+                </span>
+              </span>
+            </p>
+          )
+        }
+      </div>
+      <p class="post-cell__excerpt">{excerpt}</p>
+    </div>
+  </div>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .post-cell {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .post-cell__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    pointer-events: none;
+  }
+
+  .post-cell__title {
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .post-cell__meta {
+    display: grid;
+    gap: 0.125rem;
+    margin-top: 0.75rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    line-height: 1.5rem;
+
+    p {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 0.875rem;
+    }
+
+    p > span,
+    p > a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    a {
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
+      transition: color var(--motion-fast) var(--ease-standard);
+    }
+
+    span a {
+      color: var(--color-text-muted);
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: var(--color-text);
+    }
+  }
+
+  .post-cell__excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .post-cell--featured {
+    grid-column: span 2;
+
+    @include tablet {
+      grid-column: auto;
+    }
+
+    .post-cell__title {
+      font-size: var(--text-h1-page);
+      line-height: 1.15;
+
+      @include tablet {
+        font-size: var(--text-h3);
+        line-height: 1.25;
+      }
+    }
+
+    .post-cell__excerpt {
+      max-width: 65ch;
+      font-size: var(--text-lead);
+      line-height: 1.75rem;
+      -webkit-line-clamp: 4;
+    }
+  }
+</style>

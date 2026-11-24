@@ -4,9 +4,9 @@ import { formatDate } from '@/lib/blog/format-date'
 import { slugify } from '@/lib/blog/slug'
 import BoardIcon from '../icons-controls/BoardIcon.astro'
 import BackdropIcon from './BackdropIcon.astro'
-import SlugCover from './SlugCover.astro'
+import SlugCover from '@/components/blog/index/SlugCover.astro'
 import { categoryIconName, postIconName, textIcon } from './blog-icons'
-import type { BoardPost } from './data'
+import type { BlogIndexPost } from '@/lib/blog/index-data'
 
 /**
  * Post cell of the latest-posts layout (B1, options F and G). The meta takes two
@@ -15,7 +15,7 @@ import type { BoardPost } from './data'
  * (small in the title row, large behind the text). `featured` spans two columns.
  */
 interface Props {
-  post: BoardPost
+  post: BlogIndexPost
   look: 'cover' | 'icon'
   seriesTitle?: string
   featured?: boolean

@@ -18,6 +18,8 @@ export const ICON_MAP = {
   date: 'calendar-blank',
   tag: 'tag',
   series: 'stack',
+  archive: 'archive',
+  start: 'play',
   'reading-time': 'clock',
   person: 'user',
   profile: 'user-circle',

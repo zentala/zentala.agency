@@ -108,7 +108,7 @@ removes `published: false` on its own judgment.
 ### Thin-series rule
 
 In production (drafts hidden) a series counts as a series only with at least
-two published parts. Fewer, and the series has no card on `/blog`, no
+two published parts. Fewer, and the series has no block on `/blog`, no
 `/series/<slug>` page, no series rail and no "Part n of m" label; its published
 parts show as standalone posts. Drafts never count. In dev everything stays
 visible, and a series that production would hide carries the corner tag "Hidden

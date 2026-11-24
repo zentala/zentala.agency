@@ -4,27 +4,27 @@ import { partLabel } from '@/lib/blog/part-label'
 import { getThinSeries, getVisiblePosts } from '@/lib/blog/visibility'
 import { DATE_LOCALE } from '@/lib/blog/format-date'
 
-/** Real blog data for the design board: the same posts and series /blog shows. */
+/** Posts and series of the /blog index (and of the design board's blog options). */
 
-export type BoardPost = CollectionEntry<'blog'>
+export type BlogIndexPost = CollectionEntry<'blog'>
 
-export interface BoardSeries {
+export interface BlogIndexSeries {
   slug: string
   title: string
   tagline?: string
-  parts: BoardPost[]
+  parts: BlogIndexPost[]
   newestSlug: string
   isFresh: boolean
   /** Dev only: published parts of a series that production would hide. */
   hiddenInProduction?: number
 }
 
-export interface BoardData {
-  posts: BoardPost[]
-  latest: BoardPost[]
-  feed: FeedEntry<BoardPost>[]
-  series: BoardSeries[]
-  partLabelFor: (post: BoardPost) => string | undefined
+export interface BlogIndexData {
+  posts: BlogIndexPost[]
+  latest: BlogIndexPost[]
+  feed: FeedEntry<BlogIndexPost>[]
+  series: BlogIndexSeries[]
+  partLabelFor: (post: BlogIndexPost) => string | undefined
 }
 
 const FRESH_DAYS = 14
@@ -34,16 +34,16 @@ const SERIES_ORDER = [
   'developer-experience',
 ]
 
-const byDateDesc = (a: BoardPost, b: BoardPost) =>
+const byDateDesc = (a: BlogIndexPost, b: BlogIndexPost) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 
-export async function loadBoardData(): Promise<BoardData> {
+export async function loadBlogIndexData(): Promise<BlogIndexData> {
   const posts = await getVisiblePosts()
   const thinSeries = await getThinSeries()
   const descriptions = await getCollection('series-descriptions')
   const feed = buildFeed(posts, { now: new Date(), freshDays: FRESH_DAYS })
 
-  const series = SERIES_ORDER.flatMap((slug): BoardSeries[] => {
+  const series = SERIES_ORDER.flatMap((slug): BlogIndexSeries[] => {
     const entry = feed.find(
       (item) => item.kind === 'series' && item.slug === slug,
     )
@@ -62,7 +62,7 @@ export async function loadBoardData(): Promise<BoardData> {
     ]
   })
 
-  const partLabelFor = (post: BoardPost) => {
+  const partLabelFor = (post: BlogIndexPost) => {
     const { series: seriesSlug, part } = post.data
     if (!seriesSlug || part === undefined) return undefined
     const visibleParts = posts.flatMap((other) =>

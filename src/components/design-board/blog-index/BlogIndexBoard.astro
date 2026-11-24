@@ -5,14 +5,14 @@ import IndexGrid from './IndexGrid.astro'
 import LatestGrid from './LatestGrid.astro'
 import OptionBar from './OptionBar.astro'
 import SeriesRow from './SeriesRow.astro'
-import { loadBoardData } from './data'
+import { loadBlogIndexData } from '@/lib/blog/index-data'
 
 /**
  * Design board, group "blog index": questions B1 (layout of /blog) and B2
  * (how one series is presented). Dev-only demo; the real /blog is untouched.
  * Every option renders the real posts and series, drafts included.
  */
-const data = await loadBoardData()
+const data = await loadBlogIndexData()
 
 const B1 = {
   id: 'B1',

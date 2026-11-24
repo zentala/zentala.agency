@@ -1,15 +1,15 @@
 ---
 import PostMeta from '@/components/blog/PostMeta.astro'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
-import SlugCover from './SlugCover.astro'
-import type { BoardPost } from './data'
+import SlugCover from '@/components/blog/index/SlugCover.astro'
+import type { BlogIndexPost } from '@/lib/blog/index-data'
 
 /**
  * Compact post cell for the proposed /blog grid: optional generated cover,
  * title, meta line, short excerpt. `featured` makes it two columns wide.
  */
 interface Props {
-  post: BoardPost
+  post: BlogIndexPost
   partLabel?: string
   cover?: boolean
   featured?: boolean

@@ -1,11 +1,11 @@
 ---
 import PostCard from '@/components/cards/PostCard.astro'
 import SeriesCard from '@/components/cards/SeriesCard.astro'
-import type { BoardData } from './data'
+import type { BlogIndexData } from '@/lib/blog/index-data'
 
 /** Option A of B1: the /blog index as it is today (same markup as src/pages/blog/index.astro). */
 interface Props {
-  data: BoardData
+  data: BlogIndexData
 }
 
 const { feed, series } = Astro.props.data

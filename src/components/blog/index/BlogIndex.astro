@@ -1,0 +1,66 @@
+---
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import type { BlogIndexData } from '@/lib/blog/index-data'
+import ArchiveCell from './ArchiveCell.astro'
+import PostCell from './PostCell.astro'
+import SeriesBlock from './SeriesBlock.astro'
+
+/**
+ * Body of the /blog index (DB-6, layout F): the seven newest posts with the first
+ * one two columns wide, then the archive cell, which closes three rows of three;
+ * the series follow under a thin section header. No label above the posts.
+ */
+interface Props {
+  data: BlogIndexData
+  archiveHref: string
+}
+
+const LATEST_COUNT = 7
+
+const { data, archiveHref } = Astro.props
+const shown = data.latest.slice(0, LATEST_COUNT)
+const seriesTitles = new Map(data.series.map((item) => [item.slug, item.title]))
+const partCount = data.series.reduce((sum, item) => sum + item.parts.length, 0)
+---
+
+<section class="section-full">
+  <div class="container-bordered">
+    <div class="cards-grid">
+      {
+        shown.map((post, index) => (
+          <PostCell
+            post={post}
+            seriesTitle={seriesTitles.get(post.data.series ?? '')}
+            featured={index === 0}
+          />
+        ))
+      }
+      <ArchiveCell
+        postCount={data.posts.length}
+        shownCount={shown.length}
+        href={archiveHref}
+      />
+    </div>
+  </div>
+</section>
+
+{
+  data.series.length > 0 && (
+    <section class="section-full">
+      <div class="container-bordered">
+        <SectionHeader
+          variant="c"
+          tag="h2"
+          headline="Series"
+          labelIcon="series"
+          meta={`${data.series.length} series, ${partCount} parts`}
+        />
+        <div class="line-grid line-grid--fill-last">
+          {data.series.map((item) => (
+            <SeriesBlock series={item} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

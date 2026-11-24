@@ -24,7 +24,6 @@ describe('DraftBadge state name', () => {
   const users = [
     'src/components/blog/SeriesRail.astro',
     'src/components/cards/SeriesCard.astro',
-    'src/components/blog/mockups/SeriesOverviewCell.astro',
   ]
   it.each(users)('%s provides a size container for the state query', (file) => {
     const source = read(file)

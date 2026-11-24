@@ -3,7 +3,7 @@ import SeriesCard from '@/components/cards/SeriesCard.astro'
 import SeriesBlock from './SeriesBlock.astro'
 import SeriesList from './SeriesList.astro'
 import { seriesIconName } from './blog-icons'
-import type { BoardSeries } from './data'
+import type { BlogIndexSeries } from '@/lib/blog/index-data'
 
 /**
  * The series of the blog side by side, three per row, in one presentation.
@@ -11,7 +11,7 @@ import type { BoardSeries } from './data'
  * and `icons` swaps its generated cover for the series' own icon.
  */
 interface Props {
-  series: BoardSeries[]
+  series: BlogIndexSeries[]
   variant: 'card' | 'date' | 'number' | 'combined' | 'badges'
   palette?: 'tint' | 'neutral'
   icons?: boolean

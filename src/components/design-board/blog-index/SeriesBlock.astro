@@ -3,9 +3,9 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
 import BoardIcon from '../icons-controls/BoardIcon.astro'
 import BackdropIcon from './BackdropIcon.astro'
-import SlugCover from './SlugCover.astro'
+import SlugCover from '@/components/blog/index/SlugCover.astro'
 import StatusBadge from './StatusBadge.astro'
-import { formatShortDate, type BoardSeries } from './data'
+import { formatShortDate, type BlogIndexSeries } from '@/lib/blog/index-data'
 import { textIcon } from './blog-icons'
 import { partStatus, smallIcon } from './status'
 
@@ -19,7 +19,7 @@ import { partStatus, smallIcon } from './status'
  * large behind the block. The "Start" link carries a play icon.
  */
 interface Props {
-  series: BoardSeries
+  series: BlogIndexSeries
   palette?: 'tint' | 'neutral'
   icon?: string
 }

@@ -44,6 +44,54 @@ export const BLOG_GROUP: GalleryGroup = {
       props: 'postUrl, title',
     },
     {
+      id: 'blog-index',
+      name: 'BlogIndex',
+      path: 'blog/index/BlogIndex.astro',
+      purpose:
+        'Body of /blog (DB-6, layout F): seven newest posts, the first large, an archive cell, then the series blocks.',
+      props: 'data (BlogIndexData), archiveHref',
+    },
+    {
+      id: 'blog-post-cell',
+      name: 'PostCell',
+      path: 'blog/index/PostCell.astro',
+      purpose:
+        'Post cell of the blog index: generated cover, title, two-line meta, excerpt.',
+      props: 'post, seriesTitle, featured (false; true spans two columns)',
+    },
+    {
+      id: 'blog-archive-cell',
+      name: 'ArchiveCell (blog)',
+      path: 'blog/index/ArchiveCell.astro',
+      purpose:
+        'Last cell of the blog index: link to the archive, small icon top right, large icon behind.',
+      props: 'postCount, shownCount, href',
+    },
+    {
+      id: 'blog-series-block',
+      name: 'SeriesBlock',
+      path: 'blog/index/SeriesBlock.astro',
+      purpose:
+        'One series on the blog index: cover, name, description, parts count, Start link and the part rows.',
+      props: 'series (BlogIndexSeries)',
+    },
+    {
+      id: 'blog-status-badge',
+      name: 'StatusBadge',
+      path: 'blog/index/StatusBadge.astro',
+      purpose:
+        'Inline marker after a part title: date when published, Draft or Review otherwise.',
+      props: 'status (published; draft; review), datetime, dateLabel',
+    },
+    {
+      id: 'blog-slug-cover',
+      name: 'SlugCover',
+      path: 'blog/index/SlugCover.astro',
+      purpose:
+        'Generated cover: a grey line-grid plan seeded by a slug, with an optional part number.',
+      props: 'seed, label, size (regular; wide)',
+    },
+    {
       id: 'box-grid',
       name: 'BoxGrid',
       path: 'blog/rich/BoxGrid.astro',

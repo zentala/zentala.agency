@@ -15,6 +15,7 @@ import GalleryLineGrid from '@/components/demo/GalleryLineGrid.astro'
 import GalleryPrimitives from '@/components/demo/GalleryPrimitives.astro'
 import GalleryCards from '@/components/demo/GalleryCards.astro'
 import GalleryBlog from '@/components/demo/GalleryBlog.astro'
+import GalleryBlogIndex from '@/components/demo/GalleryBlogIndex.astro'
 import GalleryRich from '@/components/demo/GalleryRich.astro'
 import GalleryBanners from '@/components/demo/GalleryBanners.astro'
 import GalleryGeneral from '@/components/demo/GalleryGeneral.astro'
@@ -96,6 +97,7 @@ const totalCount = GALLERY_GROUPS.reduce(
         {group.title === 'Blog' && (
           <>
             <GalleryBlog />
+            <GalleryBlogIndex />
             <GalleryRich />
           </>
         )}

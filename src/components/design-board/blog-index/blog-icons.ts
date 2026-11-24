@@ -1,5 +1,5 @@
 import type { BoardIconSpec } from '../icons-controls/board-icons'
-import type { BoardPost } from './data'
+import type { BlogIndexPost } from '@/lib/blog/index-data'
 
 /**
  * Own icons for series, categories and single posts (B1, option G): one Phosphor
@@ -70,7 +70,7 @@ export const seriesIconName = (slug: string) =>
 export const categoryIconName = (category: string) =>
   CATEGORY_ICONS[category] ?? FALLBACK_ICON
 
-export const postIconName = (post: BoardPost) =>
+export const postIconName = (post: BlogIndexPost) =>
   POST_ICONS[post.slug] ?? categoryIconName(post.data.category)
 
 /** Phosphor Regular next to text of the given size: thin weights blur this small. */

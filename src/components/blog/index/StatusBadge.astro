@@ -1,0 +1,54 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import type { PartStatus } from '@/lib/blog/part-status'
+
+/**
+ * Marker of a series part, set inline after the title text: an icon and a short
+ * text, no fill and no colour. It never breaks inside, so it wraps as one word.
+ * A published part shows the calendar icon and its date; a draft or a review shows
+ * its icon and word (review one step lighter than draft).
+ */
+interface Props {
+  status: PartStatus
+  datetime: string
+  dateLabel: string
+}
+
+const ICON: Record<PartStatus, string> = {
+  published: 'date',
+  draft: 'draft',
+  review: 'review',
+}
+const LABEL = { draft: 'Draft', review: 'Review' } as const
+
+const { status, datetime, dateLabel } = Astro.props
+---
+
+<span class={`status-badge status-badge--${status}`}>
+  <SiteIcon name={ICON[status]} size="sm" />
+  {
+    status === 'published' ? (
+      <time datetime={datetime}>{dateLabel}</time>
+    ) : (
+      <span>{LABEL[status]}</span>
+    )
+  }
+</span>
+
+<style>
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 1.5rem;
+    vertical-align: top;
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .status-badge--review {
+    color: var(--color-text-secondary);
+  }
+</style>

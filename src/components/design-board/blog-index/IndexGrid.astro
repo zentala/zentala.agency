@@ -3,7 +3,7 @@ import ArchiveCell from './ArchiveCell.astro'
 import CompactHeader from './CompactHeader.astro'
 import PostCell from './PostCell.astro'
 import SeriesRow from './SeriesRow.astro'
-import type { BoardData } from './data'
+import type { BlogIndexData } from '@/lib/blog/index-data'
 
 /**
  * Options B, C and D of B1: no page header, posts first (three per row, the
@@ -13,7 +13,7 @@ import type { BoardData } from './data'
  * a description and end-of-row status badges (option E).
  */
 interface Props {
-  data: BoardData
+  data: BlogIndexData
   covers?: boolean
   featured?: boolean
   seriesBadges?: boolean

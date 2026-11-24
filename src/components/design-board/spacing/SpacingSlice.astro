@@ -7,12 +7,12 @@
  */
 import PostCell from '../blog-index/PostCell.astro'
 import SeriesList from '../blog-index/SeriesList.astro'
-import type { BoardData } from '../blog-index/data'
+import type { BlogIndexData } from '@/lib/blog/index-data'
 import SpacingReadout from './SpacingReadout.astro'
 import { SLICE_PARTS, SLICE_POSTS, type SpacingVariant } from './options'
 
 interface Props {
-  data: BoardData
+  data: BlogIndexData
   variant: SpacingVariant
 }
 
