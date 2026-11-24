@@ -67,13 +67,3 @@ export async function loadBlogIndexData(): Promise<BlogIndexData> {
     series,
   }
 }
-
-/** Compact date for a table column, for example "8 Sept 2026". UTC like `formatDate`. */
-export function formatShortDate(date: string): string {
-  return new Intl.DateTimeFormat(DATE_LOCALE, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(date))
-}

@@ -1,7 +1,7 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
-import { formatShortDate, type BlogIndexSeries } from '@/lib/blog/index-data'
+import type { BlogIndexSeries } from '@/lib/blog/index-data'
 import { partStatus } from '@/lib/blog/part-status'
 import SlugCover from './SlugCover.astro'
 import StatusBadge from './StatusBadge.astro'
@@ -23,8 +23,7 @@ const rows = series.parts.map((part, index) => ({
   title: part.data.title,
   number: String(part.data.part ?? index + 1).padStart(2, '0'),
   status: partStatus(part),
-  datetime: formatDate(part.data.date).datetime,
-  dateLabel: formatShortDate(part.data.date),
+  date: formatDate(part.data.date),
 }))
 const firstPart = series.parts[0]
 ---
@@ -66,8 +65,8 @@ const firstPart = series.parts[0]
                 <span class="part-row__badge">
                   <StatusBadge
                     status={row.status}
-                    datetime={row.datetime}
-                    dateLabel={row.dateLabel}
+                    datetime={row.date.datetime}
+                    dateLabel={row.date.label}
                   />
                 </span>
               </span>
