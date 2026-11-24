@@ -80,10 +80,26 @@ const KNOWN_WARM_HEXES = [
   '#ea580c',
 ]
 
+/** The one file that may hold warm hex: technology logos show their brand colour on hover (owner ruling 2026-11-21). */
+const LOGO_DATA_PATH = 'data/tech-icons.ts'
+
 function isWarm(hex: string): boolean {
   if (KNOWN_WARM_HEXES.includes(hex.toLowerCase())) return true
   const { h, s, l } = hsl(hex)
   return h >= 20 && h <= 65 && s >= 0.5 && l >= 0.3 && l <= 0.85
+}
+
+/** Warm hex found in the given sources, `path:line: hex`, skipping the logo data file. */
+function warmHexOffenders(files: Source[]): string[] {
+  return files.flatMap(({ path, lines }) =>
+    path === LOGO_DATA_PATH
+      ? []
+      : lines.flatMap((line, i) =>
+          (line.match(WARM_HEX) ?? [])
+            .filter(isWarm)
+            .map((hex) => `${path}:${i + 1}: ${hex}`),
+        ),
+  )
 }
 
 /** Files that may contain an underline utility or declaration, each with the reason. */
@@ -137,21 +153,19 @@ describe('colour restraint', () => {
     expect(findLines(tailwind)).toEqual([])
   })
 
-  it('uses no orange, amber or yellow hex', () => {
-    const offenders = sources.flatMap(({ path, lines }) =>
-      lines.flatMap((line, i) =>
-        (line.match(WARM_HEX) ?? [])
-          .filter(isWarm)
-          .map((hex) => `${path}:${i + 1}: ${hex}`),
-      ),
-    )
-    expect(offenders).toEqual([])
+  it('uses no orange, amber or yellow hex outside the logo data', () => {
+    expect(warmHexOffenders(sources)).toEqual([])
   })
 
-  it('sees no warm hex in the logo data because it stores bare digits', () => {
-    const logoData = sources.find(({ path }) => path === 'data/tech-icons.ts')
-    expect(logoData).toBeDefined()
-    expect(logoData?.lines.filter((line) => WARM_HEX.test(line))).toEqual([])
+  it('exempts exactly the logo data file and still flags a warm hex anywhere else', () => {
+    const decoy = ['const brand = "#f59e0b"']
+    expect(
+      warmHexOffenders([
+        { path: LOGO_DATA_PATH, lines: decoy },
+        { path: 'components/Other.astro', lines: decoy },
+      ]),
+    ).toEqual(['components/Other.astro:1: #f59e0b'])
+    expect(sources.some(({ path }) => path === LOGO_DATA_PATH)).toBe(true)
   })
 })
 

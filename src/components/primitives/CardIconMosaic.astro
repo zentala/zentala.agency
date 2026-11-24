@@ -4,7 +4,7 @@
  * that have no photograph worth showing. Each tile is a Phosphor Light icon (32 px) in a 1 px
  * frame at about 4.5% white. A 45-degree wave shades the tiles: the tone peaks on the middle
  * diagonal and each tile differs a little. A tile lightens on its own hover and its label shows
- * under the mosaic. The mosaic fades out downward so the caption below sits on clean black.
+ * above the mosaic, in the unmasked top of the card, clear of the caption. The mosaic fades out downward so the caption below sits on clean black.
  *
  * The mosaic lets no pointer through except on the tiles: a caption laid over it must set
  * `pointer-events: none` for the tile hover to reach them.
@@ -14,7 +14,7 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 export interface MosaicTile {
   /** Icon meaning from the icon map, e.g. `ai-agent`. */
   icon: string
-  /** Portfolio area, shown under the mosaic while the tile is hovered. */
+  /** Portfolio area, shown above the mosaic while the tile is hovered. */
   label: string
 }
 
@@ -59,7 +59,7 @@ function tone(index: number): string {
     mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 92%);
   }
 
-  /* The grid is the positioning parent of the labels, so a label sits under the whole mosaic. */
+  /* The grid is the positioning parent of the labels, so a label sits above the whole mosaic. */
   .mosaic__grid {
     --tile: 5rem;
     --gap: 0.5rem;
@@ -93,7 +93,7 @@ function tone(index: number): string {
 
   .mosaic__label {
     position: absolute;
-    top: calc(100% + 0.875rem);
+    bottom: calc(100% + 0.875rem);
     left: -2rem;
     right: -2rem;
     color: var(--color-text-secondary);

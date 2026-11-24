@@ -13,8 +13,7 @@
  * `slug` is the simple-icons name. `hex` is the brand colour exactly as simple-icons publishes it: six hex digits,
  * no `#`. Owner ruling 2026-11-21: a technology logo shows its real brand colour on hover, warm hues included
  * (JavaScript yellow, HTML5 orange-red); the no-warm-colour rule stays for the site's own UI. The warm-hex scan in
- * tests/unit/design-guards.test.ts matches `#rrggbb`, so this file passes it by format alone: keep the digits bare here
- * and add the `#` only in code, or the scan will flag them.
+ * tests/unit/design-guards.test.ts exempts this file by path (`LOGO_DATA_PATH`) and no other.
  *
  * A brand colour too dark to see on the black page (under 3:1, WCAG 1.4.11) falls back to `onDark`, a lighter colour
  * from the same brand's own palette, and otherwise to white: black and near-black marks (GitHub, Notion, Rust) are
