@@ -1,6 +1,6 @@
 ---
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
-import type { BlogIndexData } from '@/lib/blog/index-data'
+import { LATEST_COUNT, type BlogIndexData } from '@/lib/blog/index-data'
 import ArchiveCell from './ArchiveCell.astro'
 import PostCell from './PostCell.astro'
 import SeriesBlock from './SeriesBlock.astro'
@@ -14,8 +14,6 @@ interface Props {
   data: BlogIndexData
   archiveHref: string
 }
-
-const LATEST_COUNT = 7
 
 const { data, archiveHref } = Astro.props
 const shown = data.latest.slice(0, LATEST_COUNT)

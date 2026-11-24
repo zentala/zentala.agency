@@ -73,13 +73,17 @@ describe('loadBlogIndexData (production)', () => {
     expect(data.series[0]?.parts).toHaveLength(2)
   })
 
-  it('labels a part "Part n of N" over visible parts and leaves a standalone post bare', async () => {
-    const { loadBlogIndexData } = await import('@/lib/blog/index-data')
+  it('shows seven posts as cells before the archive cell', async () => {
+    const { loadBlogIndexData, LATEST_COUNT } = await import('@/lib/blog/index-data')
+    expect(LATEST_COUNT).toBe(7)
+    collections.blog = Array.from({ length: 10 }, (_, i) =>
+      entry(`p${i}`, `2026-01-${String(i + 1).padStart(2, '0')}`),
+    )
     const data = await loadBlogIndexData()
-    const post = (slug: string) => data.posts.find((item) => item.slug === slug)!
-    expect(data.partLabelFor(post('h2'))).toBe('Part 2 of 2')
-    expect(data.partLabelFor(post('old'))).toBeUndefined()
-    expect(data.partLabelFor(post('lone'))).toBeUndefined()
+    expect(data.latest.slice(0, LATEST_COUNT).map((post) => post.slug)).toEqual(
+      ['p9', 'p8', 'p7', 'p6', 'p5', 'p4', 'p3'],
+    )
+    expect(data.latest).toHaveLength(10)
   })
 })
 
@@ -88,7 +92,7 @@ describe('BlogIndex source', () => {
   const postCell = readFileSync('src/components/blog/index/PostCell.astro', 'utf8')
 
   it('shows seven posts, the first featured, then one archive cell', () => {
-    expect(source).toContain('const LATEST_COUNT = 7')
+    expect(source).toContain('LATEST_COUNT')
     expect(source).toContain('data.latest.slice(0, LATEST_COUNT)')
     expect(source).toContain('featured={index === 0}')
     expect(source.match(/<ArchiveCell/g)).toHaveLength(1)

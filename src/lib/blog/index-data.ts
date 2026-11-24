@@ -1,6 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { buildFeed } from '@/lib/blog/feed'
-import { partLabel } from '@/lib/blog/part-label'
 import { getThinSeries, getVisiblePosts } from '@/lib/blog/visibility'
 import { DATE_LOCALE } from '@/lib/blog/format-date'
 
@@ -23,9 +22,10 @@ export interface BlogIndexData {
   posts: BlogIndexPost[]
   latest: BlogIndexPost[]
   series: BlogIndexSeries[]
-  partLabelFor: (post: BlogIndexPost) => string | undefined
 }
 
+/** Posts shown as cells on /blog before the archive cell. */
+export const LATEST_COUNT = 7
 const FRESH_DAYS = 14
 const SERIES_ORDER = [
   'agent-native-harness',
@@ -61,22 +61,10 @@ export async function loadBlogIndexData(): Promise<BlogIndexData> {
     ]
   })
 
-  const partLabelFor = (post: BlogIndexPost) => {
-    const { series: seriesSlug, part } = post.data
-    if (!seriesSlug || part === undefined) return undefined
-    const visibleParts = posts.flatMap((other) =>
-      other.data.series === seriesSlug && other.data.part !== undefined
-        ? [other.data.part]
-        : [],
-    )
-    return partLabel(part, visibleParts)
-  }
-
   return {
     posts,
     latest: [...posts].sort(byDateDesc),
     series,
-    partLabelFor,
   }
 }
 
