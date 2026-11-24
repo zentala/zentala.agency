@@ -30,7 +30,11 @@ const storageKey = VARIANT_STORAGE_KEY
           <p class="vsw__label">{item.label}</p>
           <div class="vsw__options">
             {item.options.map((option) => (
-              <button type="button" data-value={option.value} aria-pressed="false">
+              <button
+                type="button"
+                data-value={option.value}
+                aria-pressed="false"
+              >
                 {option.label}
               </button>
             ))}
@@ -65,21 +69,29 @@ const storageKey = VARIANT_STORAGE_KEY
       context.font = `72px ${font}`
       return context.measureText(sample).width
     }
-    return ['monospace', 'serif'].some((generic) => width(`'${family}', ${generic}`) !== width(generic))
+    return ['monospace', 'serif'].some(
+      (generic) => width(`'${family}', ${generic}`) !== width(generic),
+    )
   }
 
   const labelSelawik = () => {
-    const button = panel.querySelector('[data-vsw-axis="font"] [data-value="selawik"]')
+    const button = panel.querySelector(
+      '[data-vsw-axis="font"] [data-value="selawik"]',
+    )
     if (!button) return
     button.dataset.label ??= button.textContent.trim()
-    button.textContent = isInstalled('Selawik') ? button.dataset.label : SELAWIK_MISSING_LABEL
+    button.textContent = isInstalled('Selawik')
+      ? button.dataset.label
+      : SELAWIK_MISSING_LABEL
   }
 
   const apply = (state) => {
     let changed = 0
     for (const item of axes) {
       const fallback = item.options[0].value
-      const known = item.options.some((option) => option.value === state[item.id])
+      const known = item.options.some(
+        (option) => option.value === state[item.id],
+      )
       const value = known ? state[item.id] : fallback
       if (value === fallback) root.removeAttribute(item.attribute)
       else root.setAttribute(item.attribute, value)
@@ -87,10 +99,15 @@ const storageKey = VARIANT_STORAGE_KEY
       panel
         .querySelectorAll(`[data-vsw-axis="${item.id}"] button`)
         .forEach((button) =>
-          button.setAttribute('aria-pressed', String(button.dataset.value === value)),
+          button.setAttribute(
+            'aria-pressed',
+            String(button.dataset.value === value),
+          ),
         )
     }
-    panel.querySelector('[data-vsw-count]').textContent = changed ? ` · ${changed}` : ''
+    panel.querySelector('[data-vsw-count]').textContent = changed
+      ? ` · ${changed}`
+      : ''
   }
 
   const save = (state) => {
@@ -108,6 +125,22 @@ const storageKey = VARIANT_STORAGE_KEY
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') panel.removeAttribute('open')
+  })
+
+  /* Spotlight card hover: the hovered cell learns where the pointer is (no tracking under reduced motion). */
+  const SPOTLIGHT_CELL = '.line-grid > *, .cards-grid > *, .content-grid > *'
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  document.addEventListener('pointermove', (event) => {
+    if (
+      root.getAttribute('data-v-card-hover') !== 'spotlight' ||
+      reducedMotion.matches
+    )
+      return
+    const cell = event.target.closest?.(SPOTLIGHT_CELL)
+    if (!cell) return
+    const box = cell.getBoundingClientRect()
+    cell.style.setProperty('--mx', `${event.clientX - box.left}px`)
+    cell.style.setProperty('--my', `${event.clientY - box.top}px`)
   })
 
   labelSelawik()
@@ -129,7 +162,11 @@ const storageKey = VARIANT_STORAGE_KEY
 
   .vsw__toggle,
   .vsw__panel {
-    background-color: color-mix(in srgb, var(--color-text) 9%, var(--color-surface));
+    background-color: color-mix(
+      in srgb,
+      var(--color-text) 9%,
+      var(--color-surface)
+    );
     border-radius: var(--radius-sm);
   }
 

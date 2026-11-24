@@ -1,0 +1,62 @@
+---
+/**
+ * Placeholder for the picture of an area card (owner feedback 2026-11-24, R12): a full-bleed
+ * monochrome band at the top of the card, hatched, with the area glyph and the words "Image
+ * placeholder", so nobody mistakes it for the final picture. Inside the card's padding it
+ * pulls itself out to the cell edges, so its bottom line joins both vertical cell lines. No
+ * colour, no radius, no hover of its own. Shown only while SHOW_AREA_IMAGES is on.
+ */
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+interface Props {
+  /** Icon meaning of the area, drawn at 32 px. */
+  icon: string
+}
+
+const { icon } = Astro.props
+---
+
+<div class="area-image" aria-hidden="true">
+  <div class="area-image__band">
+    <SiteIcon name={icon} size={32} />
+    <span class="area-image__caption">Image placeholder</span>
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  /* --cell-padding comes from the card; outside a card the band simply fills its box. */
+  .area-image {
+    margin: calc(-1 * var(--cell-padding, 0px))
+      calc(-1 * var(--cell-padding, 0px)) 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* The height sits on the band, never as aspect-ratio on the cell. */
+  .area-image__band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 11rem;
+    color: var(--color-text-subtle);
+    background-color: var(--color-surface-raised);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.04) 0 1px,
+      transparent 1px 12px
+    );
+
+    @include tablet {
+      height: 9rem;
+    }
+  }
+
+  .area-image__caption {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+</style>

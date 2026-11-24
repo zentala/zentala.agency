@@ -482,7 +482,9 @@ $header-height-mobile: calc(
 @mixin cell-interactive {
   position: relative;
   border-radius: var(--radius-none);
-  transition: background-color var(--motion-fast) var(--ease-standard);
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard);
 
   &::after {
     content: '';
@@ -498,8 +500,17 @@ $header-height-mobile: calc(
       border-color var(--motion-fast) var(--ease-standard);
   }
 
+  // --cell-hover-glow and --cell-hover-light are unset on the live site (no shadow, no gradient);
+  // the dev "Warianty" switcher axis "card-hover" sets them to show the other hover looks.
   &:hover {
     background-color: var(--color-surface-card-hover);
+    background-image: var(--cell-hover-light, none);
+  }
+
+  &:hover,
+  &:focus-visible,
+  &:has(:focus-visible) {
+    box-shadow: var(--cell-hover-glow, none);
   }
 
   &:focus-visible::after,

@@ -18,14 +18,21 @@ export interface VariantAxis {
 const DEFAULT_VALUE = 'default'
 
 /** `options` are `value:label` pairs; a bare label gets the value `default`. */
-const axis = (id: string, label: string, ...options: string[]): VariantAxis => ({
+const axis = (
+  id: string,
+  label: string,
+  ...options: string[]
+): VariantAxis => ({
   id,
   label,
   options: options.map((option) => {
     const separator = option.indexOf(':')
     return separator < 0
       ? { value: DEFAULT_VALUE, label: option }
-      : { value: option.slice(0, separator), label: option.slice(separator + 1) }
+      : {
+          value: option.slice(0, separator),
+          label: option.slice(separator + 1),
+        }
   }),
 })
 
@@ -40,7 +47,28 @@ export const VARIANT_AXES: VariantAxis[] = [
     'noto-sans:Noto Sans',
     'source-sans:Source Sans 3',
   ),
-  axis('form', 'Formularz', 'B (linie w obu kierunkach)', 'line:C (tylko poziome)'),
+  axis(
+    'form',
+    'Formularz',
+    'B (linie w obu kierunkach)',
+    'line:C (tylko poziome)',
+  ),
+  axis(
+    'cta',
+    'Przycisk "Book a call"',
+    'Niebieski (obecny)',
+    'steel:Stalowy niebieski',
+    'ice:Lodowy jasny',
+    'white:Biały (poziom primary)',
+    'ghost:Cichy szary z niebieskim tekstem',
+  ),
+  axis(
+    'card-hover',
+    'Najechanie na kartę',
+    'Wypełnienie (obecne)',
+    'inner-light:Światło od środka',
+    'spotlight:Reflektor za kursorem',
+  ),
 ]
 
 export const VARIANT_STORAGE_KEY = 'dev-variants'

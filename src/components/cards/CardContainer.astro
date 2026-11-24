@@ -2,6 +2,8 @@
 import CardBackgroundIcon from '../primitives/CardBackgroundIcon.astro'
 
 export interface CardContainerProps {
+  /** Anchor id, for links from elsewhere on the page. */
+  id?: string
   href?: string
   hasHover?: boolean
   backgroundIcon?: string
@@ -10,6 +12,7 @@ export interface CardContainerProps {
 }
 
 const {
+  id,
   href,
   hasHover = !!href, // Default: hover if link exists
   backgroundIcon,
@@ -21,6 +24,7 @@ const Element = href ? 'a' : 'div'
 ---
 
 <Element
+  id={id}
   href={href}
   target={href ? target : undefined}
   class:list={[
