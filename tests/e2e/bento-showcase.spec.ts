@@ -28,15 +28,15 @@ test.describe('Homepage bento showcase', () => {
 
 /**
  * R3 (owner feedback 2026-11-24): the Portfolio cell had too much empty space under its last
- * button. The cell has no padding of its own; the caption layer supplies it (p-6 below 768px,
- * p-10 from 768px). The distance from the button's bottom to the cell's bottom must equal that
+ * button. The cell has no padding of its own; the caption layer supplies it (p-6 / p-10 at the
+ * sides and top, pb-4 under the button, the same 16px the avatar overlay keeps). The distance from the button's bottom to the cell's bottom must equal that
  * bottom padding plus the cell border and nothing else: no empty element, reserved row or margin
  * below the button. Expected values are fixed pixels, not read back from the caption's style.
  */
 const CASES = [
-  { width: 1536, expectedPadding: 40 },
-  { width: 1024, expectedPadding: 40 },
-  { width: 390, expectedPadding: 24 },
+  { width: 1536, expectedPadding: 16 },
+  { width: 1024, expectedPadding: 16 },
+  { width: 390, expectedPadding: 16 },
 ]
 const TOLERANCE_PX = 1
 
