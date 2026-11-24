@@ -1,10 +1,10 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { buildFeed, type FeedEntry } from '@/lib/blog/feed'
+import { buildFeed } from '@/lib/blog/feed'
 import { partLabel } from '@/lib/blog/part-label'
 import { getThinSeries, getVisiblePosts } from '@/lib/blog/visibility'
 import { DATE_LOCALE } from '@/lib/blog/format-date'
 
-/** Posts and series of the /blog index (and of the design board's blog options). */
+/** Posts and series of the /blog index . */
 
 export type BlogIndexPost = CollectionEntry<'blog'>
 
@@ -22,7 +22,6 @@ export interface BlogIndexSeries {
 export interface BlogIndexData {
   posts: BlogIndexPost[]
   latest: BlogIndexPost[]
-  feed: FeedEntry<BlogIndexPost>[]
   series: BlogIndexSeries[]
   partLabelFor: (post: BlogIndexPost) => string | undefined
 }
@@ -76,7 +75,6 @@ export async function loadBlogIndexData(): Promise<BlogIndexData> {
   return {
     posts,
     latest: [...posts].sort(byDateDesc),
-    feed,
     series,
     partLabelFor,
   }

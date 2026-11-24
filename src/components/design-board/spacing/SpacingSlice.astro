@@ -5,7 +5,7 @@
  * marks the left edge of the navbar logo. The variant only changes padding
  * (and, in `d`, the size of the section title).
  */
-import PostCell from '../blog-index/PostCell.astro'
+import PostCell from '@/components/blog/index/PostCell.astro'
 import SeriesList from '../blog-index/SeriesList.astro'
 import type { BlogIndexData } from '@/lib/blog/index-data'
 import SpacingReadout from './SpacingReadout.astro'
@@ -18,6 +18,7 @@ interface Props {
 
 const { data, variant } = Astro.props
 const posts = data.latest.slice(0, SLICE_POSTS)
+const seriesTitles = new Map(data.series.map((item) => [item.slug, item.title]))
 const partCount = data.series.reduce((sum, item) => sum + item.parts.length, 0)
 ---
 
@@ -57,7 +58,7 @@ const partCount = data.series.reduce((sum, item) => sum + item.parts.length, 0)
         <div class="cards-grid">
           {
             posts.map((post) => (
-              <PostCell post={post} partLabel={data.partLabelFor(post)} />
+              <PostCell post={post} seriesTitle={seriesTitles.get(post.data.series ?? '')} />
             ))
           }
         </div>

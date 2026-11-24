@@ -1,8 +1,6 @@
 ---
 import BoardQuestion from './BoardQuestion.astro'
-import IndexCurrent from './IndexCurrent.astro'
-import IndexGrid from './IndexGrid.astro'
-import LatestGrid from './LatestGrid.astro'
+import BlogIndex from '@/components/blog/index/BlogIndex.astro'
 import OptionBar from './OptionBar.astro'
 import SeriesRow from './SeriesRow.astro'
 import { loadBlogIndexData } from '@/lib/blog/index-data'
@@ -36,62 +34,12 @@ const B2 = {
 
   <OptionBar
     questionId="B1"
-    letter="A"
-    name="Obecny /blog"
-    consequence="Bez zmian: posty bez serii i karty serii w jednej siatce, serie pokazują 6 części i zwijają resztę."
-  />
-  <IndexCurrent data={data} />
-
-  <OptionBar
-    questionId="B1"
-    letter="B"
-    name="Siatka postów bez obrazków, potem serie"
-    consequence="Od razu 5 najnowszych postów i komórka archiwum, niżej 3 serie z pełnymi listami; nic nie przyciąga wzroku poza tytułami."
-  />
-  <IndexGrid data={data} />
-
-  <OptionBar
-    questionId="B1"
-    letter="C"
-    name="To samo z generowanymi okładkami"
-    consequence="Każdy post dostaje okładkę wyliczoną z adresu (plan z linii siatki, numer części w największym polu); strona jest wyższa o 144 px na rząd."
-    status="Wybrana, tu bez zmian"
-  />
-  <IndexGrid data={data} covers />
-
-  <OptionBar
-    questionId="B1"
-    letter="D"
-    name="Najnowszy post szeroko, reszta w siatce"
-    consequence="Najnowszy post zajmuje dwie kolumny z dużą okładką; w siatce mieszczą się 4 posty zamiast 5 i komórka archiwum."
-  />
-  <IndexGrid data={data} covers featured />
-
-  <OptionBar
-    questionId="B1"
-    letter="E"
-    name="C ze zmianami: serie z okładką, opisem i ikoną przy liczbie części"
-    consequence='Posty jak w C. Każda seria dostaje okładkę wyliczoną z adresu serii, krótki opis pod nazwą i ikonę przy liczbie części; "Start" przechodzi z pierwszego wiersza do tej samej linii co liczba części. Blok serii jest wyższy o okładkę (144 px) i opis.'
-    status="Poprzednia runda"
-  />
-  <IndexGrid data={data} covers seriesBadges />
-
-  <OptionBar
-    questionId="B1"
     letter="F"
     name="Najnowszy wpis duży, 7 wpisów i archiwum w trzech rzędach"
     consequence='Bez napisu nad wpisami. Meta w dwóch liniach: data i kategoria, niżej "Part 13 of" z nazwą serii jako linkiem. Komórka archiwum ma małą ikonę w prawym górnym rogu i dużą ikonę w tle. Nad seriami cienki nagłówek sekcji z ikoną (T4-C), przy "Start" ikona. Strona jest dłuższa o jeden rząd wpisów.'
     recommended
   />
-  <LatestGrid data={data} look="cover" />
-
-  <OptionBar
-    questionId="B1"
-    letter="G"
-    name="To samo z własnymi ikonami zamiast okładek"
-    consequence="Każdy wpis, kategoria i seria ma swoją ikonę (fabryka przy wycieczce po fabryce oprogramowania, uścisk dłoni przy dzierżawie pliku): mała obok tytułu, duża w tle. Rząd jest niższy o okładkę (144 px), ale każdy nowy wpis wymaga dobrania ikony; bez niej dostaje ikonę kategorii."
-  />
-  <LatestGrid data={data} look="icon" />
+  <BlogIndex {data} archiveHref="/blog/archive" />
 
   <BoardQuestion {...B2} />
 
@@ -146,26 +94,13 @@ const B2 = {
 
   <OptionBar
     questionId="B2"
-    letter="E"
-    name="D ze znaczkiem zaraz za tytułem, delikatne kolory"
-    consequence="Opublikowana część: ikona kalendarza i data w szarości tabeli. Szkic: ołówek i Draft w zgaszonym morskim. Do recenzji: oko i Review w zgaszonym niebieskim. Bez wypełnienia i ramki, tym samym krojem co tytuł; osobnej kolumny nie ma. Link Start ma teraz ikonę."
-    recommended
-  />
-  <section class="section-full">
-    <div class="container-bordered">
-      <SeriesRow series={data.series} variant="badges" palette="tint" />
-    </div>
-  </section>
-
-  <OptionBar
-    questionId="B2"
     letter="F"
     name="To samo w samych szarościach"
     consequence="Układ jak w E, bez kolorów: stan odróżnia ikona i słowo. Szkic jest w szarości tabeli, Review o stopień jaśniejszy. Najspokojniejsza wersja, ale stan trudniej wyłapać jednym spojrzeniem."
   />
   <section class="section-full">
     <div class="container-bordered">
-      <SeriesRow series={data.series} variant="badges" palette="neutral" />
+      <SeriesRow series={data.series} variant="badges" />
     </div>
   </section>
 </div>

@@ -1,23 +1,19 @@
 ---
 import SeriesCard from '@/components/cards/SeriesCard.astro'
-import SeriesBlock from './SeriesBlock.astro'
+import SeriesBlock from '@/components/blog/index/SeriesBlock.astro'
 import SeriesList from './SeriesList.astro'
-import { seriesIconName } from './blog-icons'
 import type { BlogIndexSeries } from '@/lib/blog/index-data'
 
 /**
  * The series of the blog side by side, three per row, in one presentation.
- * `badges` is the owner's pick with his changes; `palette` sets its badge colours
- * and `icons` swaps its generated cover for the series' own icon.
+ * `badges` is the shared /blog series block (DB-6).
  */
 interface Props {
   series: BlogIndexSeries[]
   variant: 'card' | 'date' | 'number' | 'combined' | 'badges'
-  palette?: 'tint' | 'neutral'
-  icons?: boolean
 }
 
-const { series, variant, palette, icons = false } = Astro.props
+const { series, variant } = Astro.props
 ---
 
 <div class="line-grid line-grid--fill-last">
@@ -33,11 +29,7 @@ const { series, variant, palette, icons = false } = Astro.props
           hiddenInProduction={item.hiddenInProduction}
         />
       ) : variant === 'badges' ? (
-        <SeriesBlock
-          series={item}
-          palette={palette}
-          icon={icons ? seriesIconName(item.slug) : undefined}
-        />
+        <SeriesBlock series={item} />
       ) : (
         <SeriesList series={item} variant={variant} />
       ),
