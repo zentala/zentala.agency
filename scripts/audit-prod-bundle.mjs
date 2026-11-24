@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = process.cwd()
 const DIST = join(ROOT, 'dist')
+const FEATURES_FILE = fileURLToPath(new URL('../src/config/features.ts', import.meta.url))
 
 /**
  * Forbidden strings split by file kind. JS/HTML must be 100% clean — any hit there
@@ -96,6 +97,9 @@ const FORBIDDEN_RUNTIME = [
   'rv-thread',
 ]
 
+/** A header image element in markup (CSS selectors do not match: no `<` precedes the attribute). */
+const HEADER_IMAGE_ELEMENT = /<[^>]*(?:data-header-image|class="[^"]*slug-cover)/
+
 function collectReferences(html, htmlPath) {
   const refs = new Set()
   const scriptRe = /<script[^>]+src=["']([^"']+)["']/g
@@ -162,6 +166,14 @@ function main() {
     const isShipped = SHIPPED_FONT_FILE.test(file.split(/[\\/]/).pop() ?? '')
     if (FONT_FILE_EXT.has(file.slice(dot).toLowerCase()) && !isShipped) {
       failures.push({ file: file.replace(ROOT, ''), needle: 'font file', line: 0 })
+    }
+  }
+
+  if (!/HEADER_IMAGES\s*=\s*true/.test(readFileSync(FEATURES_FILE, 'utf8'))) {
+    for (const html of htmlFiles) {
+      if (HEADER_IMAGE_ELEMENT.test(readFileSync(html, 'utf8'))) {
+        failures.push({ file: html.replace(ROOT, ''), needle: 'header image element', line: 0 })
+      }
     }
   }
 

@@ -4,9 +4,14 @@
 @mixin button-tiers($block) {
   #{$block} {
     &--cta {
-      --button-ink: var(--color-text);
-      --button-fill: var(--color-accent-solid);
-      --button-fill-hover: color-mix(in srgb, var(--color-accent-solid) 86%, var(--color-text));
+      // The hover darkens: white text on a lightened blue fell to 4.03:1. The --cta-* properties
+      // are unset on the live site; the dev "cta" axis of the Warianty switcher sets them.
+      --button-ink: var(--cta-ink, var(--color-text));
+      --button-fill: var(--cta-fill, var(--color-accent-solid));
+      --button-fill-hover: var(
+        --cta-fill-hover,
+        color-mix(in srgb, var(--color-accent-solid) 86%, var(--color-surface))
+      );
     }
 
     &--primary {

@@ -5,17 +5,19 @@
  * shared components on real pages. Layout imports it only under DEV; nothing here
  * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans without
  * size-adjust, Selawik, Noto Sans and Source Sans 3 through BoardFonts, whose files are
- * imported under DEV only; "Open Sans dopasowany" is the production fallback itself.
+ * imported under DEV only; "Open Sans dopasowany" is the production fallback itself. A `?v-<axis>=<value>`
+ * parameter in the URL applies and stores an option on load (see axes.ts).
  */
 import './dev-variants.scss'
 import BoardFonts from '@/components/design-board/typography/BoardFonts.astro'
-import { VARIANT_AXES, VARIANT_STORAGE_KEY, variantAttribute } from './axes'
+import { VARIANT_AXES, VARIANT_STORAGE_KEY, parseVariantLink, variantAttribute } from './axes'
 
 const axes = VARIANT_AXES.map((item) => ({
   ...item,
   attribute: variantAttribute(item.id),
 }))
 const storageKey = VARIANT_STORAGE_KEY
+const parseLinkSource = parseVariantLink.toString()
 ---
 
 <BoardFonts />
@@ -30,7 +32,11 @@ const storageKey = VARIANT_STORAGE_KEY
           <p class="vsw__label">{item.label}</p>
           <div class="vsw__options">
             {item.options.map((option) => (
-              <button type="button" data-value={option.value} aria-pressed="false">
+              <button
+                type="button"
+                data-value={option.value}
+                aria-pressed="false"
+              >
                 {option.label}
               </button>
             ))}
@@ -44,7 +50,7 @@ const storageKey = VARIANT_STORAGE_KEY
   </div>
 </details>
 
-<script is:inline define:vars={{ axes, storageKey }}>
+<script is:inline define:vars={{ axes, storageKey, parseLinkSource }}>
   const root = document.documentElement
   const panel = document.querySelector('[data-vsw]')
 
@@ -60,7 +66,9 @@ const storageKey = VARIANT_STORAGE_KEY
     let changed = 0
     for (const item of axes) {
       const fallback = item.options[0].value
-      const known = item.options.some((option) => option.value === state[item.id])
+      const known = item.options.some(
+        (option) => option.value === state[item.id],
+      )
       const value = known ? state[item.id] : fallback
       if (value === fallback) root.removeAttribute(item.attribute)
       else root.setAttribute(item.attribute, value)
@@ -68,10 +76,15 @@ const storageKey = VARIANT_STORAGE_KEY
       panel
         .querySelectorAll(`[data-vsw-axis="${item.id}"] button`)
         .forEach((button) =>
-          button.setAttribute('aria-pressed', String(button.dataset.value === value)),
+          button.setAttribute(
+            'aria-pressed',
+            String(button.dataset.value === value),
+          ),
         )
     }
-    panel.querySelector('[data-vsw-count]').textContent = changed ? ` · ${changed}` : ''
+    panel.querySelector('[data-vsw-count]').textContent = changed
+      ? ` · ${changed}`
+      : ''
   }
 
   const save = (state) => {
@@ -91,7 +104,42 @@ const storageKey = VARIANT_STORAGE_KEY
     if (event.key === 'Escape') panel.removeAttribute('open')
   })
 
-  apply(read())
+  /* Spotlight card hover: the hovered cell learns where the pointer is (no tracking under reduced motion). */
+  const SPOTLIGHT_CELL = '.line-grid > *, .cards-grid > *, .content-grid > *'
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  document.addEventListener('pointermove', (event) => {
+    if (
+      root.getAttribute('data-v-card-hover') !== 'spotlight' ||
+      reducedMotion.matches
+    )
+      return
+    const cell = event.target.closest?.(SPOTLIGHT_CELL)
+    if (!cell) return
+    const box = cell.getBoundingClientRect()
+    cell.style.setProperty('--mx', `${event.clientX - box.left}px`)
+    cell.style.setProperty('--my', `${event.clientY - box.top}px`)
+  })
+
+  /* Note-strip logo expand: the strip above the wall shows the note of the hovered or focused tile. */
+  const fillStrip = (event) => {
+    if (root.getAttribute('data-v-logo-expand') !== 'note-strip') return
+    const item = event.target.closest?.('.logo-wall__item')
+    const strip = item?.closest('.logo-wall')?.previousElementSibling
+    if (!strip?.matches('[data-logo-strip]')) return
+    strip.innerHTML =
+      item.querySelector('[data-logo-note]')?.innerHTML ??
+      item.querySelector('.logo-wall__name').outerHTML
+  }
+  document.addEventListener('pointerover', fillStrip)
+  document.addEventListener('focusin', fillStrip)
+
+  /* Variant link: ?v-<axis>=<value> applies and stores a known option; anything else is ignored. */
+  const parseVariantLink = new Function('return ' + parseLinkSource)()
+  const fromUrl = () => parseVariantLink(location.search, axes, read())
+
+  const linkedState = fromUrl()
+  if (linkedState) save(linkedState)
+  else apply(read())
 </script>
 
 <style lang="scss">
@@ -109,7 +157,11 @@ const storageKey = VARIANT_STORAGE_KEY
 
   .vsw__toggle,
   .vsw__panel {
-    background-color: color-mix(in srgb, var(--color-text) 9%, var(--color-surface));
+    background-color: color-mix(
+      in srgb,
+      var(--color-text) 9%,
+      var(--color-surface)
+    );
     border-radius: var(--radius-sm);
   }
 

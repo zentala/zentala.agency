@@ -1,0 +1,137 @@
+/**
+ * The 18 offers of the capabilities page as it was before T37 (commit 555c189^), kept for
+ * the dev-only comparison mockup /mockups/capabilities-previous. Copy and order are the old
+ * page's, unchanged.
+ * CAVEAT: eight icon names were removed from the icon map in T37; the comments mark each
+ * one that now points to the closest current icon.
+ */
+import type { OfferCardProps } from '@/components/cards/OfferCard.astro'
+
+export const PREVIOUS_OFFERS: OfferCardProps[] = [
+  {
+    number: '01',
+    title: 'Strategic Innovation Consulting',
+    description:
+      'We will help you identify opportunities to use the latest technologies to increase the growth and efficiency of your business.',
+    icon: 'strategy',
+  },
+  {
+    number: '02',
+    title: 'Prototype Concept and Specification Development',
+    description:
+      'We transform your ideas into precisely developed project concepts, creating detailed technical and business specifications that form the foundation for further development and implementation.',
+    icon: 'architecture',
+  },
+  {
+    number: '03',
+    title: 'Design & UX',
+    description:
+      'Code-first UI/UX design bridging two worlds: I see enhancements developers miss, and UX improvements that designers overlook without code context.',
+    icon: 'design',
+  },
+  {
+    number: '04',
+    title: 'Web Applications',
+    description:
+      'Web applications and microservices implementing any functions from scratch in JavaScript, because it is the most universal language, allowing also to create mobile and desktop applications.',
+    icon: 'worldwide', // was 'web' (entry removed from the icon map in T37)
+  },
+  {
+    number: '05',
+    title: 'Advanced E-commerce Stores',
+    description:
+      "Creating advanced WooCommerce online stores, providing smooth shopping experiences with intuitive functionalities, tailored to the client's needs and business requirements.",
+    icon: 'portfolio', // was 'commerce' (entry removed from the icon map in T37)
+  },
+  {
+    number: '06',
+    title: 'Mobile and TV Applications',
+    description:
+      'React Native allows us to efficiently write simple applications for Android, Android TV, iOS, tvOS. Using JS and React, we save time by sharing the codebase with other parts of the ecosystem (website, desktop application, etc).',
+    icon: 'phone', // was 'mobile' (entry removed from the icon map in T37)
+  },
+  {
+    number: '07',
+    title: 'Desktop Applications',
+    description:
+      'Electron.js allows us to efficiently write a multiplatform (Linux, Windows, MacOS) application sharing the codebase with other parts of the ecosystem written in JS.',
+    icon: 'web-design', // was 'desktop' (entry removed from the icon map in T37)
+  },
+  {
+    number: '08',
+    title: 'Console Applications',
+    description:
+      'When necessary, and sometimes it is useful, such as an internal tool, we write script and console applications, mainly in Bash and Node.js (which means we share the codebase).',
+    icon: 'tooling', // was 'terminal' (entry removed from the icon map in T37)
+  },
+  {
+    number: '09',
+    title: 'Cloud Solutions',
+    description:
+      'Instead of configuring complex servers that later need to be administered, we set up infrastructure in the cloud, significantly reducing the amount of necessary maintenance work.',
+    icon: 'cloud',
+  },
+  {
+    number: '10',
+    title: 'DevOps & Data Pipelines',
+    description:
+      'We build and configure CI/CD pipelines that automate the processes of building, testing, deploying applications and data transformations.',
+    icon: 'devops',
+  },
+  {
+    number: '11',
+    title: 'Database Modeling',
+    description:
+      'Because business revolves around data, sometimes we engage in selecting the right database and designing its structure models so that it is readable but also fast and efficient.',
+    icon: 'database',
+  },
+  {
+    number: '12',
+    title: 'Internet of Things (IoT)',
+    description:
+      'We do not design PCB boards, but we know thousands of ready-to-use components, which we know how to program and efficiently connect them into functional prototypes.',
+    icon: 'iot',
+  },
+  {
+    number: '13',
+    title: 'Robotics',
+    description:
+      "We don't solve millennium robotics problems, but we assemble working prototypes from the top existing market software and hardware solutions.",
+    icon: 'ai-agent',
+  },
+  {
+    number: '14',
+    title: 'Machine Learning / AI',
+    description:
+      "We don't create new ones, but we implement ready ones. Thousands of diverse ready-made ML models increasing the efficiency of operations in business are at your fingertips.",
+    icon: 'ai-agent', // was 'ai' (entry removed from the icon map in T37)
+  },
+  {
+    number: '15',
+    title: 'Developer Portals',
+    description:
+      'I specialize in Developer Experience and creating developer portals based on Backstage. These portals are designed to streamline the development process by providing comprehensive tools and resources in a user-friendly environment.',
+    icon: 'capabilities', // was 'code' (entry removed from the icon map in T37)
+  },
+  {
+    number: '16',
+    title: 'Real-Time Location Systems',
+    description:
+      'I specialize in developing Real-Time Location Systems (RTLS) utilizing technologies like UWB, BLE, RFID, and NFC. My expertise includes knowledge of algorithms and their implementation across various architectures to enhance identification and location tracking capabilities.',
+    icon: 'location',
+  },
+  {
+    number: '17',
+    title: 'Long-Range Wireless Networks',
+    description:
+      'I have expertise and experience in establishing long-range wireless networks, including urban and point-to-point links. My skills include setting up wireless WiFi bridges, knowledge of antenna systems, and designing the architecture for expansive wireless networks.',
+    icon: 'indoor-location',
+  },
+  {
+    number: '18',
+    title: 'Smart Home Systems',
+    description:
+      'I design and implement comprehensive smart home systems. My projects range from setting up the electrical infrastructure to installing intelligent lighting, alarm systems, and administrator panels. I also integrate AI-powered voice assistants that enable interactive communication within the home environment.',
+    icon: 'home', // was 'smart-home' (entry removed from the icon map in T37)
+  },
+]

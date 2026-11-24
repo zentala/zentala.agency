@@ -9,7 +9,7 @@ export const CARDS_GROUP: GalleryGroup = {
       path: 'cards/CardContainer.astro',
       purpose:
         'Root of every card: a transparent grid cell, a link when href is set.',
-      props: 'href, hasHover, backgroundIcon, class, target (_self)',
+      props: 'id, href, hasHover, backgroundIcon, class, target (_self)',
     },
     {
       id: 'offer-card',

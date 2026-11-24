@@ -1,7 +1,8 @@
 ---
 /**
  * "What you get": three linked cells, each a claim plus one real example that
- * backs it. No icons and no numbers: the example line is what sets a cell apart.
+ * backs it, with a large faint background icon. No numbers: the example line is
+ * what sets a cell apart.
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
@@ -14,19 +15,28 @@ import { OUTCOMES } from './copy'
   <SectionHeader headline={OUTCOMES.headline} subhead={OUTCOMES.subhead} />
   <div class="line-grid outcomes">
     {
-      OUTCOMES.items.map((item) => (
-        <CardContainer href={item.href}>
-          <div class="outcome">
-            <h3 class="outcome__title">{item.title}</h3>
-            <p class="outcome__body">{item.body}</p>
-            <div class="outcome__foot">
-              <p class="outcome__proof">
-                {item.proof}&nbsp;<SiteIcon name="next" size="sm" class="arrow-nudge" />
-              </p>
+      OUTCOMES.items.map((item) => {
+        const lastSpace = item.proof.lastIndexOf(' ')
+        const proofHead = item.proof.slice(0, lastSpace)
+        const proofLast = item.proof.slice(lastSpace + 1)
+        return (
+          <CardContainer href={item.href} backgroundIcon={item.icon}>
+            <div class="outcome">
+              <h3 class="outcome__title">{item.title}</h3>
+              <p class="outcome__body">{item.body}</p>
+              <div class="outcome__foot">
+                <p class="outcome__proof">
+                  {proofHead}&nbsp;
+                  <span class="outcome__last">
+                    {proofLast}
+                    <SiteIcon name="next" size="sm" class="arrow-nudge" />
+                  </span>
+                </p>
+              </div>
             </div>
-          </div>
-        </CardContainer>
-      ))
+          </CardContainer>
+        )
+      })
     }
   </div>
 </Section>
@@ -46,8 +56,18 @@ import { OUTCOMES } from './copy'
     height: 100%;
   }
 
+  /* Two lines are reserved so the body text of neighbouring cells starts level. */
   .outcome__title {
     @extend %card-title-medium;
+
+    @media (min-width: 1001px) {
+      min-height: 2lh;
+    }
+  }
+
+  /* The last word and the chevron never part. */
+  .outcome__last {
+    white-space: nowrap;
   }
 
   .outcome__body {

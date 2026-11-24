@@ -1,10 +1,12 @@
 ---
 import { buildCover, largestBlockIndex } from './cover'
+import { headerImage } from '@/config/features'
 
 /**
  * Generated cover for a post: a monochrome line-grid plan seeded by the slug.
  * Decorative (aria-hidden). The cover owns its bottom line; the cell around it
- * owns the other three.
+ * owns the other three. Renders nothing while the HEADER_IMAGES switch is off
+ * (`src/config/features.ts`), so the cell closes up without a reserved slot.
  */
 interface Props {
   seed: string
@@ -20,25 +22,31 @@ const blocks = buildCover(seed, cols, rows)
 const labelIndex = label ? largestBlockIndex(blocks) : -1
 ---
 
-<div class={`slug-cover slug-cover--${size}`} aria-hidden="true">
-  <div
-    class="slug-cover__plan"
-    style={`--plan-cols: ${cols}; --plan-rows: ${rows}`}
-  >
-    {
-      blocks.map((block, index) => (
-        <span
-          class={`slug-cover__block slug-cover__block--tone-${block.tone}`}
-          style={`grid-column: ${block.col + 1} / span ${block.colSpan}; grid-row: ${block.row + 1} / span ${block.rowSpan}`}
-        >
-          {index === labelIndex && (
-            <span class="slug-cover__label">{label}</span>
-          )}
-        </span>
-      ))
-    }
-  </div>
-</div>
+{
+  headerImage.render && (
+    <div
+      class={`slug-cover slug-cover--${size}`}
+      aria-hidden="true"
+      {...headerImage.attrs}
+    >
+      <div
+        class="slug-cover__plan"
+        style={`--plan-cols: ${cols}; --plan-rows: ${rows}`}
+      >
+        {blocks.map((block, index) => (
+          <span
+            class={`slug-cover__block slug-cover__block--tone-${block.tone}`}
+            style={`grid-column: ${block.col + 1} / span ${block.colSpan}; grid-row: ${block.row + 1} / span ${block.rowSpan}`}
+          >
+            {index === labelIndex && (
+              <span class="slug-cover__label">{label}</span>
+            )}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 <style>
   .slug-cover {

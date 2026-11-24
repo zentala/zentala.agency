@@ -2,12 +2,17 @@
 /**
  * The 18 old capability cards condensed into six areas under the umbrella, each
  * linking to the closest existing page. A short list under each area keeps the
- * facts of the old cards (technologies, platforms) on the page.
+ * facts of the old cards (technologies, platforms) on the page. Each card has an
+ * anchor id (the domain cells link to it), a 176 px background icon and, while
+ * SHOW_AREA_IMAGES is on, an image placeholder at the top. The lists stay uneven:
+ * the owner adds text later, so nothing is shortened.
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import CardContainer from '@/components/cards/CardContainer.astro'
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import AreaImagePlaceholder from './AreaImagePlaceholder.astro'
+import { SHOW_AREA_IMAGES } from './area-images'
 import { AREAS } from './copy'
 ---
 
@@ -16,12 +21,20 @@ import { AREAS } from './copy'
   <div class="line-grid">
     {
       AREAS.items.map((area) => (
-        <CardContainer href={area.href}>
+        <CardContainer
+          id={area.id}
+          href={area.href}
+          backgroundIcon={area.icon}
+          class="area-card"
+        >
           <div class="area">
+            {SHOW_AREA_IMAGES && <AreaImagePlaceholder icon={area.icon} />}
             <h3 class="area__title">{area.title}</h3>
             <p class="area__body">{area.body}</p>
             <ul class="area__facts">
-              {area.facts.map((fact) => <li>{fact}</li>)}
+              {area.facts.map((fact) => (
+                <li>{fact}</li>
+              ))}
             </ul>
             <p class="area__link">
               <span>{area.linkLabel}</span>
@@ -36,6 +49,10 @@ import { AREAS } from './copy'
 
 <style lang="scss">
   @use '../../styles/components/cards' as *;
+
+  :global(.area-card) {
+    scroll-margin-top: calc(var(--header-spacer-height, 5.5rem) + 1rem);
+  }
 
   .area {
     display: flex;
@@ -68,6 +85,7 @@ import { AREAS } from './copy'
     color: var(--color-text);
   }
 
+  /* Hanging indent: a wrapped line reads as part of its item, not as a new one. */
   .area__facts {
     margin-top: 1rem;
     color: var(--color-text-muted);
@@ -75,7 +93,12 @@ import { AREAS } from './copy'
     line-height: 1.5;
   }
 
+  .area__facts li {
+    padding-left: 1em;
+    text-indent: -1em;
+  }
+
   .area__facts li + li {
-    margin-top: 0.25rem;
+    margin-top: 0.375rem;
   }
 </style>
