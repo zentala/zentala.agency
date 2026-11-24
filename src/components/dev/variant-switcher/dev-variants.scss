@@ -19,18 +19,13 @@ html[data-v-first-view='full'] main > section:first-child {
   }
 }
 
-/* Font axis: the family goes first; the rest of the production stack stays behind it. */
-$font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
+/*
+ * Font axis: the family goes first, system fonts behind it. "Matched" is the production
+ * fallback exactly as shipped (fonts.scss); the others load through BoardFonts.
+ */
+$font-stack-tail: 'system-ui, sans-serif';
 
-@each $value,
-  $family
-    in (
-      'selawik': 'Selawik',
-      'open-sans': 'Board Open Sans',
-      'noto-sans': 'Board Noto Sans',
-      'source-sans': 'Board Source Sans'
-    )
-{
+@each $value, $family in ('open-sans-matched': 'Open Sans Matched', 'open-sans': 'Board Open Sans', 'selawik': 'Board Selawik', 'noto-sans': 'Board Noto Sans', 'source-sans': 'Board Source Sans') {
   html[data-v-font='#{$value}'] {
     --font-sans: '#{$family}', #{$font-stack-tail};
   }

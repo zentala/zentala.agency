@@ -2,10 +2,13 @@
 /**
  * Webfonts for the typography board only. The families carry board-only names, so the
  * rest of the page keeps the real font stack of the site. The files load through
- * dynamic imports under DEV, so no font reaches a production build. They are the Latin
- * and Latin Extended subsets of the `@fontsource-variable` packages (licences beside them).
- * Selawik has no such package: its three static files are unmodified copies from the
- * 1.01 release of the microsoft/Selawik repository (SIL OFL 1.1, licence beside them).
+ * dynamic imports under DEV, so no font reaches a production build through this file. Noto
+ * Sans and Source Sans 3 are the Latin and Latin Extended subsets of the `@fontsource-variable`
+ * packages (licences beside them). "Board Open Sans" is the same static Latin files the
+ * site ships as 'Open Sans Matched' (src/styles/fonts.scss), without size-adjust.
+ * Selawik has no npm package, and the microsoft/Selawik repository holds no binaries (so
+ * jsDelivr's GitHub CDN cannot serve it): its three static files are unmodified copies from
+ * the 1.01 release zip (SIL OFL 1.1, licence beside them), loaded from this repository.
  */
 const fontUrl = async (load: () => Promise<{ default: string }>) =>
   import.meta.env.DEV ? (await load()).default : ''
@@ -15,15 +18,9 @@ const LATIN_RANGE =
 const LATIN_EXT_RANGE =
   'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF'
 
+const SELAWIK_FAMILY = 'Board Selawik'
+
 const faces = [
-  {
-    family: 'Board Open Sans',
-    weights: '300 800',
-    latin: await fontUrl(() => import('./fonts/open-sans-latin-wght-normal.woff2?url')),
-    latinExt: await fontUrl(
-      () => import('./fonts/open-sans-latin-ext-wght-normal.woff2?url'),
-    ),
-  },
   {
     family: 'Board Noto Sans',
     weights: '100 900',
@@ -46,19 +43,36 @@ const faces = [
 
 const staticFaces = [
   {
+    family: 'Board Open Sans',
+    weight: 300,
+    url: await fontUrl(() => import('@fontsource/open-sans/files/open-sans-latin-300-normal.woff2?url')),
+  },
+  {
+    family: 'Board Open Sans',
+    weight: 400,
+    url: await fontUrl(() => import('@fontsource/open-sans/files/open-sans-latin-400-normal.woff2?url')),
+  },
+  {
+    family: 'Board Open Sans',
+    weight: 600,
+    url: await fontUrl(() => import('@fontsource/open-sans/files/open-sans-latin-600-normal.woff2?url')),
+  },
+  {
+    family: SELAWIK_FAMILY,
     weight: 300,
     url: await fontUrl(() => import('./fonts/selawik-light.woff2?url')),
   },
   {
+    family: SELAWIK_FAMILY,
     weight: 350,
     url: await fontUrl(() => import('./fonts/selawik-semilight.woff2?url')),
   },
   {
+    family: SELAWIK_FAMILY,
     weight: 400,
     url: await fontUrl(() => import('./fonts/selawik-regular.woff2?url')),
   },
 ]
-const SELAWIK_FAMILY = 'Board Selawik'
 
 const staticFontFace = (family: string, weight: number, url: string) =>
   `@font-face{font-family:'${family}';font-style:normal;font-display:swap;font-weight:${weight};src:url('${url}') format('woff2');}`
@@ -75,7 +89,7 @@ const css = faces
   .concat(
     staticFaces
       .filter((face) => face.url)
-      .map((face) => staticFontFace(SELAWIK_FAMILY, face.weight, face.url)),
+      .map((face) => staticFontFace(face.family, face.weight, face.url)),
   )
   .join('\n')
 ---

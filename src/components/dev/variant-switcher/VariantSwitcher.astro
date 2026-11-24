@@ -3,9 +3,9 @@
  * Dev-only variant switcher: a small fixed panel that sets `data-v-<axis>` attributes
  * on `<html>` and keeps the choice in localStorage, so the owner can compare looks of
  * shared components on real pages. Layout imports it only under DEV; nothing here
- * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans, Noto Sans
- * and Source Sans 3 through BoardFonts, whose files are imported under DEV only; Selawik
- * is a local font name and says so when this computer lacks it. A `?v-<axis>=<value>`
+ * reaches a production build. Axes: `axes.ts`. The font axis loads Open Sans without
+ * size-adjust, Selawik, Noto Sans and Source Sans 3 through BoardFonts, whose files are
+ * imported under DEV only; "Open Sans dopasowany" is the production fallback itself. A `?v-<axis>=<value>`
  * parameter in the URL applies and stores an option on load (see axes.ts).
  */
 import './dev-variants.scss'
@@ -60,31 +60,6 @@ const parseLinkSource = parseVariantLink.toString()
     } catch {
       return {}
     }
-  }
-
-  /* A missing local family renders as the fallback, so compare widths against two generics. */
-  const SELAWIK_MISSING_LABEL = 'Selawik (brak na tym komputerze)'
-  const isInstalled = (family) => {
-    const context = document.createElement('canvas').getContext('2d')
-    const sample = 'mwiIl10@Żółć'
-    const width = (font) => {
-      context.font = `72px ${font}`
-      return context.measureText(sample).width
-    }
-    return ['monospace', 'serif'].some(
-      (generic) => width(`'${family}', ${generic}`) !== width(generic),
-    )
-  }
-
-  const labelSelawik = () => {
-    const button = panel.querySelector(
-      '[data-vsw-axis="font"] [data-value="selawik"]',
-    )
-    if (!button) return
-    button.dataset.label ??= button.textContent.trim()
-    button.textContent = isInstalled('Selawik')
-      ? button.dataset.label
-      : SELAWIK_MISSING_LABEL
   }
 
   const apply = (state) => {
@@ -162,7 +137,6 @@ const parseLinkSource = parseVariantLink.toString()
   const parseVariantLink = new Function('return ' + parseLinkSource)()
   const fromUrl = () => parseVariantLink(location.search, axes, read())
 
-  labelSelawik()
   const linkedState = fromUrl()
   if (linkedState) save(linkedState)
   else apply(read())

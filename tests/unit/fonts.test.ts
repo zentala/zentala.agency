@@ -31,19 +31,20 @@ describe('font stack', () => {
     expect(extend.fontWeight.medium).toBe('600')
   })
 
-  it('--font-sans names Segoe UI, then Selawik, and no Inter', () => {
+  it('--font-sans names Segoe UI, then Open Sans Matched, and no Selawik or Inter', () => {
     const tokens = readFileSync(join(process.cwd(), 'src/styles/tokens.scss'), 'utf8')
     const stack = /--font-sans:\s*([^;]+);/.exec(tokens)?.[1] ?? ''
-    expect(stack.startsWith("'Segoe UI', Selawik")).toBe(true)
-    expect(stack).not.toMatch(/inter/i)
+    expect(stack.startsWith("'Segoe UI', 'Open Sans Matched', system-ui")).toBe(true)
+    expect(stack).not.toMatch(/inter|selawik/i)
   })
 
-  it('the dev switcher has the font axis with the five fonts', () => {
+  it('the dev switcher has the font axis with the six fonts', () => {
     const font = VARIANT_AXES.find((axis) => axis.id === 'font')
     expect(font?.options.map((option) => option.label)).toEqual([
       'Segoe UI',
+      'Open Sans dopasowany',
+      'Open Sans bez dopasowania',
       'Selawik',
-      'Open Sans',
       'Noto Sans',
       'Source Sans 3',
     ])
@@ -53,6 +54,10 @@ describe('font stack', () => {
 describe('audit-prod-bundle font check', () => {
   it('passes on a dist without font files', () => {
     expect(auditFixture().status).toBe(0)
+  })
+
+  it('passes on the shipped Open Sans files', () => {
+    expect(auditFixture('open-sans-latin-400-normal.Bk63H6sG.woff2').status).toBe(0)
   })
 
   it('fails when dist holds a .woff2', () => {

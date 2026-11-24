@@ -17,7 +17,7 @@ const FONT_NAMES = Object.fromEntries(
   (fontAxis?.options ?? []).map((option) => [option.value, option.label]),
 )
 
-const STACK = ['Segoe UI', 'Selawik (local name only)', 'system-ui', 'sans-serif']
+const STACK = ['Segoe UI', 'Open Sans Matched', 'system-ui', 'sans-serif']
 const WEIGHTS = [
   { weight: 300, label: 'Titles, 300' },
   { weight: 400, label: 'Body, 400' },
@@ -28,7 +28,7 @@ const WEIGHTS = [
 <Section id="typography">
   <SectionHeader
     headline="Typography"
-    subhead="The system font, no text webfont. Switch the font in the Warianty panel to compare candidates."
+    subhead="Segoe UI, then self-hosted Open Sans scaled to its width. Switch the font in the Warianty panel to compare candidates."
   />
   <div class="line-grid typography-grid" data-typography-gallery>
     <div class="typography-cell">
