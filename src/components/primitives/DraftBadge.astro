@@ -14,7 +14,7 @@ import { SHOW_DRAFTS } from '@/config/blog'
  *   caller wraps it in an absolutely positioned box in the column gap and zeroes
  *   the margin (SeriesCard, SeriesList).
  * - `state`: the state name in grey after the title (inline, may wrap a line);
- *   shown only where the row is wide (container of 22rem or more).
+ *   shown only where the row is wide (container of 20rem or more).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
  * States, all neutral: a plain draft is a dashed line or tag; `review` (a
  * draft the agent judges ready for the owner's publication review) is a solid
@@ -119,7 +119,7 @@ const state = review ? 'review' : 'draft'
     font-size: var(--text-sm);
   }
 
-  @container (min-width: 22rem) {
+  @container (min-width: 20rem) {
     .draft-state {
       display: inline;
     }
