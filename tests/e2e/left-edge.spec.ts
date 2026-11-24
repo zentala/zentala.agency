@@ -114,3 +114,32 @@ for (const width of WIDTHS) {
     }
   })
 }
+
+/** Header bars stay low (owner S1-C): a plain header pads half the side padding above and below. */
+test.describe('header bars stay low', () => {
+  test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 })
+
+  for (const path of ['/blog', '/contact']) {
+    test(`${path}: plain header bars pad at most half the side`, async ({ page }) => {
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+      const bars = await page.evaluate(() =>
+        [...document.querySelectorAll('main .section-header:not(.section-header--feature)')]
+          .filter((el) => el.getBoundingClientRect().height > 0)
+          .map((el) => {
+            const style = getComputedStyle(el)
+            return {
+              top: parseFloat(style.paddingTop),
+              bottom: parseFloat(style.paddingBottom),
+              side: parseFloat(style.paddingLeft),
+            }
+          }),
+      )
+      expect(bars.length, 'plain header bars measured').toBeGreaterThan(0)
+      for (const bar of bars) {
+        expect(bar.top).toBeLessThanOrEqual(bar.side / 2)
+        expect(bar.bottom).toBeLessThanOrEqual(bar.side / 2)
+      }
+    })
+  }
+})
