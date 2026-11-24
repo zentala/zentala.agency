@@ -166,6 +166,15 @@ describe('footer and header icons', () => {
     }
   })
 
+  it('draws card backgrounds at 176 px Thin and nav icons at 18 px Bold', () => {
+    expect(read('components/primitives/CardBackgroundIcon.astro')).toMatch(
+      /BACKGROUND_ICON_PX = 176/,
+    )
+    expect(read('components/Header.astro')).toMatch(/NAV_ICON_SIZE = 18/)
+    expect(iconWeightForSize(176)).toBe('thin')
+    expect(iconWeightForSize(18)).toBe('bold')
+  })
+
   it('draws header nav icons with SiteIcon and no board NavIcon', () => {
     expect(read('components/Header.astro')).toContain('<SiteIcon name={link.icon}')
     expect(sources.filter((f) => /NavIcon/.test(f.text)).map((f) => f.path)).toEqual([])
