@@ -1,0 +1,160 @@
+// Styles of TechLogoWall (src/components/primitives/TechLogoWall.astro), pulled into its scoped <style>.
+@use '../variables' as *;
+
+.logo-wall {
+  position: relative;
+}
+
+.logo-wall--field {
+  --cols: var(--cols-wide);
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 2rem 1.5rem;
+  @include cell-padding;
+  @include line-block;
+
+  @include medium {
+    --cols: var(--cols-medium);
+  }
+
+  @include tablet {
+    --cols: var(--cols-narrow);
+    gap: 1.25rem 1rem;
+  }
+}
+
+.logo-wall__item {
+  position: relative;
+  display: flex;
+  color: var(--color-text-subtle);
+  transition: color var(--motion-base) var(--ease-standard);
+}
+
+.logo-wall__tile {
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: default;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* The logo is the cell's only in-flow content, centred; the name hangs at the bottom out of the flow. */
+.logo-wall--cells .logo-wall__tile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 8rem;
+}
+
+.logo-wall--field .logo-wall__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.logo-wall__item :global(.logo-wall__logo) {
+  width: var(--wall-logo);
+  height: var(--wall-logo);
+  transition: color var(--motion-base) var(--ease-standard);
+}
+
+.logo-wall__name {
+  color: var(--color-text-muted);
+  font-size: var(--text-label);
+  line-height: 1.35;
+  letter-spacing: var(--tracking-label);
+  text-align: center;
+  text-transform: uppercase;
+  transition:
+    opacity var(--motion-base) var(--ease-standard),
+    color var(--motion-base) var(--ease-standard);
+}
+
+.logo-wall--cells .logo-wall__name {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.75rem;
+  left: 0.5rem;
+}
+
+.logo-wall--field .logo-wall__name {
+  text-align: left;
+}
+
+.logo-wall--label-hover .logo-wall__name {
+  opacity: 0;
+}
+
+/* The glow lights this cell's own edges (the item is the positioned box), in its brand colour. */
+.logo-wall__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 2rem -0.75rem color-mix(in srgb, var(--brand) 32%, transparent);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-standard);
+}
+
+/* Keyboard focus: the shared 2px line-focus ring, as on every interactive cell. */
+.logo-wall__item::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: var(--focus-ring-width) solid var(--line-focus);
+  opacity: 0;
+  pointer-events: none;
+  z-index: var(--z-cell-hover);
+}
+
+.logo-wall__item:has(:focus-visible)::after {
+  opacity: 1;
+}
+
+.logo-wall__item:is(:hover, :has(:focus-visible)),
+.logo-wall__item:has([aria-expanded='true']) {
+  color: var(--brand);
+}
+
+.logo-wall__item:is(:hover, :has(:focus-visible))::before,
+.logo-wall__item:has([aria-expanded='true'])::before,
+.logo-wall__item:is(:hover, :has(:focus-visible)) .logo-wall__name {
+  opacity: 1;
+}
+
+.logo-wall__item:is(:hover, :has(:focus-visible)) .logo-wall__name {
+  color: var(--color-text-secondary);
+}
+
+/* Without hover, and on narrow windows, the names are always shown: no tile is an unlabelled logo. */
+@media (hover: none) {
+  .logo-wall--label-hover .logo-wall__name {
+    opacity: 1;
+  }
+}
+
+@include tablet {
+  .logo-wall--label-hover .logo-wall__name {
+    opacity: 1;
+  }
+}
+
+.logo-wall__strip {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-wall__item,
+  .logo-wall__item::before,
+  .logo-wall__name,
+  .logo-wall__item :global(.logo-wall__logo) {
+    transition: none;
+  }
+}

@@ -1,15 +1,77 @@
 ---
 /**
- * "Technologies I use" under the T-shape: one TechLogoWall, each logo in its own
- * grid cell (owner decision DB-9 A). The list lives in copy.ts.
+ * "Technologies I use": first the four layers of the one stack (TypeScript; interfaces;
+ * services and data; delivery and agents) as a 4/2/1 line-grid row, then one TechLogoWall,
+ * each logo in its own grid cell with an expanding note (columns 8/4/4 keep the last row full; owner decision DB-9 A; the T drawing is gone, owner
+ * feedback 2026-11-24, R4). The layer cells are static but hover like cards on this page
+ * (DESIGN.md decision of 2026-11-24). The lists live in copy.ts.
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import TechIcon from '@/components/primitives/TechIcon.astro'
 import TechLogoWall from '@/components/primitives/TechLogoWall.astro'
-import { TECH_WALL } from './copy'
+import { TECH_NOTES } from '@/data/tech-notes'
+import { STACK, TECH_WALL } from './copy'
 ---
 
 <Section id="technologies">
   <SectionHeader headline={TECH_WALL.headline} subhead={TECH_WALL.subhead} />
-  <TechLogoWall logos={TECH_WALL.logos} layout="cells" title={TECH_WALL.headline} />
+  <div class="line-grid stack">
+    {
+      STACK.layers.map((layer) => (
+        <div class="stack__layer cell-interactive">
+          <h3 class="stack__name">{layer.name}</h3>
+          <p class="stack__logos">
+            {layer.logos.map((logo) => (
+              <TechIcon name={logo} size="md" />
+            ))}
+          </p>
+          <p class="stack__detail">{layer.detail}</p>
+        </div>
+      ))
+    }
+  </div>
+  <TechLogoWall
+    logos={TECH_WALL.logos}
+    layout="cells"
+    columns={{ wide: 8, medium: 4, narrow: 4 }}
+    notes={TECH_NOTES}
+    title={TECH_WALL.headline}
+  />
 </Section>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .stack {
+    --cols-wide: 4;
+    --cols-medium: 2;
+    --cols-narrow: 1;
+  }
+
+  .stack__layer {
+    @include cell-padding;
+  }
+
+  .stack__name {
+    color: var(--color-text);
+    font-size: var(--text-lead);
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .stack__logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .stack__detail {
+    margin-top: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+</style>

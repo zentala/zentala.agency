@@ -46,7 +46,7 @@ Load before you create or change a page, section, card, grid, banner, CTA, form,
 | Dev-only marker | `DraftBadge` (neutral dashed or solid thin line: P11) | `src/components/primitives/DraftBadge.astro` |
 | Card | `CardContainer` as the root | `src/components/cards/CardContainer.astro` |
 | Interactive cell | a direct-child `<a>`, or add `cell-interactive` | mixin in `src/styles/variables.scss` |
-| Static cell | a plain child: no hover, no focus | |
+| Static cell | a plain child: no hover, no focus (on `/about/capabilities` static cells add `cell-interactive`: DESIGN.md decision of 2026-11-24) | |
 | Listing with a variable count | add `line-grid--fill-last`: default 3/2/1 columns only and every child the same tag (all constraints: DESIGN.md section 4) | `_grids.scss` |
 | Article prose column | blog prose styles, not a grid | `src/pages/blog/[postSlug].astro` |
 | Three static columns (post body) | `.line-grid` with a custom `--grid-columns` | `src/pages/blog/[postSlug].astro` |

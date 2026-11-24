@@ -1,6 +1,7 @@
 /*
  * Dev-only global styles of the variant switcher axes that restyle page chrome
- * without touching it: the full-screen first view, the font and the form variant.
+ * without touching it: the full-screen first view, the font, the form variant, the
+ * colour of the "cta" button tier, the hover of cards and the header images.
  * Loaded by VariantSwitcher.astro, which Layout imports only under DEV.
  */
 /* Full-screen first view: the first section of the page fills the screen under the header. */
@@ -21,7 +22,15 @@ html[data-v-first-view='full'] main > section:first-child {
 /* Font axis: the family goes first; the rest of the production stack stays behind it. */
 $font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
 
-@each $value, $family in ('selawik': 'Selawik', 'open-sans': 'Board Open Sans', 'noto-sans': 'Board Noto Sans', 'source-sans': 'Board Source Sans') {
+@each $value,
+  $family
+    in (
+      'selawik': 'Selawik',
+      'open-sans': 'Board Open Sans',
+      'noto-sans': 'Board Noto Sans',
+      'source-sans': 'Board Source Sans'
+    )
+{
   html[data-v-font='#{$value}'] {
     --font-sans: '#{$family}', #{$font-stack-tail};
   }
@@ -38,4 +47,105 @@ $font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
   html[data-v-form='line'] .contact-form > :nth-child(4) {
     border-left: 0;
   }
+}
+
+/*
+ * Cta axis: the colour of the cta button tier. The tier reads --cta-fill, --cta-fill-hover and
+ * --cta-ink (src/styles/_button-tiers.scss), so every cta button of the site follows.
+ */
+html[data-v-cta='steel'] {
+  --cta-fill: #40609f;
+  --cta-fill-hover: #5b76ac;
+}
+
+html[data-v-cta='ice'] {
+  --cta-fill: #c9d6ea;
+  --cta-fill-hover: #d1dced;
+  --cta-ink: #0a0f1a;
+}
+
+html[data-v-cta='white'] {
+  --cta-fill: #fff;
+  --cta-fill-hover: #e6e6e6;
+  --cta-ink: #000;
+}
+
+html[data-v-cta='ghost'] {
+  --cta-fill: #1f1f1f;
+  --cta-fill-hover: #292929;
+  --cta-ink: var(--color-accent-hover);
+}
+
+/*
+ * Card-hover axis: the hover of every cell-interactive cell (mixin in variables.scss, which reads
+ * --cell-hover-glow and --cell-hover-light on hover and focus).
+ * inner-light: a 4% wash plus a neutral inset glow. spotlight: a light that follows the pointer;
+ * --mx and --my are set per cell by the switcher script, and rest at the top centre (focus, touch).
+ */
+html[data-v-card-hover='inner-light'] {
+  --color-surface-card-hover: var(--color-surface-hover);
+  --cell-hover-glow: inset 0 0 4rem -1.5rem rgba(255, 255, 255, 0.16);
+}
+
+html[data-v-card-hover='spotlight'] {
+  --color-surface-card-hover: var(--color-surface);
+  --cell-hover-light: radial-gradient(
+    20rem circle at var(--mx, 50%) var(--my, 0%),
+    rgba(255, 255, 255, 0.11),
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent 100%
+  );
+}
+
+/*
+ * Logo-expand axis: how a technology tile of the logo wall opens its note (LogoWallNote reads --span and
+ * --rspan; the default, no attribute, is the 2 x 2 growth). span-right: one row, three cells, from 771px up.
+ * note-strip: tiles do not grow; the strip above the wall (shown in dev only) carries the note.
+ */
+@media (min-width: 771px) {
+  html[data-v-logo-expand='span-right'] .logo-wall__panel {
+    --span: 3;
+    --rspan: 1;
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+  }
+
+  html[data-v-logo-expand='span-right'] .logo-wall__note {
+    margin-top: 0;
+    margin-left: 1.25rem;
+  }
+}
+
+html[data-v-logo-expand='note-strip'] .logo-wall__panel {
+  display: none;
+}
+
+html[data-v-logo-expand='note-strip'] .logo-wall__strip {
+  display: block;
+  min-height: 5rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.logo-wall__strip:empty::before {
+  content: 'Hover or tap a logo';
+  color: var(--color-text-subtle);
+}
+
+.logo-wall__strip .logo-wall__panel-head {
+  margin-bottom: 0.25rem;
+}
+
+/*
+ * Header images axis. Components render their header images in dev even while HEADER_IMAGES
+ * is off, marked data-header-image-default="off"; production builds do not render them at all.
+ * Switch off (the default when HEADER_IMAGES is false): the image goes, and nothing keeps its slot.
+ */
+html:not([data-v-header-images='on']) [data-header-image-default='off'],
+html[data-v-header-images='off'] [data-header-image] {
+  display: none;
 }

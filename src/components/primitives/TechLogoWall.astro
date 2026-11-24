@@ -1,14 +1,17 @@
 ---
 /**
- * TechLogoWall - a container-wide wall of technology logos generated from a list of simple-icons slugs or names
- * (src/data/tech-icons.ts), so any view of the stack is one array. Logos are monochrome at rest. On hover a logo
- * takes its real brand colour and the wall glows inside along its edges in that colour: each item paints the glow
- * over the whole wall (the wall is the nearest positioned box), so no script is needed.
+ * TechLogoWall - a wall of technology logos generated from a list of simple-icons slugs or names
+ * (src/data/tech-icons.ts). Monochrome at rest. Each cell is a button that reacts alone: on hover or keyboard
+ * focus the logo takes its real brand colour, a glow of that colour lights the cell's own edges and the name
+ * shows at the cell's bottom (out of the flow, so the logo stays centred at rest).
  *
- * Layouts: `cells` gives every logo a line-grid cell; `field` sets the logos on one open block, left-aligned on the
- * content edge, with the content padding. Place it inside a `Section` after a `SectionHeader`, or in a
- * `container-bordered`. Names stay in the accessibility tree; the visible label follows `label`.
+ * A logo with a note (`notes`, slug to text) also expands, on hover, focus or tap: LogoWallNote grows from the
+ * cell over its neighbours without moving a grid rect. The dev axis "logo-expand" restyles it (dev-variants.scss).
+ *
+ * Layouts: `cells` gives every logo a line-grid cell (and the notes); `field` sets the logos on one open block.
+ * Place it in a `Section` after a `SectionHeader`. Names stay in the accessibility tree.
  */
+import LogoWallNote from '@/components/primitives/LogoWallNote.astro'
 import TechIcon from '@/components/primitives/TechIcon.astro'
 import { resolveTechIcon } from '@/data/tech-icons'
 
@@ -22,11 +25,13 @@ export interface Props {
   columns?: WallColumns
   /** Logo size in whole px. */
   size?: 24 | 32 | 40
-  /** `hover`: the name shows on hover, and always on touch screens; `always`; `none`: tooltip only. */
+  /** `hover`: the name shows on hover and focus, and always at 770px and below; `always`; `none`: tooltip only. */
   label?: 'hover' | 'always' | 'none'
   layout?: 'cells' | 'field'
   /** Accessible name of the list. */
   title?: string
+  /** Note per logo slug; a logo with a note expands (layout `cells` only). */
+  notes?: Record<string, string>
 }
 
 const {
@@ -36,148 +41,77 @@ const {
   label = 'hover',
   layout = 'cells',
   title = 'Technologies',
+  notes = {},
 } = Astro.props
 
 const entries = logos.map(resolveTechIcon)
 const bands = typeof columns === 'number' ? { wide: columns } : columns
-const wide = bands.wide
-const medium = bands.medium ?? Math.min(wide, 6)
-const narrow = bands.narrow ?? Math.min(wide, 4)
-const style = `--cols-wide: ${wide}; --cols-medium: ${medium}; --cols-narrow: ${narrow}; --wall-logo: ${size}px`
+const colCount = {
+  wide: bands.wide,
+  medium: bands.medium ?? Math.min(bands.wide, 6),
+  narrow: bands.narrow ?? Math.min(bands.wide, 4),
+}
+const style = `--cols-wide: ${colCount.wide}; --cols-medium: ${colCount.medium}; --cols-narrow: ${colCount.narrow}; --wall-logo: ${size}px`
+const wallId = `logo-wall-${title.toLowerCase().replace(/\W+/g, '-')}`
+
+/** Column index and last-row flag of cell `index` per width band: the panel placement reads them (see the style). */
+const placement = (index: number) =>
+  (Object.keys(colCount) as (keyof typeof colCount)[])
+    .map((band) => {
+      const cols = colCount[band]
+      const lastRow = entries.length > cols && index >= entries.length - cols
+      return `--col-${band}: ${index % cols}; --flipy-${band}: ${lastRow ? 1 : 0}`
+    })
+    .join('; ')
+const hasNote = (slug: string) => layout === 'cells' && slug in notes
 ---
 
 {
   entries.length > 0 && (
-    <ul
-      class:list={[
-        'logo-wall',
-        `logo-wall--${layout}`,
-        `logo-wall--label-${label}`,
-        layout === 'cells' && 'line-grid',
-      ]}
-      style={style}
-      aria-label={title}
-      role="list"
-    >
-      {entries.map((entry) => (
-        <li
-          class="logo-wall__item"
-          style={`--brand: ${entry.brand}`}
-          title={label === 'none' ? entry.name : undefined}
-        >
-          <TechIcon name={entry.slug} size="lg" class="logo-wall__logo" />
-          <span class:list={['logo-wall__name', label === 'none' && 'sr-only']}>{entry.name}</span>
-        </li>
-      ))}
-    </ul>
+    <>
+      {import.meta.env.DEV && <div class="logo-wall__strip" aria-live="polite" data-logo-strip />}
+      <ul
+        class:list={[
+          'logo-wall',
+          `logo-wall--${layout}`,
+          `logo-wall--label-${label}`,
+          layout === 'cells' && 'line-grid',
+        ]}
+        style={style}
+        aria-label={title}
+        role="list"
+      >
+        {entries.map((entry, index) => {
+          const noteId = `${wallId}-note-${entry.slug}`
+          const note = hasNote(entry.slug) ? notes[entry.slug] : undefined
+          return (
+            <li
+              class="logo-wall__item"
+              style={`--brand: ${entry.brand}; ${placement(index)}`}
+              title={label === 'none' ? entry.name : undefined}
+            >
+              <button
+                type="button"
+                class="logo-wall__tile"
+                aria-expanded={note ? 'false' : undefined}
+                aria-describedby={note ? noteId : undefined}
+              >
+                <TechIcon name={entry.slug} size="lg" class="logo-wall__logo" />
+                <span class:list={['logo-wall__name', label === 'none' && 'sr-only']}>{entry.name}</span>
+              </button>
+              {note && <LogoWallNote id={noteId} entry={entry} note={note} />}
+            </li>
+          )
+        })}
+      </ul>
+    </>
   )
 }
 
+<script>
+  import '@/lib/logoWall'
+</script>
+
 <style lang="scss">
-  @use '../../styles/variables' as *;
-
-  .logo-wall {
-    position: relative;
-  }
-
-  .logo-wall--field {
-    --cols: var(--cols-wide);
-    display: grid;
-    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-    gap: 2rem 1.5rem;
-    @include cell-padding;
-    @include line-block;
-
-    @include medium {
-      --cols: var(--cols-medium);
-    }
-
-    @include tablet {
-      --cols: var(--cols-narrow);
-      gap: 1.25rem 1rem;
-    }
-  }
-
-  .logo-wall__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--color-text-subtle);
-  }
-
-  /* More room above the logo than below the name: at rest the logo reads as centred. */
-  .logo-wall--cells .logo-wall__item {
-    padding: 2.25rem 0.75rem 1rem;
-  }
-
-  .logo-wall--field .logo-wall__item {
-    align-items: flex-start;
-  }
-
-  .logo-wall__item :global(.logo-wall__logo) {
-    width: var(--wall-logo);
-    height: var(--wall-logo);
-    transition: color var(--motion-base) var(--ease-standard);
-  }
-
-  /* Two lines are reserved, so a name that wraps never makes its row taller than the others. */
-  .logo-wall__name {
-    min-height: calc(2 * 1.35 * var(--text-label));
-    color: var(--color-text-muted);
-    font-size: var(--text-label);
-    line-height: 1.35;
-    letter-spacing: var(--tracking-label);
-    text-align: center;
-    text-transform: uppercase;
-    transition:
-      opacity var(--motion-base) var(--ease-standard),
-      color var(--motion-base) var(--ease-standard);
-  }
-
-  .logo-wall--field .logo-wall__name {
-    text-align: left;
-  }
-
-  .logo-wall--label-hover .logo-wall__name {
-    opacity: 0;
-  }
-
-  /* The inner glow of the whole wall, in the brand colour of the hovered logo. */
-  .logo-wall__item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    box-shadow: inset 0 0 3.5rem -1rem color-mix(in srgb, var(--brand) 32%, transparent);
-    opacity: 0;
-    transition: opacity var(--motion-base) var(--ease-standard);
-  }
-
-  .logo-wall__item:hover {
-    color: var(--brand);
-  }
-
-  .logo-wall__item:hover::before,
-  .logo-wall__item:hover .logo-wall__name {
-    opacity: 1;
-  }
-
-  .logo-wall__item:hover .logo-wall__name {
-    color: var(--color-text-secondary);
-  }
-
-  @media (hover: none) {
-    .logo-wall--label-hover .logo-wall__name {
-      opacity: 1;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .logo-wall__item::before,
-    .logo-wall__name,
-    .logo-wall__item :global(.logo-wall__logo) {
-      transition: none;
-    }
-  }
+  @use '../../styles/components/tech-logo-wall';
 </style>

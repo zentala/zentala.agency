@@ -1,16 +1,17 @@
 ---
 /**
- * /about/capabilities: Product Engineering, drawn as a T (owner decision DB-9 A).
- * Order: header, what you get, the T-shape (five domains as the bar, the
- * TypeScript stack as the stem), the technology wall, six areas of work, one call
- * to action. The facts of the old 18 capability cards live in the area lists.
+ * /about/capabilities: Product Engineering (owner decision DB-9 A; the T drawing was
+ * replaced by a section, owner feedback 2026-11-24, R4). Order: header, what you get,
+ * T-shaped experience (six domain cells), six areas of work, technologies (the stack
+ * layers, then the logo wall), one call to action: experience, offer, tools, action.
+ * The facts of the old 18 capability cards live in the area lists.
  */
 import Layout from '@/layouts/Layout.astro'
 import CapHero from '@/components/capabilities/CapHero.astro'
 import Outcomes from '@/components/capabilities/Outcomes.astro'
-import TShapeLiteral from '@/components/capabilities/TShapeLiteral.astro'
-import TechWall from '@/components/capabilities/TechWall.astro'
+import Domains from '@/components/capabilities/Domains.astro'
 import Areas from '@/components/capabilities/Areas.astro'
+import TechWall from '@/components/capabilities/TechWall.astro'
 import CapCta from '@/components/capabilities/CapCta.astro'
 ---
 
@@ -20,8 +21,8 @@ import CapCta from '@/components/capabilities/CapCta.astro'
 >
   <CapHero />
   <Outcomes />
-  <TShapeLiteral />
-  <TechWall />
+  <Domains />
   <Areas />
+  <TechWall />
   <CapCta />
 </Layout>
