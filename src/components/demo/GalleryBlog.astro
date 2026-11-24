@@ -5,6 +5,7 @@ import { loadGallerySamples } from './samples'
 import PostMeta from '@/components/blog/PostMeta.astro'
 import PostNav from '@/components/blog/PostNav.astro'
 import PostToc from '@/components/blog/PostToc.astro'
+import SeriesParts from '@/components/blog/SeriesParts.astro'
 import SeriesRail from '@/components/blog/SeriesRail.astro'
 import ShareButtons from '@/components/blog/ShareButtons.astro'
 import { partLabel } from '@/lib/blog/part-label'
@@ -16,6 +17,11 @@ const visiblePartNumbers = seriesParts.flatMap((part) =>
 )
 const middle = seriesParts[Math.min(1, seriesParts.length - 1)]
 const middleLabel = partLabel(middle.data.part ?? 1, visiblePartNumbers)
+const middleSeries = {
+  slug: seriesSlug,
+  title: seriesTitle,
+  part: middle.data.part ?? 1,
+}
 const headings = [
   { depth: 2, slug: 'the-problem', text: 'The problem' },
   {
@@ -33,11 +39,11 @@ const postUrl = `https://zentala.agency/blog/${post.slug}/`
   <GalleryCell label="sm, subtle (default)">
     <PostMeta date={post.data.date} category={post.data.category} />
   </GalleryCell>
-  <GalleryCell label="with part label">
+  <GalleryCell label="series part, two lines">
     <PostMeta
       date={post.data.date}
       category={post.data.category}
-      partLabel={middleLabel}
+      series={middleSeries}
     />
   </GalleryCell>
   <GalleryCell label="md, muted">
@@ -48,6 +54,10 @@ const postUrl = `https://zentala.agency/blog/${post.slug}/`
       tone="muted"
     />
   </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="series-parts" bare>
+  <SeriesParts parts={seriesParts} />
 </GalleryEntry>
 
 <GalleryEntry id="post-toc" cols={2}>

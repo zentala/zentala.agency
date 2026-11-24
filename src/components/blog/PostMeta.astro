@@ -1,18 +1,19 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
+import type { PostMetaSeries } from '@/lib/blog/post-meta'
 import { slugify } from '@/lib/blog/slug'
 
 /**
- * The single place a blog post's meta line gets built: part-in-series →
- * date → category, each with a SiteIcon. Used by PostCard, the series
- * page, and the post hero, so the format only lives in one place.
- * `partLabel` comes from `@/lib/blog/part-label`.
+ * The single place a blog post's meta gets built (DB-6): two lines, each item
+ * with a SiteIcon. Line one is the date and the category; line two, only for a
+ * series part, is "Part n of <series>" with the series name as a link. Used by
+ * PostCard and the post hero, so the format only lives in one place.
  */
 export interface PostMetaProps {
   date: string
   category?: string
-  partLabel?: string
+  series?: PostMetaSeries
   size?: 'sm' | 'md'
   tone?: 'subtle' | 'muted'
 }
@@ -20,7 +21,7 @@ export interface PostMetaProps {
 const {
   date,
   category,
-  partLabel,
+  series,
   size = 'sm',
   tone = 'subtle',
 } = Astro.props as PostMetaProps
@@ -32,30 +33,38 @@ const iconSize = 'sm'
 const { datetime, label } = formatDate(date)
 ---
 
-<div
-  class={`flex flex-wrap items-center gap-x-3 gap-y-1 ${textTone} ${textSize}`}
->
+<div class={`flex flex-col gap-y-1 ${textTone} ${textSize}`}>
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+    <span class="flex items-center gap-x-1">
+      <SiteIcon name="date" size={iconSize} />
+      <time datetime={datetime} data-blog-date>{label}</time>
+    </span>
+    {
+      category && (
+        <a
+          href={`/category/${slugify(category)}`}
+          class="pointer-events-auto relative z-10 flex items-center gap-x-1 transition-colors duration-fast ease-standard hover:text-fg-secondary"
+        >
+          <SiteIcon name="tag" size={iconSize} />
+          {category}
+        </a>
+      )
+    }
+  </div>
   {
-    partLabel && (
-      <span class="flex items-center gap-x-1">
+    series && (
+      <p class="flex items-center gap-x-1">
         <SiteIcon name="series" size={iconSize} />
-        {partLabel}
-      </span>
-    )
-  }
-  <span class="flex items-center gap-x-1">
-    <SiteIcon name="date" size={iconSize} />
-    <time datetime={datetime} data-blog-date>{label}</time>
-  </span>
-  {
-    category && (
-      <a
-        href={`/category/${slugify(category)}`}
-        class="pointer-events-auto relative z-10 flex items-center gap-x-1 transition-colors duration-fast ease-standard hover:text-fg-secondary"
-      >
-        <SiteIcon name="tag" size={iconSize} />
-        {category}
-      </a>
+        <span>
+          Part {series.part} of{' '}
+          <a
+            href={`/series/${series.slug}`}
+            class="pointer-events-auto relative z-10 text-fg-muted transition-colors duration-fast ease-standard hover:text-fg"
+          >
+            {series.title}
+          </a>
+        </span>
+      </p>
     )
   }
 </div>

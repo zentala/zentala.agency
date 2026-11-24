@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import PostMeta from '../blog/PostMeta.astro'
+import type { PostMetaSeries } from '@/lib/blog/post-meta'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
 import { SHOW_AUTHOR } from '@/config/blog'
 
@@ -12,7 +13,7 @@ export interface PostProps {
   excerpt?: string
   authorVersion?: string
   link: string
-  partLabel?: string
+  series?: PostMetaSeries
   isDraft?: boolean
   isReview?: boolean
 }
@@ -24,7 +25,7 @@ const {
   excerpt,
   authorVersion = 'pawel-zentala',
   link,
-  partLabel,
+  series,
   isDraft = false,
   isReview = false,
 } = Astro.props
@@ -83,7 +84,7 @@ if (!author) {
           <PostMeta
             date={date}
             category={category}
-            partLabel={partLabel}
+            series={series}
           />
         </div>
         {

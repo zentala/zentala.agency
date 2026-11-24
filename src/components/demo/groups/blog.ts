@@ -11,8 +11,8 @@ export const BLOG_GROUP: GalleryGroup = {
       id: 'post-meta',
       name: 'PostMeta',
       path: 'blog/PostMeta.astro',
-      purpose: 'Part, date and category line.',
-      props: 'date, category, partLabel, size (sm; md), tone (subtle; muted)',
+      purpose: 'Two-line post meta: date and category, then part and series name.',
+      props: 'date, category, series, size (sm; md), tone (subtle; muted)',
     },
     {
       id: 'post-nav',
@@ -66,6 +66,14 @@ export const BLOG_GROUP: GalleryGroup = {
       purpose:
         'Last cell of the blog index: link to the archive, small icon top right, large icon behind.',
       props: 'postCount, shownCount, href',
+    },
+    {
+      id: 'series-parts',
+      name: 'SeriesParts',
+      path: 'blog/SeriesParts.astro',
+      purpose:
+        'Parts of one series as a table (B2-D, F2-E): number, title, then a grey icon marker with the date or the draft state.',
+      props: 'parts (blog entries)',
     },
     {
       id: 'blog-series-block',

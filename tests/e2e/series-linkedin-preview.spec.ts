@@ -36,7 +36,7 @@ test.describe('Series index — mode aware', () => {
     // build (thin-series rule, docs/agents/blog-content.md).
     const response = await page.goto(`/series/${VISIBLE_SERIES_SLUG}`)
     expect(response?.status()).toBe(200)
-    expect(await page.locator('.post-card').count()).toBeGreaterThanOrEqual(2)
+    expect(await page.locator('.series-part').count()).toBeGreaterThanOrEqual(2)
   })
 
   test('a series with fewer than two published parts has no route in production', async ({

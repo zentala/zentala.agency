@@ -3,7 +3,7 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import MockupNotice from '@/components/blog/mockups/MockupNotice.astro'
 import PostMeta from '@/components/blog/PostMeta.astro'
 import PostToc from '@/components/blog/PostToc.astro'
-import { partLabel } from '@/lib/blog/part-label'
+import { getCollection } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
 import ReviewAnchorScript from './ReviewAnchorScript.astro'
 import ReviewControlStyles from './ReviewControlStyles.astro'
@@ -36,15 +36,9 @@ const readingMinutes = Math.max(
   1,
   Math.round(post.body.trim().split(/\s+/).length / WORDS_PER_MINUTE),
 )
-const seriesParts = posts.flatMap((other) =>
-  other.data.series === post.data.series && other.data.part !== undefined
-    ? [other.data.part]
-    : [],
-)
-const currentPartLabel =
-  post.data.part === undefined
-    ? undefined
-    : partLabel(post.data.part, seriesParts)
+const seriesTitle = (await getCollection('series-descriptions')).find(
+  (entry) => entry.slug === post.data.series,
+)?.data.title
 ---
 
 <div class="rv-root" data-rv-root data-demo-quote={DEMO_QUOTE}>
@@ -63,7 +57,11 @@ const currentPartLabel =
             <PostMeta
               date={post.data.date}
               category={post.data.category}
-              partLabel={currentPartLabel}
+              series={
+                post.data.series && post.data.part !== undefined && seriesTitle
+                  ? { slug: post.data.series, title: seriesTitle, part: post.data.part }
+                  : undefined
+              }
               size="sm"
               tone="muted"
             />
