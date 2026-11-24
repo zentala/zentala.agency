@@ -1,0 +1,105 @@
+---
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+
+/**
+ * Last cell of the /blog index (DB-6): a link to the full archive. A small icon
+ * sits top right and a large one behind the text; where the grid has two columns
+ * the cell spans both, so the row closes.
+ */
+interface Props {
+  postCount: number
+  shownCount: number
+  href: string
+}
+
+const { postCount, shownCount, href } = Astro.props
+const LABEL_ICON_PX = 18
+const BACKDROP_ICON_PX = 176
+---
+
+<article class="cell-interactive archive-cell-host">
+  <a {href} class="archive-cell padding-responsive-md group">
+    <span class="archive-cell__backdrop" aria-hidden="true">
+      <SiteIcon name="archive" size={BACKDROP_ICON_PX} />
+    </span>
+    <SiteIcon name="archive" size={LABEL_ICON_PX} class="archive-cell__icon" />
+    <span class="text-label uppercase text-fg-subtle">Archive</span>
+    <span class="archive-cell__action">
+      All {postCount} posts
+      <SiteIcon name="next" size="md" class="arrow-nudge" />
+    </span>
+    <span class="text-sm text-fg-muted">
+      {
+        postCount > shownCount
+          ? `${postCount - shownCount} more, newest first`
+          : 'Newest first'
+      }
+    </span>
+  </a>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/variables' as *;
+
+  .archive-cell {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    height: 100%;
+    min-height: 10rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .archive-cell :global(.archive-cell__icon) {
+    align-self: flex-end;
+    margin-bottom: auto;
+    color: var(--color-text-muted);
+  }
+
+  /* The icon takes the top of the column; this keeps the text block centred. */
+  .archive-cell::after {
+    content: '';
+    margin-top: auto;
+    height: 1.125rem;
+  }
+
+  .archive-cell-host {
+    @include medium-only {
+      grid-column: span 2;
+    }
+  }
+
+  .archive-cell__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: clip;
+    color: var(--color-text);
+    opacity: 0.06;
+    pointer-events: none;
+    transition: opacity var(--motion-base) var(--ease-standard);
+  }
+
+  .archive-cell__backdrop :global(svg) {
+    position: absolute;
+    right: -1.5rem;
+    bottom: -2rem;
+  }
+
+  :global(.cell-interactive:hover) .archive-cell__backdrop,
+  :global(.cell-interactive:focus-within) .archive-cell__backdrop {
+    opacity: var(--icon-bg-max-opacity);
+  }
+
+  .archive-cell__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    font-weight: 300;
+    line-height: 1.25;
+  }
+</style>

@@ -1,74 +1,52 @@
 ---
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
 import { slugify } from '@/lib/blog/slug'
-import BoardIcon from '../icons-controls/BoardIcon.astro'
-import BackdropIcon from './BackdropIcon.astro'
+import type { BlogIndexPost } from '@/lib/blog/index-data'
 import SlugCover from './SlugCover.astro'
-import { categoryIconName, postIconName, textIcon } from './blog-icons'
-import type { BoardPost } from './data'
 
 /**
- * Post cell of the latest-posts layout (B1, options F and G). The meta takes two
- * lines: date and category, then "Part n of <series>" with the series as a link.
- * `look` picks the top of the cell: a generated cover, or the post's own icon
- * (small in the title row, large behind the text). `featured` spans two columns.
+ * Post cell of the /blog index (DB-6, layout F): a generated cover, the title, a
+ * two-line meta (date and category; then "Part n of <series>" with the series as
+ * a link) and the excerpt. `featured` spans two columns and uses the wide cover.
  */
 interface Props {
-  post: BoardPost
-  look: 'cover' | 'icon'
+  post: BlogIndexPost
   seriesTitle?: string
   featured?: boolean
 }
 
-const META_TEXT_PX = 14
-const TITLE_TEXT_PX = 24
-
-const { post, look, seriesTitle, featured = false } = Astro.props
+const { post, seriesTitle, featured = false } = Astro.props
 const { title, date, category, excerpt, part, series, published, review } =
   post.data
 const { datetime, label } = formatDate(date)
 const coverLabel =
   part === undefined ? undefined : String(part).padStart(2, '0')
-const ownIcons = look === 'icon'
-const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
 ---
 
-<article class:list={['cell-interactive', { 'latest-cell--featured': featured }]}>
-  <div class="latest-cell">
-    <a href={`/blog/${post.slug}`} class="absolute inset-0 z-0" aria-label={title}
-    ></a>
+<article class:list={['cell-interactive', { 'post-cell--featured': featured }]}>
+  <div class="post-cell">
+    <a
+      href={`/blog/${post.slug}`}
+      class="absolute inset-0 z-0"
+      aria-label={title}></a>
     {published === false && <DraftBadge review={review === true} />}
-    {ownIcons && <BackdropIcon name={postIconName(post)} />}
-    {
-      !ownIcons && (
-        <SlugCover
-          seed={post.slug}
-          label={coverLabel}
-          size={featured ? 'wide' : 'regular'}
-        />
-      )
-    }
-    <div class="latest-cell__body padding-responsive-md">
-      <div class="latest-cell__head">
-        <h4 class="latest-cell__title">{title}</h4>
-        {
-          ownIcons && (
-            <BoardIcon
-              spec={textIcon(postIconName(post), TITLE_TEXT_PX)}
-              class="latest-cell__icon"
-            />
-          )
-        }
-      </div>
-      <div class="latest-cell__meta">
+    <SlugCover
+      seed={post.slug}
+      label={coverLabel}
+      size={featured ? 'wide' : 'regular'}
+    />
+    <div class="post-cell__body padding-responsive-md">
+      <h3 class="post-cell__title">{title}</h3>
+      <div class="post-cell__meta">
         <p>
           <span>
-            <BoardIcon spec={textIcon('calendar-blank', META_TEXT_PX)} />
+            <SiteIcon name="date" size="sm" />
             <time datetime={datetime}>{label}</time>
           </span>
           <a href={`/category/${slugify(category)}`}>
-            <BoardIcon spec={textIcon(categoryIcon, META_TEXT_PX)} />
+            <SiteIcon name="tag" size="sm" />
             {category}
           </a>
         </p>
@@ -76,7 +54,7 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
           series && seriesTitle && part !== undefined && (
             <p>
               <span>
-                <BoardIcon spec={textIcon('stack', META_TEXT_PX)} />
+                <SiteIcon name="series" size="sm" />
                 <span>
                   Part {part} of <a href={`/series/${series}`}>{seriesTitle}</a>
                 </span>
@@ -85,7 +63,7 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
           )
         }
       </div>
-      <p class="latest-cell__excerpt">{excerpt}</p>
+      <p class="post-cell__excerpt">{excerpt}</p>
     </div>
   </div>
 </article>
@@ -93,7 +71,7 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
 <style lang="scss">
   @use '../../../styles/variables' as *;
 
-  .latest-cell {
+  .post-cell {
     position: relative;
     isolation: isolate;
     display: flex;
@@ -101,40 +79,21 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
     height: 100%;
   }
 
-  .latest-cell__body {
+  .post-cell__body {
     display: flex;
     flex: 1;
     flex-direction: column;
     pointer-events: none;
   }
 
-  .latest-cell__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .latest-cell__head :global(.latest-cell__icon) {
-    margin-top: 0.125rem;
-    color: var(--color-text-muted);
-  }
-
-  /* Keeps the icon clear of the dev-only draft marker in the corner. */
-  @include mobile {
-    .latest-cell__head :global(.latest-cell__icon) {
-      margin-top: 1rem;
-    }
-  }
-
-  .latest-cell__title {
+  .post-cell__title {
     color: var(--color-text);
     font-size: var(--text-h3);
     font-weight: 300;
     line-height: 1.25;
   }
 
-  .latest-cell__meta {
+  .post-cell__meta {
     display: grid;
     gap: 0.125rem;
     margin-top: 0.75rem;
@@ -172,7 +131,7 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
     }
   }
 
-  .latest-cell__excerpt {
+  .post-cell__excerpt {
     display: -webkit-box;
     overflow: hidden;
     margin-top: 1rem;
@@ -182,14 +141,14 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
     -webkit-line-clamp: 3;
   }
 
-  .latest-cell--featured {
+  .post-cell--featured {
     grid-column: span 2;
 
     @include tablet {
       grid-column: auto;
     }
 
-    .latest-cell__title {
+    .post-cell__title {
       font-size: var(--text-h1-page);
       line-height: 1.15;
 
@@ -199,7 +158,7 @@ const categoryIcon = ownIcons ? categoryIconName(category) : 'tag'
       }
     }
 
-    .latest-cell__excerpt {
+    .post-cell__excerpt {
       max-width: 65ch;
       font-size: var(--text-lead);
       line-height: 1.75rem;

@@ -86,13 +86,13 @@ A static text cell uses `.content-grid__text` (padding and vertical centring fro
 }
 ```
 
-4. A listing whose count varies: add `line-grid--fill-last` to the wrapper (from `src/pages/blog/index.astro`):
+4. A listing whose count varies: add `line-grid--fill-last` to the wrapper (from `src/pages/blog/archive.astro`):
 
 ```astro
 <section class="section-full">
   <div class="container-bordered">
     <div class="cards-grid line-grid--fill-last">
-      {feed.map((entry) => <PostCard ... />)}
+      {posts.map((post) => <PostCell post={post} />)}
     </div>
   </div>
 </section>

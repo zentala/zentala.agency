@@ -6,11 +6,11 @@
  */
 import BoardQuestion from '../blog-index/BoardQuestion.astro'
 import OptionBar from '../blog-index/OptionBar.astro'
-import { loadBoardData } from '../blog-index/data'
+import { loadBlogIndexData } from '@/lib/blog/index-data'
 import SpacingSlice from './SpacingSlice.astro'
 import { SPACING_OPTIONS } from './options'
 
-const data = await loadBoardData()
+const data = await loadBlogIndexData()
 
 const S1 = {
   id: 'S1',

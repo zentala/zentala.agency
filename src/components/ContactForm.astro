@@ -1,11 +1,16 @@
 ---
 /**
- * ContactForm - the contact fields as cells of one line grid.
- * Fields share lines, have no radius and no container border. Submit is a cell holding a primary-tier `Button`.
+ * ContactForm - the contact fields as cells of one line grid (DESIGN.md P8, F1-B).
+ * Fields share lines, have no radius, no container border and no inner padding; the
+ * grid draws the vertical line between the two columns. The last row is `FormFoot`.
+ * The dev "Formularz" axis switches to variant C (horizontal lines only).
  */
 import ThemedInput from './ThemedInput.astro'
 import ThemedTextarea from './ThemedTextarea.astro'
-import Button from './Button.astro'
+import FormFoot from './FormFoot.astro'
+
+// NOTE(intent): placeholder copy, to be confirmed by the owner (DESIGN.md section 5, Forms).
+const PRIVACY_NOTE = 'I use your details only to answer you. No newsletter, no sharing.'
 ---
 
 <form class="line-grid contact-form" action="mailto:zentala@gmail.com" method="post" enctype="text/plain">
@@ -14,29 +19,19 @@ import Button from './Button.astro'
   <ThemedInput type="email" id="email" placeholder="Email" icon="email" required />
   <ThemedInput type="tel" id="phone" placeholder="Phone" icon="phone" />
   <ThemedTextarea id="msg" placeholder="Your message" icon="message" />
-  <div class="contact-form__submit">
-    <Button type="submit" tier="primary" text="Send message" />
-  </div>
+  <FormFoot note={PRIVACY_NOTE} />
 </form>
 
 <style lang="scss">
-  @use '../styles/variables' as *;
-
   .contact-form {
     --cols-wide: 2;
     --cols-medium: 2;
     --cols-narrow: 1;
   }
 
-  /* The message and the submit cell span both columns */
+  /* The message and the last row span both columns */
   .contact-form > :global(:nth-child(5)),
   .contact-form > :global(:nth-child(6)) {
     grid-column: 1 / -1;
-  }
-
-  .contact-form__submit {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.5rem 1.25rem;
   }
 </style>

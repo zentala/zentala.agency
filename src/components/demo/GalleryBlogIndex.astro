@@ -1,0 +1,75 @@
+---
+import GalleryEntry from './GalleryEntry.astro'
+import GalleryCell from './GalleryCell.astro'
+import BlogIndex from '@/components/blog/index/BlogIndex.astro'
+import ArchiveCell from '@/components/blog/index/ArchiveCell.astro'
+import PostCell from '@/components/blog/index/PostCell.astro'
+import SeriesBlock from '@/components/blog/index/SeriesBlock.astro'
+import SlugCover from '@/components/blog/index/SlugCover.astro'
+import StatusBadge from '@/components/blog/index/StatusBadge.astro'
+import { loadBlogIndexData } from '@/lib/blog/index-data'
+
+/** Gallery entries of the /blog index components (DB-6), built from the real posts. */
+const data = await loadBlogIndexData()
+const [newest, second] = data.latest
+const series = data.series[0]
+const seriesTitles = new Map(data.series.map((item) => [item.slug, item.title]))
+const titleOf = (post: typeof newest) =>
+  seriesTitles.get(post.data.series ?? '')
+---
+
+<GalleryEntry id="blog-post-cell" cols={3}>
+  <GalleryCell label="regular">
+    <PostCell post={second} seriesTitle={titleOf(second)} />
+  </GalleryCell>
+  <GalleryCell label="featured (spans two columns in the grid)">
+    <PostCell post={newest} seriesTitle={titleOf(newest)} featured />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="blog-archive-cell" cols={3}>
+  <GalleryCell label="default">
+    <ArchiveCell
+      postCount={data.posts.length}
+      shownCount={7}
+      href="/blog/archive"
+    />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="blog-series-block" cols={3}>
+  <GalleryCell label="first series">
+    <SeriesBlock series={series} />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="blog-status-badge" cols={3}>
+  <GalleryCell label="published">
+    <StatusBadge
+      status="published"
+      datetime="2026-11-01"
+      dateLabel="1 Nov 2026"
+    />
+  </GalleryCell>
+  <GalleryCell label="draft">
+    <StatusBadge status="draft" datetime="2026-11-01" dateLabel="1 Nov 2026" />
+  </GalleryCell>
+  <GalleryCell label="review">
+    <StatusBadge status="review" datetime="2026-11-01" dateLabel="1 Nov 2026" />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="blog-slug-cover" cols={3}>
+  <GalleryCell label="regular, with part number">
+    <SlugCover seed={newest.slug} label="07" />
+  </GalleryCell>
+  <GalleryCell label="wide">
+    <SlugCover seed={second.slug} size="wide" />
+  </GalleryCell>
+</GalleryEntry>
+
+<GalleryEntry id="blog-index">
+  <Fragment slot="after">
+    <BlogIndex data={data} archiveHref="/blog/archive" />
+  </Fragment>
+</GalleryEntry>

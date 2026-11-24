@@ -284,6 +284,30 @@ $header-height-mobile: calc(
   }
 }
 
+// Padding of a content cell (DESIGN.md "Left edge"): the full responsive padding on all
+// four sides, so cell text starts on the edge the logo and section headers use.
+// `--cell-padding` lets a child (a ghost number, a bleed) align to the same edge.
+@mixin cell-padding {
+  --cell-padding: #{$spacing-desktop};
+  padding: var(--cell-padding);
+
+  @include large {
+    --cell-padding: #{$spacing-large};
+  }
+
+  @include medium {
+    --cell-padding: #{$spacing-medium};
+  }
+
+  @include tablet {
+    --cell-padding: #{$spacing-tablet};
+  }
+
+  @include mobile {
+    --cell-padding: #{$spacing-mobile};
+  }
+}
+
 // Vertical Padding
 @mixin py-responsive($size: 'md') {
   @if $size == 'sm' {

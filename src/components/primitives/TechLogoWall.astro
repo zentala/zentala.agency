@@ -85,7 +85,7 @@ const style = `--cols-wide: ${wide}; --cols-medium: ${medium}; --cols-narrow: ${
     display: grid;
     grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     gap: 2rem 1.5rem;
-    @include padding-responsive('md');
+    @include cell-padding;
     @include line-block;
 
     @include medium {

@@ -1,64 +1,49 @@
 ---
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { formatDate } from '@/lib/blog/format-date'
-import BoardIcon from '../icons-controls/BoardIcon.astro'
-import BackdropIcon from './BackdropIcon.astro'
+import type { BlogIndexSeries } from '@/lib/blog/index-data'
+import { partStatus } from '@/lib/blog/part-status'
 import SlugCover from './SlugCover.astro'
 import StatusBadge from './StatusBadge.astro'
-import { formatShortDate, type BoardSeries } from './data'
-import { textIcon } from './blog-icons'
-import { partStatus, smallIcon } from './status'
 
 /**
- * One series as a static grid cell, the owner's pick with his changes (B1-E,
- * B2-E, B2-F): generated cover, name, short description, parts count with an
- * icon, then every part as a row. The status badge flows in the text, right
- * after the last word of the title, so the title keeps the whole row width.
- * `palette` picks the badge colours: `tint` (delicate cool hues) or `neutral`.
- * `icon` replaces the cover with the series' own icon: small beside the name and
- * large behind the block. The "Start" link carries a play icon.
+ * One series as a grid cell on the /blog index (DB-6): generated cover, name, short
+ * description, parts count with an icon and a "Start" link, then every part as a row.
+ * The status badge flows in the text, right after the last word of the title, so the
+ * title keeps the whole row width.
  */
 interface Props {
-  series: BoardSeries
-  palette?: 'tint' | 'neutral'
-  icon?: string
+  series: BlogIndexSeries
 }
 
-const { series, palette = 'tint', icon } = Astro.props
-const NAME_TEXT_PX = 24
-const COUNT_ICON = smallIcon('stack')
-const START_ICON = smallIcon('play')
+const { series } = Astro.props
 
 const rows = series.parts.map((part, index) => ({
   slug: part.slug,
   title: part.data.title,
   number: String(part.data.part ?? index + 1).padStart(2, '0'),
   status: partStatus(part),
-  datetime: formatDate(part.data.date).datetime,
-  dateLabel: formatShortDate(part.data.date),
+  date: formatDate(part.data.date),
 }))
 const firstPart = series.parts[0]
 ---
 
-<div class={`series-block series-block--${palette}`}>
-  {icon ? <BackdropIcon name={icon} /> : <SlugCover seed={series.slug} />}
+<div class="series-block">
+  <SlugCover seed={series.slug} />
   <div class="series-block__body padding-responsive-md">
-    <div class="series-block__head">
-      <h4 class="series-block__name">
-        <a href={`/series/${series.slug}`}>{series.title}</a>
-      </h4>
-      {icon && <BoardIcon spec={textIcon(icon, NAME_TEXT_PX)} />}
-    </div>
+    <h3 class="series-block__name">
+      <a href={`/series/${series.slug}`}>{series.title}</a>
+    </h3>
     {series.tagline && <p class="series-block__tagline">{series.tagline}</p>}
     <div class="series-block__meta">
       <p class="series-block__count">
-        <BoardIcon spec={COUNT_ICON} />
+        <SiteIcon name="series" size="sm" />
         {series.parts.length} parts
       </p>
       {
         firstPart && (
           <a href={`/blog/${firstPart.slug}`} class="series-block__start group">
-            <BoardIcon spec={START_ICON} />
+            <SiteIcon name="start" size="sm" />
             Start
             <SiteIcon name="next" size="sm" class="arrow-nudge" />
           </a>
@@ -80,8 +65,8 @@ const firstPart = series.parts[0]
                 <span class="part-row__badge">
                   <StatusBadge
                     status={row.status}
-                    datetime={row.datetime}
-                    dateLabel={row.dateLabel}
+                    datetime={row.date.datetime}
+                    dateLabel={row.date.label}
                   />
                 </span>
               </span>
@@ -94,30 +79,9 @@ const firstPart = series.parts[0]
 </div>
 
 <style>
-  .series-block--tint {
-    --status-review: color-mix(
-      in srgb,
-      var(--color-accent) 65%,
-      var(--color-text-muted)
-    );
-    --status-draft: color-mix(
-      in srgb,
-      color-mix(in srgb, var(--color-success) 55%, var(--color-accent)) 40%,
-      var(--color-text-muted)
-    );
-  }
-
   .series-block {
     position: relative;
     isolation: isolate;
-  }
-
-  .series-block__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    color: var(--color-text-muted);
   }
 
   .series-block__name {

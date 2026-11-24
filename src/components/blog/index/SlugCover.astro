@@ -21,7 +21,10 @@ const labelIndex = label ? largestBlockIndex(blocks) : -1
 ---
 
 <div class={`slug-cover slug-cover--${size}`} aria-hidden="true">
-  <div class="slug-cover__plan" style={`--plan-cols: ${cols}; --plan-rows: ${rows}`}>
+  <div
+    class="slug-cover__plan"
+    style={`--plan-cols: ${cols}; --plan-rows: ${rows}`}
+  >
     {
       blocks.map((block, index) => (
         <span

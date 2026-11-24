@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import PostCell from '@/components/blog/index/PostCell.astro'
+import { loadBlogIndexData } from '@/lib/blog/index-data'
+
+const ARCHIVE_DESCRIPTION = 'Every post on the blog, newest first.'
+
+const data = await loadBlogIndexData()
+const seriesTitles = new Map(data.series.map((item) => [item.slug, item.title]))
+---
+
+<Layout title="Blog archive" description={ARCHIVE_DESCRIPTION}>
+  <section class="section-full">
+    <div class="container-bordered">
+      <h1 class="sr-only">Blog archive</h1>
+      <div class="cards-grid line-grid--fill-last">
+        {
+          data.latest.map((post) => (
+            <PostCell
+              post={post}
+              seriesTitle={seriesTitles.get(post.data.series ?? '')}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -2,7 +2,7 @@
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import DraftBadge from '@/components/primitives/DraftBadge.astro'
 import { formatDate } from '@/lib/blog/format-date'
-import { formatShortDate, type BoardSeries } from './data'
+import type { BlogIndexSeries } from '@/lib/blog/index-data'
 
 /**
  * One series as a static grid cell that lists every part as a table row.
@@ -13,7 +13,7 @@ import { formatShortDate, type BoardSeries } from './data'
  * `limit` shows only the first parts (the count in the head stays the real one).
  */
 interface Props {
-  series: BoardSeries
+  series: BlogIndexSeries
   variant: 'date' | 'number' | 'combined'
   limit?: number
 }
@@ -33,7 +33,7 @@ const rows = series.parts.slice(0, limit).map((part, index) => {
     isDraft,
     isReview: part.data.review === true,
     datetime: formatDate(part.data.date).datetime,
-    dateLabel: formatShortDate(part.data.date),
+    dateLabel: formatDate(part.data.date).label,
     status: isDraft ? draftWord : isNewest ? 'New' : undefined,
     isNewest,
   }

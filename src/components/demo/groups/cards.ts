@@ -31,7 +31,7 @@ export const CARDS_GROUP: GalleryGroup = {
       path: 'cards/PostCard.astro',
       purpose: 'Blog listing card from a content entry.',
       props:
-        'title, date, category, excerpt, authorVersion, link, partLabel, isDraft',
+        'title, date, category, excerpt, authorVersion, link, series, isDraft',
     },
     {
       id: 'series-card',

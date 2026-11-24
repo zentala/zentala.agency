@@ -1,13 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import PostCard from '../../components/cards/PostCard.astro'
+import SeriesParts from '../../components/blog/SeriesParts.astro'
 import PostCta from '../../components/PostCta.astro'
-import SiteIcon from '../../components/primitives/SiteIcon.astro'
 import SectionHeader from '../../components/primitives/sections/SectionHeader.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { getVisiblePosts } from '@/lib/blog/visibility'
-import { partLabel } from '@/lib/blog/part-label'
-import { SHOW_DRAFTS } from '@/config/blog'
 
 export async function getStaticPaths() {
   const posts = (await getVisiblePosts()).filter(
@@ -48,9 +45,6 @@ const { Content } = description
   ? await description.render()
   : { Content: undefined }
 
-const visibleParts = posts.flatMap((post) =>
-  post.data.part === undefined ? [] : [post.data.part],
-)
 const headline = description?.data.title ?? series
 
 const SITE_URL = 'https://zentala.agency'
@@ -107,39 +101,7 @@ const breadcrumbJsonLd = {
           )
         }
       </SectionHeader>
-      <div class="cards-grid line-grid--fill-last">
-        {
-          posts.map((post) => (
-            <PostCard
-              title={post.data.title}
-              date={post.data.date}
-              category={post.data.category}
-              imageUrl={post.data.imageUrl}
-              excerpt={post.data.excerpt}
-              authorVersion={post.data.author}
-              link={`/blog/${post.slug}`}
-              partLabel={
-                post.data.part === undefined
-                  ? undefined
-                  : partLabel(post.data.part, visibleParts)
-              }
-              isDraft={post.data.published === false}
-              isReview={post.data.review === true}
-            >
-              {SHOW_DRAFTS && post.data.linkedinPost && (
-                <a
-                  slot="footer"
-                  href={`/linkedin-preview/${post.slug}`}
-                  class="inline-flex items-center gap-1 bg-surface-hover px-3 py-1 text-xs text-accent transition-colors duration-fast ease-standard hover:text-accent-hover"
-                >
-                  LinkedIn draft
-                  <SiteIcon name="next" size="sm" class="arrow-nudge" />
-                </a>
-              )}
-            </PostCard>
-          ))
-        }
-      </div>
+      <SeriesParts parts={posts} />
     </div>
   </section>
   <section class="section-full">

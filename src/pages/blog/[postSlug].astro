@@ -176,7 +176,11 @@ const summaryClass =
               <PostMeta
                 date={post.data.date}
                 category={post.data.category}
-                partLabel={currentPartLabel}
+                series={
+                  post.data.series && post.data.part !== undefined
+                    ? { slug: post.data.series, title: seriesTitle, part: post.data.part }
+                    : undefined
+                }
                 size="sm"
                 tone="muted"
               />

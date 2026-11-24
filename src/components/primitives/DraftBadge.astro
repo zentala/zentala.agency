@@ -13,7 +13,7 @@ import { SHOW_DRAFTS } from '@/config/blog'
  *   margins; where titles must align with published rows (column layouts), the
  *   caller wraps it in an absolutely positioned box in the column gap and zeroes
  *   the margin (SeriesCard, SeriesList).
- * - `state`: the state name in grey after the title (inline, may wrap a line);
+ * - `state`: the state name in grey after the title (inline, never breaks inside, so it moves whole to the next line);
  *   shown only where the row is wide (container of 20rem or more).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
  * States, all neutral: a plain draft is a dashed line or tag; `review` (a
@@ -117,6 +117,7 @@ const state = review ? 'review' : 'draft'
     margin-left: 0.5rem;
     color: var(--color-text-subtle);
     font-size: var(--text-sm);
+    white-space: nowrap;
   }
 
   @container (min-width: 20rem) {

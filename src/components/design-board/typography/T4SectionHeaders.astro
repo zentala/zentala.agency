@@ -88,14 +88,18 @@ const options: {
         </div>
         <div class="t4-crop">
           <div class="line-grid">
-            {posts.map(({ post, partLabel }) => (
+            {posts.map(({ post }) => (
               <PostCard
                 title={post.data.title}
                 date={post.data.date}
                 category={post.data.category}
                 excerpt={post.data.excerpt}
                 link={`/blog/${post.slug}`}
-                partLabel={partLabel}
+                series={
+                  post.data.series && post.data.part !== undefined
+                    ? { slug: post.data.series, title: series.title, part: post.data.part }
+                    : undefined
+                }
               />
             ))}
           </div>

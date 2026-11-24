@@ -11,6 +11,7 @@ import TextBlockIcon from '@/components/TextBlockIcon.astro'
 import ThemedInput from '@/components/ThemedInput.astro'
 import ThemedTextarea from '@/components/ThemedTextarea.astro'
 import ContactForm from '@/components/ContactForm.astro'
+import FormFoot from '@/components/FormFoot.astro'
 import TrustedMe from '@/components/TrustedMe.astro'
 
 const ctaButtons = [
@@ -150,46 +151,50 @@ const ctaFooter = [
   </GalleryCell>
 </GalleryEntry>
 
-<GalleryEntry id="themed-input" cols={3}>
-  <GalleryCell label="text"
-    ><ThemedInput
-      type="text"
-      id="gallery-name"
-      placeholder="First name"
-    /></GalleryCell
-  >
-  <GalleryCell label="email, with icon"
-    ><ThemedInput
+<!-- NOTE(intent): borderless fields have no lines of their own, so each entry wraps them in a line grid, the way a form places them. -->
+<GalleryEntry id="themed-input" bare>
+  <div class="line-grid">
+    <ThemedInput type="text" id="gallery-name" placeholder="First name" />
+    <ThemedInput type="email" id="gallery-email" icon="email" placeholder="Email (with icon)" />
+    <ThemedInput type="tel" id="gallery-phone" icon="phone" placeholder="Phone (with icon)" />
+    <ThemedInput
       type="email"
-      id="gallery-email"
+      id="gallery-error"
       icon="email"
-      placeholder="Email"
-    /></GalleryCell
-  >
-  <GalleryCell label="phone, with icon"
-    ><ThemedInput
-      type="tel"
-      id="gallery-phone"
-      icon="phone"
-      placeholder="Phone"
-    /></GalleryCell
-  >
+      placeholder="Email (error)"
+      error="Enter a valid email address."
+    />
+    <ThemedInput type="text" id="gallery-disabled" placeholder="Disabled" disabled />
+    <ThemedInput type="text" id="gallery-required" placeholder="Required" required />
+  </div>
 </GalleryEntry>
 
-<GalleryEntry id="themed-textarea" cols={1}>
-  <GalleryCell label="default"
-    ><ThemedTextarea
-      id="gallery-message"
-      placeholder="Your message"
-    /></GalleryCell
-  >
-  <GalleryCell label="size large"
-    ><ThemedTextarea
+<GalleryEntry id="themed-textarea" bare>
+  <div class="line-grid" style="--cols-wide: 2; --cols-medium: 2">
+    <ThemedTextarea id="gallery-message" icon="message" placeholder="Your message" />
+    <ThemedTextarea
       id="gallery-message-large"
-      placeholder="Describe the project"
+      placeholder="Describe the project (size large)"
       size="large"
-    /></GalleryCell
-  >
+    />
+    <ThemedTextarea
+      id="gallery-message-error"
+      placeholder="Your message (error)"
+      error="Write at least a few words."
+    />
+    <ThemedTextarea id="gallery-message-disabled" placeholder="Disabled" disabled />
+  </div>
+</GalleryEntry>
+
+<GalleryEntry id="form-foot" bare>
+  <div class="line-grid" style="--cols-wide: 1; --cols-medium: 1">
+    <FormFoot note="Privacy note only (as on /contact)." />
+    <FormFoot
+      note="With a consent checkbox."
+      checkName="gallery-copy"
+      checkLabel="Send me a copy of this message"
+    />
+  </div>
 </GalleryEntry>
 
 <!-- NOTE(intent): ContactForm is a cards-grid of its own, so the bare entry shows it as a standalone grid, the way a page places it. -->

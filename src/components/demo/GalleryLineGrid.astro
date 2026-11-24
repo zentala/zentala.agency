@@ -2,6 +2,7 @@
 import GalleryEntry from './GalleryEntry.astro'
 import GalleryCell from './GalleryCell.astro'
 import SectionGrid from '@/components/primitives/sections/SectionGrid.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import SectionContent from '@/components/primitives/sections/SectionContent.astro'
 import SectionImage from '@/components/primitives/sections/SectionImage.astro'
 import SectionCTA from '@/components/primitives/sections/SectionCTA.astro'
@@ -13,10 +14,37 @@ import BentoCard from '@/components/primitives/sections/bento/BentoCard.astro'
 import BentoCentralStage from '@/components/primitives/sections/bento/BentoCentralStage.astro'
 import BentoStageState from '@/components/primitives/sections/bento/BentoStageState.astro'
 
+const HEADER_SAMPLES = [
+  {
+    variant: 'a',
+    headline: 'A: default',
+    subhead: 'Headline and subhead on one block: the header of most sections and pages.',
+    meta: 'every section',
+  },
+  {
+    variant: 'b',
+    headline: 'B: small caps label',
+    subhead: 'A quiet label row over a grid.',
+    meta: 'standalone, left-aligned',
+  },
+  {
+    variant: 'c',
+    headline: 'C: thin larger label',
+    subhead: 'A label row with more air.',
+    meta: 'standalone, left-aligned',
+  },
+  {
+    variant: 'd',
+    headline: 'D: label on the line',
+    subhead: 'The label sits on the section line and adds no height.',
+    meta: 'listings, dense pages',
+  },
+] as const
+
 const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
 ---
 
-<!-- NOTE(intent): Section and SectionHeader cannot nest inside a Section without doubling the line below them, so their live examples are the ones this page already uses: every entry is a Section with a SectionHeader, and the group headers are the default header with a count. -->
+<!-- NOTE(intent): a SectionHeader cannot nest inside a Section without doubling the line below it, so the SectionHeader entry is bare: four headers, one per variant, drawn in place. The four are stacked on purpose: a header spans the full cell width, and a half-width header would double the line below it. Every entry title on this page is variant A, and the group headers are variant A with a count. -->
 <GalleryEntry id="section" cols={1}>
   <GalleryCell label="live example">
     <p>
@@ -26,15 +54,19 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
   </GalleryCell>
 </GalleryEntry>
 
-<GalleryEntry id="section-header" cols={1}>
-  <GalleryCell label="live examples">
-    <p>
-      Default: the header of every entry (headline plus subhead). Feature: an
-      eyebrow and an icon, as on the offer pages. The group headers on this page
-      are the default header with a small count under the headline. Centered: the index header. A Section
-      may hold only one header, so these are not repeated here.
-    </p>
-  </GalleryCell>
+<GalleryEntry id="section-header" bare>
+  {
+    HEADER_SAMPLES.map((sample) => (
+      <SectionHeader
+        variant={sample.variant}
+        tag="h3"
+        headline={sample.headline}
+        subhead={sample.subhead}
+        labelIcon="series"
+        meta={sample.meta}
+      />
+    ))
+  }
 </GalleryEntry>
 
 <GalleryEntry id="section-grid" bare>
@@ -51,7 +83,7 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
 <GalleryEntry id="section-content" cols={3}>
   <SectionContent context="grid">
     <h3>grid, prose</h3>
-    <p>Compact padding for a cell, prose typography.</p>
+    <p>Full cell padding (the same on all four sides), prose typography.</p>
   </SectionContent>
   <SectionContent context="grid" prose={false}>
     <strong>grid, no prose</strong>
@@ -59,7 +91,7 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
   </SectionContent>
   <SectionContent context="full">
     <h3>full</h3>
-    <p>Generous padding, max width 960px, centered.</p>
+    <p>Full cell padding, left-aligned, text measure capped at 60rem.</p>
   </SectionContent>
 </GalleryEntry>
 
@@ -197,6 +229,10 @@ const IMAGE = 'https://cdn.zentala.agency/images/avatar.jpg'
     >
     <BentoCard padding="sm"
       ><SectionContent context="grid" prose={false}>1 x 1, sm</SectionContent
+      ></BentoCard
+    >
+    <BentoCard padding="md"
+      ><SectionContent context="grid" prose={false}>1 x 1, md</SectionContent
       ></BentoCard
     >
     <BentoCard padding="none"

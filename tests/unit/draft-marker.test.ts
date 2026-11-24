@@ -15,6 +15,12 @@ describe('DraftBadge rule', () => {
     expect(badge).toMatch(/\.draft-rule--review \{[^}]*border-left-style: solid/)
     expect(badge).toMatch(/\.draft-rule \{[^}]*margin-inline: 0\.5rem/)
   })
+  it('keeps the state name on one line', () => {
+    expect(badge).toMatch(/\.draft-state \{[^}]*white-space: nowrap/)
+  })
+  it('keeps the state name on one line', () => {
+    expect(badge).toMatch(/\.draft-state \{[^}]*white-space: nowrap/)
+  })
   it('uses no colour per state', () => {
     expect(badge).not.toMatch(/draft-rule[^}]*color: var\(--color-(?!line-strong)/)
   })
@@ -24,7 +30,6 @@ describe('DraftBadge state name', () => {
   const users = [
     'src/components/blog/SeriesRail.astro',
     'src/components/cards/SeriesCard.astro',
-    'src/components/blog/mockups/SeriesOverviewCell.astro',
   ]
   it.each(users)('%s provides a size container for the state query', (file) => {
     const source = read(file)

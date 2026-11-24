@@ -1,0 +1,133 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import StatusBadge from '@/components/blog/index/StatusBadge.astro'
+import DraftBadge from '@/components/primitives/DraftBadge.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
+import { SHOW_DRAFTS } from '@/config/blog'
+import { formatDate } from '@/lib/blog/format-date'
+import { partStatus } from '@/lib/blog/part-status'
+
+/**
+ * The parts of one series as a table (B2-D, F2-E): one full-width row per part
+ * with the part number, the title, and right after the title a grey marker with
+ * an icon: the date for a published part, "Draft" or "Review" otherwise. A draft
+ * or review row also carries the 1 px line between number and title; the line
+ * sits in its own narrow column, so every title starts at the same x. Dates keep
+ * the long-month format. In dev, a part with a LinkedIn draft links to its preview.
+ */
+interface Props {
+  parts: CollectionEntry<'blog'>[]
+}
+
+const { parts } = Astro.props
+
+const rows = parts.map((part, index) => ({
+  slug: part.slug,
+  title: part.data.title,
+  number: String(part.data.part ?? index + 1).padStart(2, '0'),
+  status: partStatus(part),
+  isReview: part.data.review === true,
+  date: formatDate(part.data.date),
+  hasLinkedin: SHOW_DRAFTS && Boolean(part.data.linkedinPost),
+}))
+---
+
+<ol
+  class="line-grid series-parts"
+  style="--cols-wide:1;--cols-medium:1;--cols-narrow:1"
+>
+  {
+    rows.map((row) => (
+      <li class="cell-interactive padding-responsive-md series-part">
+        <a
+          href={`/blog/${row.slug}`}
+          class="absolute inset-0 z-0"
+          aria-label={row.title}
+        />
+        <span class="series-part__number">
+          <span class="sr-only">Part </span>
+          {row.number}
+        </span>
+        <span class="series-part__rule">
+          {row.status !== 'published' && (
+            <DraftBadge placement="rule" review={row.isReview} />
+          )}
+        </span>
+        <span class="series-part__title">
+          {row.title}
+          <StatusBadge
+            status={row.status}
+            datetime={row.date.datetime}
+            dateLabel={row.date.label}
+          />
+        </span>
+        {row.hasLinkedin && (
+          <a
+            href={`/linkedin-preview/${row.slug}`}
+            class="series-part__linkedin"
+          >
+            LinkedIn draft
+            <SiteIcon name="next" size="sm" class="arrow-nudge" />
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .series-part {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: 2rem 1px minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .series-part > :not(a) {
+    pointer-events: none;
+  }
+
+  .series-part__number {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .series-part__rule {
+    align-self: stretch;
+    display: flex;
+  }
+
+  .series-part__rule :global(.draft-rule) {
+    margin: 0;
+  }
+
+  .series-part__title {
+    color: var(--color-text);
+  }
+
+  .series-part__title :global(.status-badge) {
+    margin-left: 0.75rem;
+  }
+
+  .series-part__linkedin {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0 0.75rem;
+    background: var(--color-surface-hover);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .series-part__linkedin:hover {
+    color: var(--color-accent-hover);
+  }
+</style>

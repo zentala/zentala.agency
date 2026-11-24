@@ -27,6 +27,7 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
    - Tests scroll indicator
    - Tests UI interactions
 
+- **`left-edge.spec.ts`**: the logo, the first left-aligned section header and the first content text share one left edge within 1px at 1440, 1024 and 390 (DESIGN.md Spacing, Left edge). Routes are listed in the spec.
 4. **`line-geometry.spec.ts`** - guard for the one line model (DESIGN.md section 3)
    - Routes come from `dist/**/index.html` at test time (redirect stubs are replaced by their destination, `/linkedin-preview/*` is excluded as a mock of LinkedIn's UI, a not-built path covers the 404 page)
    - Per route at 1920, 1450, 768, 390 (1280 for `/`, `/blog`, `/about/capabilities`, `/portfolio`): no doubled line, no vertical line at the viewport edge at 1450px and below, no floating vertical segment (`FLOATING_SEGMENT_CHECK`), containers (`.container-bordered`, `.container-padded`, `.container-header`, `.container-footer-small`) span the viewport at 1450px and below
@@ -42,7 +43,7 @@ This directory contains end-to-end (E2E) tests for the Żentała Agency website.
 
 ### Critical specs in `just check`
 
-`just check` runs `blog-post`, `bento-showcase`, `series-linkedin-preview` and `line-geometry` on chromium against `npm run preview` of a build made with `PUBLIC_PLAYWRIGHT_TEST=true`. Run the build first; `line-geometry` reads `dist/`.
+`just check` runs `blog-post`, `bento-showcase`, `series-linkedin-preview`, `left-edge` and `line-geometry` on chromium against `npm run preview` of a build made with `PUBLIC_PLAYWRIGHT_TEST=true`. Run the build first; `line-geometry` reads `dist/`.
 
 ### Other guards (unit tests, run by `just test` and `just check`)
 

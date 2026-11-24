@@ -99,8 +99,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    @include py-responsive('md');
-    @include px-responsive('md');
+    @include cell-padding;
   }
 
   // Content grid item with image - no padding, full bleed

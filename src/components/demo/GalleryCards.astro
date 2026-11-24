@@ -6,13 +6,9 @@ import OfferCard from '@/components/cards/OfferCard.astro'
 import PortfolioItem from '@/components/cards/PortfolioItem.astro'
 import PostCard from '@/components/cards/PostCard.astro'
 import SeriesCard from '@/components/cards/SeriesCard.astro'
-import { partLabel } from '@/lib/blog/part-label'
 
 const { post, seriesSlug, seriesTitle, seriesParts } =
   await loadGallerySamples()
-const visiblePartNumbers = seriesParts.flatMap((part) =>
-  part.data.part === undefined ? [] : [part.data.part],
-)
 const postProps = {
   title: post.data.title,
   date: post.data.date,
@@ -81,7 +77,11 @@ const newestSlug = seriesParts[seriesParts.length - 1].slug
   <PostCard {...postProps} />
   <PostCard
     {...postProps}
-    partLabel={partLabel(post.data.part ?? 1, visiblePartNumbers)}
+    series={{
+      slug: seriesSlug,
+      title: seriesTitle,
+      part: post.data.part ?? 1,
+    }}
   />
   <PostCard {...postProps} isDraft />
 </GalleryEntry>
