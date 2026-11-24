@@ -15,7 +15,6 @@ const AXIS_ID = 'header-images'
 const COMPONENTS_READING_THE_SWITCH = [
   'components/blog/index/SlugCover.astro',
   'components/banners/variants/SimpleWithImage.astro',
-  'components/cards/PortfolioItem.astro',
   'sections/home/ProjectCard.astro',
 ]
 

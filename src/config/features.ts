@@ -4,7 +4,7 @@
 
 /**
  * Whether header and cover images render: the generated slug covers on the /blog index,
- * the image of a banner, of a project card and of a portfolio item.
+ * the image of a banner and of a project card.
  * NOTE(intent): off on the owner's request 2026-11-24 (R1), because no real header image
  * exists yet, only mocks. Flip to `true` to bring every one of them back unchanged.
  */
