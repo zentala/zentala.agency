@@ -39,6 +39,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
+    "@fontsource/open-sans": "^5.3.0",
     "@iconify-json/fa6-brands": "^1.2.6",
     "@iconify-json/fa6-regular": "^1.2.4",
     "@iconify-json/iconoir": "^1.2.12",

@@ -53,8 +53,9 @@ const FORBIDDEN_CSS = [
   'rv-thread',
 ]
 
-/** No text webfont ships: the site uses the system font stack. */
+/** The only webfont that ships is the self-hosted Open Sans (src/styles/fonts.scss). */
 const FONT_FILE_EXT = new Set(['.woff', '.woff2', '.ttf', '.otf', '.eot'])
+const SHIPPED_FONT_FILE = /^open-sans-latin-(300|400|600)-normal\.[\w-]+\.woff2$/
 
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.css', '.html'])
 
@@ -83,6 +84,7 @@ const FORBIDDEN_RUNTIME = [
   'Blog version history',
   'fonts.googleapis.com',
   'fonts.gstatic.com',
+  'cdn.jsdelivr.net',
   'Expand blog version panel',
   'agentation',
   'dev/agentation',
@@ -157,7 +159,8 @@ function main() {
 
   for (const file of allFiles) {
     const dot = file.lastIndexOf('.')
-    if (FONT_FILE_EXT.has(file.slice(dot).toLowerCase())) {
+    const isShipped = SHIPPED_FONT_FILE.test(file.split(/[\\/]/).pop() ?? '')
+    if (FONT_FILE_EXT.has(file.slice(dot).toLowerCase()) && !isShipped) {
       failures.push({ file: file.replace(ROOT, ''), needle: 'font file', line: 0 })
     }
   }
