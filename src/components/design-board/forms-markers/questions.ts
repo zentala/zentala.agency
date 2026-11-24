@@ -62,8 +62,6 @@ export const MOSAIC_MORE = [
   'iot',
   'integrations',
   'terminal',
-  'server',
-  'network',
   'code',
   'database',
   'architecture',

@@ -86,12 +86,6 @@ function isWarm(hex: string): boolean {
   return h >= 20 && h <= 65 && s >= 0.5 && l >= 0.3 && l <= 0.85
 }
 
-/** Files that may hold warm hex colours, each with the reason. */
-const WARM_HEX_ALLOWLIST: Record<string, string> = {
-  'data/tech-icons.ts':
-    'technology logos show their real brand colour on hover, warm hues included (P1 exception, DB-8)',
-}
-
 /** Files that may contain an underline utility or declaration, each with the reason. */
 const UNDERLINE_ALLOWLIST: Record<string, string> = {
   'components/blog/rich/Term.astro':
@@ -145,15 +139,19 @@ describe('colour restraint', () => {
 
   it('uses no orange, amber or yellow hex', () => {
     const offenders = sources.flatMap(({ path, lines }) =>
-      path in WARM_HEX_ALLOWLIST
-        ? []
-        : lines.flatMap((line, i) =>
-            (line.match(WARM_HEX) ?? [])
-              .filter(isWarm)
-              .map((hex) => `${path}:${i + 1}: ${hex}`),
-          ),
+      lines.flatMap((line, i) =>
+        (line.match(WARM_HEX) ?? [])
+          .filter(isWarm)
+          .map((hex) => `${path}:${i + 1}: ${hex}`),
+      ),
     )
     expect(offenders).toEqual([])
+  })
+
+  it('sees no warm hex in the logo data because it stores bare digits', () => {
+    const logoData = sources.find(({ path }) => path === 'data/tech-icons.ts')
+    expect(logoData).toBeDefined()
+    expect(logoData?.lines.filter((line) => WARM_HEX.test(line))).toEqual([])
   })
 })
 
