@@ -96,3 +96,46 @@ html[data-v-card-hover='spotlight'] {
     transparent 100%
   );
 }
+
+/*
+ * Logo-expand axis: how a technology tile of the logo wall opens its note (LogoWallNote reads --span and
+ * --rspan; the default, no attribute, is the 2 x 2 growth). span-right: one row, three cells, from 771px up.
+ * note-strip: tiles do not grow; the strip above the wall (shown in dev only) carries the note.
+ */
+@media (min-width: 771px) {
+  html[data-v-logo-expand='span-right'] .logo-wall__panel {
+    --span: 3;
+    --rspan: 1;
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+  }
+
+  html[data-v-logo-expand='span-right'] .logo-wall__note {
+    margin-top: 0;
+    margin-left: 1.25rem;
+  }
+}
+
+html[data-v-logo-expand='note-strip'] .logo-wall__panel {
+  display: none;
+}
+
+html[data-v-logo-expand='note-strip'] .logo-wall__strip {
+  display: block;
+  min-height: 5rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.logo-wall__strip:empty::before {
+  content: 'Hover or tap a logo';
+  color: var(--color-text-subtle);
+}
+
+.logo-wall__strip .logo-wall__panel-head {
+  margin-bottom: 0.25rem;
+}

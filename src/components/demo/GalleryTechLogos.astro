@@ -1,10 +1,13 @@
 ---
 /**
  * Gallery group "Technology logos": TechLogoWall in both layouts. Hover a logo to see
- * its brand colour and the wall's inner glow; the warm brands (JavaScript, HTML,
+ * its brand colour, its own cell's glow and, for logos with a note, the expanding panel; the warm brands (JavaScript, HTML,
  * Prettier, Cloudflare) are in the first rows on purpose.
  */
+import LogoWallNote from '@/components/primitives/LogoWallNote.astro'
 import TechLogoWall from '@/components/primitives/TechLogoWall.astro'
+import { resolveTechIcon } from '@/data/tech-icons'
+import { TECH_NOTES } from '@/data/tech-notes'
 import GalleryEntry from '@/components/demo/GalleryEntry.astro'
 
 const WARM_AND_COOL = [
@@ -28,7 +31,7 @@ const WARM_AND_COOL = [
 ---
 
 <GalleryEntry id="tech-logo-wall" bare>
-  <TechLogoWall logos={WARM_AND_COOL} title="Cells layout, names on hover" />
+  <TechLogoWall logos={WARM_AND_COOL} notes={TECH_NOTES} title="Cells layout, names on hover" />
   <TechLogoWall
     logos={WARM_AND_COOL.slice(0, 8)}
     layout="field"
@@ -37,3 +40,27 @@ const WARM_AND_COOL = [
     title="Field layout, names always shown"
   />
 </GalleryEntry>
+
+<GalleryEntry id="logo-wall-note" bare>
+  <div class="logo-wall__item note-demo">
+    <button type="button" class="logo-wall__tile" aria-expanded="true" hidden></button>
+    <LogoWallNote id="note-demo" entry={resolveTechIcon('typescript')} note={TECH_NOTES.typescript} />
+  </div>
+</GalleryEntry>
+
+<style>
+  /* The wall's variables, fixed for one cell: column 0 of 4, first row. Shown open by the aria-expanded button. */
+  .note-demo {
+    --cols: 2;
+    --col-wide: 0;
+    --col-medium: 0;
+    --col-narrow: 0;
+    --flipy-wide: 0;
+    --flipy-medium: 0;
+    --flipy-narrow: 0;
+    position: relative;
+    width: 12rem;
+    height: 10rem;
+    margin-left: 1px;
+  }
+</style>

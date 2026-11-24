@@ -143,6 +143,19 @@ const storageKey = VARIANT_STORAGE_KEY
     cell.style.setProperty('--my', `${event.clientY - box.top}px`)
   })
 
+  /* Note-strip logo expand: the strip above the wall shows the note of the hovered or focused tile. */
+  const fillStrip = (event) => {
+    if (root.getAttribute('data-v-logo-expand') !== 'note-strip') return
+    const item = event.target.closest?.('.logo-wall__item')
+    const strip = item?.closest('.logo-wall')?.previousElementSibling
+    if (!strip?.matches('[data-logo-strip]')) return
+    strip.innerHTML =
+      item.querySelector('[data-logo-note]')?.innerHTML ??
+      item.querySelector('.logo-wall__name').outerHTML
+  }
+  document.addEventListener('pointerover', fillStrip)
+  document.addEventListener('focusin', fillStrip)
+
   labelSelawik()
   apply(read())
 </script>

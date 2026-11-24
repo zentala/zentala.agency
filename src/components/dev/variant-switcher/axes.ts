@@ -69,6 +69,13 @@ export const VARIANT_AXES: VariantAxis[] = [
     'inner-light:Światło od środka',
     'spotlight:Reflektor za kursorem',
   ),
+  axis(
+    'logo-expand',
+    'Rozwijanie logo technologii',
+    'Rośnie 2 x 2 (w prawo i w dół)',
+    'span-right:Rozciąga się w prawo (3 komórki)',
+    'note-strip:Pas z notatką nad ścianą',
+  ),
 ]
 
 export const VARIANT_STORAGE_KEY = 'dev-variants'

@@ -25,6 +25,7 @@ const CSS = readFileSync(
 const EXPECTED: Record<string, string[]> = {
   cta: ['default', 'steel', 'ice', 'white', 'ghost'],
   'card-hover': ['default', 'inner-light', 'spotlight'],
+  'logo-expand': ['default', 'span-right', 'note-strip'],
 }
 
 describe.each(Object.entries(EXPECTED))('axis %s', (id, values) => {

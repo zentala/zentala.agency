@@ -1,0 +1,118 @@
+---
+/**
+ * LogoWallNote - the panel of one TechLogoWall cell: the technology's logo in its brand colour, its name and a
+ * short personal note. It sits inside the cell (`li.logo-wall__item`) and is shown by the wall's hover, focus and
+ * tap states (the open selectors read the cell, hence `:global`). Absolute, so it never moves a grid rect.
+ */
+import TechIcon from '@/components/primitives/TechIcon.astro'
+import type { TechIconEntry } from '@/data/tech-icons'
+
+export interface Props {
+  /** Id the cell's button points at with `aria-describedby`. */
+  id: string
+  entry: TechIconEntry
+  note: string
+}
+
+const { id, entry, note } = Astro.props
+---
+
+<div class="logo-wall__panel" {id} data-logo-note>
+  <p class="logo-wall__panel-head">
+    <TechIcon name={entry.slug} size="lg" brand={entry.brand} class="logo-wall__panel-logo" />
+    <span>{entry.name}</span>
+  </p>
+  <p class="logo-wall__note">{note}</p>
+</div>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  /*
+   * Placement: --col-<band> and --flipy-<band> come from the cell's markup; --cols is the wall's column count of
+   * the current band. The panel spans --span columns and --rspan rows from its cell, shifted left (--shift) at the
+   * last columns and up (--flipy) at the last row, so it stays inside the wall. At 770px and below it spans the
+   * full wall width, two rows, under the tapped cell.
+   */
+  .logo-wall__panel {
+    --col: var(--col-wide);
+    --flipy: var(--flipy-wide);
+    --span: 2;
+    --rspan: 2;
+    --shift: max(0, calc(var(--col) - (var(--cols) - var(--span))));
+    --edge: min(1, var(--shift));
+    position: absolute;
+    top: calc(var(--flipy) * (var(--rspan) - 1) * -100% - 1px);
+    left: calc(var(--shift) * -100% - 1px);
+    z-index: var(--z-cell-hover);
+    width: calc(var(--span) * 100% + 1px);
+    min-height: calc(var(--rspan) * 100% + 1px);
+    padding: 1.25rem;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-surface-raised);
+    clip-path: inset(
+      calc(50% * var(--flipy)) calc(50% * (1 - var(--edge))) calc(50% * (1 - var(--flipy)))
+        calc(50% * var(--edge))
+    );
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--motion-fast) var(--ease-standard),
+      clip-path var(--motion-base) var(--ease-enter),
+      visibility 0s linear var(--motion-base);
+
+    @include medium {
+      --col: var(--col-medium);
+      --flipy: var(--flipy-medium);
+    }
+
+    @include tablet {
+      --col: var(--col-narrow);
+      --flipy: var(--flipy-narrow);
+      --span: var(--cols);
+    }
+  }
+
+  .logo-wall__panel-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .logo-wall__note {
+    margin-top: 0.75rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  :global(.logo-wall__item:not([data-dismissed]):has(:focus-visible)) .logo-wall__panel,
+  :global(.logo-wall__item:has([aria-expanded='true'])) .logo-wall__panel {
+    clip-path: inset(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  @media (hover: hover) {
+    :global(.logo-wall__item:not([data-dismissed]):hover) .logo-wall__panel {
+      clip-path: inset(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition-delay: 0s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-wall__panel {
+      transition: none;
+    }
+  }
+</style>
