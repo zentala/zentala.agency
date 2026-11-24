@@ -82,7 +82,6 @@ export const VARIANT_AXES: VariantAxis[] = [
     'span-right:Rozciąga się w prawo (3 komórki)',
     'note-strip:Pas z notatką nad ścianą',
   ),
-  axis('form', 'Formularz', 'B (linie w obu kierunkach)', 'line:C (tylko poziome)'),
   /* The first option is the build's default, so it follows HEADER_IMAGES. */
   HEADER_IMAGES
     ? axis('header-images', 'Obrazy nagłówków', 'włączone', 'off:wyłączone')
