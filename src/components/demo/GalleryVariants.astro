@@ -12,19 +12,30 @@ const HEADLINE = 'Agent-Native Harness'
 const SUBHEAD = 'How to build a repo an AI agent can actually work in'
 const META = '17 parts'
 const VARIANTS = ['a', 'b', 'c', 'd'] as const
+const NAMES = {
+  a: 'default',
+  b: 'small caps label',
+  c: 'thin larger label',
+  d: 'label on the line',
+} as const
 ---
 
-<GalleryEntry id="section-header-variants" bare>
+<GalleryEntry id="section-header-variants" cols={2}>
   {
     VARIANTS.map((variant) => (
-      <SectionHeader
-        variant={variant}
-        tag="h3"
-        headline={HEADLINE}
-        subhead={SUBHEAD}
-        labelIcon="series"
-        meta={META}
-      />
+      <div class="variant-sample" data-sample={variant}>
+        <p class="variant-sample__name">{variant.toUpperCase()}: {NAMES[variant]}</p>
+        <div class="variant-sample__stage">
+          <SectionHeader
+            variant={variant}
+            tag="h3"
+            headline={HEADLINE}
+            subhead={SUBHEAD}
+            labelIcon="series"
+            meta={META}
+          />
+        </div>
+      </div>
     ))
   }
 </GalleryEntry>
@@ -38,3 +49,35 @@ const VARIANTS = ['a', 'b', 'c', 'd'] as const
     </p>
   </GalleryCell>
 </GalleryEntry>
+
+<style>
+  /* NOTE(intent): a sample is a grid cell; the grid draws its lines, so the header's own bottom line is dropped here. Variant D needs a line to sit on, so its stage draws one. */
+  .variant-sample {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .variant-sample__name {
+    margin: 0;
+    padding: clamp(1rem, 2.5vw, 2rem) clamp(1rem, 2.5vw, 2rem) 1rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle);
+  }
+
+  .variant-sample__stage {
+    margin-top: auto;
+  }
+
+  .variant-sample__stage :global(.section-header) {
+    border-bottom: 0;
+  }
+
+  .variant-sample[data-sample='d'] .variant-sample__stage {
+    margin-top: 0;
+    border-top: 1px solid var(--color-line, currentColor);
+    padding-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+</style>
