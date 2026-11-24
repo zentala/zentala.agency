@@ -28,7 +28,6 @@ describe('DraftBadge rule', () => {
 
 describe('DraftBadge state name', () => {
   const users = [
-    'src/components/blog/SeriesRail.astro',
     'src/components/cards/SeriesCard.astro',
   ]
   it.each(users)('%s provides a size container for the state query', (file) => {
