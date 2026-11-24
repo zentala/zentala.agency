@@ -3,19 +3,26 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import { SHOW_DRAFTS } from '@/config/blog'
 
 /**
- * The one DRAFT marker. Renders only where drafts are shown (never in production)
- * and never takes layout space, so a page is as tall in dev as in production:
+ * The one DRAFT marker. Renders only where drafts are shown (never in production).
+ * Only `corner` is out of flow; `rule` and `state` take inline space unless the
+ * caller positions them (see below):
  * - `corner`: a tag pinned to the top-right corner of the nearest positioned
  *   ancestor (cards, post hero); it sits in that box's padding.
- * - `edge`: a 2px translucent bar just left of the nearest positioned ancestor (list rows).
+ * - `rule`: a 1px vertical line placed between the part number and the title of
+ *   a list row (F2-E), never at the far left of the row. It carries 0.5rem side
+ *   margins; where titles must align with published rows (column layouts), the
+ *   caller wraps it in an absolutely positioned box in the column gap and zeroes
+ *   the margin (SeriesCard, SeriesList).
+ * - `state`: the state name in grey after the title (inline, may wrap a line);
+ *   shown only where the row is wide (container of 22rem or more).
  * - `inline`: plain text, only for a line that cannot wrap (a short label).
- * States, all neutral: a plain draft is a 2px dashed bar or tag; `review` (a
- * draft the agent judges ready for the owner's publication review) is a thin
- * solid bar (also 2px, translucent) or tag labelled "Review"; `label` replaces the
+ * States, all neutral: a plain draft is a dashed line or tag; `review` (a
+ * draft the agent judges ready for the owner's publication review) is a solid
+ * line or tag labelled "Review"; `label` replaces the
  * text for other dev-only notes, e.g. a series that production would hide.
  */
 interface Props {
-  placement?: 'corner' | 'edge' | 'inline'
+  placement?: 'corner' | 'rule' | 'state' | 'inline'
   review?: boolean
   label?: string
 }
@@ -33,10 +40,12 @@ const state = review ? 'review' : 'draft'
 
 {
   SHOW_DRAFTS &&
-    (placement === 'edge' ? (
-      <span class={`draft-edge draft-edge--${state}`} title={hint}>
+    (placement === 'rule' ? (
+      <span class={`draft-rule draft-rule--${state}`} title={hint}>
         <span class="sr-only">{text}</span>
       </span>
+    ) : placement === 'state' ? (
+      <span class="draft-state">{text}</span>
     ) : (
       <span
         class={`draft-tag draft-tag--${placement} draft-tag--${state}`}
@@ -89,22 +98,30 @@ const state = review ? 'review' : 'draft'
     margin-left: 0.5rem;
   }
 
-  .draft-edge {
-    --draft-edge-color: rgb(255 255 255 / 0.22);
-    position: absolute;
-    top: 0.3em;
-    bottom: 0.3em;
-    left: -0.5rem;
-    width: 2px;
-    background: repeating-linear-gradient(
-      to bottom,
-      var(--draft-edge-color) 0 4px,
-      transparent 4px 8px
-    );
-    pointer-events: none;
+  .draft-rule {
+    display: inline-block;
+    align-self: stretch;
+    width: 0;
+    min-height: 1em;
+    margin-inline: 0.5rem;
+    border-left: 1px dashed var(--color-line-strong);
+    vertical-align: middle;
   }
 
-  .draft-edge--review {
-    background: var(--draft-edge-color);
+  .draft-rule--review {
+    border-left-style: solid;
+  }
+
+  .draft-state {
+    display: none;
+    margin-left: 0.5rem;
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+  }
+
+  @container (min-width: 22rem) {
+    .draft-state {
+      display: inline;
+    }
   }
 </style>

@@ -11,7 +11,7 @@ export const VARIANTS_GROUP: GalleryGroup = {
         'The four looks of the one section header: a (the default), b (small caps label), c (thin larger label) and d (label on the section line).',
       props:
         'variant (a; b, c, d), labelIcon (SiteIcon name before the headline), meta (short note on the right)',
-      note: 'The owner compares them on real pages with the dev-only variant switcher; the default render is unchanged until he picks one.',
+      note: 'Variant a is the default (the home page call to action keeps it); b, c and d are chosen with the variant prop for other uses, for example a left-aligned standalone header.',
       noteHref: '/mockups/design-board#board-t4',
     },
     {

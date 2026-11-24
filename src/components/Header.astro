@@ -1,5 +1,12 @@
 ---
+/**
+ * Site header. From 771 px up it is 88 px high at the top and shrinks to 61 px (bottom
+ * line included) once the page scrolls: `data-scrolled` on `<html>` drives the shrink and
+ * the spacer keeps the full height, so content never jumps (DESIGN.md, Page header).
+ * From 1201 px the menu carries 18 px icons; below 771 px the mobile header is unchanged.
+ */
 import Logo from '../components/Logo.astro'
+import SiteIcon from '@/components/primitives/SiteIcon.astro'
 const headerLogoProps = {
   link: '/',
   color: '#fff',
@@ -10,24 +17,17 @@ const headerLogoProps = {
 }
 
 const links = [
-  { href: '/', text: 'Home', navIcon: 'nav-home' },
+  { href: '/', text: 'Home', icon: 'home' },
   // { path: '/mission', text: 'Mission' },
   // { path: '/about', text: 'About' },
-  { href: '/about/capabilities', text: 'Capabilities', navIcon: 'nav-capabilities' },
+  { href: '/about/capabilities', text: 'Capabilities', icon: 'capabilities' },
   // { path: '/faq', text: 'FAQ' },
-  { href: '/portfolio', text: 'Portfolio', navIcon: 'nav-portfolio' },
-  { href: '/blog', text: 'Blog', navIcon: 'nav-blog' },
-  { href: '/contact', text: 'Contact', navIcon: 'nav-contact' },
+  { href: '/portfolio', text: 'Portfolio', icon: 'portfolio' },
+  { href: '/blog', text: 'Blog', icon: 'blog' },
+  { href: '/contact', text: 'Contact', icon: 'email' },
 ] as const
 
-/**
- * Dev-only nav icons for the "shrink" header variant of the variant switcher.
- * Imported under DEV only and hidden until that variant is on, so the default
- * header and the production build are unchanged.
- */
-const DevNavIcon = import.meta.env.DEV
-  ? (await import('@/components/dev/variant-switcher/NavIcon.astro')).default
-  : null
+const NAV_ICON_SIZE = 18
 
 const { pathname } = Astro.url
 const isCurrent = (href: string) =>
@@ -35,6 +35,15 @@ const isCurrent = (href: string) =>
 ---
 
 <style lang="scss">
+  $header-top: 5.5rem;
+  $header-scrolled: 3.8125rem; // 61px, the bottom line included
+  $logo-scrolled-scale: 0.8;
+  $desktop-from: 771px;
+  $icons-from: 1201px; // the nav has room for icons
+  $tagline-from: 1400px; // the tagline needs a wider bar still
+  $tagline-gap: 2rem;
+  $nav-gap: 2rem;
+
   .tracking-wide {
     letter-spacing: 0.26rem;
   }
@@ -109,6 +118,79 @@ const isCurrent = (href: string) =>
     }
   }
 
+  .desktop-nav :global(.nav-icon) {
+    display: none;
+  }
+
+  // Shrinking header: 88 px at the top, 61 px once scrolled
+  @media (min-width: $desktop-from) {
+    .header-spacer {
+      height: $header-top;
+    }
+
+    .container-header {
+      min-height: calc(#{$header-top} - 1px);
+      padding-top: 0;
+      padding-bottom: 0;
+      transition: min-height var(--motion-base) var(--ease-standard);
+    }
+
+    .logo-container > :global(div) {
+      line-height: 0;
+      transform-origin: left center;
+      transition: transform var(--motion-base) var(--ease-standard);
+    }
+
+    .desktop-nav {
+      align-self: center;
+      margin-bottom: 0;
+    }
+
+    :global(html[data-scrolled]) {
+      .container-header {
+        min-height: calc(#{$header-scrolled} - 1px);
+      }
+
+      .logo-container > :global(div) {
+        transform: scale($logo-scrolled-scale);
+      }
+    }
+  }
+
+  // Below this width the tagline would run into the nav
+  @media (min-width: $desktop-from) and (max-width: #{$tagline-from - 1px}) {
+    .tagline {
+      display: none;
+    }
+  }
+
+  @media (min-width: $icons-from) {
+    .tagline {
+      margin-left: $tagline-gap;
+      white-space: nowrap;
+      transition: opacity var(--motion-fast) var(--ease-standard);
+    }
+
+    .desktop-nav {
+      column-gap: $nav-gap;
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: 0;
+      }
+
+      :global(.nav-icon) {
+        display: block;
+      }
+    }
+
+    :global(html[data-scrolled]) .tagline {
+      opacity: 0;
+    }
+  }
+
   // The tagline wraps under the logo on phones and doubles the header height
   @media (max-width: 480px) {
     .tagline {
@@ -171,7 +253,7 @@ const isCurrent = (href: string) =>
             class="font-medium uppercase tracking-wide"
             aria-current={isCurrent(link.href) ? 'page' : undefined}
           >
-            {DevNavIcon && <DevNavIcon name={link.navIcon} />}
+            <SiteIcon name={link.icon} size={NAV_ICON_SIZE} class="nav-icon" />
             {link.text}
           </a>
         ))
@@ -304,15 +386,28 @@ const isCurrent = (href: string) =>
 </script>
 
 <script>
-  // The header height varies (tagline wraps at tablet widths); the spacer follows the real height
   const siteHeader = document.getElementById('header')
+  const root = document.documentElement
+  const DESKTOP_FROM_PX = 771
+  const DESKTOP_SPACER_PX = 88
+  const SCROLLED_AFTER_PX = 24
+
+  // Scroll flag: the shrink of the desktop header reads it from <html>
+  const syncScrolled = () =>
+    root.toggleAttribute('data-scrolled', window.scrollY > SCROLLED_AFTER_PX)
+  window.addEventListener('scroll', syncScrolled, { passive: true })
+  syncScrolled()
+
+  // The spacer var is the full desktop height at any scroll position (no shift);
+  // below the desktop width the header height varies, so it follows the real height
   if (siteHeader) {
-    const syncSpacer = () =>
-      document.documentElement.style.setProperty(
-        '--header-spacer-height',
-        `${siteHeader.offsetHeight}px`,
-      )
+    const syncSpacer = () => {
+      const height =
+        window.innerWidth >= DESKTOP_FROM_PX ? DESKTOP_SPACER_PX : siteHeader.offsetHeight
+      root.style.setProperty('--header-spacer-height', `${height}px`)
+    }
     new ResizeObserver(syncSpacer).observe(siteHeader)
+    window.addEventListener('resize', syncSpacer)
     syncSpacer()
   }
 </script>

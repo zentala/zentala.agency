@@ -7,7 +7,7 @@ export interface Props {
 const { icon } = Astro.props
 
 /** A short icon name renders as an icon; anything else (an emoji, a glyph) renders as text. */
-/** Background glyphs are drawn at this size (Thin weight); CSS scales the box to the card. */
+/** Background glyphs render at this size (Thin weight) at every viewport; the card crops them. */
 const BACKGROUND_ICON_PX = 176
 
 const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
@@ -16,7 +16,7 @@ const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
 <span class="card-background-icon">
   {
     isIconName ? (
-      <SiteIcon name={icon} size={BACKGROUND_ICON_PX} class="card-background-icon__svg" />
+      <SiteIcon name={icon} size={BACKGROUND_ICON_PX} />
     ) : (
       icon
     )
@@ -28,8 +28,8 @@ const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
     position: absolute;
     top: 1.25rem;
     right: 1.25rem;
-    font-size: 8rem;
-    opacity: 0.06;
+    font-size: 176px;
+    opacity: var(--icon-bg-rest-opacity, 0.06);
     transition: opacity 200ms ease-in-out;
     /* Paints above the host's background, below its content; hosts isolate. */
     z-index: -1;
@@ -40,30 +40,5 @@ const isIconName = /^[a-z][a-z0-9-]*$/.test(icon) && icon.length > 1
 
   :global(.card-container):hover .card-background-icon {
     opacity: var(--icon-bg-max-opacity);
-  }
-
-  .card-background-icon :global(.card-background-icon__svg) {
-    width: 8rem;
-    height: 8rem;
-  }
-
-  @media (max-width: 770px) {
-    .card-background-icon {
-      font-size: 7rem;
-    }
-    .card-background-icon :global(.card-background-icon__svg) {
-      width: 7rem;
-      height: 7rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .card-background-icon {
-      font-size: 5rem;
-    }
-    .card-background-icon :global(.card-background-icon__svg) {
-      width: 5rem;
-      height: 5rem;
-    }
   }
 </style>

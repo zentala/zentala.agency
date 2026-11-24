@@ -1,24 +1,18 @@
 /*
  * Looks of SectionHeader beyond the default: the small icon and right-hand note of
  * variant a, and the one-row variants b, c and d. A variant applies through the
- * `variant` prop, or, for a header without the prop, through the dev-only variant
- * switcher's `html[data-v-section-header]` attribute (never set in production).
+ * `variant` prop (`data-variant` on the header; `a` is the default).
  */
 @use '../../../styles/variables' as *;
 
 $label-tracking: 0.14em;
 $on-line-gap: 0.75rem;
 
-/* Wraps rules for the named variants, set by prop or by the dev switcher. */
+/* Wraps rules for the named variants. */
 @mixin when($names...) {
   $selectors: ();
   @each $name in $names {
     $selectors: append($selectors, "&[data-variant='#{$name}']", comma);
-    $selectors: append(
-      $selectors,
-      ":global(html[data-v-section-header='#{$name}']) &:not([data-variant])",
-      comma
-    );
   }
 
   #{$selectors} {

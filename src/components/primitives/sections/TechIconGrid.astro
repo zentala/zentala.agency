@@ -1,8 +1,7 @@
 ---
 /**
  * TechIconGrid - a line-grid of technology logos. Cells are static (no link, no hover wash): a logo is
- * muted until the cell is hovered or focused, then takes its brand colour mixed toward white so it
- * stays subtle. The name sits in the tooltip, the accessible label and a quiet caption on hover/focus.
+ * muted until the cell is hovered or focused, then takes its real brand colour. The name sits in the tooltip, the accessible label and a quiet caption on hover/focus.
  * Data and its sources: src/data/tech-icons.ts.
  */
 import Section from './Section.astro'
@@ -74,7 +73,7 @@ const { items = TECH_ICONS, columns = 5, id } = Astro.props
 
   .tech-cell:hover :global(.tech-cell__logo),
   .tech-cell:focus-visible :global(.tech-cell__logo) {
-    color: color-mix(in srgb, var(--brand) 75%, white);
+    color: var(--brand);
     opacity: 1;
   }
 

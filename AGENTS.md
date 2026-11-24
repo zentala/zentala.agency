@@ -27,9 +27,9 @@ just test       # unit tests        just typecheck
 - Principles (owner rulings of 2026-11-20, amended 2026-11-21 and 2026-11-23; the rule, its guard and the decision rows are in [DESIGN.md](DESIGN.md) "Principles" P1 to P11 and section 10): the site is minimal, readable and subtle. Read DESIGN.md for the details; do not copy values into code or docs from here.
   - Colour: P1 (no warm colour in the site's own UI), P2 (blue is a small accent; the one CTA button per screen is the only blue fill), P3 (hover is the lighter card background).
   - Type and links: P4 (no bold), P5 (no underlines), the font is the system font (section 2).
-  - Arrows, icons, buttons: P6 (one chevron that moves, `<SiteIcon name="next" class="arrow-nudge" />`), P7 (icons only through `SiteIcon`, weight by size, one icon map; logos only through `TechIcon`; never import `astro-icon` or draw an inline icon `<svg>` elsewhere), buttons through `Button` and its four tiers (section 5).
+  - Arrows, icons, buttons: P6 (one chevron that moves, `<SiteIcon name="next" class="arrow-nudge" />`), P7 (icons only through `SiteIcon`, weight by size, one icon map; logos only through `TechIcon`, footer marks through `BrandIcon`; never import `astro-icon` or draw an inline icon `<svg>` elsewhere), buttons through `Button` and its four tiers (section 5).
   - Forms, tags, markers: P8, P9, P11. Section headers keep four named variants (section 5).
-  - A rule marked "target" in DESIGN.md is decided but not built until E007-T30: the code is the truth until then.
+  - A rule marked "target" in DESIGN.md is decided but not built until the last wave of E007-T30 (forms, blog index, series table, left edge): the code is the truth until then.
   - Guards: `tests/unit/design-guards.test.ts` (colour, underline, bold), `tests/unit/icon-set.test.ts` (icons), the line guard. The rest is checked by looking at the render.
 - Design source: [DESIGN.md](DESIGN.md) (principles, tokens, the line model in section 3, primitives and props, decisions). How to build with it: the [line-grid-layout skill](.agents/skills/line-grid-layout/SKILL.md).
 - A component never writes `border`, `overflow: hidden`, a fixed `aspect-ratio`, an opaque background, or `margin` / `transform` / `z-index` for layout or hover on a grid cell. Reuse or extend a primitive.

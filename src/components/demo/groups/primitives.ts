@@ -18,6 +18,13 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       props: 'name, size (sm; md, lg), brand (hex), class',
     },
     {
+      id: 'brand-icon',
+      name: 'BrandIcon',
+      path: 'primitives/BrandIcon.astro',
+      purpose: 'Footer social mark: a Font Awesome 6 Free glyph inlined at build time (no webfont, no CDN), currentColor.',
+      props: 'name (linkedin, github, email), size (33), class',
+    },
+    {
       id: 'badge',
       name: 'Badge',
       path: 'primitives/Badge.astro',
@@ -44,7 +51,7 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       path: 'primitives/DraftBadge.astro',
       purpose:
         'The one dev-only DRAFT marker; the review state marks a draft ready for the owner.',
-      props: 'placement (corner; edge, inline), review (false), label',
+      props: 'placement (corner; rule, state, inline), review (false), label',
     },
     {
       id: 'phase-label',
@@ -86,8 +93,8 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       id: 'card-icon-mosaic',
       name: 'CardIconMosaic',
       path: 'primitives/CardIconMosaic.astro',
-      purpose: 'Generated artwork: dot grid, glow and drifting icons.',
-      props: 'icons, class',
+      purpose: 'Generated artwork: 3x3 portfolio mosaic (F3-E), tile hover shows its label.',
+      props: 'tiles, class',
     },
   ],
 }

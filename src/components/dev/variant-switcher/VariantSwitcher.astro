@@ -47,7 +47,6 @@ const storageKey = VARIANT_STORAGE_KEY
 <script is:inline define:vars={{ axes, storageKey }}>
   const root = document.documentElement
   const panel = document.querySelector('[data-vsw]')
-  const SCROLLED_AFTER_PX = 24
 
   const read = () => {
     try {
@@ -111,14 +110,8 @@ const storageKey = VARIANT_STORAGE_KEY
     if (event.key === 'Escape') panel.removeAttribute('open')
   })
 
-  /* Scroll flag for variants that react to scrolling (the shrinking header). */
-  const syncScrolled = () =>
-    root.toggleAttribute('data-scrolled', window.scrollY > SCROLLED_AFTER_PX)
-  window.addEventListener('scroll', syncScrolled, { passive: true })
-
   labelSelawik()
   apply(read())
-  syncScrolled()
 </script>
 
 <style lang="scss">

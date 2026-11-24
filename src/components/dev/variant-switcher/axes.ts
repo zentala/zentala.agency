@@ -30,8 +30,6 @@ const axis = (id: string, label: string, ...options: string[]): VariantAxis => (
 })
 
 export const VARIANT_AXES: VariantAxis[] = [
-  axis('section-header', 'Nagłówek sekcji', 'A obecny', 'b:B etykieta', 'c:C cienki', 'd:D na linii'),
-  axis('header', 'Nagłówek strony', 'obecny', 'shrink:kurczy się, z ikonami'),
   axis('first-view', 'Pierwszy ekran', 'zwykły', 'full:na cały ekran'),
   axis(
     'font',

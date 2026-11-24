@@ -6,7 +6,7 @@ import { formatShortDate, type BoardSeries } from './data'
 
 /**
  * One series as a static grid cell that lists every part as a table row.
- * - `date`: date left, title right, drafts marked with the edge bar.
+ * - `date`: date left, title right, drafts marked with the rule and state name.
  * - `number`: part number left, title, status word right (Start, New, Draft).
  * - `combined`: part number left, title, date right; the status replaces the date.
  * In every variant the first row carries "Start" instead of a separate line.
@@ -56,17 +56,27 @@ const rows = series.parts.slice(0, limit).map((part, index) => {
             {variant === 'date' ? (
               <time class="series-row__lead" datetime={row.datetime}>
                 {row.dateLabel}
+                {row.isDraft && (
+                  <span class="series-row__rule">
+                    <DraftBadge placement="rule" review={row.isReview} />
+                  </span>
+                )}
               </time>
             ) : (
               <span class="series-row__lead">
                 <span class="sr-only">Part </span>
                 {row.number}
+                {row.isDraft && (
+                  <span class="series-row__rule">
+                    <DraftBadge placement="rule" review={row.isReview} />
+                  </span>
+                )}
               </span>
             )}
             <span class="series-row__title">
               {row.title}
-              {variant === 'date' && row.isDraft && (
-                <DraftBadge placement="edge" review={row.isReview} />
+              {row.isDraft && (
+                <DraftBadge placement="state" review={row.isReview} />
               )}
             </span>
             {row.isFirst ? (
@@ -168,6 +178,23 @@ const rows = series.parts.slice(0, limit).map((part, index) => {
     font-size: var(--text-sm);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+  }
+
+  .series-row__lead {
+    position: relative;
+  }
+
+  /* Centred in the column gap between lead and title, so no row shifts. */
+  .series-row__rule {
+    position: absolute;
+    top: 0.2em;
+    bottom: 0.2em;
+    right: -0.375rem;
+    display: flex;
+  }
+
+  .series-row__rule :global(.draft-rule) {
+    margin-inline: 0;
   }
 
   .series-row__lead,
