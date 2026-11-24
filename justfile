@@ -1,7 +1,7 @@
 set windows-shell := ["pwsh", "-NoProfile", "-Command"]
 
 # specs that guard the critical pages and the line grid
-critical_specs := "tests/e2e/blog-post.spec.ts tests/e2e/bento-showcase.spec.ts tests/e2e/series-linkedin-preview.spec.ts tests/e2e/line-geometry.spec.ts tests/e2e/header-shrink.spec.ts"
+critical_specs := "tests/e2e/blog-post.spec.ts tests/e2e/bento-showcase.spec.ts tests/e2e/series-linkedin-preview.spec.ts tests/e2e/line-geometry.spec.ts tests/e2e/header-shrink.spec.ts tests/e2e/contact-form.spec.ts"
 
 # list recipes
 default:

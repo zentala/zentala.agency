@@ -1,0 +1,81 @@
+---
+/**
+ * FormFoot - the last row of a line-grid form (DESIGN.md P8, F1-B): a padded left block
+ * with the privacy note (and an optional consent checkbox) and the submit button
+ * stretched over the right end, so the button's edges are the row's lines.
+ * The caller makes the row span the form's columns (it is one cell of the form's grid).
+ */
+import Button from './Button.astro'
+
+interface Props {
+  /** Privacy sentence in the left block. */
+  note: string
+  /** Name of an optional consent checkbox; the checkbox is rendered only when set. */
+  checkName?: string
+  checkLabel?: string
+  class?: string
+}
+
+const { note, checkName, checkLabel, class: className = '' } = Astro.props
+---
+
+<div class:list={['form-foot', className]}>
+  <div class="form-foot__aside">
+    {
+      checkName && (
+        <label class="form-foot__check">
+          <input type="checkbox" name={checkName} />
+          <span>{checkLabel}</span>
+        </label>
+      )
+    }
+    <p class="form-foot__note">{note}</p>
+  </div>
+  <Button type="submit" tier="primary" text="Send message" icon="send" iconPosition="right" />
+</div>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .form-foot {
+    display: flex;
+    align-items: stretch;
+
+    @include tablet {
+      flex-direction: column;
+    }
+  }
+
+  .form-foot__aside {
+    flex: 1;
+    display: grid;
+    align-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .form-foot__check {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+
+    input {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--color-text);
+    }
+  }
+
+  .form-foot__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* The button fills the right end of the row; its min-height is the shared 3rem. */
+  .form-foot :global(.button) {
+    min-width: 14rem;
+    padding-inline: 2rem;
+  }
+</style>

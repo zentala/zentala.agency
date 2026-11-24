@@ -66,22 +66,31 @@ export const GENERAL_GROUP: GalleryGroup = {
       id: 'themed-input',
       name: 'ThemedInput',
       path: 'ThemedInput.astro',
-      purpose: 'Form input in the site theme.',
-      props: 'type (text), id, placeholder',
+      purpose:
+        'Form field as a line-grid cell: floating label, no border or inner padding, neutral focus, fixed autofill colours. The one field implementation (the design board reuses it).',
+      props:
+        'type (text; email, tel, password, url, number), id, name, placeholder (the label text), icon, multiline, size (default; large), required, disabled, error, class',
     },
     {
       id: 'themed-textarea',
       name: 'ThemedTextarea',
       path: 'ThemedTextarea.astro',
-      purpose: 'Form textarea in the site theme.',
-      props: 'id, placeholder',
+      purpose: 'ThemedInput as a multi-line field.',
+      props: 'id, name, placeholder, icon, size (default; large), required, disabled, error',
     },
     {
       id: 'contact-form',
       name: 'ContactForm',
       path: 'ContactForm.astro',
-      purpose: 'Contact form layout from the themed controls.',
+      purpose: 'Contact form: ThemedInput cells in a two-column line grid and a FormFoot row. In dev, the Formularz axis switches to variant C.',
       props: 'none',
+    },
+    {
+      id: 'form-foot',
+      name: 'FormFoot',
+      path: 'FormFoot.astro',
+      purpose: 'Last row of a line-grid form: padded privacy note (optional consent checkbox) and the submit button on the right, flush with the row lines.',
+      props: 'note, checkName, checkLabel, class',
     },
     {
       id: 'trusted-me',

@@ -4,10 +4,9 @@
  * `grid` is a line grid (fields share lines); `line` keeps only the horizontal lines.
  * `accent` is the rejected option D: the grid with an accent focus line.
  * The form has no frame and no outer padding: its lines are the lines of the cell it
- * sits in. The last row holds a padded block for a privacy note on the left and the
- * submit button on the right, flush with the row's lines.
+ * sits in. The last row is `FormFoot`.
  */
-import Button from '@/components/Button.astro'
+import FormFoot from '@/components/FormFoot.astro'
 import FloatField from './FloatField.astro'
 
 interface Props {
@@ -32,18 +31,12 @@ const { variant, prefix, hidden = false } = Astro.props
   <FloatField id={`${prefix}-email`} label="Email" icon="email" type="email" variant={variant} required />
   <FloatField id={`${prefix}-phone`} label="Phone" icon="phone" type="tel" variant={variant} />
   <FloatField id={`${prefix}-msg`} label="Your message" icon="message" variant={variant} multiline class="float-form__span" />
-  <div class:list={['float-form__foot', 'float-form__span', `float-form__foot--${variant}`]}>
-    <div class="float-form__aside">
-      <label class="float-form__check">
-        <input type="checkbox" name={`${prefix}-copy`} />
-        <span>Send me a copy of this message</span>
-      </label>
-      <p class="float-form__note">
-        I use your details only to answer you. No newsletter, no sharing.
-      </p>
-    </div>
-    <Button tier="primary" type="submit" text="Send message" icon="send" iconPosition="right" />
-  </div>
+  <FormFoot
+    class={`float-form__span float-form__foot--${variant}`}
+    note="I use your details only to answer you. No newsletter, no sharing."
+    checkName={`${prefix}-copy`}
+    checkLabel="Send me a copy of this message"
+  />
 </form>
 
 <style lang="scss">
@@ -74,48 +67,7 @@ const { variant, prefix, hidden = false } = Astro.props
     grid-column: 1 / -1;
   }
 
-  .float-form__foot {
-    display: flex;
-    align-items: stretch;
-
-    @include tablet {
-      flex-direction: column;
-    }
-  }
-
-  .float-form__foot--line {
+  .float-form > :global(.float-form__foot--line) {
     border-top: 1px solid var(--color-line);
-  }
-
-  .float-form__aside {
-    flex: 1;
-    display: grid;
-    gap: 0.5rem;
-    padding: 1.25rem;
-  }
-
-  .float-form__check {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-
-    input {
-      width: 1rem;
-      height: 1rem;
-      accent-color: var(--color-text);
-    }
-  }
-
-  .float-form__note {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-
-  /* The button fills the right end of the row, so its edges are the row's lines. */
-  .float-form__foot :global(.button) {
-    min-width: 14rem;
-    padding-inline: 2rem;
   }
 </style>

@@ -27,7 +27,15 @@ $font-stack-tail: "'Segoe UI', Selawik, system-ui, sans-serif";
   }
 }
 
-/* Form axis, variant C: horizontal lines only, no vertical line between the columns. */
-html[data-v-form='line'] .contact-form > * {
-  border-left: 0;
+/*
+ * Form axis, variant C: horizontal lines only. Only the divider between the two columns
+ * goes: the fields of the second column (cells 2 and 4 of .contact-form) lose their left
+ * line. The left edge line, the top lines and the foot row keep the line grid's own lines.
+ * From 769 px up the form has two columns; below it every field is a left-edge cell.
+ */
+@media (min-width: 771px) {
+  html[data-v-form='line'] .contact-form > :nth-child(2),
+  html[data-v-form='line'] .contact-form > :nth-child(4) {
+    border-left: 0;
+  }
 }
