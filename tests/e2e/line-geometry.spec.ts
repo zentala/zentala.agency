@@ -182,8 +182,9 @@ test.describe('icons render at their declared size', () => {
     test(`${path}: every SiteIcon draws at its size prop`, async ({ page }) => {
       await page.goto(path)
       await page.waitForLoadState('networkidle')
-      const wrong = await page.evaluate((tolerance) => {
-        return [...document.querySelectorAll<SVGElement>('[data-icon-px]')]
+      const { count, wrong } = await page.evaluate((tolerance) => {
+        const icons = [...document.querySelectorAll<SVGElement>('[data-icon-px]')]
+        const mismatched = icons
           .map((el) => {
             const rect = el.getBoundingClientRect()
             return {
@@ -199,7 +200,9 @@ test.describe('icons render at their declared size', () => {
               (Math.abs(i.width - i.declared) > tolerance ||
                 Math.abs(i.height - i.declared) > tolerance),
           )
+        return { count: icons.length, wrong: mismatched }
       }, ICON_SIZE_TOLERANCE_PX)
+      expect(count, 'the route renders at least one SiteIcon').toBeGreaterThan(0)
       expect(wrong, 'icons drawn at a size other than declared').toEqual([])
     })
   }
