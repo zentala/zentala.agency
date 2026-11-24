@@ -1,6 +1,5 @@
 import ReviewLayerMockup from '@/components/review-mockup/ReviewLayerMockup.astro'
 import DesignBoard from '@/components/design-board/DesignBoard.astro'
-import CapabilitiesMockup from '@/components/capabilities-mockup/CapabilitiesMockup.astro'
 
 /**
  * Dev-only mockups served at /mockups/<name> by src/pages/mockups/[mockup].astro.
@@ -14,10 +13,6 @@ export const MOCKUPS = {
   'design-board': {
     title: 'Design decision board',
     Component: DesignBoard,
-  },
-  capabilities: {
-    title: 'Sketch: capabilities under one umbrella',
-    Component: CapabilitiesMockup,
   },
 } as const
 

@@ -1,18 +1,10 @@
 ---
 /**
- * Page header of the capabilities sketch: eyebrow, the umbrella name (h1) and
- * two lines under it. Left-aligned on the logo edge (S1-C direction), unlike the
- * centred site Hero. The title carries `data-umbrella-name` so the N1 option
- * strip can swap the name in place.
+ * Page header of /about/capabilities: eyebrow, the umbrella name (h1) and two
+ * lines under it. Left-aligned on the logo edge (S1-C direction), unlike the
+ * centred site Hero.
  */
-import MockupDevLabel from '@/components/blog/mockups/MockupDevLabel.astro'
-import { HERO } from './copy'
-
-interface Props {
-  name: string
-}
-
-const { name } = Astro.props
+import { HERO, NAME } from './copy'
 ---
 
 <section class="section-full">
@@ -21,15 +13,13 @@ const { name } = Astro.props
       <p class="cap-hero__eyebrow">{HERO.eyebrow}</p>
       <h1
         class="cap-hero__title text-4xl font-light leading-tight sm:text-5xl md:text-6xl xl:text-7xl"
-        data-umbrella-name
       >
-        {name}
+        {NAME}
       </h1>
       <p class="cap-hero__subtitle text-xl font-light md:text-2xl">
         {HERO.subtitle}
       </p>
       <p class="cap-hero__approach">{HERO.approach}</p>
-      <p class="cap-hero__marker"><MockupDevLabel>Draft copy</MockupDevLabel></p>
     </div>
   </div>
 </section>
@@ -68,9 +58,5 @@ const { name } = Astro.props
     color: var(--color-text-muted);
     font-size: var(--text-lead);
     line-height: 1.6;
-  }
-
-  .cap-hero__marker {
-    margin-top: 1.5rem;
   }
 </style>

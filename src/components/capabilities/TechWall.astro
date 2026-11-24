@@ -1,0 +1,15 @@
+---
+/**
+ * "Technologies I use" under the T-shape: one TechLogoWall, each logo in its own
+ * grid cell (owner decision DB-9 A). The list lives in copy.ts.
+ */
+import Section from '@/components/primitives/sections/Section.astro'
+import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
+import TechLogoWall from '@/components/primitives/TechLogoWall.astro'
+import { TECH_WALL } from './copy'
+---
+
+<Section id="technologies">
+  <SectionHeader headline={TECH_WALL.headline} subhead={TECH_WALL.subhead} />
+  <TechLogoWall logos={TECH_WALL.logos} layout="cells" title={TECH_WALL.headline} />
+</Section>

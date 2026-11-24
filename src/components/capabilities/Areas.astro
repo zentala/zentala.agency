@@ -1,17 +1,14 @@
 ---
 /**
  * The 18 old capability cards condensed into six areas under the umbrella, each
- * linking to the closest existing page. A Polish dev line under each area names
- * the old cards it absorbs, so the owner can check that nothing was dropped. A
- * body the owner has not confirmed carries the dev-only marker under it.
+ * linking to the closest existing page. A short list under each area keeps the
+ * facts of the old cards (technologies, platforms) on the page.
  */
 import Section from '@/components/primitives/sections/Section.astro'
 import SectionHeader from '@/components/primitives/sections/SectionHeader.astro'
 import CardContainer from '@/components/cards/CardContainer.astro'
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
-import Tag from '@/components/primitives/Tag.astro'
 import { AREAS } from './copy'
-import { CONFIRM_LABEL } from './notes'
 ---
 
 <Section id="areas">
@@ -23,16 +20,13 @@ import { CONFIRM_LABEL } from './notes'
           <div class="area">
             <h3 class="area__title">{area.title}</h3>
             <p class="area__body">{area.body}</p>
-            {area.unconfirmed && (
-              <p class="area__confirm">
-                <Tag theme="label" text={CONFIRM_LABEL} />
-              </p>
-            )}
+            <ul class="area__facts">
+              {area.facts.map((fact) => <li>{fact}</li>)}
+            </ul>
             <p class="area__link">
               <span>{area.linkLabel}</span>
               <SiteIcon name="next" size="sm" class="arrow-nudge" />
             </p>
-            <p class="area__dev">{area.devNote}</p>
           </div>
         </CardContainer>
       ))
@@ -58,10 +52,6 @@ import { CONFIRM_LABEL } from './notes'
     line-height: 1.6;
   }
 
-  .area__confirm {
-    margin-top: 0.75rem;
-  }
-
   .area__link {
     display: flex;
     align-items: center;
@@ -78,12 +68,14 @@ import { CONFIRM_LABEL } from './notes'
     color: var(--color-text);
   }
 
-  /* Owner-facing note: plain quiet text, no rule or box (a box in a cell dangles). */
-  .area__dev {
-    margin-top: 0.75rem;
-    color: var(--color-text-subtle);
-    font-size: var(--text-label);
-    letter-spacing: 0.04em;
+  .area__facts {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
     line-height: 1.5;
+  }
+
+  .area__facts li + li {
+    margin-top: 0.25rem;
   }
 </style>

@@ -22,6 +22,7 @@ import GalleryGeneral from '@/components/demo/GalleryGeneral.astro'
 import GallerySections from '@/components/demo/GallerySections.astro'
 import GalleryVariants from '@/components/demo/GalleryVariants.astro'
 import GalleryTechLogos from '@/components/demo/GalleryTechLogos.astro'
+import GalleryCapabilities from '@/components/demo/GalleryCapabilities.astro'
 import GalleryTypography from '@/components/demo/GalleryTypography.astro'
 import { GALLERY_GROUPS } from '@/components/demo/manifest'
 
@@ -106,6 +107,7 @@ const totalCount = GALLERY_GROUPS.reduce(
         {group.title === 'Page sections' && <GallerySections />}
         {group.title === 'Variants under review' && <GalleryVariants />}
         {group.title === 'Technology logos' && <GalleryTechLogos />}
+        {group.title === 'Capabilities page' && <GalleryCapabilities />}
       </>
     ))
   }

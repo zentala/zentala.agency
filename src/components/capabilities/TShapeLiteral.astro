@@ -1,11 +1,10 @@
 ---
 /**
- * T1, option A: the T drawn with the line grid. Above 1000px a five-column grid:
+ * The T drawn with the line grid (owner decision DB-9 A). Above 1000px a five-column grid:
  * the top row holds the five breadth fields, the middle column under it is the
  * stem, and the two side areas carry only the axis captions. The side areas stay
  * cells because their left and top lines close the underside of the arms and the
- * right edge of the stem. The stem is one cell (layers separated by spacing, as
- * in option B), so it is as short as full cell padding allows and the side areas
+ * right edge of the stem. The stem is one cell (layers separated by spacing), so it is as short as full cell padding allows and the side areas
  * are no taller than needed. At 1000px and below the same cells read as two
  * labelled lists. The wrapper filler is off: every row is full at every width.
  */
@@ -84,7 +83,7 @@ const lastField = TSHAPE.fields.length - 1
     line-height: 1.55;
   }
 
-  /* Same spacing between layers as the lists of option B. */
+  /* Spacing between the stack layers. */
   .t-stem__list {
     display: grid;
     gap: 2rem;

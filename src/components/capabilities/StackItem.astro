@@ -2,16 +2,14 @@
 /**
  * One depth layer of the T-shape: the layer name, its technology logos
  * (TechIcon, monochrome) and the tool names in text, so the logos are never the
- * only label. The dev-only marker follows a detail the owner has not confirmed.
+ * only label.
  */
-import Tag from '@/components/primitives/Tag.astro'
 import TechIcon from '@/components/primitives/TechIcon.astro'
 import type { StackLayer } from './copy'
-import { CONFIRM_LABEL } from './notes'
 
 type Props = StackLayer
 
-const { name, logos, detail, unconfirmed } = Astro.props
+const { name, logos, detail } = Astro.props
 ---
 
 <div class="stack-item">
@@ -20,13 +18,6 @@ const { name, logos, detail, unconfirmed } = Astro.props
     {logos.map((logo) => <TechIcon name={logo} size="md" />)}
   </p>
   <p class="stack-item__detail">{detail}</p>
-  {
-    unconfirmed && (
-      <p class="stack-item__confirm">
-        <Tag theme="label" text={CONFIRM_LABEL} />
-      </p>
-    )
-  }
 </div>
 
 <style>
@@ -50,9 +41,5 @@ const { name, logos, detail, unconfirmed } = Astro.props
     color: var(--color-text-muted);
     font-size: var(--text-sm);
     line-height: 1.5;
-  }
-
-  .stack-item__confirm {
-    margin-top: 0.75rem;
   }
 </style>

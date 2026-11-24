@@ -11,8 +11,7 @@ export const TECH_LOGOS_GROUP: GalleryGroup = {
         'A container-wide wall of technology logos built from a list of slugs or names: monochrome at rest, the real brand colour on hover, and an inner glow of the wall in that colour.',
       props:
         'logos (slugs or names), columns (8; or wide, medium, narrow), size (32; 24, 40), label (hover; always, none), layout (cells; field), title',
-      note: 'Under review on the capabilities sketch (question W1): cells or one open field.',
-      noteHref: '/mockups/capabilities#board-w1',
+      note: 'Used on /about/capabilities in the cells layout (owner decision DB-9 A); the field layout stays here as an alternative.',
     },
   ],
 }

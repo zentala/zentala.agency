@@ -22,7 +22,8 @@ const WIDTHS = [1440, 1024, 390]
 const EDGE_TOLERANCE_PX = 1
 /**
  * A form field and its foot row are controls, not content cells: they keep its own inset and a leading icon
- * (DESIGN.md "Forms"), so it is skipped here. Ghost numbers (`aria-hidden`) are skipped too.
+ * (DESIGN.md "Forms"), so it is skipped here. Ghost numbers (`aria-hidden`) are skipped too. A logo wall cell
+ * (`.logo-wall__item`) centres a logo with its hover label: it holds no left-aligned text, so it is skipped.
  */
 
 /** Routes with a `SectionContent context="full"` block: the route must measure at least one. */
@@ -31,7 +32,7 @@ const FULL_CONTEXT_ROUTE = '/offer/harness-engineering'
 const LOGO = '#header .logo-container svg, #header .logo-container img'
 const HEADER = 'main section .section-header:not([data-align="center"])'
 const CONTENT =
-  ':is(.line-grid, .cards-grid, .content-grid) > :not(:empty, .field, .form-foot), .section-content--full'
+  ':is(.line-grid, .cards-grid, .content-grid) > :not(:empty, .field, .form-foot, .logo-wall__item), .section-content--full'
 
 type EdgeSample = { what: string; left: number }
 
