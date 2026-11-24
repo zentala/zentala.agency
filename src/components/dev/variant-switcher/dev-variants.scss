@@ -101,6 +101,7 @@ html[data-v-card-hover='spotlight'] {
  * Logo-expand axis: how a technology tile of the logo wall opens its note (LogoWallNote reads --span and
  * --rspan; the default, no attribute, is the 2 x 2 growth). span-right: one row, three cells, from 771px up.
  * note-strip: tiles do not grow; the strip above the wall (shown in dev only) carries the note.
+ * The strip has a fixed height so the first hover does not push the wall down (browser check, E007-T38).
  */
 @media (min-width: 771px) {
   html[data-v-logo-expand='span-right'] .logo-wall__panel {
@@ -123,7 +124,9 @@ html[data-v-logo-expand='note-strip'] .logo-wall__panel {
 
 html[data-v-logo-expand='note-strip'] .logo-wall__strip {
   display: block;
-  min-height: 5rem;
+  box-sizing: border-box;
+  height: 7rem;
+  overflow-y: auto;
   padding: 1.25rem 1.5rem;
   border-top: 1px solid var(--color-line);
   color: var(--color-text-secondary);
