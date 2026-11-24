@@ -104,7 +104,7 @@ test.describe('logo wall pointer and keyboard', () => {
     expect(Number(await glow(other))).toBe(0)
     const panel = target.locator('.logo-wall__panel')
     await expect(panel).toBeVisible()
-    await expect(panel).toContainText('Main language in 64 of my repositories.')
+    await expect(panel).toContainText('TypeScript in 64 of my repositories.')
     const cell = await box(target)
     const open = await box(panel)
     expect(open.width).toBeGreaterThan(cell.width * 1.9)

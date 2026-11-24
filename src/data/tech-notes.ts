@@ -10,9 +10,9 @@
 /** Slug of the logo to its draft note. */
 export const TECH_NOTES: Record<string, string> = {
   // DRAFT. SOURCE: count on mATX 2026-11-24, top-level package.json of 139 local repositories
-  typescript: 'Main language in 64 of my repositories.',
+  typescript: 'TypeScript in 64 of my repositories.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
-  javascript: 'My first language for the web. I started with jQuery.',
+  javascript: 'I started with JavaScript and jQuery.',
   // DRAFT. SOURCE: count on mATX 2026-11-24, top-level package.json of 139 local repositories
   nodedotjs: '96 of my repositories run on Node.js.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
@@ -33,13 +33,13 @@ export const TECH_NOTES: Record<string, string> = {
   // DRAFT. SOURCE: owner feedback 2026-11-24
   backstage: 'Developer portals and custom plugins.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
-  claude: 'My daily coding agent. I build the harness around it.',
+  claude: 'The coding agent at the centre of the harness I build.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
   modelcontextprotocol: 'I run several MCP servers, some of them my own.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
   homeassistant: 'Runs my own home.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
-  bluetooth: 'BLE beacons for indoor location.',
+  bluetooth: 'Used for indoor location.',
   // DRAFT. SOURCE: owner feedback 2026-11-24
-  espressif: 'ESP32 sensors and controllers in my smart home.',
+  espressif: 'ESP32 is one of my electronics platforms.',
 }
