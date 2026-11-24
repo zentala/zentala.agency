@@ -1,30 +1,48 @@
 ---
 /**
- * Generated card artwork: a faint glow and a mosaic of thin icons that drift
- * very slowly. Built for tiles that have no photograph worth showing — it
- * fills the upper part of a card and leaves the lower part to the caption.
+ * Generated card artwork (DESIGN.md F3-E, DB-8): a 3x3 mosaic of portfolio areas for tiles
+ * that have no photograph worth showing. Each tile is a Phosphor Light icon (32 px) in a 1 px
+ * frame at about 4.5% white. A 45-degree wave shades the tiles: the tone peaks on the middle
+ * diagonal and each tile differs a little. A tile lightens on its own hover and its label shows
+ * above the mosaic, in the unmasked top of the card, clear of the caption. The mosaic fades out downward so the caption below sits on clean black.
  *
- * Monochrome on purpose: the grid it sits in is black with gray-800 borders,
- * and a coloured plate would fight it.
+ * The mosaic lets no pointer through except on the tiles: a caption laid over it must set
+ * `pointer-events: none` for the tile hover to reach them.
  */
 import SiteIcon from '@/components/primitives/SiteIcon.astro'
 
+export interface MosaicTile {
+  /** Icon meaning from the icon map, e.g. `ai-agent`. */
+  icon: string
+  /** Portfolio area, shown above the mosaic while the tile is hovered. */
+  label: string
+}
+
 export interface Props {
-  /** Short SiteIcon names, e.g. `robot`. Four reads best; more still tiles. */
-  icons: string[]
+  /** Nine tiles, row by row. */
+  tiles: MosaicTile[]
   class?: string
 }
 
-const { icons, class: className = '' } = Astro.props
+const { tiles, class: className = '' } = Astro.props
+const COLUMNS = 3
+const TILE_ICON_PX = 32
+
+/** Tone in % of white: low in the corners, highest on the middle diagonal, plus a small step per tile. */
+function tone(index: number): string {
+  const diagonal = Math.floor(index / COLUMNS) + (index % COLUMNS)
+  const wave = 0.5 + 0.5 * Math.sin((diagonal / 4) * 2 * Math.PI - Math.PI / 2)
+  return `${(2.3 + 3.8 * wave + (index % COLUMNS) * 0.35).toFixed(2)}%`
+}
 ---
 
 <div class={`mosaic ${className}`} aria-hidden="true">
-  <div class="mosaic__glow"></div>
   <div class="mosaic__grid">
     {
-      icons.map((name, i) => (
-        <span class="mosaic__cell" style={`--i: ${i}`}>
-          <SiteIcon name={name} size="lg" class="mosaic__icon" />
+      tiles.map((tile, index) => (
+        <span class="mosaic__tile" style={`--tone: ${tone(index)}`}>
+          <SiteIcon name={tile.icon} size={TILE_ICON_PX} />
+          <span class="mosaic__label">{tile.label}</span>
         </span>
       ))
     }
@@ -37,134 +55,80 @@ const { icons, class: className = '' } = Astro.props
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    /* Fades out downward so the caption below sits on clean black. */
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
-    mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 88%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 92%);
+    mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 92%);
   }
 
-  .mosaic__glow {
-    position: absolute;
-    left: 50%;
-    top: 18%;
-    width: 130%;
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.02) 42%,
-      transparent 68%
-    );
-    transition: opacity 700ms ease;
-    opacity: 0.8;
-  }
-
+  /* The grid is the positioning parent of the labels, so a label sits above the whole mosaic. */
   .mosaic__grid {
+    --tile: 5rem;
+    --gap: 0.5rem;
     position: absolute;
     left: 50%;
-    top: 30%;
+    top: 2.5rem;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.9rem;
-    /* The whole group floats as one. Per-cell vertical drift was tried and
-       rejected: it breaks the 2x2 alignment in every frame, so a still of the
-       page reads as a misaligned grid rather than as motion. */
-    animation: mosaic-float 28s ease-in-out infinite;
+    grid-template-columns: repeat(3, var(--tile));
+    gap: var(--gap);
+    transform: translateX(-50%);
   }
 
-  @keyframes mosaic-float {
-    0%,
-    100% {
-      transform: translate(-50%, -50%);
-    }
-    50% {
-      transform: translate(-50%, calc(-50% - 4px));
-    }
-  }
-
-  .mosaic__cell {
+  .mosaic__tile {
     display: grid;
     place-items: center;
-    width: 3.75rem;
-    height: 3.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-sm);
-    background: none;
-    color: rgba(255, 255, 255, 0.6);
-    /* Only the glow breathes per cell — never the position. Staggered so the
-       four never pulse in unison. */
-    animation: mosaic-breathe 20s ease-in-out infinite;
-    animation-delay: calc(var(--i) * -5s);
+    height: var(--tile);
+    border: 1px solid color-mix(in srgb, var(--color-text) 4.5%, transparent);
+    color: var(--color-text-muted);
+    background-color: color-mix(in srgb, var(--color-text) var(--tone), transparent);
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-text) 3%, transparent),
+      transparent 70%
+    );
+    pointer-events: auto;
     transition:
-      border-color 500ms ease,
-      color 500ms ease;
+      background-color var(--motion-base) var(--ease-standard),
+      border-color var(--motion-base) var(--ease-standard),
+      color var(--motion-base) var(--ease-standard);
   }
 
-  .mosaic__cell :global(.mosaic__icon) {
-    width: 24px;
-    height: 24px;
+  .mosaic__label {
+    position: absolute;
+    bottom: calc(100% + 0.875rem);
+    left: -2rem;
+    right: -2rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-align: center;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--ease-standard);
   }
 
-  @keyframes mosaic-breathe {
-    0%,
-    100% {
-      opacity: 0.8;
-    }
-    50% {
-      opacity: 1;
-    }
-  }
-
-  /* Hover state is driven by the card wrapping this. */
-  :global(.group):hover .mosaic__glow {
-    opacity: 1;
-  }
-  :global(.group):hover .mosaic__cell {
-    border-color: rgba(255, 255, 255, 0.16);
+  :global(.group):hover .mosaic__tile {
     color: var(--color-text-secondary);
   }
 
-  /* Toggled by the script below when the mosaic leaves or enters the viewport. */
-  .mosaic.is-paused .mosaic__grid,
-  .mosaic.is-paused .mosaic__cell {
-    animation-play-state: paused;
+  .mosaic .mosaic__tile:hover {
+    border-color: color-mix(in srgb, var(--color-text) 14%, transparent);
+    color: var(--color-text);
+    background-color: color-mix(in srgb, var(--color-text) calc(var(--tone) + 5%), transparent);
+  }
+
+  .mosaic__tile:hover .mosaic__label {
+    opacity: 1;
   }
 
   @media (max-width: 770px) {
-    .mosaic__cell {
-      width: 3rem;
-      height: 3rem;
-    }
-    .mosaic__cell :global(.mosaic__icon) {
-      width: 20px;
-      height: 20px;
+    .mosaic__grid {
+      --tile: 4.5rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .mosaic__grid {
-      animation: none;
-      transform: translate(-50%, -50%);
-    }
-    .mosaic__cell {
-      animation: none;
-      opacity: 0.9;
+    .mosaic__tile,
+    .mosaic__label {
+      transition: none;
     }
   }
 </style>
-
-<script>
-  // Ambient loops run only while the mosaic is on screen, and never under reduced motion
-  // (the CSS above already drops the animations in that case).
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const mosaics = document.querySelectorAll<HTMLElement>('.mosaic')
-
-  if (!reduced && mosaics.length > 0) {
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        entry.target.classList.toggle('is-paused', !entry.isIntersecting)
-      }
-    })
-    mosaics.forEach((mosaic) => observer.observe(mosaic))
-  }
-</script>

@@ -41,6 +41,7 @@ const Element = href ? 'a' : 'span'
 
 <Element
   href={href}
+  style={logo ? `--brand: ${logo.brand}` : undefined}
   class:list={['tag', `tag--${theme}`, accent && 'tag--accent', href && 'tag--link', className]}
 >
   {
@@ -92,6 +93,14 @@ const Element = href ? 'a' : 'span'
 
   .tag :global(.tag__icon) {
     opacity: 0.85;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  /* A technology logo takes its real brand colour while the tag is hovered or focused (P1 exception). */
+  .tag:hover :global(.tag__icon),
+  .tag:focus-visible :global(.tag__icon) {
+    color: var(--brand, currentColor);
+    opacity: 1;
   }
 
   .tag--link:hover,

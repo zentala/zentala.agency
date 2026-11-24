@@ -20,7 +20,22 @@ import SiteIcon from '@/components/primitives/SiteIcon.astro'
 import Logo from '../../components/Logo.astro'
 import TagGroup from '../../components/primitives/TagGroup.astro'
 import PhaseLabel from '../../components/primitives/PhaseLabel.astro'
-import CardIconMosaic from '../../components/primitives/CardIconMosaic.astro'
+import CardIconMosaic, {
+  type MosaicTile,
+} from '../../components/primitives/CardIconMosaic.astro'
+
+/** The nine portfolio areas: the four from the card copy around the robot, the rest in the corners. */
+const PORTFOLIO_TILES: MosaicTile[] = [
+  { icon: 'web-design', label: 'Web design' },
+  { icon: 'indoor-location', label: 'Indoor location' },
+  { icon: 'nfc-table', label: 'NFC table' },
+  { icon: 'capabilities', label: 'Developer portals' },
+  { icon: 'ai-agent', label: 'Humanoid robot' },
+  { icon: 'home', label: 'Smart home' },
+  { icon: 'wifi-community', label: 'WiFi community' },
+  { icon: 'smart-desk', label: 'Smart desk' },
+  { icon: 'nick-finder', label: 'Nick finder' },
+]
 
 const bentoStates = {
   default: 'default',
@@ -313,16 +328,9 @@ const bentoStates = {
         href="/portfolio"
         class="group relative block h-full w-full overflow-clip"
       >
-        <CardIconMosaic
-          icons={[
-            'indoor-location',
-            'ai-agent',
-            'capabilities',
-            'home',
-          ]}
-        />
+        <CardIconMosaic tiles={PORTFOLIO_TILES} />
         <div
-          class="absolute inset-0 flex flex-col justify-end p-6 md:p-10"
+          class="pointer-events-none absolute inset-0 flex flex-col justify-end p-6 md:p-10"
         >
           <h3 class="mb-2 text-2xl font-light text-fg md:text-3xl">
             Portfolio
