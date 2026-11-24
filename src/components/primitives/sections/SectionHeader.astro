@@ -117,8 +117,7 @@ const headlineIcon = labelIcon ?? fallbackIcon
 
   .section-header {
     border-bottom: 1px solid $border-color;
-    @include px-responsive('md');
-    @include py-responsive('md');
+    @include cell-padding;
     position: relative;
     overflow: hidden;
     isolation: isolate;

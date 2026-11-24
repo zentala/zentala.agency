@@ -17,9 +17,11 @@ const ROUTES = [
   '/series/developer-experience',
   '/category/devex',
 ]
-/** Pages without a left-aligned SectionHeader: the header edge is not measured there. */
+/**
+ * Pages that render no SectionHeader at all (a bare listing or their own hero): there is
+ * no header text to measure. Every other route, home included, must show one.
+ */
 const ROUTES_WITHOUT_HEADER = [
-  '/',
   '/blog',
   '/portfolio',
   '/about/capabilities',
@@ -29,8 +31,7 @@ const EDGE_TOLERANCE_PX = 1
 
 const SELECTORS = {
   logo: '#header .logo-container svg, #header .logo-container img',
-  headerText:
-    ".section-header[data-align='left'] :is(.section-eyebrow, .section-headline)",
+  headerText: '.section-header :is(.section-eyebrow, .section-headline)',
   contentText: ':is(.line-grid, .cards-grid, .content-grid) > :not(:empty)',
 }
 

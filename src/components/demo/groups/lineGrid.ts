@@ -78,7 +78,8 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       id: 'bento-card-sections',
       name: 'BentoCard (sections)',
       path: 'primitives/sections/BentoCard.astro',
-      purpose: 'Bento cell with spans. Used by BentoShowcase.',
+      purpose:
+        'Bento cell with spans. Padding sm, md and lg all take the full cell padding (64/48/32/24/16 px by width); none leaves the cell bare. Used by BentoShowcase.',
       props:
         'colSpan (1; 1 to 4), rowSpan (1; 1 to 3), padding (md; none, sm, lg)',
     },
@@ -87,7 +88,7 @@ export const LINE_GRID_GROUP: GalleryGroup = {
       name: 'BentoCard (bento)',
       path: 'primitives/sections/bento/BentoCard.astro',
       purpose:
-        'Bento cell with spans, hover state and the cell overlay. Used by the home bento.',
+        'Bento cell with spans, hover state and the cell overlay. Padding sm, md and lg all take the full cell padding; none leaves the cell bare. Used by the home bento.',
       props: 'colSpan, rowSpan, padding, hoverState, class',
     },
     {
