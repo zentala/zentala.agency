@@ -2,6 +2,8 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import phIcons from '@iconify-json/ph/icons.json'
+import fa6Brands from '@iconify-json/fa6-brands/icons.json'
+import fa6Regular from '@iconify-json/fa6-regular/icons.json'
 import { ICON_MAP } from '@/lib/icons/icon-map'
 import {
   ICON_WEIGHTS,
@@ -138,6 +140,35 @@ describe('icon set guard', () => {
   it('rejects an unknown icon meaning, including a raw Phosphor name', () => {
     expect(() => resolveIconName('no-such-icon', 20)).toThrow()
     expect(() => resolveIconName('calendar-blank', 20)).toThrow()
+  })
+})
+
+describe('footer and header icons', () => {
+  const read = (path: string) => sources.find((f) => f.path === path)!.text
+
+  it('resolves every BrandIcon glyph in the installed Font Awesome sets', () => {
+    const glyphs = [
+      ...read('components/primitives/BrandIcon.astro').matchAll(
+        /'fa6-(brands|regular):([a-z0-9-]+)'/g,
+      ),
+    ]
+    expect(glyphs).toHaveLength(3)
+    for (const [, set, name] of glyphs) {
+      const icons = (set === 'brands' ? fa6Brands : fa6Regular).icons as Record<string, unknown>
+      expect(name in icons, `${set}:${name}`).toBe(true)
+    }
+  })
+
+  it('draws the footer marks with BrandIcon', () => {
+    const footer = read('components/Footer.astro')
+    for (const name of ['linkedin', 'github', 'email']) {
+      expect(footer).toContain(`<BrandIcon name="${name}"`)
+    }
+  })
+
+  it('draws header nav icons with SiteIcon and no board NavIcon', () => {
+    expect(read('components/Header.astro')).toContain('<SiteIcon name={link.icon}')
+    expect(sources.filter((f) => /NavIcon/.test(f.text)).map((f) => f.path)).toEqual([])
   })
 })
 
