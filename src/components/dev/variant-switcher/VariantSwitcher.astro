@@ -10,13 +10,14 @@
  */
 import './dev-variants.scss'
 import BoardFonts from '@/components/design-board/typography/BoardFonts.astro'
-import { VARIANT_AXES, VARIANT_STORAGE_KEY, variantAttribute } from './axes'
+import { VARIANT_AXES, VARIANT_STORAGE_KEY, parseVariantLink, variantAttribute } from './axes'
 
 const axes = VARIANT_AXES.map((item) => ({
   ...item,
   attribute: variantAttribute(item.id),
 }))
 const storageKey = VARIANT_STORAGE_KEY
+const parseLinkSource = parseVariantLink.toString()
 ---
 
 <BoardFonts />
@@ -45,7 +46,7 @@ const storageKey = VARIANT_STORAGE_KEY
   </div>
 </details>
 
-<script is:inline define:vars={{ axes, storageKey }}>
+<script is:inline define:vars={{ axes, storageKey, parseLinkSource }}>
   const root = document.documentElement
   const panel = document.querySelector('[data-vsw]')
 
@@ -112,18 +113,8 @@ const storageKey = VARIANT_STORAGE_KEY
   })
 
   /* Variant link: ?v-<axis>=<value> applies and stores a known option; anything else is ignored. */
-  const fromUrl = () => {
-    const state = read()
-    let linked = false
-    for (const item of axes) {
-      const value = new URLSearchParams(location.search).get('v-' + item.id)
-      if (value !== null && item.options.some((option) => option.value === value)) {
-        state[item.id] = value
-        linked = true
-      }
-    }
-    return linked ? state : null
-  }
+  const parseVariantLink = new Function('return ' + parseLinkSource)()
+  const fromUrl = () => parseVariantLink(location.search, axes, read())
 
   labelSelawik()
   const linkedState = fromUrl()

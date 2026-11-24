@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { HEADER_IMAGES, headerImageSlot } from '@/config/features'
-import { VARIANT_AXES, variantAttribute } from '@/components/dev/variant-switcher/axes'
+import { VARIANT_AXES, parseVariantLink, variantAttribute } from '@/components/dev/variant-switcher/axes'
 
 /**
  * The HEADER_IMAGES switch (owner request R1, 2026-11-24): off means no header image in a
@@ -68,9 +68,42 @@ describe('components that render a header image', () => {
 })
 
 describe('variant links', () => {
-  it('the switcher script reads ?v-<axis>=<value> and checks it against the known options', () => {
+  const stored = { font: 'selawik' }
+
+  it('applies a known value on top of the stored state', () => {
+    expect(parseVariantLink('?v-form=line', VARIANT_AXES, stored)).toEqual({
+      font: 'selawik',
+      form: 'line',
+    })
+  })
+
+  it('combines several parameters', () => {
+    expect(parseVariantLink('?v-form=line&v-font=noto-sans', VARIANT_AXES, stored)).toEqual({
+      font: 'noto-sans',
+      form: 'line',
+    })
+  })
+
+  it('ignores an unknown value, an unknown axis and unrelated parameters', () => {
+    expect(parseVariantLink('?v-form=nope', VARIANT_AXES, stored)).toBeNull()
+    expect(parseVariantLink('?v-nothing=line', VARIANT_AXES, stored)).toBeNull()
+    expect(parseVariantLink('?utm=x', VARIANT_AXES, stored)).toBeNull()
+    expect(parseVariantLink('', VARIANT_AXES, stored)).toBeNull()
+  })
+
+  it('keeps a known value when an unknown one sits beside it', () => {
+    expect(parseVariantLink('?v-form=nope&v-first-view=full', VARIANT_AXES, {})).toEqual({
+      'first-view': 'full',
+    })
+  })
+
+  it('survives being shipped as source to the page', () => {
+    const shipped = new Function('return ' + parseVariantLink.toString())()
+    expect(shipped('?v-form=line', VARIANT_AXES, {})).toEqual({ form: 'line' })
+  })
+
+  it('the switcher script calls the shipped parser on the URL search', () => {
     const source = readFileSync(join(SWITCHER_DIR, 'VariantSwitcher.astro'), 'utf8')
-    expect(source).toContain("'v-' + item.id")
-    expect(source).toContain('item.options.some((option) => option.value === value)')
+    expect(source).toContain('parseVariantLink(location.search, axes, read())')
   })
 })

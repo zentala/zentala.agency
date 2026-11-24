@@ -474,9 +474,16 @@ const bentoStates = {
   <style lang="scss">
     @use '../../styles/variables' as *;
 
-    /* The caption takes the shared cell padding, like every text cell around it (DESIGN.md "Left edge"). */
+    /*
+     * The caption takes the shared cell padding at the sides and top, so its text sits on the left
+     * edge (DESIGN.md "Left edge"). Under the last button it keeps half of it, at least 1rem, like a
+     * header bar (owner feedback 2026-11-24, R3: too much space under the buttons). The markup holds
+     * no empty element or reserved row below the button; the space was padding alone.
+     */
     .portfolio-caption {
       @include cell-padding;
+      /* Interpolated: Sass would otherwise fold max() and drop the calc() around the division. */
+      padding-bottom: #{'max(1rem, calc(var(--cell-padding) / 2))'};
     }
 
     .state-content {

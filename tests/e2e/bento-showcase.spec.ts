@@ -27,42 +27,47 @@ test.describe('Homepage bento showcase', () => {
 })
 
 /**
- * R3 (owner feedback 2026-11-24): no empty slot under the last button of the home Portfolio
- * cell. The distance from the bottom of its last button to the bottom of the cell must be the
- * cell's own bottom padding, and the same padding the text cells around it use.
+ * R3 (owner feedback 2026-11-24): the Portfolio cell had too much empty space under its last
+ * button. The cell holds one link, the caption's last child is the button, and the distance from
+ * the button's bottom to the cell's bottom is half the cell padding (at least 1rem), never more
+ * than two button heights. The old caption padding (40px from 768px) fails the ceiling.
  */
 const WIDTHS = [1536, 1024, 390]
 const TOLERANCE_PX = 1
+const MIN_BOTTOM_PX = 16
+const MAX_BUTTON_HEIGHTS = 2
 
 for (const width of WIDTHS) {
-  test(`Portfolio cell ends one cell padding under its last button at ${width}px`, async ({
-    page,
-  }) => {
+  test(`Portfolio cell ends close under its last button at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
 
     const measured = await page.evaluate(() => {
-      const link = document.querySelector<HTMLElement>(
-        '#bento-about-me a[href="/portfolio"]',
-      )
+      const link = document.querySelector<HTMLElement>('#bento-about-me a[href="/portfolio"]')
       const cell = link?.closest<HTMLElement>('.bento-card')
       const caption = link?.querySelector<HTMLElement>('.portfolio-caption')
-      const lastButton = link?.querySelector<HTMLElement>('.portfolio-caption > span:last-child')
-      const textCell = document.querySelector<HTMLElement>(
-        '#bento-about-me .bento-card--padding-sm',
-      )
-      if (!cell || !caption || !lastButton || !textCell) return null
+      const lastButton = caption?.lastElementChild
+      if (!cell || !caption || !lastButton) return null
+      const button = lastButton.getBoundingClientRect()
       return {
-        gap: cell.getBoundingClientRect().bottom - lastButton.getBoundingClientRect().bottom,
-        captionPadding: parseFloat(getComputedStyle(caption).paddingBottom),
-        textCellPadding: parseFloat(getComputedStyle(textCell).paddingBottom),
+        cellChildren: cell.children.length,
+        isButton: lastButton.tagName === 'SPAN' && !!lastButton.textContent?.trim(),
+        gap: cell.getBoundingClientRect().bottom - button.bottom,
+        buttonHeight: button.height,
+        cellPadding: parseFloat(getComputedStyle(caption).paddingLeft),
+        borderBottom: parseFloat(getComputedStyle(cell).borderBottomWidth),
       }
     })
 
     expect(measured).not.toBeNull()
-    expect(Math.abs(measured!.gap - measured!.captionPadding)).toBeLessThanOrEqual(TOLERANCE_PX)
-    expect(Math.abs(measured!.captionPadding - measured!.textCellPadding)).toBeLessThanOrEqual(
+    expect(measured!.cellChildren).toBe(1)
+    expect(measured!.isButton).toBe(true)
+    const expected = Math.max(MIN_BOTTOM_PX, measured!.cellPadding / 2)
+    expect(Math.abs(measured!.gap - measured!.borderBottom - expected)).toBeLessThanOrEqual(
       TOLERANCE_PX,
+    )
+    expect(measured!.gap).toBeLessThanOrEqual(
+      measured!.buttonHeight * MAX_BUTTON_HEIGHTS + TOLERANCE_PX + measured!.borderBottom,
     )
   })
 }

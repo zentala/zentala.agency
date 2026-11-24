@@ -55,3 +55,27 @@ export const VARIANT_AXES: VariantAxis[] = [
 
 export const VARIANT_STORAGE_KEY = 'dev-variants'
 export const variantAttribute = (id: string) => `data-v-${id}`
+
+/**
+ * Reads variant links from a URL search string (`?v-form=line`) and returns the stored state with
+ * the known options applied, or `null` when the link names none. An unknown axis or value is
+ * ignored. The function is self-contained on purpose: `VariantSwitcher.astro` ships its source to
+ * the page, where it runs without imports.
+ */
+export function parseVariantLink(
+  search: string,
+  axes: VariantAxis[],
+  state: Record<string, string>,
+): Record<string, string> | null {
+  const params = new URLSearchParams(search)
+  const next = { ...state }
+  let linked = false
+  for (const item of axes) {
+    const value = params.get('v-' + item.id)
+    if (value !== null && item.options.some((option) => option.value === value)) {
+      next[item.id] = value
+      linked = true
+    }
+  }
+  return linked ? next : null
+}
