@@ -98,6 +98,11 @@ const heroProps = {
 </Layout>
 
 <style>
+  /* Owner choice I1 C: contact background icons rest at .1 (hover still caps at .12). */
+  :global(.line-grid) {
+    --icon-bg-rest-opacity: 0.1;
+  }
+
   .contact-card__head {
     display: flex;
     align-items: center;
