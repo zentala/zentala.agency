@@ -8,23 +8,25 @@
  * Files: Latin subset of @fontsource/open-sans (SIL OFL 1.1), weights 300, 400, 600.
  * No Google Fonts request: the files are bundled from node_modules.
  *
- * SOURCE: @capsizecss/metrics 4.5.0, units per em 2048 for both fonts.
- * size-adjust = Segoe UI xWidthAvg / Open Sans xWidthAvg, per weight:
- *   300: 860 / 924 = 93.07%    400: 908 / 960 = 94.58%    600: 937 / 995 = 94.17%
- * (Open Sans draws 5 to 7% wider than Segoe UI at the same font size.)
+ * SOURCE: @capsizecss/metrics 4.5.0, units per em 2048 for both fonts. The package holds one
+ * entry per family (the regular weight), so one value serves all three weights:
+ * size-adjust = Segoe UI xWidthAvg / Open Sans xWidthAvg = 908 / 960 = 94.58%.
+ * (Open Sans draws about 5% wider than Segoe UI at the same font size.)
  * Line height: Segoe UI ascent 2210 (107.91% of the em), descent 514 (25.10%), gap 0.
  * Open Sans ascent 2189, descent 600 (136.18% in all, against 133.01%), so its line box
  * would be 2.4% taller. The overrides pin ascent and descent to the Segoe UI values.
  * They apply after size-adjust, so each is Segoe's value divided by size-adjust:
- *   300: 107.91 / 0.9307 = 115.94%, 25.10 / 0.9307 = 26.97%
- *   400: 107.91 / 0.9458 = 114.09%, 25.10 / 0.9458 = 26.53%
- *   600: 107.91 / 0.9417 = 114.59%, 25.10 / 0.9417 = 26.65%
- * line-gap-override is 0 because Segoe UI has no line gap.
+ *   107.91 / 0.9458 = 114.09%, 25.10 / 0.9458 = 26.53%
+ *  * line-gap-override is 0 because Segoe UI has no line gap.
  * The dev font axis ships the same files without these descriptors for comparison.
  */
 $open-sans-latin-range: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD';
 
-@mixin open-sans-face($weight, $size-adjust, $ascent, $descent) {
+$open-sans-size-adjust: 94.58%;
+$open-sans-ascent: 114.09%;
+$open-sans-descent: 26.53%;
+
+@mixin open-sans-face($weight) {
   @font-face {
     font-family: 'Open Sans Matched';
     font-style: normal;
@@ -32,13 +34,13 @@ $open-sans-latin-range: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, 
     font-weight: $weight;
     src: url('@fontsource/open-sans/files/open-sans-latin-#{$weight}-normal.woff2') format('woff2');
     unicode-range: #{$open-sans-latin-range};
-    size-adjust: $size-adjust;
-    ascent-override: $ascent;
-    descent-override: $descent;
+    size-adjust: $open-sans-size-adjust;
+    ascent-override: $open-sans-ascent;
+    descent-override: $open-sans-descent;
     line-gap-override: 0%;
   }
 }
 
-@include open-sans-face(300, 93.07%, 115.94%, 26.97%);
-@include open-sans-face(400, 94.58%, 114.09%, 26.53%);
-@include open-sans-face(600, 94.17%, 114.59%, 26.65%);
+@include open-sans-face(300);
+@include open-sans-face(400);
+@include open-sans-face(600);
