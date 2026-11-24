@@ -183,49 +183,20 @@ const TAGS = ['backstage', 'agents', 'devex']
   >
 </GalleryEntry>
 
-<GalleryEntry id="card-icon-mosaic" cols={3}>
-  <GalleryCell label="four icons (reads best)">
-    <div style="position: relative; height: 12rem; width: 100%">
+<GalleryEntry id="card-icon-mosaic" cols={1}>
+  <GalleryCell label="3x3 portfolio mosaic (hover a tile)">
+    <div style="position: relative; height: 24rem; width: 100%">
       <CardIconMosaic
-        icons={[
-          'indoor-location',
-          'ai-agent',
-          'capabilities',
-          'home',
-        ]}
-      />
-    </div>
-  </GalleryCell>
-  <GalleryCell label="six icons">
-    <div style="position: relative; height: 12rem; width: 100%">
-      <CardIconMosaic
-        icons={[
-          'iot',
-          'network',
-          'database',
-          'terminal',
-          'devops',
-          'server',
-        ]}
-      />
-    </div>
-  </GalleryCell>
-  <GalleryCell label="twelve icons">
-    <div style="position: relative; height: 12rem; width: 100%">
-      <CardIconMosaic
-        icons={[
-          'iot',
-          'network',
-          'database',
-          'terminal',
-          'devops',
-          'server',
-          'indoor-location',
-          'ai-agent',
-          'capabilities',
-          'home',
-          'date',
-          'launch',
+        tiles={[
+          { icon: 'web-design', label: 'Web design' },
+          { icon: 'indoor-location', label: 'Indoor location' },
+          { icon: 'nfc-table', label: 'NFC table' },
+          { icon: 'capabilities', label: 'Developer portals' },
+          { icon: 'ai-agent', label: 'Humanoid robot' },
+          { icon: 'home', label: 'Smart home' },
+          { icon: 'wifi-community', label: 'WiFi community' },
+          { icon: 'smart-desk', label: 'Smart desk' },
+          { icon: 'nick-finder', label: 'Nick finder' },
         ]}
       />
     </div>

@@ -81,7 +81,7 @@ const parts: MarkerPart[] = posts.map((post, index) => ({
 
 <BoardQuestion {...F3} columns={4}>
   <BoardCell option="A" caption="Teraz: 4 ikony 24 px" flush>
-    <MosaicCard><CardIconMosaic icons={MOSAIC_CURRENT} /></MosaicCard>
+    <MosaicCard><MosaicIcons icons={MOSAIC_CURRENT} columns={2} cell={3.75} icon={24} /></MosaicCard>
   </BoardCell>
   <BoardCell option="B" caption="16 ikon 24 px" flush>
     <MosaicCard><MosaicIcons icons={MOSAIC_MORE} columns={4} cell={3.75} icon={24} /></MosaicCard>

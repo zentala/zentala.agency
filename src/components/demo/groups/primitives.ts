@@ -86,8 +86,8 @@ export const PRIMITIVES_GROUP: GalleryGroup = {
       id: 'card-icon-mosaic',
       name: 'CardIconMosaic',
       path: 'primitives/CardIconMosaic.astro',
-      purpose: 'Generated artwork: dot grid, glow and drifting icons.',
-      props: 'icons, class',
+      purpose: 'Generated artwork: 3x3 portfolio mosaic (F3-E), tile hover shows its label.',
+      props: 'tiles, class',
     },
   ],
 }
